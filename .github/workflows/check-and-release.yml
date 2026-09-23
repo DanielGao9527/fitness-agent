@@ -1,0 +1,76 @@
+name: 检查与发布
+
+on:
+  push:
+    branches-ignore: [deploy]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# main 的检查与发布串行；同时存在的新提交不会被旧任务强制覆盖。
+concurrency:
+  group: fitness-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  test:
+    name: Linux 离线检查
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    env:
+      FITNESS_MODEL_PROVIDER: disabled
+      DASHSCOPE_API_KEY: ''
+      FITNESS_ACCESS_MODE: local
+      FITNESS_DB_PATH: ${{ runner.temp }}/fitness-ci.sqlite3
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: 安装锁定依赖
+        run: python -m pip install --only-binary=:all: -r requirements.lock.txt
+      - name: 核对依赖
+        run: python -m pip check
+      - name: 运行合成数据测试
+        run: python -m pytest -q tests deploy/tests
+      - name: 运行前端纯逻辑测试
+        run: |
+          node --version
+          for test_file in tests/*-unit.cjs; do
+            node "$test_file"
+          done
+
+  publish:
+    name: 推进服务器发布分支
+    needs: test
+    if: >-
+      github.repository == 'DanielGao9527/fitness-agent' &&
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+      vars.DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          # 仅此不执行项目代码的任务使用 GitHub 短期写入令牌。
+          persist-credentials: true
+      - name: 发布本次已通过检查的提交
+        env:
+          RELEASE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          [[ "$RELEASE_SHA" =~ ^[0-9a-f]{40}$ ]]
+          test "$(git rev-parse HEAD)" = "$RELEASE_SHA"
+          # 普通 fast-forward 推送；旧任务、分叉历史都会被拒绝，不使用 force。
+          git push origin "$RELEASE_SHA:refs/heads/deploy"
+          echo '发布分支已更新；实际服务器结果请查看 ECS 部署服务。'

@@ -1,0 +1,15 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
+const context={window:{},state:{},document:{},setTimeout,clearTimeout,AbortController};
+vm.createContext(context);
+vm.runInContext(fs.readFileSync(path.join(__dirname,'../static/intake-targets.js'),'utf8'),context);
+const plain=value=>JSON.parse(JSON.stringify(value));
+assert.deepEqual(plain(context.window.IntakeTargets.difference(null)),{label:'与目标差额',value:'—'});
+assert.deepEqual(plain(context.window.IntakeTargets.difference({lower:-400,upper:-200})),{label:'已记录高于目标',value:'200 ~ 400'});
+assert.deepEqual(plain(context.window.IntakeTargets.difference({lower:-100,upper:150})),{label:'估算区间跨过目标',value:'-100 ~ 150'});
+assert.deepEqual(plain(context.window.IntakeTargets.difference({lower:0,upper:0})),{label:'目标减已录入摄入',value:'0'});
+assert.deepEqual(plain(context.window.IntakeTargets.difference({lower:200,upper:300})),{label:'目标减已录入摄入',value:'200 ~ 300'});
+const root={innerHTML:''};
+context.window.IntakeTargets.mount(root,{});
+assert.ok(root.innerHTML.includes('暂不可用'));
+assert.equal(context.window.IntakeTargets.canLeave(),true);
+console.log('Intake targets: signed ranges, zero vs unavailable and older-backend compatibility passed.');

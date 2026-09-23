@@ -1,0 +1,13 @@
+[Unit]
+Description=Pull a tested Fitness Agent release
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=/etc/fitness-agent.env
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /usr/local/lib/fitness-agent-deploy/deploy.py --poll
+TimeoutStartSec=30min
+UMask=0077
+# 协调账户/权限/服务切换需要 root；应用和依赖安装各使用独立非 root 用户。
+# 部署脚本不继承生产 EnvironmentFile，只有短暂的受限检查与应用会加载它。

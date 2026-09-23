@@ -1,0 +1,739 @@
+{
+  "version": "cofid2021-curated-2026-09-20.3",
+  "reviewed_on": "2026-09-20",
+  "review_due": "2027-03-19",
+  "status": "approved",
+  "source": {
+    "title": "Public Health England, CoFID 2021",
+    "url": "https://www.gov.uk/government/publications/composition-of-foods-integrated-dataset-cofid",
+    "download": "https://assets.publishing.service.gov.uk/media/60538b91e90e07527df82ae4/McCance_Widdowsons_Composition_of_Foods_Integrated_Dataset_2021..xlsx",
+    "sheet": "1.3 Proximates",
+    "download_sha256": "436e9445ef2adb2a75f3d7edd51302de3adad25385f9795fc94ba58bd030e97d",
+    "columns": {
+      "protein": "PROT",
+      "fat": "FAT",
+      "carbs": "CHO",
+      "kcal": "KCALS"
+    },
+    "license": "Contains public sector information licensed under the Open Government Licence v3.0.",
+    "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+  },
+  "notice": "英国代表性食物的参考估算，不是实际食材检测值；品牌、品种和含水量会变化。Tr为微量，计算暂按0，不代表不存在；N不得当0。热量沿用原表，因碳水/纤维计能口径，不强行改成4/4/9。仅计列出的食材与用油。",
+  "principles": {
+    "adult": {
+      "title": "Health Canada 成人宏量营养素参考",
+      "url": "https://www.canada.ca/en/health-canada/services/food-nutrition/healthy-eating/dietary-reference-intakes/tables/reference-values-macronutrients.html",
+      "scope": "一般健康成人，19岁及以上；本应用不用于特殊医疗饮食",
+      "protein_energy": [
+        0.1,
+        0.35
+      ],
+      "carbs_energy": [
+        0.45,
+        0.65
+      ],
+      "fat_energy": [
+        0.2,
+        0.35
+      ],
+      "protein_min_g_kg": 0.8
+    },
+    "regular_training": {
+      "title": "Iraki等2019 自然健美非备赛期营养综述",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6680710/",
+      "scope": "健康且规律训练成人的产品默认参考，非所有人的固定标准或医疗处方；蛋白中心2g/kg和脂肪中心27.5%为配量偏好",
+      "protein_g_kg": [
+        1.6,
+        2.2
+      ],
+      "license": "CC BY 4.0; Iraki et al., 2019; numerical reference and original Chinese summary"
+    }
+  },
+  "foods": {
+    "wholemeal-bread": {
+      "code": "11-981",
+      "original_name": "Bread, wholemeal, average",
+      "kcal": 217,
+      "protein": 9.4,
+      "carbs": 42,
+      "fat": 2.5,
+      "note": "普通全麦面包代理，实际配方以包装为准"
+    },
+    "egg-noodles": {
+      "code": "11-941",
+      "original_name": "Noodles, egg, fine, dried, boiled in unsalted water",
+      "kcal": 129,
+      "protein": 4.7,
+      "carbs": 27.5,
+      "fat": 0.8,
+      "note": "细鸡蛋面煮熟代理，不代表所有面条"
+    },
+    "couscous": {
+      "code": "11-902",
+      "original_name": "Couscous, plain, cooked",
+      "kcal": 178,
+      "protein": 7.2,
+      "carbs": 37.5,
+      "fat": 1,
+      "note": "原味熟库斯库斯，不代理小米或藜麦"
+    },
+    "lamb": {
+      "code": "18-475",
+      "original_name": "Lamb, lean only, raw, average",
+      "kcal": 153,
+      "protein": 20.2,
+      "carbs": 0,
+      "fat": 8,
+      "note": "平均瘦羊肉代理，肥瘦相间火锅卷不能按此确定计算"
+    },
+    "duck": {
+      "code": "18-489",
+      "original_name": "Duck, meat only, raw",
+      "kcal": 137,
+      "protein": 19.7,
+      "carbs": 0,
+      "fat": 6.5,
+      "note": "鸭肉不含皮，非烤鸭成品"
+    },
+    "turkey": {
+      "code": "18-349",
+      "original_name": "Turkey, light meat, raw",
+      "kcal": 105,
+      "protein": 24.4,
+      "carbs": 0,
+      "fat": 0.8,
+      "note": "火鸡浅色肉代理，不代理普通鸡肉"
+    },
+    "tuna": {
+      "code": "16-399",
+      "original_name": "Tuna, flesh only, raw",
+      "kcal": 107,
+      "protein": 25.2,
+      "carbs": 0,
+      "fat": 0.7,
+      "note": "生鲜金枪鱼肉参考，不区分所有品种"
+    },
+    "soybeans": {
+      "code": "13-116",
+      "original_name": "Beans, soya, dried, boiled in unsalted water",
+      "kcal": 141,
+      "protein": 14,
+      "carbs": 5.1,
+      "fat": 7.3,
+      "note": "干大豆充分煮熟参考"
+    },
+    "kidney-beans": {
+      "code": "13-659",
+      "original_name": "Beans, red kidney, dried, boiled in unsalted water",
+      "kcal": 100,
+      "protein": 8.6,
+      "carbs": 15.1,
+      "fat": 1,
+      "note": "充分煮熟红腰豆，不代理红小豆"
+    },
+    "peas": {
+      "code": "13-536",
+      "original_name": "Peas, frozen, boiled in unsalted water",
+      "kcal": 70,
+      "protein": 5.5,
+      "carbs": 11.2,
+      "fat": 0.7,
+      "note": "熟青豌豆参考，含碳水多于多数叶菜"
+    },
+    "asparagus": {
+      "code": "13-638",
+      "original_name": "Asparagus, steamed",
+      "kcal": 21,
+      "protein": 2.9,
+      "carbs": 1.6,
+      "fat": 0.4,
+      "note": "蒸熟芦笋"
+    },
+    "beetroot": {
+      "code": "13-633",
+      "original_name": "Beetroot, cooked in unsalted water",
+      "kcal": 53,
+      "protein": 1.6,
+      "carbs": 11.6,
+      "fat": 0.3,
+      "note": "熟甜菜根，不代理腌甜菜"
+    },
+    "lettuce": {
+      "code": "13-520",
+      "original_name": "Lettuce, average, raw",
+      "kcal": 11,
+      "protein": 1.2,
+      "carbs": 1.4,
+      "fat": 0.1,
+      "note": "平均生菜代理，品种可能变化"
+    },
+    "celery": {
+      "code": "13-636",
+      "original_name": "Celery, raw",
+      "kcal": 9,
+      "protein": 0.5,
+      "carbs": 1.4,
+      "fat": 0.1,
+      "note": "芹菜代理，不代理芹菜籽"
+    },
+    "pumpkin": {
+      "code": "13-326",
+      "original_name": "Pumpkin, flesh only, raw",
+      "kcal": 13,
+      "protein": 0.7,
+      "carbs": 2.2,
+      "fat": 0.2,
+      "note": "原表南瓜品种代理，不等同所有高淀粉板栗南瓜"
+    },
+    "radish": {
+      "code": "13-331",
+      "original_name": "Radish, white/mooli, raw",
+      "kcal": 15,
+      "protein": 0.8,
+      "carbs": 2.9,
+      "fat": 0.1,
+      "note": "生白萝卜，不代理胡萝卜"
+    },
+    "onion": {
+      "code": "13-499",
+      "original_name": "Onions, raw",
+      "kcal": 35,
+      "protein": 1,
+      "carbs": 8,
+      "fat": 0.1,
+      "note": "生洋葱，炒制用油单列"
+    },
+    "leek": {
+      "code": "13-625",
+      "original_name": "Leeks, boiled in unsalted water",
+      "kcal": 16,
+      "protein": 1.2,
+      "carbs": 2.5,
+      "fat": 0.2,
+      "note": "熟韭葱，不冒充中国韭菜"
+    },
+    "brussels-sprouts": {
+      "code": "13-630",
+      "original_name": "Brussels sprouts, boiled in unsalted water",
+      "kcal": 32,
+      "protein": 3.1,
+      "carbs": 4.2,
+      "fat": 0.4,
+      "note": "熟抱子甘蓝"
+    },
+    "peach": {
+      "code": "14-299",
+      "original_name": "Peaches, raw, flesh and skin",
+      "kcal": 33,
+      "protein": 1,
+      "carbs": 7.6,
+      "fat": 0.1,
+      "note": "鲜桃肉皮，不含核"
+    },
+    "kiwi": {
+      "code": "14-371",
+      "original_name": "Kiwi fruit, flesh only, raw",
+      "kcal": 44,
+      "protein": 0.8,
+      "carbs": 8.6,
+      "fat": 0.9,
+      "note": "鲜猕猴桃果肉"
+    },
+    "blueberry": {
+      "code": "14-325",
+      "original_name": "Blueberries",
+      "kcal": 40,
+      "protein": 0.9,
+      "carbs": 9.1,
+      "fat": 0.2,
+      "note": "鲜蓝莓，不代理果干"
+    },
+    "pineapple": {
+      "code": "14-376",
+      "original_name": "Pineapple, flesh only, raw",
+      "kcal": 45,
+      "protein": 0.5,
+      "carbs": 11.4,
+      "fat": 0.1,
+      "note": "鲜菠萝果肉，不代理罐头"
+    },
+    "grapes": {
+      "code": "14-350",
+      "original_name": "Grapes, average",
+      "kcal": 65,
+      "protein": 0.7,
+      "carbs": 16.1,
+      "fat": 0.2,
+      "note": "葡萄平均可食部分"
+    },
+    "walnuts": {
+      "code": "14-879",
+      "original_name": "Walnuts, kernel only",
+      "kcal": 688,
+      "protein": 14.7,
+      "carbs": 3.3,
+      "fat": 68.5,
+      "note": "核桃仁不含壳"
+    },
+    "peanuts": {
+      "code": "14-877",
+      "original_name": "Peanuts, kernel only, plain, unsalted",
+      "kcal": 564,
+      "protein": 25.8,
+      "carbs": 12.5,
+      "fat": 46,
+      "note": "原味花生仁，不代理油炸花生"
+    },
+    "cashews": {
+      "code": "14-811",
+      "original_name": "Cashew nuts, kernel only, plain",
+      "kcal": 573,
+      "protein": 17.7,
+      "carbs": 18.1,
+      "fat": 48.2,
+      "note": "原味腰果仁"
+    },
+    "sunflower-seeds": {
+      "code": "14-845",
+      "original_name": "Sunflower seeds",
+      "kcal": 576,
+      "protein": 19.8,
+      "carbs": 18.6,
+      "fat": 47.5,
+      "note": "葵花籽可食仁，不含壳"
+    },
+    "pumpkin-seeds": {
+      "code": "14-842",
+      "original_name": "Pumpkin seeds",
+      "kcal": 565,
+      "protein": 24.4,
+      "carbs": 15.2,
+      "fat": 45.6,
+      "note": "南瓜籽可食仁，不含壳"
+    },
+    "hazelnuts": {
+      "code": "14-874",
+      "original_name": "Hazelnuts, kernel only",
+      "kcal": 650,
+      "protein": 14.1,
+      "carbs": 6,
+      "fat": 63.5,
+      "note": "榛子仁不含壳"
+    },
+    "rice": {
+      "code": "11-862",
+      "original_name": "Rice, white, long grain, boiled in unsalted water",
+      "kcal": 131,
+      "protein": 2.8,
+      "carbs": 31.1,
+      "fat": 0.4,
+      "note": "熟长粒白米饭代理普通米饭"
+    },
+    "brown-rice": {
+      "code": "11-869",
+      "original_name": "Rice, brown, wholegrain, boiled in unsalted water",
+      "kcal": 132,
+      "protein": 3.6,
+      "carbs": 29.2,
+      "fat": 0.9,
+      "note": "熟糙米饭"
+    },
+    "oats": {
+      "code": "11-788",
+      "original_name": "Porridge oats, unfortified",
+      "kcal": 381,
+      "protein": 10.9,
+      "carbs": 70.7,
+      "fat": 8.1,
+      "note": "干燕麦，不含牛奶或糖"
+    },
+    "potato": {
+      "code": "13-489",
+      "original_name": "Potatoes, old, raw, flesh only",
+      "kcal": 82,
+      "protein": 1.9,
+      "carbs": 19.6,
+      "fat": 0.1,
+      "note": "生的去皮可食部分"
+    },
+    "corn": {
+      "code": "13-508",
+      "original_name": "Sweetcorn, kernels, boiled 'on the cob' in unsalted water",
+      "kcal": 67,
+      "protein": 3.6,
+      "carbs": 9.5,
+      "fat": 1.9,
+      "note": "熟甜玉米粒代理；不是糯玉米，不含芯"
+    },
+    "sweet-potato": {
+      "code": "13-463",
+      "original_name": "Sweet potato, raw, flesh only",
+      "kcal": 87,
+      "protein": 1.2,
+      "carbs": 21.3,
+      "fat": 0.3,
+      "note": "生黄肉红薯代理，不含皮"
+    },
+    "chicken": {
+      "code": "18-290",
+      "original_name": "Chicken, light meat, raw",
+      "kcal": 106,
+      "protein": 24,
+      "carbs": 0,
+      "fat": 1.1,
+      "note": "生鸡浅色肉代理去皮鸡胸肉"
+    },
+    "egg": {
+      "code": "12-940",
+      "original_name": "Eggs, chicken, whole, boiled",
+      "kcal": 143,
+      "protein": 14.1,
+      "carbs": 0,
+      "fat": 9.6,
+      "trace": [
+        "carbs"
+      ],
+      "grams_per_unit": 50,
+      "note": "按水煮全蛋代理；每个可食部分50g是估算假设，不是实测"
+    },
+    "tofu": {
+      "code": "13-570",
+      "original_name": "Tofu, soya bean, steamed",
+      "kcal": 73,
+      "protein": 8.1,
+      "carbs": 0.7,
+      "fat": 4.2,
+      "note": "无额外配料蒸豆腐代理；不同软硬豆腐差异较大"
+    },
+    "beef": {
+      "code": "18-016",
+      "original_name": "Beef, fillet steak, raw, lean",
+      "kcal": 140,
+      "protein": 21.2,
+      "carbs": 0,
+      "fat": 6.1,
+      "note": "生瘦牛里脊代理，不是所有牛肉部位"
+    },
+    "shrimp": {
+      "code": "16-387",
+      "original_name": "Prawns, king, raw",
+      "kcal": 77,
+      "protein": 17.6,
+      "carbs": 0,
+      "fat": 0.7,
+      "note": "生大虾可食部分代理去壳虾仁"
+    },
+    "broccoli": {
+      "code": "13-502",
+      "original_name": "Broccoli, green, raw",
+      "kcal": 34,
+      "protein": 4.3,
+      "carbs": 3.2,
+      "fat": 0.6,
+      "note": "生绿西兰花可食部分"
+    },
+    "carrot": {
+      "code": "13-496",
+      "original_name": "Carrots, old, raw",
+      "kcal": 34,
+      "protein": 0.5,
+      "carbs": 7.7,
+      "fat": 0.4,
+      "note": "生胡萝卜可食部分"
+    },
+    "spinach": {
+      "code": "13-572",
+      "original_name": "Spinach, mature, raw",
+      "kcal": 25,
+      "protein": 2.8,
+      "carbs": 1.6,
+      "fat": 0.8,
+      "note": "生菠菜去粗梗可食部分"
+    },
+    "olive-oil": {
+      "code": "17-038",
+      "original_name": "Oil, olive",
+      "kcal": 899,
+      "protein": 0,
+      "carbs": 0,
+      "fat": 99.9,
+      "trace": [
+        "protein"
+      ],
+      "note": "单列橄榄油计入；蛋白质为微量"
+    },
+    "barley": {
+      "code": "11-003",
+      "original_name": "Barley, pearl, boiled",
+      "note": "珍珠大麦熟重代理",
+      "protein": 2.7,
+      "fat": 0.6,
+      "carbs": 27.6,
+      "kcal": 120
+    },
+    "buckwheat": {
+      "code": "11-006",
+      "original_name": "Buckwheat, groats",
+      "note": "荞麦粒干重，不代理混合荞麦面",
+      "protein": 8.1,
+      "fat": 1.5,
+      "carbs": 84.9,
+      "kcal": 364
+    },
+    "quinoa": {
+      "code": "14-843",
+      "original_name": "Quinoa, raw",
+      "note": "藜麦干重",
+      "protein": 13.8,
+      "fat": 5,
+      "carbs": 55.7,
+      "kcal": 309
+    },
+    "wholewheat-pasta": {
+      "code": "11-723",
+      "original_name": "Pasta, wholewheat, spaghetti, dried, boiled in unsalted water",
+      "note": "全麦意面煮熟净重；配方另核对，蛋过敏保守排除此项",
+      "protein": 5.2,
+      "fat": 1.1,
+      "carbs": 27.5,
+      "kcal": 134
+    },
+    "rice-noodles": {
+      "code": "11-725",
+      "original_name": "Noodles, rice, fine, dried, boiled in unsalted water",
+      "note": "细米粉熟重代理，仅米水配方且需核对配料",
+      "protein": 1.9,
+      "fat": 0.2,
+      "carbs": 21.3,
+      "kcal": 89
+    },
+    "pork": {
+      "code": "18-510",
+      "original_name": "Pork, fillet medallions, raw, lean",
+      "note": "低脂猪里脊生瘦肉代理，不适用于肥肉或其他部位",
+      "protein": 22.8,
+      "fat": 0.5,
+      "carbs": 0,
+      "kcal": 96
+    },
+    "salmon": {
+      "code": "16-356",
+      "original_name": "Salmon, farmed, flesh only, raw",
+      "note": "养殖三文鱼生鱼肉代理；生重不代表推荐生食",
+      "protein": 20.4,
+      "fat": 15,
+      "carbs": 0,
+      "kcal": 217
+    },
+    "cod": {
+      "code": "16-372",
+      "original_name": "Cod, flesh only, raw",
+      "note": "鳕鱼生鱼肉代理；生重不代表推荐生食",
+      "protein": 17.5,
+      "fat": 0.6,
+      "carbs": 0,
+      "kcal": 75
+    },
+    "lentils": {
+      "code": "13-661",
+      "original_name": "Lentils, green and brown, whole, dried, boiled in unsalted water",
+      "note": "绿/棕小扁豆煮熟净重，不是鲜扁豆角",
+      "protein": 7.8,
+      "fat": 0.7,
+      "carbs": 14.5,
+      "kcal": 92
+    },
+    "chickpeas": {
+      "code": "13-662",
+      "original_name": "Beans, chick peas, Kabuli, whole, dried, boiled in unsalted water",
+      "note": "Kabuli鹰嘴豆煮熟净重",
+      "protein": 8.4,
+      "fat": 3,
+      "carbs": 18.3,
+      "kcal": 129
+    },
+    "cabbage": {
+      "code": "13-582",
+      "original_name": "Cabbage, average, raw",
+      "note": "绿/白卷心菜平均生重代理",
+      "protein": 1.8,
+      "fat": 0.2,
+      "carbs": 4.4,
+      "kcal": 26
+    },
+    "cauliflower": {
+      "code": "13-512",
+      "original_name": "Cauliflower, raw",
+      "note": "菜花生重",
+      "protein": 2.5,
+      "fat": 0.4,
+      "carbs": 4.4,
+      "kcal": 30
+    },
+    "cucumber": {
+      "code": "13-523",
+      "original_name": "Cucumber, raw, flesh and skin",
+      "note": "黄瓜带皮生重",
+      "protein": 1,
+      "fat": 0.6,
+      "carbs": 1.2,
+      "kcal": 14
+    },
+    "tomato": {
+      "code": "13-517",
+      "original_name": "Tomatoes, standard, raw",
+      "note": "普通番茄生重",
+      "protein": 0.5,
+      "fat": 0.1,
+      "carbs": 3,
+      "kcal": 14
+    },
+    "aubergine": {
+      "code": "13-161",
+      "original_name": "Aubergine, raw",
+      "note": "茄子生重",
+      "protein": 0.9,
+      "fat": 0.4,
+      "carbs": 2.2,
+      "kcal": 15
+    },
+    "green-pepper": {
+      "code": "13-318",
+      "original_name": "Peppers, capsicum, green, raw",
+      "note": "青甜椒生重，不代理辣椒",
+      "protein": 0.8,
+      "fat": 0.3,
+      "carbs": 2.6,
+      "kcal": 15
+    },
+    "courgette": {
+      "code": "13-627",
+      "original_name": "Courgette, raw",
+      "note": "西葫芦生重",
+      "protein": 1.3,
+      "fat": 0.2,
+      "carbs": 2.3,
+      "kcal": 16
+    },
+    "mushroom": {
+      "code": "13-505",
+      "original_name": "Mushrooms, white, raw",
+      "note": "白蘑菇生重，不代理所有菌菇",
+      "protein": 1,
+      "fat": 0.2,
+      "carbs": 0.3,
+      "kcal": 7
+    },
+    "pakchoi": {
+      "code": "13-516",
+      "original_name": "Pak choi, steamed",
+      "note": "蒸熟小白菜净重",
+      "protein": 1.5,
+      "fat": 0.1,
+      "carbs": 1.9,
+      "kcal": 14
+    },
+    "green-beans": {
+      "code": "13-515",
+      "original_name": "Beans, green, boiled in unsalted water",
+      "note": "四季豆充分煮熟净重，不可生食",
+      "protein": 2.1,
+      "fat": 0.3,
+      "carbs": 4,
+      "kcal": 26
+    },
+    "rapeseed-oil": {
+      "code": "17-041",
+      "original_name": "Oil, rapeseed",
+      "note": "菜籽油单列计量；微量蛋白质暂按0",
+      "protein": 0,
+      "fat": 99.9,
+      "carbs": 0,
+      "kcal": 899,
+      "trace": [
+        "protein"
+      ]
+    },
+    "sesame-oil": {
+      "code": "17-043",
+      "original_name": "Oil, sesame",
+      "note": "芝麻油，芝麻过敏排除",
+      "protein": 0.2,
+      "fat": 99.7,
+      "carbs": 0,
+      "kcal": 898
+    },
+    "almonds": {
+      "code": "14-896",
+      "original_name": "Almonds, whole kernels",
+      "note": "甜杏仁仁，不含额外糖盐，不是苦杏仁",
+      "protein": 21.2,
+      "fat": 49.9,
+      "carbs": 5.3,
+      "kcal": 554
+    },
+    "apple": {
+      "code": "14-319",
+      "original_name": "Apples, eating, raw, flesh and skin",
+      "note": "食用苹果带皮去核净重",
+      "protein": 0.6,
+      "fat": 0.5,
+      "carbs": 11.6,
+      "kcal": 51
+    },
+    "banana": {
+      "code": "14-318",
+      "original_name": "Bananas, flesh only",
+      "note": "香蕉去皮净重",
+      "protein": 1.2,
+      "fat": 0.1,
+      "carbs": 20.3,
+      "kcal": 81
+    },
+    "orange": {
+      "code": "14-327",
+      "original_name": "Oranges, flesh only",
+      "note": "橙子去皮净重",
+      "protein": 0.8,
+      "fat": 0.2,
+      "carbs": 8.2,
+      "kcal": 36
+    },
+    "pear": {
+      "code": "14-205",
+      "original_name": "Pears, Nashi, flesh and skin, raw",
+      "note": "亚洲梨带皮去核净重，不代理西洋梨",
+      "protein": 0.3,
+      "fat": 0.1,
+      "carbs": 7.1,
+      "kcal": 29
+    },
+    "strawberry": {
+      "code": "14-324",
+      "original_name": "Strawberries, raw",
+      "note": "草莓去蒂净重",
+      "protein": 0.6,
+      "fat": 0.5,
+      "carbs": 6.1,
+      "kcal": 30
+    },
+    "milk": {
+      "code": "12-314",
+      "original_name": "Milk, semi-skimmed, UHT",
+      "note": "半脱脂UHT牛奶，按100克不是100毫升",
+      "protein": 3.3,
+      "fat": 1.6,
+      "carbs": 4.9,
+      "kcal": 46
+    },
+    "yogurt": {
+      "code": "12-379",
+      "original_name": "Yogurt, low fat, plain",
+      "note": "原味低脂酸奶代理，不同品牌需另核对标签",
+      "protein": 4.8,
+      "fat": 1,
+      "carbs": 7.8,
+      "kcal": 57
+    }
+  }
+}

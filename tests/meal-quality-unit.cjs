@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
+const context={window:{},escapeHtml:value=>String(value ?? '')};
+vm.createContext(context);
+vm.runInContext(fs.readFileSync(path.join(__dirname,'../static/quick-meals.js'),'utf8'),context);
+const ui=context.window.QuickMeals;
+assert.equal(ui.feedbackText({energy_feedback:{adjustment_kcal:0}}),'');
+assert.ok(ui.feedbackText({base_target_kcal:2700,energy_feedback:{adjustment_kcal:100,eligible_days:2}}).includes('今天小幅增加 100 kcal'));
+assert.ok(ui.feedbackText({base_target_kcal:2700,energy_feedback:{adjustment_kcal:-100,eligible_days:2}}).includes('今天小幅减少 100 kcal'));
+assert.equal(ui.assessment({lower:120,upper:160},{lower:144,upper:198},'protein'),'估算区间部分超出参考范围，未全部满足');
+assert.equal(ui.assessment({lower:170,upper:190},{lower:144,upper:198},'protein'),'在参考范围内');
+console.log('Meal quality: feedback labels and full-interval checks passed.');

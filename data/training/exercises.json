@@ -1,0 +1,1657 @@
+{
+  "version": "reviewed-actions-2026-09-21.1",
+  "notice": "一般健康成人基础动作；组次、选择与时间预算为项目保守规则，不是来源为本人制定的处方。实际器械需核对，不覆盖康复或完整分化周期。",
+  "exercises": [
+    {
+      "id": "db-bench",
+      "name": "哑铃平板卧推",
+      "focus": "chest",
+      "needs": [
+        "floor",
+        "dumbbell",
+        "bench"
+      ],
+      "loads": [
+        "chest",
+        "shoulders",
+        "arms"
+      ],
+      "pattern": "horizontal-press",
+      "target": "胸部水平推",
+      "source": "r118-db-bench:basics",
+      "cue": "头背臀稳定贴凳，手腕中立，控制下放，不弹起哑铃。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "barbell-bench",
+      "name": "杠铃平板卧推",
+      "focus": "chest",
+      "needs": [
+        "floor",
+        "barbell",
+        "bench",
+        "rack",
+        "safeties"
+      ],
+      "loads": [
+        "chest",
+        "shoulders",
+        "arms"
+      ],
+      "pattern": "horizontal-press",
+      "target": "胸部水平推",
+      "source": "r118-barbell-bench:basics",
+      "cue": "使用卧推架和正确设置的保护杠；肩背稳定，控制下放，不做极限重量。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "incline-db",
+      "name": "上斜哑铃卧推",
+      "focus": "chest",
+      "needs": [
+        "floor",
+        "dumbbell",
+        "incline-bench"
+      ],
+      "loads": [
+        "chest",
+        "shoulders",
+        "arms"
+      ],
+      "pattern": "incline-press",
+      "target": "胸部上斜推",
+      "source": "r118-incline-db:basics",
+      "cue": "确认上斜凳锁定，背臀贴凳，手腕中立，向上胸方向缓慢下放。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "cable-press",
+      "name": "坐姿绳索平推胸",
+      "focus": "chest",
+      "needs": [
+        "floor",
+        "cable",
+        "dual-pulley",
+        "adjustable-pulley",
+        "handles",
+        "backrest"
+      ],
+      "loads": [
+        "chest",
+        "shoulders",
+        "arms"
+      ],
+      "pattern": "horizontal-press",
+      "target": "胸部水平推",
+      "source": "r118-cable-press:basics",
+      "cue": "使用稳固靠背座位，滑轮对齐胸肩高度；沿胸前方向推，保持躯干稳定。",
+      "level": "beginner",
+      "unit": "8–12次"
+    },
+    {
+      "id": "cable-incline",
+      "name": "坐姿绳索上斜推胸",
+      "focus": "chest",
+      "needs": [
+        "floor",
+        "cable",
+        "dual-pulley",
+        "adjustable-pulley",
+        "handles",
+        "backrest"
+      ],
+      "loads": [
+        "chest",
+        "shoulders",
+        "arms"
+      ],
+      "pattern": "incline-press",
+      "target": "胸部上斜推",
+      "source": "r118-cable-incline:basics",
+      "cue": "靠背支撑身体，肩高滑轮，向额头方向斜上推，不拱腰。",
+      "level": "beginner",
+      "unit": "8–12次"
+    },
+    {
+      "id": "cable-decline",
+      "name": "坐姿绳索下斜推胸",
+      "focus": "chest",
+      "needs": [
+        "floor",
+        "cable",
+        "dual-pulley",
+        "adjustable-pulley",
+        "handles",
+        "backrest"
+      ],
+      "loads": [
+        "chest",
+        "shoulders",
+        "arms"
+      ],
+      "pattern": "decline-press",
+      "target": "胸部下斜推",
+      "source": "r118-cable-decline:basics",
+      "cue": "靠背稳固，滑轮肩高或略高，向大腿方向斜下推，回程受控。",
+      "level": "beginner",
+      "unit": "8–12次"
+    },
+    {
+      "id": "cable-fly",
+      "name": "站姿绳索夹胸",
+      "focus": "chest",
+      "needs": [
+        "floor",
+        "cable",
+        "dual-pulley",
+        "adjustable-pulley",
+        "handles"
+      ],
+      "loads": [
+        "chest",
+        "shoulders",
+        "arms"
+      ],
+      "pattern": "chest-fly",
+      "target": "胸部水平内收",
+      "source": "r118-cable-fly:basics",
+      "cue": "双侧滑轮在肩高，身体站稳，双手沿弧线向胸前合拢，慢速回程。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "barbell-row",
+      "name": "杠铃俯身划船",
+      "focus": "back",
+      "needs": [
+        "floor",
+        "barbell",
+        "rack"
+      ],
+      "loads": [
+        "back",
+        "shoulders",
+        "arms",
+        "core"
+      ],
+      "pattern": "horizontal-pull",
+      "target": "背部水平拉",
+      "source": "r118-barbell-row:basics",
+      "cue": "先掌握髋折叠和躯干稳定；由架上取杠，向腹部拉，不甩动腰背。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "cable-row",
+      "name": "绳索坐姿划船",
+      "focus": "back",
+      "needs": [
+        "cable-row-machine"
+      ],
+      "loads": [
+        "back",
+        "shoulders",
+        "arms"
+      ],
+      "pattern": "horizontal-pull",
+      "target": "背部水平拉",
+      "source": "r118-cable-row:basics",
+      "cue": "坐姿划船站配窄握把，胸廓稳定，肘向后拉至腹前，控制放回。",
+      "level": "beginner",
+      "unit": "8–12次"
+    },
+    {
+      "id": "pullup",
+      "name": "引体向上",
+      "focus": "back",
+      "needs": [
+        "pullup-bar"
+      ],
+      "loads": [
+        "back",
+        "shoulders",
+        "arms",
+        "core"
+      ],
+      "pattern": "vertical-pull",
+      "target": "背部垂直拉",
+      "source": "r118-pullup:basics",
+      "cue": "仅在能控制全程时采用；确认单杠固定，避免摆荡，无法完成就选下拉备选。",
+      "level": "experienced",
+      "unit": "可控的3–8次"
+    },
+    {
+      "id": "goblet-squat",
+      "name": "哑铃高脚杯深蹲",
+      "focus": "legs",
+      "needs": [
+        "floor",
+        "dumbbell"
+      ],
+      "loads": [
+        "legs",
+        "core"
+      ],
+      "pattern": "squat",
+      "target": "股四头肌与臀部",
+      "source": "r118-goblet-squat:basics",
+      "cue": "哑铃靠近胸前，脚掌稳定，蹲到自身可控制范围，不强求深度。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "barbell-squat",
+      "name": "杠铃背蹲",
+      "focus": "legs",
+      "needs": [
+        "floor",
+        "barbell",
+        "rack",
+        "safeties"
+      ],
+      "loads": [
+        "legs",
+        "core",
+        "back"
+      ],
+      "pattern": "squat",
+      "target": "股四头肌与臀部",
+      "source": "r118-barbell-squat:basics",
+      "cue": "需掌握背蹲技术；架上取杠并设置保护杠，保持躯干稳定，不追求极限重量。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "db-rdl",
+      "name": "哑铃罗马尼亚硬拉",
+      "focus": "legs",
+      "needs": [
+        "floor",
+        "dumbbell"
+      ],
+      "loads": [
+        "legs",
+        "back",
+        "core"
+      ],
+      "pattern": "hip-hinge",
+      "target": "腘绳肌与臀部",
+      "source": "r118-db-rdl:basics",
+      "cue": "微屈膝、向后移髋，保持脊柱中立；到可控的后侧牵拉范围，不弯腰追求触地。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "barbell-rdl",
+      "name": "杠铃罗马尼亚硬拉",
+      "focus": "legs",
+      "needs": [
+        "floor",
+        "barbell"
+      ],
+      "loads": [
+        "legs",
+        "back",
+        "core"
+      ],
+      "pattern": "hip-hinge",
+      "target": "腘绳肌与臀部",
+      "source": "r118-barbell-rdl:basics",
+      "cue": "先掌握取杠与髋折叠；杠靠近腿，微屈膝后移髋，不拱背猛拉。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "barbell-bridge",
+      "name": "杠铃地面臀桥",
+      "focus": "legs",
+      "needs": [
+        "floor",
+        "barbell"
+      ],
+      "loads": [
+        "legs",
+        "core"
+      ],
+      "pattern": "hip-extension",
+      "target": "臀部伸髋",
+      "source": "r118-barbell-bridge:basics",
+      "cue": "躺在地面，杠放髋部并稳定握住，脚掌着地推髋上抬，缓慢回落。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "lateral-lunge",
+      "name": "哑铃侧弓步",
+      "focus": "legs",
+      "needs": [
+        "floor",
+        "dumbbell"
+      ],
+      "loads": [
+        "legs",
+        "core"
+      ],
+      "pattern": "lateral-lunge",
+      "target": "腿臀侧向支撑（非孤立内收）",
+      "source": "r118-lateral-lunge:basics",
+      "cue": "侧向迈步后向后坐髋，脚掌稳定，控制返回中间，两侧分别完成。",
+      "level": "experienced",
+      "unit": "每侧8–12次"
+    },
+    {
+      "id": "side-adduction",
+      "name": "侧卧髋内收",
+      "focus": "legs",
+      "needs": [
+        "floor"
+      ],
+      "loads": [
+        "legs"
+      ],
+      "pattern": "hip-adduction",
+      "target": "大腿内侧",
+      "source": "r118-side-adduction:basics",
+      "cue": "侧卧保持骨盆稳定，下侧腿稍前伸后小幅抬起，控制落下，两侧分别做。",
+      "level": "beginner",
+      "unit": "每侧8–12次"
+    },
+    {
+      "id": "machine-shoulder",
+      "name": "器械坐姿推肩",
+      "focus": "shoulders",
+      "needs": [
+        "shoulder-machine"
+      ],
+      "loads": [
+        "shoulders",
+        "arms"
+      ],
+      "pattern": "overhead-press",
+      "target": "肩部上推",
+      "source": "r118-machine-shoulder:basics",
+      "cue": "调整座椅使手柄在肩高附近，背靠稳定，慢推慢回，不拱腰或锁死肘部。",
+      "level": "beginner",
+      "unit": "8–12次"
+    },
+    {
+      "id": "db-shoulder",
+      "name": "站姿哑铃推肩",
+      "focus": "shoulders",
+      "needs": [
+        "floor",
+        "dumbbell"
+      ],
+      "loads": [
+        "shoulders",
+        "arms",
+        "core"
+      ],
+      "pattern": "overhead-press",
+      "target": "肩部上推",
+      "source": "r118-db-shoulder:basics",
+      "cue": "站稳微屈膝，收紧躯干，从肩旁向上推哑铃并缓慢回落，不后仰借力。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "cable-reverse",
+      "name": "绳索反向飞鸟",
+      "focus": "shoulders",
+      "needs": [
+        "floor",
+        "cable",
+        "dual-pulley",
+        "adjustable-pulley",
+        "handles"
+      ],
+      "loads": [
+        "shoulders",
+        "back"
+      ],
+      "pattern": "rear-shoulder",
+      "target": "肩后侧",
+      "source": "r118-cable-reverse:basics",
+      "cue": "滑轮约肩高，交叉握对侧把手，躯干稳定向两侧展开，慢速返回。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "face-pull",
+      "name": "绳索面拉",
+      "focus": "shoulders",
+      "needs": [
+        "floor",
+        "cable",
+        "adjustable-pulley",
+        "rope"
+      ],
+      "loads": [
+        "shoulders",
+        "back",
+        "arms"
+      ],
+      "pattern": "face-pull",
+      "target": "肩后侧与上背",
+      "source": "r118-face-pull:basics",
+      "cue": "绳索设在眼睛高度，稳定站姿向脸部拉绳，慢速回程，不借身体后仰。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "barbell-curl",
+      "name": "杠铃二头弯举",
+      "focus": "arms",
+      "needs": [
+        "floor",
+        "barbell"
+      ],
+      "loads": [
+        "arms"
+      ],
+      "pattern": "biceps",
+      "target": "肘屈曲（二头）",
+      "source": "r118-barbell-curl:basics",
+      "cue": "掌心向上，肘留在身体两侧，屈肘抬杠，躯干不摆动。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "hammer-curl",
+      "name": "哑铃锤式弯举",
+      "focus": "arms",
+      "needs": [
+        "floor",
+        "dumbbell"
+      ],
+      "loads": [
+        "arms"
+      ],
+      "pattern": "hammer-curl",
+      "target": "肘屈曲（中立握）",
+      "source": "r118-hammer-curl:basics",
+      "cue": "掌心相对，手腕中立，肘贴身缓慢屈伸，不耸肩或甩动。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "machine-curl",
+      "name": "器械二头弯举",
+      "focus": "arms",
+      "needs": [
+        "curl-machine"
+      ],
+      "loads": [
+        "arms"
+      ],
+      "pattern": "biceps",
+      "target": "肘屈曲（二头）",
+      "source": "r118-machine-curl:basics",
+      "cue": "调整座位使肘与机器转轴匹配，上臂贴垫，手腕中立，控制伸屈。",
+      "level": "beginner",
+      "unit": "8–12次"
+    },
+    {
+      "id": "plank",
+      "name": "前臂平板支撑",
+      "focus": "core",
+      "needs": [
+        "floor"
+      ],
+      "loads": [
+        "core",
+        "shoulders"
+      ],
+      "pattern": "anti-extension",
+      "target": "核心抗伸展",
+      "source": "r118-plank:basics",
+      "cue": "肘在肩下，躯干保持稳定并正常呼吸；腰痛或失控立即停止。",
+      "level": "experienced",
+      "unit": "10–20秒，失控前结束"
+    },
+    {
+      "id": "side-plank",
+      "name": "改良侧平板支撑",
+      "focus": "core",
+      "needs": [
+        "floor"
+      ],
+      "loads": [
+        "core",
+        "shoulders"
+      ],
+      "pattern": "anti-lateral",
+      "target": "核心侧向稳定",
+      "source": "r118-side-plank:basics",
+      "cue": "按来源的屈膝支撑位抬髋，肘在肩下；足内侧或膝有异常压力即停止。",
+      "level": "experienced",
+      "unit": "10–20秒，失控前结束"
+    },
+    {
+      "id": "band-chest",
+      "name": "弹力带站姿推胸",
+      "focus": "chest",
+      "needs": [
+        "floor",
+        "band",
+        "band-anchor"
+      ],
+      "loads": [
+        "chest",
+        "shoulders",
+        "arms",
+        "core"
+      ],
+      "pattern": "horizontal-press",
+      "target": "胸部水平推",
+      "source": "r118-band-chest:basics",
+      "cue": "弹力带在身后胸高的牢固锚点固定，稳定站姿向前推，检查带体和固定点。",
+      "level": "beginner",
+      "unit": "8–12次"
+    },
+    {
+      "id": "floor-press",
+      "name": "哑铃地板推胸",
+      "focus": "chest",
+      "needs": [
+        "dumbbell",
+        "floor"
+      ],
+      "loads": [
+        "arms",
+        "chest",
+        "shoulders"
+      ],
+      "source": "mayo-chest:basics",
+      "cue": "地板仰卧，肘部贴近地面后推起，控制回程，不锁死肘部。",
+      "unit": "12次",
+      "pattern": "horizontal-press"
+    },
+    {
+      "id": "pushup",
+      "name": "跪姿俯卧撑",
+      "focus": "chest",
+      "needs": [
+        "floor"
+      ],
+      "loads": [
+        "arms",
+        "chest",
+        "shoulders"
+      ],
+      "source": "mayo-pushup:basics",
+      "cue": "收紧腹部，控制下放与推回，姿势失控前结束。",
+      "unit": "8–12次",
+      "pattern": "pushup"
+    },
+    {
+      "id": "row",
+      "name": "站姿俯身哑铃划船",
+      "focus": "back",
+      "needs": [
+        "dumbbell",
+        "floor"
+      ],
+      "loads": [
+        "arms",
+        "back",
+        "shoulders"
+      ],
+      "source": "mayo-row:basics",
+      "cue": "从髋部前倾并保持背部中立，不弓背或甩动哑铃。",
+      "unit": "每侧12次",
+      "pattern": "horizontal-pull"
+    },
+    {
+      "id": "squat",
+      "name": "自重深蹲",
+      "focus": "legs",
+      "needs": [
+        "floor"
+      ],
+      "loads": [
+        "legs"
+      ],
+      "source": "mayo-squat:basics",
+      "cue": "膝盖与脚尖方向一致，只蹲到能够控制的范围。",
+      "unit": "12次",
+      "pattern": "squat"
+    },
+    {
+      "id": "lunge",
+      "name": "自重弓步",
+      "focus": "legs",
+      "needs": [
+        "floor"
+      ],
+      "loads": [
+        "legs"
+      ],
+      "source": "mayo-lunge:basics",
+      "cue": "躯干稳定，两侧分别完成，不强求下蹲深度。",
+      "unit": "每侧8–12次",
+      "pattern": "lunge"
+    },
+    {
+      "id": "crunch",
+      "name": "基础卷腹",
+      "focus": "core",
+      "needs": [
+        "floor"
+      ],
+      "loads": [
+        "core"
+      ],
+      "source": "mayo-crunch:basics",
+      "cue": "双臂交叉胸前，不拉扯头颈，小幅卷起后控制回落。",
+      "unit": "先做8次，以姿势稳定为准",
+      "pattern": "crunch"
+    },
+    {
+      "id": "bridge",
+      "name": "地面臀桥",
+      "focus": "core",
+      "needs": [
+        "floor"
+      ],
+      "loads": [
+        "core",
+        "legs"
+      ],
+      "source": "mayo-bridge:basics",
+      "cue": "抬髋至躯干与大腿大致成线，保持呼吸，不靠腰部过伸。",
+      "unit": "先做8次，以姿势稳定为准",
+      "pattern": "bridge"
+    },
+    {
+      "id": "biceps-curl",
+      "name": "哑铃二头弯举",
+      "focus": "arms",
+      "needs": [
+        "floor",
+        "dumbbell"
+      ],
+      "loads": [
+        "arms"
+      ],
+      "source": "mayo-biceps:basics",
+      "cue": "屈肘抬起哑铃后缓慢放下，上臂靠近身体，手腕保持中立，不借摆动完成。",
+      "pattern": "biceps",
+      "unit": "12次"
+    },
+    {
+      "id": "triceps-extension",
+      "name": "哑铃仰卧臂屈伸",
+      "focus": "arms",
+      "needs": [
+        "floor",
+        "dumbbell"
+      ],
+      "loads": [
+        "arms",
+        "shoulders"
+      ],
+      "source": "mayo-triceps:basics",
+      "cue": "地板仰卧，上臂向上，另一手稳定上臂，缓慢屈伸肘部，头部和躯干保持稳定。",
+      "pattern": "triceps",
+      "unit": "12次"
+    },
+    {
+      "id": "cable-triceps",
+      "name": "绳索直杆下压",
+      "focus": "arms",
+      "needs": [
+        "cable-triceps"
+      ],
+      "loads": [
+        "arms",
+        "shoulders"
+      ],
+      "source": "mayo-cable-triceps:basics",
+      "cue": "使用适配直杆的滑轮器械，肘部贴近躯干，缓慢下压和回程，不前后摇摆。",
+      "pattern": "triceps",
+      "unit": "12次"
+    },
+    {
+      "id": "machine-chest",
+      "name": "器械推胸",
+      "focus": "chest",
+      "needs": [
+        "chest-machine"
+      ],
+      "loads": [
+        "chest",
+        "shoulders",
+        "arms"
+      ],
+      "source": "mayo-machine-chest:basics",
+      "cue": "调座位使握把在肩部或略低，保持背部稳定，推起不锁肘，回程上臂不退到躯干后。",
+      "pattern": "horizontal-press",
+      "unit": "12次"
+    },
+    {
+      "id": "lat-pulldown",
+      "name": "器械高位下拉",
+      "focus": "back",
+      "needs": [
+        "lat-machine"
+      ],
+      "loads": [
+        "back",
+        "shoulders",
+        "arms"
+      ],
+      "source": "mayo-lat-pulldown:basics",
+      "cue": "稍宽握距向胸前下拉，缓慢回程，不拉到颈后，不通过耸肩或摆动借力。",
+      "pattern": "vertical-pull",
+      "unit": "12次"
+    },
+    {
+      "id": "machine-row",
+      "name": "器械坐姿划船",
+      "focus": "back",
+      "needs": [
+        "row-machine"
+      ],
+      "loads": [
+        "back",
+        "shoulders",
+        "arms"
+      ],
+      "source": "mayo-machine-row:basics",
+      "cue": "膝部微屈，拉向腰部再缓慢回程，脊柱保持中立，不大幅前后倾。",
+      "pattern": "horizontal-pull",
+      "unit": "12次"
+    },
+    {
+      "id": "band-row",
+      "name": "弹力带坐姿划船",
+      "focus": "back",
+      "needs": [
+        "floor",
+        "band"
+      ],
+      "loads": [
+        "back",
+        "shoulders",
+        "arms"
+      ],
+      "source": "mayo-band-row:basics",
+      "cue": "检查弹力带完好并稳固绕过脚部，膝微屈、背部中立，肘向后拉，缓慢回程。",
+      "pattern": "horizontal-pull",
+      "unit": "12次"
+    },
+    {
+      "id": "leg-press",
+      "name": "器械腿举",
+      "focus": "legs",
+      "needs": [
+        "leg-press-machine"
+      ],
+      "loads": [
+        "legs"
+      ],
+      "source": "mayo-leg-press:basics",
+      "cue": "坐稳后双脚约肩宽，膝脚方向一致，推出不锁膝，回程只到可控范围。",
+      "pattern": "squat",
+      "unit": "12次"
+    },
+    {
+      "id": "calf-raise",
+      "name": "哑铃提踵",
+      "focus": "legs",
+      "needs": [
+        "floor",
+        "dumbbell"
+      ],
+      "loads": [
+        "legs"
+      ],
+      "source": "mayo-calf:basics",
+      "cue": "稳定站立后缓慢提踵和落下，保持躯干稳定；平衡不足时不负重练习。",
+      "pattern": "calf",
+      "unit": "12次"
+    },
+    {
+      "id": "reverse-fly",
+      "name": "坐姿哑铃反向飞鸟",
+      "focus": "shoulders",
+      "needs": [
+        "floor",
+        "dumbbell",
+        "seat"
+      ],
+      "loads": [
+        "shoulders",
+        "back"
+      ],
+      "source": "mayo-reverse-fly:basics",
+      "cue": "坐稳并从髋部前倾，肘部略弯，双臂向两侧抬到肩部高度，避免弓背和甩动。",
+      "pattern": "rear-shoulder",
+      "unit": "12次"
+    },
+    {
+      "id": "knee-extension",
+      "name": "器械腿屈伸",
+      "focus": "legs",
+      "needs": [
+        "knee-extension-machine"
+      ],
+      "loads": [
+        "legs"
+      ],
+      "source": "mayo-knee-extension:basics",
+      "cue": "座位和滚垫按器械调整，滚垫靠近踝部，缓慢伸膝至接近直而不锁死，再控制回程。",
+      "pattern": "knee-extension",
+      "unit": "12次"
+    },
+    {
+      "id": "hamstring-curl",
+      "name": "器械俯卧腿弯举",
+      "focus": "legs",
+      "needs": [
+        "hamstring-machine"
+      ],
+      "loads": [
+        "legs"
+      ],
+      "source": "mayo-hamstring-curl:basics",
+      "cue": "俯卧调整滚垫在脚踝上方，屈膝时保持骨盆与脊柱稳定，不拱腰或拉握把借力。",
+      "pattern": "knee-flexion",
+      "unit": "12次"
+    },
+    {
+      "id": "band-curl",
+      "name": "弹力带二头弯举",
+      "focus": "arms",
+      "needs": [
+        "floor",
+        "band"
+      ],
+      "loads": [
+        "arms"
+      ],
+      "source": "mayo-band-curl:basics",
+      "cue": "脚掌稳固踩住完好的弹力带，掌心向上，肘贴身屈伸，手腕中立，不甩动身体。",
+      "pattern": "biceps",
+      "unit": "12次"
+    },
+    {
+      "id": "lateral-raise",
+      "name": "哑铃侧平举",
+      "focus": "shoulders",
+      "needs": [
+        "floor",
+        "dumbbell"
+      ],
+      "loads": [
+        "shoulders"
+      ],
+      "source": "ace-lateral-raise:basics",
+      "cue": "站稳收紧躯干，肘部微屈，哑铃缓慢向侧面抬至肩部高度后控制放下，不拱腰或折腕。",
+      "pattern": "side-shoulder",
+      "unit": "12次"
+    },
+    {
+      "id": "seated-leg-curl",
+      "name": "器械坐姿腿弯举",
+      "focus": "legs",
+      "needs": [
+        "seated-curl-machine"
+      ],
+      "loads": [
+        "legs"
+      ],
+      "pattern": "knee-flexion",
+      "target": "腘绳肌屈膝",
+      "source": "r123-seated-leg-curl:basics",
+      "cue": "按器械说明调好座位和腿垫，背部贴靠背，控制屈膝与回程。",
+      "level": "beginner",
+      "unit": "8–12次"
+    },
+    {
+      "id": "dead-bug",
+      "name": "仰卧交替伸展",
+      "focus": "core",
+      "needs": [
+        "floor"
+      ],
+      "loads": [
+        "core"
+      ],
+      "pattern": "anti-extension",
+      "target": "核心抗伸展",
+      "source": "r123-dead-bug:basics",
+      "cue": "仰卧交替伸展对侧手脚；腰背稳定，不为伸远而拱腰。",
+      "level": "beginner",
+      "unit": "每侧6–10次"
+    },
+    {
+      "id": "bird-dog",
+      "name": "四点跪姿对侧伸展",
+      "focus": "core",
+      "needs": [
+        "floor"
+      ],
+      "loads": [
+        "core",
+        "shoulders",
+        "legs"
+      ],
+      "pattern": "anti-rotation",
+      "target": "核心抗旋转",
+      "source": "r123-bird-dog:basics",
+      "cue": "四点跪撑，交替抬起对侧手脚；保持骨盆水平，不扭转躯干。",
+      "level": "beginner",
+      "unit": "每侧6–10次"
+    },
+    {
+      "id": "incline-pushup",
+      "name": "上斜俯卧撑",
+      "focus": "chest",
+      "needs": [
+        "floor",
+        "bench"
+      ],
+      "loads": [
+        "chest",
+        "shoulders",
+        "arms",
+        "core"
+      ],
+      "pattern": "pushup",
+      "target": "胸部自重推",
+      "source": "r123-incline-pushup:basics",
+      "cue": "双手放稳固平凳，头至脚跟保持直线，屈肘控制下降再推起。",
+      "level": "beginner",
+      "unit": "8–12次"
+    },
+    {
+      "id": "decline-pushup",
+      "name": "下斜俯卧撑",
+      "focus": "chest",
+      "needs": [
+        "floor",
+        "bench"
+      ],
+      "loads": [
+        "chest",
+        "shoulders",
+        "arms",
+        "core"
+      ],
+      "pattern": "incline-pushup",
+      "target": "上胸方向自重推",
+      "source": "r123-decline-pushup:basics",
+      "cue": "双脚置稳固低凳、双手撑地，不塌腰；仅在普通俯卧撑稳定后尝试。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "full-pushup",
+      "name": "标准俯卧撑",
+      "focus": "chest",
+      "needs": [
+        "floor"
+      ],
+      "loads": [
+        "chest",
+        "shoulders",
+        "arms",
+        "core"
+      ],
+      "pattern": "pushup",
+      "target": "胸部自重推",
+      "source": "r123-full-pushup:basics",
+      "cue": "保持头至脚跟直线，屈肘控制下降再推起；不塌腰、不弹起。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "pike-pushup",
+      "name": "折刀俯卧撑",
+      "focus": "shoulders",
+      "needs": [
+        "floor"
+      ],
+      "loads": [
+        "shoulders",
+        "arms",
+        "chest",
+        "core"
+      ],
+      "pattern": "overhead-press",
+      "target": "肩部自重推",
+      "source": "r123-pike-pushup:basics",
+      "cue": "髋部抬高呈倒V形，缓慢屈伸肘；需先具备稳定俯卧撑能力，不以头部支撑。",
+      "level": "experienced",
+      "unit": "6–10次"
+    },
+    {
+      "id": "db-front-squat",
+      "name": "哑铃前蹲",
+      "focus": "legs",
+      "needs": [
+        "floor",
+        "dumbbell"
+      ],
+      "loads": [
+        "legs",
+        "core",
+        "shoulders",
+        "back"
+      ],
+      "pattern": "squat",
+      "target": "腿臀蹲起",
+      "source": "r123-db-front-squat:basics",
+      "cue": "双哑铃稳定放肩前，保持躯干与膝盖方向，控制蹲起，不追求强行下蹲深度。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "bulgarian-squat",
+      "name": "哑铃保加利亚分腿蹲",
+      "focus": "legs",
+      "needs": [
+        "floor",
+        "dumbbell",
+        "bench"
+      ],
+      "loads": [
+        "legs",
+        "core"
+      ],
+      "pattern": "lunge",
+      "target": "腿臀单侧蹲起",
+      "source": "r123-bulgarian-squat:basics",
+      "cue": "后脚放稳固低凳，重心控制在前腿，先掌握平衡再加轻哑铃。",
+      "level": "experienced",
+      "unit": "每侧8–12次"
+    },
+    {
+      "id": "kb-deadlift",
+      "name": "壶铃硬拉",
+      "focus": "legs",
+      "needs": [
+        "floor",
+        "kettlebell"
+      ],
+      "loads": [
+        "legs",
+        "back",
+        "core"
+      ],
+      "pattern": "hip-hinge",
+      "target": "臀腿伸髋",
+      "source": "r123-kb-deadlift:basics",
+      "cue": "壶铃在两脚之间，髋向后折叠、背部稳定；靠伸髋站起，控制放回。",
+      "level": "beginner",
+      "unit": "8–12次"
+    },
+    {
+      "id": "kb-goblet",
+      "name": "壶铃高脚杯深蹲",
+      "focus": "legs",
+      "needs": [
+        "floor",
+        "kettlebell"
+      ],
+      "loads": [
+        "legs",
+        "core"
+      ],
+      "pattern": "squat",
+      "target": "腿臀蹲起",
+      "source": "r123-kb-goblet:basics",
+      "cue": "壶铃贴近胸前，保持躯干稳定，控制蹲起，不借惯性。",
+      "level": "beginner",
+      "unit": "8–12次"
+    },
+    {
+      "id": "band-pullup",
+      "name": "弹力带辅助引体向上",
+      "focus": "back",
+      "needs": [
+        "pullup-bar",
+        "pullup-band"
+      ],
+      "loads": [
+        "back",
+        "shoulders",
+        "arms",
+        "core"
+      ],
+      "pattern": "vertical-pull",
+      "target": "背部垂直拉",
+      "source": "r123-band-pullup:basics",
+      "cue": "仅用完好且适用于引体的长环带与牢固单杠，控制上下，不摆动；先学会安全上下杠。",
+      "level": "experienced",
+      "unit": "5–8次"
+    },
+    {
+      "id": "incline-barbell",
+      "name": "上斜杠铃卧推",
+      "focus": "chest",
+      "needs": [
+        "floor",
+        "barbell",
+        "incline-bench",
+        "rack",
+        "safeties"
+      ],
+      "loads": [
+        "chest",
+        "shoulders",
+        "arms"
+      ],
+      "pattern": "incline-press",
+      "target": "胸部上斜推",
+      "source": "r123-incline-barbell:basics",
+      "cue": "锁定上斜凳、架与保护杠，肩背稳定，控制杠铃下放，不弹胸。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "single-db-bench",
+      "name": "单臂哑铃卧推",
+      "focus": "chest",
+      "needs": [
+        "floor",
+        "dumbbell",
+        "bench"
+      ],
+      "loads": [
+        "chest",
+        "shoulders",
+        "arms",
+        "core"
+      ],
+      "pattern": "horizontal-press",
+      "target": "胸部水平推",
+      "source": "r123-single-db-bench:basics",
+      "cue": "仰卧稳固平凳，单手控制轻哑铃，躯干不随负重旋转。",
+      "level": "experienced",
+      "unit": "每侧8–12次"
+    },
+    {
+      "id": "leg-press-calf",
+      "name": "腿举机提踵",
+      "focus": "legs",
+      "needs": [
+        "leg-press-machine",
+        "calf-platform"
+      ],
+      "loads": [
+        "legs"
+      ],
+      "pattern": "calf",
+      "target": "小腿提踵",
+      "source": "r123-leg-press-calf:basics",
+      "cue": "仅在厂家允许提踵且踏板防滑的腿举机上做，保持前脚掌接触，缓慢屈伸踝，不锁死膝。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "rope-pushdown",
+      "name": "绳索绳把下压",
+      "focus": "arms",
+      "needs": [
+        "floor",
+        "cable",
+        "adjustable-pulley",
+        "rope"
+      ],
+      "loads": [
+        "arms"
+      ],
+      "pattern": "triceps",
+      "target": "三头伸肘",
+      "source": "r123-cable-guide:rope-pushdown",
+      "cue": "高位绳把，肘贴体侧伸肘。",
+      "level": "beginner",
+      "unit": "8–12次"
+    },
+    {
+      "id": "cable-overhead",
+      "name": "绳索过顶臂屈伸",
+      "focus": "arms",
+      "needs": [
+        "floor",
+        "cable",
+        "adjustable-pulley",
+        "rope"
+      ],
+      "loads": [
+        "arms",
+        "shoulders",
+        "core"
+      ],
+      "pattern": "triceps",
+      "target": "三头伸肘",
+      "source": "r123-cable-guide:cable-overhead",
+      "cue": "高位绳把，背向器械伸肘。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "cable-lateral",
+      "name": "单臂绳索侧平举",
+      "focus": "shoulders",
+      "needs": [
+        "floor",
+        "cable",
+        "adjustable-pulley",
+        "single-handle"
+      ],
+      "loads": [
+        "shoulders"
+      ],
+      "pattern": "side-shoulder",
+      "target": "肩部侧抬",
+      "source": "r123-cable-guide:cable-lateral",
+      "cue": "低位把手，屈肘微抬至肩高。",
+      "level": "experienced",
+      "unit": "每侧8–12次"
+    },
+    {
+      "id": "cable-curl",
+      "name": "绳索直杆弯举",
+      "focus": "arms",
+      "needs": [
+        "floor",
+        "cable",
+        "adjustable-pulley",
+        "cable-bar"
+      ],
+      "loads": [
+        "arms"
+      ],
+      "pattern": "biceps",
+      "target": "二头弯举",
+      "source": "r123-cable-guide:cable-curl",
+      "cue": "低位直杆，肘贴体侧弯举。",
+      "level": "beginner",
+      "unit": "8–12次"
+    },
+    {
+      "id": "cable-leg-curl",
+      "name": "站姿绳索腿弯举",
+      "focus": "legs",
+      "needs": [
+        "floor",
+        "cable",
+        "adjustable-pulley",
+        "ankle-cuff",
+        "stable-support"
+      ],
+      "loads": [
+        "legs"
+      ],
+      "pattern": "knee-flexion",
+      "target": "腘绳肌屈膝",
+      "source": "r123-cable-guide:cable-leg-curl",
+      "cue": "低位脚踝绑带，扶稳后屈膝。",
+      "level": "experienced",
+      "unit": "每侧8–12次"
+    },
+    {
+      "id": "cable-hip-extension",
+      "name": "绳索髋后伸",
+      "focus": "legs",
+      "needs": [
+        "floor",
+        "cable",
+        "adjustable-pulley",
+        "ankle-cuff",
+        "stable-support"
+      ],
+      "loads": [
+        "legs",
+        "core"
+      ],
+      "pattern": "hip-extension",
+      "target": "臀部伸髋",
+      "source": "r123-cable-guide:cable-hip-extension",
+      "cue": "低位脚踝绑带，扶稳后伸髋。",
+      "level": "experienced",
+      "unit": "每侧8–12次"
+    },
+    {
+      "id": "cable-abduction",
+      "name": "绳索髋外展",
+      "focus": "legs",
+      "needs": [
+        "floor",
+        "cable",
+        "adjustable-pulley",
+        "ankle-cuff",
+        "stable-support"
+      ],
+      "loads": [
+        "legs",
+        "core"
+      ],
+      "pattern": "hip-abduction",
+      "target": "臀部外展",
+      "source": "r123-cable-guide:cable-abduction",
+      "cue": "低位脚踝绑带，稳定侧抬腿。",
+      "level": "experienced",
+      "unit": "每侧8–12次"
+    },
+    {
+      "id": "cable-floor-row",
+      "name": "地面坐姿绳索划船",
+      "focus": "back",
+      "needs": [
+        "floor",
+        "cable",
+        "adjustable-pulley",
+        "cable-bar"
+      ],
+      "loads": [
+        "back",
+        "shoulders",
+        "arms",
+        "core"
+      ],
+      "pattern": "horizontal-pull",
+      "target": "背部水平拉",
+      "source": "r123-cable-guide:cable-floor-row",
+      "cue": "低位直杆，坐稳拉向身体。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "band-abduction",
+      "name": "环形弹力带髋外展",
+      "focus": "legs",
+      "needs": [
+        "floor",
+        "loop-band",
+        "stable-support"
+      ],
+      "loads": [
+        "legs"
+      ],
+      "pattern": "hip-abduction",
+      "target": "臀部外展",
+      "source": "r123-band-guide:band-abduction",
+      "cue": "环带套踝，扶稳后缓慢侧抬腿。",
+      "level": "beginner",
+      "unit": "每侧8–12次"
+    },
+    {
+      "id": "band-leg-curl",
+      "name": "环形弹力带腿弯举",
+      "focus": "legs",
+      "needs": [
+        "floor",
+        "loop-band",
+        "stable-support"
+      ],
+      "loads": [
+        "legs"
+      ],
+      "pattern": "knee-flexion",
+      "target": "腘绳肌屈膝",
+      "source": "r123-band-guide:band-leg-curl",
+      "cue": "环带套踝，扶稳后屈膝。",
+      "level": "beginner",
+      "unit": "每侧8–12次"
+    },
+    {
+      "id": "band-adduction",
+      "name": "环形弹力带髋内收",
+      "focus": "legs",
+      "needs": [
+        "floor",
+        "loop-band",
+        "stable-support"
+      ],
+      "loads": [
+        "legs"
+      ],
+      "pattern": "hip-adduction",
+      "target": "大腿内收",
+      "source": "r123-band-guide:band-adduction",
+      "cue": "环带套踝，扶稳后向中线收腿。",
+      "level": "experienced",
+      "unit": "每侧8–12次"
+    },
+    {
+      "id": "band-squat",
+      "name": "弹力带深蹲",
+      "focus": "legs",
+      "needs": [
+        "floor",
+        "band"
+      ],
+      "loads": [
+        "legs",
+        "core"
+      ],
+      "pattern": "squat",
+      "target": "腿臀蹲起",
+      "source": "r123-band-guide:band-squat",
+      "cue": "双脚踩稳长带，握两端控制蹲起。",
+      "level": "beginner",
+      "unit": "8–12次"
+    },
+    {
+      "id": "band-lateral",
+      "name": "弹力带侧平举",
+      "focus": "shoulders",
+      "needs": [
+        "floor",
+        "band"
+      ],
+      "loads": [
+        "shoulders"
+      ],
+      "pattern": "side-shoulder",
+      "target": "肩部侧抬",
+      "source": "r123-band-guide:band-lateral",
+      "cue": "脚踩长带一端，缓慢侧抬手臂。",
+      "level": "beginner",
+      "unit": "每侧8–12次"
+    },
+    {
+      "id": "band-triceps",
+      "name": "弹力带过顶臂屈伸",
+      "focus": "arms",
+      "needs": [
+        "floor",
+        "band"
+      ],
+      "loads": [
+        "arms",
+        "shoulders"
+      ],
+      "pattern": "triceps",
+      "target": "三头伸肘",
+      "source": "r123-band-guide:band-triceps",
+      "cue": "背后固定长带下端，上手伸肘。",
+      "level": "experienced",
+      "unit": "每侧8–12次"
+    },
+    {
+      "id": "db-fly",
+      "name": "哑铃平板飞鸟",
+      "focus": "chest",
+      "needs": [
+        "floor",
+        "dumbbell",
+        "bench"
+      ],
+      "loads": [
+        "chest",
+        "shoulders"
+      ],
+      "pattern": "chest-fly",
+      "target": "胸部内收",
+      "source": "r123-db-fly:basics",
+      "cue": "仰卧稳固平凳，肘微屈控制打开和合拢；轻负重，不强求过深下放。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "db-kickback",
+      "name": "哑铃俯身臂后伸",
+      "focus": "arms",
+      "needs": [
+        "floor",
+        "dumbbell"
+      ],
+      "loads": [
+        "arms",
+        "shoulders",
+        "core"
+      ],
+      "pattern": "triceps",
+      "target": "三头伸肘",
+      "source": "r123-db-kickback:basics",
+      "cue": "分腿站立，一手支撑大腿；上臂贴身，控制肘伸直，不摆动哑铃。",
+      "level": "experienced",
+      "unit": "每侧8–12次"
+    },
+    {
+      "id": "single-cable-row",
+      "name": "站姿单臂绳索划船",
+      "focus": "back",
+      "needs": [
+        "floor",
+        "cable",
+        "adjustable-pulley",
+        "single-handle"
+      ],
+      "loads": [
+        "back",
+        "shoulders",
+        "arms",
+        "core"
+      ],
+      "pattern": "horizontal-pull",
+      "target": "背部水平拉",
+      "source": "r123-single-cable-row:basics",
+      "cue": "身体站稳、膝微屈，单手将把手拉向躯干，控制回程，不转腰。",
+      "level": "experienced",
+      "unit": "每侧8–12次"
+    },
+    {
+      "id": "side-abduction",
+      "name": "侧卧髋外展",
+      "focus": "legs",
+      "needs": [
+        "floor"
+      ],
+      "loads": [
+        "legs"
+      ],
+      "pattern": "hip-abduction",
+      "target": "臀部外展",
+      "source": "r123-side-abduction:basics",
+      "cue": "侧卧保持髋部叠齐，抬上侧腿再缓慢落下；骨盆开始翻转前停止抬高。",
+      "level": "beginner",
+      "unit": "每侧8–12次"
+    },
+    {
+      "id": "pec-deck",
+      "name": "蝴蝶机夹胸",
+      "focus": "chest",
+      "needs": [
+        "pec-deck"
+      ],
+      "loads": [
+        "chest",
+        "shoulders"
+      ],
+      "pattern": "chest-fly",
+      "target": "胸部内收",
+      "source": "r123-pec-deck:basics",
+      "cue": "背部贴垫，调座位使上臂与垫对齐，轻负重缓慢合拢；不强行拉深，不耸肩或离开靠背。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "cable-adduction",
+      "name": "绳索髋内收",
+      "focus": "legs",
+      "needs": [
+        "floor",
+        "cable",
+        "adjustable-pulley",
+        "ankle-cuff",
+        "stable-support"
+      ],
+      "loads": [
+        "legs",
+        "core"
+      ],
+      "pattern": "hip-adduction",
+      "target": "大腿内收",
+      "source": "r123-cable-adduction:basics",
+      "cue": "脚踝绑带连低位滑轮，稳定站立，将近侧腿收向中线再控制回程。",
+      "level": "experienced",
+      "unit": "每侧8–12次"
+    },
+    {
+      "id": "smith-squat",
+      "name": "史密斯深蹲",
+      "focus": "legs",
+      "needs": [
+        "floor",
+        "smith-machine",
+        "smith-stops"
+      ],
+      "loads": [
+        "legs",
+        "back",
+        "core"
+      ],
+      "pattern": "squat",
+      "target": "腿臀蹲起",
+      "source": "r123-smith-squat:basics",
+      "cue": "先设专用安全限位并学会挂回；轻负重按机器轨迹控制蹲起，不当自由杠铃使用。",
+      "level": "experienced",
+      "unit": "8–12次"
+    },
+    {
+      "id": "machine-adduction", "name": "器械坐姿髋内收", "focus": "legs",
+      "needs": ["adductor-machine"], "loads": ["legs"], "pattern": "hip-adduction",
+      "target": "大腿内收", "source": "lf-axiom:adduction",
+      "cue": "核对本机说明和座位设置，在舒适范围内缓慢向内合拢膝垫，再控制回程。",
+      "unit": "8–12次"
+    },
+    {
+      "id": "machine-abduction", "name": "器械坐姿髋外展", "focus": "legs",
+      "needs": ["abductor-machine"], "loads": ["legs"], "pattern": "hip-abduction",
+      "target": "臀外侧", "source": "lf-axiom:abduction",
+      "cue": "核对膝垫方向及起始位置，保持躯干稳定，向外推开膝垫并缓慢回程。",
+      "unit": "8–12次"
+    },
+    {
+      "id": "machine-rear-delt", "name": "反向蝴蝶机飞鸟", "focus": "shoulders",
+      "needs": ["rear-delt-machine"], "loads": ["shoulders", "back"], "pattern": "rear-shoulder",
+      "target": "肩后侧与肩胛控制", "source": "lf-axiom:rear-delt",
+      "cue": "仅使用已确认反向模式的机器；胸贴垫，双手略低于肩，微屈肘向外打开再控制返回。",
+      "unit": "8–12次"
+    },
+    {
+      "id": "machine-triceps", "name": "器械坐姿三头伸展", "focus": "arms",
+      "needs": ["triceps-machine"], "loads": ["arms"], "pattern": "triceps",
+      "target": "三头伸肘", "source": "lf-axiom:triceps",
+      "cue": "调座位使肘与机器转轴对齐、上臂受垫支撑，控制伸肘和回程；先按本机说明试轻负重。",
+      "unit": "8–12次"
+    },
+    {
+      "id": "machine-crunch", "name": "器械坐姿卷腹", "focus": "core",
+      "needs": ["abdominal-machine"], "loads": ["core"], "pattern": "crunch",
+      "target": "腹部屈曲", "source": "lf-axiom:abdominal",
+      "cue": "核对本机支撑与把手设置，腹部控制肋骨靠近髋部，再缓慢回程，不用手臂猛拉。",
+      "unit": "8–12次"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+const vm=require('node:vm'),fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const context={window:{},escapeHtml:x=>String(x??'').replaceAll('<','&lt;'),icon:()=>''};
+vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../static/meal-plan-nutrition.js'),'utf8'),context);
+const api=context.window.MealPlanNutrition;
+const make=(meal,lower=100,upper=200)=>({id:meal,meal_type:meal,coach_id:'one',coach_version:2,stale:false,intake_reference:{},
+  nutrition_review:{version:1,status:'ready',result:{totals:{kcal:{lower,upper}}}}});
+const binding=()=>({coach_id:'one',coach_version:2});
+const intake={status:'ready',remaining_kcal:{lower:350,upper:450}};
+const check=plans=>api.summarize(plans,['lunch','dinner'],binding,intake,true);
+assert.equal(check([make('lunch')]).total,null);
+let value=check([make('lunch'),make('dinner')]);
+assert.equal(value.total.lower,200);assert.equal(value.total.upper,400);assert.equal(value.comparison,'overlap');
+assert.equal(check([make('lunch',1,2),make('dinner',1,2)]).comparison,'below');
+assert.equal(check([make('lunch',500,600),make('dinner',500,600)]).comparison,'above');
+assert.equal(check([make('lunch',0,0),make('dinner',0,0)]).total.upper,0);
+assert.equal(check([{...make('lunch'),stale:true},make('dinner')]).total,null);
+assert.equal(check([{...make('lunch'),coach_id:'other'},make('dinner')]).total,null);
+assert.equal(check([{...make('lunch'),coach_version:1},make('dinner')]).total,null);
+assert.equal(check([{...make('lunch'),nutrition_review:{status:'ready',result:{totals:null}}},make('dinner')]).total,null);
+assert.equal(check([make('lunch'),make('lunch',900,900),make('dinner')]).total.upper,400);
+assert.equal(api.summarize([make('lunch')],['lunch'],binding,intake,false).comparison,null);
+assert.equal(api.summarize([make('lunch')],['lunch'],binding,{status:'confirm_records'},true).comparison,null);
+assert.equal(api.summarize([{...make('lunch'),intake_reference:null}],['lunch'],binding,intake,true).comparison,null);
+const hostile=make('lunch');hostile.nutrition_review.result={unknown_count:1,totals:null,items:[{name:'<img>',status:'unknown',question:'<script>',model:'<provider>',generated_at:'2026-09-19T00:00Z'}]};
+assert.ok(api.details(hostile).includes('&lt;script>'));assert.ok(!api.details(hostile).includes('<img>'));
+console.log('Plan nutrition: range arithmetic, zero/unknown, missing/stale meals, latest only, identity/version, optional comparisons and escaping passed.');

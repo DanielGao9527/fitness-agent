@@ -1,0 +1,9 @@
+{
+  "notice": "Only run on tests/ui_fixture_server.py --coach at 127.0.0.1:8767. Synthetic data only; no paid providers. Old meal-plan/energy-form browser scripts target retired UI and are not current acceptance tests.",
+  "suites": [
+    "general-fitness", "profile-sync", "training-suggestions", "training-program",
+    "catalog-expansion", "training-progress", "meal-regressions", "quick-meals", "assistant-quality",
+    "nutrition-targets", "local-readiness", "body-measurements", "workouts",
+    "diet-workflow", "drafts"
+  ]
+}

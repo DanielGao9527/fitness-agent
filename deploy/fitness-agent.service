@@ -1,0 +1,25 @@
+[Unit]
+Description=Fitness Agent application
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=/opt/fitness-agent/current/app.py
+
+[Service]
+User=fitness
+Group=fitness
+WorkingDirectory=/opt/fitness-agent/current
+EnvironmentFile=/etc/fitness-agent.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/opt/fitness-agent/current/.venv/bin/python -m uvicorn app:app --host 127.0.0.1 --port 8765 --workers 1 --proxy-headers --forwarded-allow-ips=127.0.0.1 --no-access-log
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/fitness-agent
+
+[Install]
+WantedBy=multi-user.target

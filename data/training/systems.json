@@ -1,0 +1,65 @@
+{
+  "version": "reviewed-training-notes-2026-09-23.1",
+  "systems": [
+    {
+      "split": "full_body",
+      "title": "全身基础编排",
+      "reference": "ACSM 2026 一般成人阻力训练原则",
+      "source_ids": [
+        "acsm-2026:programming"
+      ],
+      "original_structure": "依据主要肌群、规律训练与个体可持续性原则，不存在一张适用所有人的固定动作表。",
+      "adaptation": "本项目组合蹲、推、拉、伸髋和核心，按可用器械、时间与实际记录裁剪；每周最多三个力量日。"
+    },
+    {
+      "split": "upper_lower",
+      "title": "上下肢交替",
+      "reference": "Helms / Morgan / Valdez 公开入门健美样例",
+      "source_ids": [
+        "acsm-2026:programming",
+        "r123-helms-upper-lower:structure"
+      ],
+      "original_structure": "公开样例采用四日上下肢分日，分别有强度与训练量侧重。",
+      "adaptation": "这里只采用上下肢分日结构，允许按档案天数调整；不复制原样例的负重百分比、动作表和周期。"
+    },
+    {
+      "split": "ppl",
+      "title": "推 / 拉 / 腿三分化",
+      "reference": "Jeremy Ethier公开推拉腿文章及训练资料3文字参考（资料中作者归属未核实）",
+      "source_ids": [
+        "acsm-2026:programming",
+        "r123-ethier-ppl:structure",
+        "training-notes-ppl:adaptation"
+      ],
+      "original_structure": "推、拉、腿按肌群组织，并在循环中安排休息。",
+      "adaptation": "按近七天实际记录和器械组织当天动作，参考三分化资料可辨认的3/4正式组；新手上限3组，时间不够减少。保留现有动作目录，不复现参考资料中的力竭、分周加重或整套课程。",
+      "working_sets": {"horizontal-press":4,"incline-press":4,"horizontal-pull":4,"vertical-pull":4,"hip-hinge":4,"lunge":4,"squat":3,"biceps":3,"hammer-curl":3,"triceps":4,"side-shoulder":3}
+    },
+    {
+      "split": "four",
+      "title": "胸 / 背 / 腿 / 肩臂四分化",
+      "reference": "NASM部位分化介绍及训练资料2四分化文字参考（作者未核实）",
+      "source_ids": [
+        "acsm-2026:programming",
+        "r123-nasm-splits:structure",
+        "training-notes-four-split:adaptation"
+      ],
+      "original_structure": "NASM 介绍典型五日部位分化，而不是本项目这张四分化动作表。",
+      "adaptation": "沿用胸/背/腿/肩臂方向及近七天实际轮转，参考四分化资料的正式组；资料中5组不自动照搬，目标至多4组，入门至多3组。热身另计，不安排连续四日或超级组，不声称复现原表。",
+      "working_sets": {"horizontal-press":4,"incline-press":3,"chest-fly":3,"horizontal-pull":4,"vertical-pull":4,"biceps":4,"hammer-curl":4,"hip-hinge":3,"lunge":3,"hip-adduction":4,"calf":3,"overhead-press":4,"rear-shoulder":4,"face-pull":4,"triceps":3}
+    },
+    {
+      "split": "five",
+      "title": "胸 / 背 / 腿 / 肩 / 手臂五分化",
+      "reference": "NASM部位分化介绍及训练资料1动作编排（参考资料无组次，作者归属未核实）",
+      "source_ids": [
+        "acsm-2026:programming",
+        "r123-nasm-splits:structure",
+        "training-notes-five-split:adaptation"
+      ],
+      "original_structure": "典型五日分日关注胸、背、腿、肩、手臂，适用性取决于经验与训练频率。",
+      "adaptation": "五分化资料用于动作编排参考，未给组次；本项目3至4正式组是可调整的产品默认，不能说来自原始资料。沿用现有胸/背/腿/肩/手臂轮转、器械和近期记录约束，入门至多3组，不追求填满可用时间。",
+      "working_sets": {"horizontal-press":4,"incline-press":4,"chest-fly":4,"horizontal-pull":4,"vertical-pull":4,"overhead-press":4,"side-shoulder":3,"rear-shoulder":3,"biceps":4,"hammer-curl":4,"triceps":4,"hip-hinge":4,"lunge":4,"hip-adduction":3,"calf":3}
+    }
+  ]
+}

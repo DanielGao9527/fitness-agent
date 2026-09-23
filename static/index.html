@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#18765c" />
+    <title>健身管理</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="/static/style.css?v=r1.27-review-20260923-errors" />
+    <script defer src="/static/vendor/lucide.min.js"></script>
+    <script defer src="/static/business-time.js?v=r1.20"></script>
+    <script defer src="/static/app.js?v=r1.29-training-profile.1"></script>
+    <script defer src="/static/usage.js?v=r1.27-review-20260923-errors"></script>
+    <script defer src="/static/body-measurements.js?v=r1.27"></script>
+    <script defer src="/static/intake-targets.js?v=r1.8.10"></script>
+    <script defer src="/static/nutrition-targets.js?v=r1.28"></script>
+    <script defer src="/static/manual-nutrition.js?v=r1.21"></script>
+    <script defer src="/static/speech.js?v=r1.27-review-20260923-errors"></script>
+    <script defer src="/static/meal-photos.js?v=r1.27-review-20260923-errors"></script>
+    <script defer src="/static/meal-drafts.js?v=r1.27-review-20260923-errors"></script>
+    <script defer src="/static/workouts.js?v=r1.27-review-20260923-errors"></script>
+    <script defer src="/static/training-week.js?v=r1.14"></script>
+    <script defer src="/static/knowledge-ask.js?v=r1.27-review-20260923-errors"></script>
+    <script defer src="/static/knowledge.js?v=training-text-references-20260923"></script>
+    <script defer src="/static/meal-plan-actions.js?v=r1.9"></script>
+    <script defer src="/static/meal-plan-nutrition.js?v=r1.27-review-20260923-errors"></script>
+    <script defer src="/static/meal-plans.js?v=r1.27-review-20260923-errors"></script>
+    <script defer src="/static/training-plans.js?v=r1.27-review-20260923-errors"></script>
+    <script defer src="/static/quick-meals.js?v=r1.28"></script>
+    <script defer src="/static/training-program.js?v=r1.26"></script>
+    <script defer src="/static/coach.js?v=training-text-references-20260923"></script>
+  </head>
+  <body>
+    <div id="toast" role="status" aria-live="polite" hidden></div>
+    <section id="auth-screen" class="auth-screen">
+      <div class="brand">
+        <i data-lucide="dumbbell"></i><span>健身管理</span>
+      </div>
+      <div class="auth-panel">
+        <h1 id="auth-title">登录你的账户</h1>
+        <div class="segmented" aria-label="账户操作">
+          <button type="button" data-auth="login" class="selected">登录</button>
+          <button type="button" data-auth="register">注册</button>
+        </div>
+        <form id="auth-form">
+          <label
+            >用户名<input
+              name="username"
+              required
+              minlength="3"
+              maxlength="32"
+              pattern="[A-Za-z0-9_]+"
+              autocomplete="username"
+              placeholder="3–32 位字母、数字或下划线"
+          /></label>
+          <label
+            >密码<input
+              name="password"
+              type="password"
+              required
+              minlength="8"
+              maxlength="128"
+              autocomplete="current-password"
+              placeholder="至少 8 位"
+          /></label>
+          <p class="form-error" id="auth-error" role="alert"></p>
+          <button type="submit" class="primary full">
+            <i data-lucide="log-in"></i><span id="auth-submit">登录</span>
+          </button>
+        </form>
+      </div>
+      <p class="auth-footer">饮食 · 训练 · 每一天的记录</p>
+    </section>
+    <div id="workspace" hidden>
+      <header class="topbar">
+        <a href="#today" class="brand" data-view="today"
+          ><i data-lucide="dumbbell"></i><span>健身管理</span></a
+        >
+        <div class="account">
+          <button type="button" class="icon-button" data-usage="open" title="AI使用次数" aria-label="AI使用次数"><i data-lucide="gauge"></i></button>
+          <span id="account-name"></span
+          ><button
+            type="button"
+            class="icon-button"
+            data-action="logout"
+            title="退出登录"
+            aria-label="退出登录"
+          >
+            <i data-lucide="log-out"></i>
+          </button>
+        </div>
+      </header>
+      <div class="layout">
+        <aside class="sidebar">
+          <nav aria-label="主导航">
+            <button data-view="today" class="nav-item active">
+              <i data-lucide="layout-dashboard"></i><span>今日总览</span>
+            </button>
+            <button data-view="meals" class="nav-item">
+              <i data-lucide="utensils"></i><span>饮食记录</span>
+            </button>
+            <button data-view="workouts" class="nav-item">
+              <i data-lucide="dumbbell"></i><span>训练记录</span>
+            </button>
+            <button data-view="body" class="nav-item">
+              <i data-lucide="chart-no-axes-combined"></i><span>体测回顾</span>
+            </button>
+            <button data-view="profile" class="nav-item">
+              <i data-lucide="user-round"></i><span>个人档案</span>
+            </button>
+            <button data-view="assistant" class="nav-item">
+              <i data-lucide="messages-square"></i><span>AI 助手</span>
+            </button>
+          </nav>
+        </aside>
+        <main>
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow" id="page-context">每日记录</p>
+              <h1 id="page-title">今日总览</h1>
+            </div>
+            <label id="date-control" class="date-control"
+              ><i data-lucide="calendar-days"></i
+              ><input id="day" type="date" aria-label="记录日期" title="记录日期（北京时间）"
+            /></label>
+          </div>
+          <div id="page-error" class="notice error" role="alert" hidden></div>
+          <div id="content" aria-live="polite"></div>
+        </main>
+      </div>
+    </div>
+    <dialog id="usage-dialog" aria-labelledby="usage-title">
+      <div class="dialog-heading"><h2 id="usage-title">AI使用次数</h2><div class="account">
+        <button type="button" class="icon-button" data-usage="refresh" title="刷新额度" aria-label="刷新额度"><i data-lucide="refresh-cw"></i></button>
+        <button type="button" class="icon-button" data-usage="close" title="关闭额度" aria-label="关闭额度"><i data-lucide="x"></i></button>
+      </div></div><div id="usage-content" aria-live="polite"></div>
+    </dialog>
+    <dialog id="record-dialog" aria-labelledby="dialog-title">
+      <div class="dialog-heading">
+        <h2 id="dialog-title"></h2>
+        <button
+          type="button"
+          class="icon-button"
+          data-action="close-dialog"
+          aria-label="关闭"
+          title="关闭"
+        >
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div id="dialog-content"></div>
+    </dialog>
+    <dialog id="confirm-dialog" aria-labelledby="confirm-title">
+      <h2 id="confirm-title">删除这条记录？</h2>
+      <p id="confirm-name"></p>
+      <div class="dialog-actions">
+        <button type="button" data-action="cancel-delete">取消</button
+        ><button type="button" class="danger" id="confirm-delete">
+          <i data-lucide="trash-2"></i>删除
+        </button>
+      </div>
+    </dialog>
+  </body>
+</html>

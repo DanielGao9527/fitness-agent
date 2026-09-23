@@ -1,0 +1,8 @@
+# 将此域名改为自己的已解析域名；先完成适用的备案与 HTTPS 条件。
+fitness.example.com {
+    encode /static/* zstd gzip
+    request_body {
+        max_size 12MB
+    }
+    reverse_proxy 127.0.0.1:8765
+}
