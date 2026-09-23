@@ -130,8 +130,18 @@ def test_solver_serialization_and_single_native_thread(monkeypatch):
     assert calls and not balance._SOLVER_LOCK.locked()
 
 
-def test_concurrent_synthetic_solutions_remain_separate():
+def test_concurrent_synthetic_solutions_remain_separate(monkeypatch):
     from concurrent.futures import ThreadPoolExecutor
+    from threading import Lock
+    lock = Lock()
+
+    def queued_acquire(*, timeout):
+        assert timeout == 2
+        # Test isolation under contention independently of CI machine speed.
+        return lock.acquire(timeout=60)
+
+    monkeypatch.setattr(balance, "_SOLVER_LOCK", SimpleNamespace(
+        acquire=queued_acquire, release=lock.release))
     def run(index):
         plans, info, data = sample(3300 + index * 5)
         output, _ = balance.balance(plans, {"lunch", "dinner"}, info, data)
@@ -139,6 +149,26 @@ def test_concurrent_synthetic_solutions_remain_separate():
         return info["target_kcal"]
     with ThreadPoolExecutor(max_workers=3) as pool:
         assert list(pool.map(run, range(12))) == [3300 + i * 5 for i in range(12)]
+    assert not lock.locked()
+
+
+def test_busy_solver_rejects_without_solving_or_mutating(monkeypatch):
+    plans, info, data = sample()
+    original = deepcopy(plans)
+    waits = []
+
+    def busy(*, timeout):
+        waits.append(timeout)
+        return False
+
+    monkeypatch.setattr(balance, "_SOLVER_LOCK", SimpleNamespace(
+        acquire=busy, release=lambda: pytest.fail("Unowned lock released")))
+    monkeypatch.setattr(balance, "milp", lambda *a, **kw: pytest.fail("Busy solver called"))
+    with pytest.raises(ModelError) as caught:
+        balance.balance(plans, {"lunch", "dinner"}, info, data)
+    assert caught.value.code == "MEAL_BALANCE_BUSY"
+    assert waits == [2]
+    assert plans == original
 
 
 def test_even_feasible_solver_output_is_recomputed(monkeypatch):
