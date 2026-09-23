@@ -223,7 +223,7 @@ def test_v1_migration_preserves_data_and_backup(tmp_path):
     database.initialize()
     database.initialize()
     with database.connect() as connection:
-        assert connection.execute("PRAGMA user_version").fetchone()[0] == 13
+        assert connection.execute("PRAGMA user_version").fetchone()[0] == 14
         assert connection.execute("SELECT payload FROM meals").fetchone()[0] == '{"name":"legacy meal"}'
         assert connection.execute("SELECT COUNT(*) FROM meal_drafts").fetchone()[0] == 0
         assert connection.execute("PRAGMA foreign_key_check").fetchall() == []

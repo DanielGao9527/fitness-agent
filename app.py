@@ -1,4 +1,7 @@
-from contextlib import asynccontextmanager
+import asyncio
+import logging
+import sqlite3
+from contextlib import asynccontextmanager, suppress
 from urllib.parse import urlsplit
 
 from fastapi import FastAPI, Request
@@ -20,6 +23,8 @@ from config import ROOT, Settings
 from database import Database
 from rag.rag_service import LocalKnowledgeRetriever
 from services.access_guard import AccessGuard
+from services.guests import cleanup as cleanup_guests
+from starlette.concurrency import run_in_threadpool
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -34,7 +39,23 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def lifespan(application):
         database.initialize()
         access_guard.initialize()
-        yield
+        cleanup_guests(database)
+
+        async def sweep_guests():
+            while True:
+                await asyncio.sleep(60)
+                try:
+                    await run_in_threadpool(cleanup_guests, database)
+                except sqlite3.Error:
+                    logging.getLogger(__name__).warning("Guest cleanup deferred; database temporarily unavailable")
+
+        task = asyncio.create_task(sweep_guests())
+        try:
+            yield
+        finally:
+            task.cancel()
+            with suppress(asyncio.CancelledError):
+                await task
 
     local_debug = settings.access_mode == "local"
     application = FastAPI(

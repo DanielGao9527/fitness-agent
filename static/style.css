@@ -1244,3 +1244,7 @@ dialog::backdrop {
 .load-guidance { border-left: 2px solid #18765c; padding-left: 10px; margin: 10px 0; }
 .load-guidance p { margin: 6px 0; }
 @media (max-width: 480px) { .program-volume { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+/* Guest retention is account state, not an extra workspace panel. */
+.guest-banner { margin: 0; padding: 8px 16px; background: #e9f4ee; color: #244b39; font-size: 13px; }
+[data-action="guest-start"] { margin-top: 12px; }
+#guest-notice { margin-bottom: 0; line-height: 1.5; }

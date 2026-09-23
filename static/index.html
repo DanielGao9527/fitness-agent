@@ -6,11 +6,12 @@
     <meta name="theme-color" content="#18765c" />
     <title>健身管理</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="/static/style.css?v=r1.27-review-20260923-errors" />
+    <link rel="stylesheet" href="/static/style.css?v=guest-access-1" />
     <script defer src="/static/vendor/lucide.min.js"></script>
     <script defer src="/static/business-time.js?v=r1.20"></script>
-    <script defer src="/static/app.js?v=r1.29-training-profile.1"></script>
-    <script defer src="/static/usage.js?v=r1.27-review-20260923-errors"></script>
+    <script defer src="/static/guest-session.js?v=guest-access-1"></script>
+    <script defer src="/static/app.js?v=guest-access-1"></script>
+    <script defer src="/static/usage.js?v=guest-access-1"></script>
     <script defer src="/static/body-measurements.js?v=r1.27"></script>
     <script defer src="/static/intake-targets.js?v=r1.8.10"></script>
     <script defer src="/static/nutrition-targets.js?v=r1.28"></script>
@@ -68,10 +69,15 @@
             <i data-lucide="log-in"></i><span id="auth-submit">登录</span>
           </button>
         </form>
+        <button type="button" class="full" data-action="guest-start" hidden>
+          <i data-lucide="user-round"></i>游客体验
+        </button>
+        <p id="guest-notice" class="muted small" hidden>游客记录仅临时保留，退出或超时后清理。需要长期保存请注册。</p>
       </div>
       <p class="auth-footer">饮食 · 训练 · 每一天的记录</p>
     </section>
     <div id="workspace" hidden>
+      <p id="guest-banner" class="guest-banner" role="status" hidden>游客体验：两小时未使用或满一天后失效，退出时清空临时记录。</p>
       <header class="topbar">
         <a href="#today" class="brand" data-view="today"
           ><i data-lucide="dumbbell"></i><span>健身管理</span></a

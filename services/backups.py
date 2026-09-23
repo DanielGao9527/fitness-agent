@@ -12,7 +12,8 @@ from config import ROOT
 TABLES = frozenset(("users", "sessions", "profiles", "meals", "workouts", "meal_drafts",
     "ai_usage", "nutrition_previews", "workout_previews", "meal_plans", "training_plans",
     "coach_conversations", "coach_turns", "meal_consents", "coach_reviews", "intake_targets",
-    "meal_intake_reviews", "body_measurements"))
+    "meal_intake_reviews", "body_measurements", "guest_accounts", "guest_usage"))
+LEGACY_TABLES = TABLES - {"guest_accounts", "guest_usage"}
 
 
 def readonly(path):
@@ -23,8 +24,8 @@ def readonly(path):
 def inspect_connection(connection):
     version = connection.execute("PRAGMA user_version").fetchone()[0]
     tables = {row[0] for row in connection.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")}
-    if version != 13 or tables != TABLES:
-        raise ValueError("Only a complete schema-v13 personal database is supported")
+    if (version, tables) not in ((13, LEGACY_TABLES), (14, TABLES)):
+        raise ValueError("Only a complete schema-v13/v14 personal database is supported")
     if connection.execute("PRAGMA integrity_check").fetchall() != [("ok",)]:
         raise ValueError("Database integrity check failed")
     if connection.execute("PRAGMA foreign_key_check").fetchone():
@@ -47,7 +48,7 @@ def fingerprints(path):
         inspect_connection(connection)
         return {name: hashlib.sha256(json.dumps(connection.execute(
             f'SELECT * FROM "{name}" ORDER BY rowid').fetchall(), ensure_ascii=False).encode()).hexdigest()
-            for name in sorted(TABLES)}
+            for name in sorted(TABLES if inspect_connection(connection)["schema"] == 14 else LEGACY_TABLES)}
 
 
 def verify_backup(path):
@@ -117,7 +118,7 @@ def restore_backup(source, destination):
     before = fingerprints(source)
     checked = _copy_new(source, destination, restoring=True)
     after = fingerprints(destination)
-    if checksum(source) != verified["sha256"] or any(before[name] != after[name] for name in TABLES - {"sessions", "meal_consents"}):
+    if checksum(source) != verified["sha256"] or any(before[name] != after[name] for name in before.keys() - {"sessions", "meal_consents"}):
         Path(destination).unlink()
         raise ValueError("Restore validation failed; no restored database retained")
     return {**checked, "source_sha256": verified["sha256"], "sessions_revoked": True,

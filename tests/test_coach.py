@@ -196,6 +196,8 @@ def test_v7_upgrade_preserves_rows_and_backup(tmp_path):
         connection.execute("DROP TABLE intake_targets")
         connection.execute("DROP TABLE meal_intake_reviews")
         connection.execute("DROP TABLE body_measurements")
+        connection.execute("DROP TABLE guest_accounts")
+        connection.execute("DROP TABLE guest_usage")
         connection.execute("DROP TABLE coach_conversations")
         connection.execute("PRAGMA user_version=7")
         connection.execute("INSERT INTO users(id,username,password_hash) VALUES (1,'fixture','synthetic')")
@@ -203,7 +205,7 @@ def test_v7_upgrade_preserves_rows_and_backup(tmp_path):
     database.initialize()
     database.initialize()
     with database.connect() as connection, sqlite3.connect(str(path) + ".pre-v8.bak") as backup:
-        assert connection.execute("PRAGMA user_version").fetchone()[0] == 13
+        assert connection.execute("PRAGMA user_version").fetchone()[0] == 14
         assert backup.execute("PRAGMA user_version").fetchone()[0] == 7
         from check_upgrade import TABLES
         for table in TABLES[:11]:
@@ -220,6 +222,8 @@ def test_v9_upgrade_preserves_conversation_and_consent(tmp_path):
         connection.execute("DROP TABLE intake_targets")
         connection.execute("DROP TABLE meal_intake_reviews")
         connection.execute("DROP TABLE body_measurements")
+        connection.execute("DROP TABLE guest_accounts")
+        connection.execute("DROP TABLE guest_usage")
         connection.execute("PRAGMA user_version=9")
         connection.execute("INSERT INTO users(id,username,password_hash) VALUES (1,'fixture','synthetic')")
         connection.execute("INSERT INTO profiles(user_id,payload) VALUES (1,'{}')")
@@ -227,7 +231,7 @@ def test_v9_upgrade_preserves_conversation_and_consent(tmp_path):
     database.initialize()
     from check_upgrade import TABLES
     with database.connect() as connection, sqlite3.connect(str(path) + ".pre-v10.bak") as backup:
-        assert connection.execute("PRAGMA user_version").fetchone()[0] == 13
+        assert connection.execute("PRAGMA user_version").fetchone()[0] == 14
         assert backup.execute("PRAGMA user_version").fetchone()[0] == 9
         for table in TABLES:
             assert [tuple(row) for row in connection.execute(f"SELECT * FROM {table}")] == backup.execute(f"SELECT * FROM {table}").fetchall()

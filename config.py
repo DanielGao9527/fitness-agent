@@ -31,11 +31,15 @@ class Settings:
     ai_user_daily_limit: int = 100
     ai_global_daily_limit: int = 100
     registration_enabled: bool = True
+    guest_enabled: bool = True
+    guest_ai_daily_limit: int = 20
     access_mode: str = "local"
     public_origin: str = ""
     allowed_hosts: tuple[str, ...] = ("localhost", "127.0.0.1", "[::1]", "testserver")
 
     def validate_access(self):
+        if not 0 <= self.guest_ai_daily_limit <= 1000:
+            raise ValueError("Guest AI limit must be between 0 and 1000")
         if self.access_mode not in ("local", "shared"):
             raise ValueError("FITNESS_ACCESS_MODE must be local or shared")
         if not self.allowed_hosts or any(not host or any(char in host for char in "*/:@ ")
@@ -48,8 +52,6 @@ class Settings:
                 or origin.path not in ("", "/") or origin.query or origin.fragment
                 or origin.hostname not in self.allowed_hosts or not self.cookie_secure):
                 raise ValueError("Shared mode requires an explicit HTTPS origin, matching host and secure cookies")
-            if self.registration_enabled:
-                raise ValueError("Shared mode requires registration closed; prepare accounts locally first")
 
     @classmethod
     def from_env(cls):
@@ -57,6 +59,9 @@ class Settings:
         return cls(
             database_path=path if path.is_absolute() else ROOT / path,
             registration_enabled=os.getenv("FITNESS_REGISTRATION_ENABLED", "true").lower() == "true",
+            guest_enabled=os.getenv("FITNESS_GUEST_ENABLED", "false" if os.getenv(
+                "FITNESS_ACCESS_MODE", "local").strip().lower() == "shared" else "true").lower() == "true",
+            guest_ai_daily_limit=int(os.getenv("FITNESS_GUEST_AI_DAILY_LIMIT", "20")),
             access_mode=os.getenv("FITNESS_ACCESS_MODE", "local").strip().lower(),
             public_origin=os.getenv("FITNESS_PUBLIC_ORIGIN", "").strip().rstrip("/"),
             allowed_hosts=tuple(host.strip().lower() for host in os.getenv(

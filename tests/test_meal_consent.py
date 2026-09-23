@@ -106,6 +106,8 @@ def test_v8_upgrade_preserves_data_and_cascades_session(tmp_path):
         connection.execute("DROP TABLE intake_targets")
         connection.execute("DROP TABLE meal_intake_reviews")
         connection.execute("DROP TABLE body_measurements")
+        connection.execute("DROP TABLE guest_accounts")
+        connection.execute("DROP TABLE guest_usage")
         connection.execute("PRAGMA user_version=8")
         connection.execute("INSERT INTO users(id,username,password_hash) VALUES(1,'test','synthetic')")
         connection.execute("INSERT INTO sessions VALUES('synthetic-session',1,9999999999)")
@@ -113,7 +115,7 @@ def test_v8_upgrade_preserves_data_and_cascades_session(tmp_path):
         before = {table: [tuple(row) for row in connection.execute(f"SELECT * FROM {table}")] for table in tables}
     database.initialize()
     with database.connect() as connection, sqlite3.connect(str(path) + ".pre-v9.bak") as backup:
-        assert connection.execute("PRAGMA user_version").fetchone()[0] == 13
+        assert connection.execute("PRAGMA user_version").fetchone()[0] == 14
         assert backup.execute("PRAGMA user_version").fetchone()[0] == 8
         for table in tables:
             assert [tuple(row) for row in connection.execute(f"SELECT * FROM {table}")] == before[table]

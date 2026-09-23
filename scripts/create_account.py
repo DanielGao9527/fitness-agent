@@ -33,7 +33,7 @@ def create_account(path, credentials):
             inspect_connection(connection)
             # Same normalized username and unique constraint as /auth/register.
             connection.execute(
-                "INSERT INTO users(username, password_hash) VALUES (?, ?)",
+                "INSERT INTO users(id,username,password_hash) SELECT COALESCE(MAX(id),0)+1,?,? FROM users WHERE id>0",
                 (credentials.username.lower(), password_hash),
             )
 

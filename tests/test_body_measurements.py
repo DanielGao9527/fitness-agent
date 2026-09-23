@@ -183,6 +183,8 @@ def test_v12_upgrade_backup_and_original_seventeen_tables(tmp_path):
     db.initialize()
     with db.connect() as c:
         c.execute('DROP TABLE body_measurements')
+        c.execute('DROP TABLE guest_accounts')
+        c.execute('DROP TABLE guest_usage')
         c.execute('PRAGMA user_version=12')
         c.execute("INSERT INTO users(id,username,password_hash) VALUES(1,'synthetic','synthetic')")
         c.execute("INSERT INTO profiles(user_id,payload) VALUES(1,'{}')")
@@ -192,7 +194,7 @@ def test_v12_upgrade_backup_and_original_seventeen_tables(tmp_path):
     with db.connect() as c, sqlite3.connect(str(path) + '.pre-v13.bak') as backup:
         assert len(tables) == 17
         assert backup.execute('PRAGMA user_version').fetchone()[0] == 12
-        assert c.execute('PRAGMA user_version').fetchone()[0] == 13
+        assert c.execute('PRAGMA user_version').fetchone()[0] == 14
         for table in tables:
             assert [tuple(row) for row in c.execute(f'SELECT * FROM {table} ORDER BY rowid')] == backup.execute(f'SELECT * FROM {table} ORDER BY rowid').fetchall()
         assert c.execute('SELECT COUNT(*) FROM body_measurements').fetchone()[0] == 0

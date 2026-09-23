@@ -33,6 +33,10 @@ class Credentials(BaseModel):
     password: str = Field(min_length=8, max_length=128)
 
 
+class GuestStart(InputModel):
+    pass
+
+
 class Profile(InputModel):
     display_name: str = Field(default="", max_length=40)
     goal: Literal["fat_loss", "muscle_gain", "maintain"] = "maintain"

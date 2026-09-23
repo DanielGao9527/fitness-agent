@@ -41,7 +41,7 @@ def test_consistent_wal_backup_and_restore_relogin_data_and_quota(client, applic
         create_backup(application.state.database.path, backup)
         writer.rollback()
     metadata = verify_backup(backup)
-    assert metadata['tables'] == 18
+    assert metadata['tables'] == 20
     assert 'Synthetic' not in manifest_path(backup).read_text()
     result = restore_backup(backup, restored)
     assert result['sessions_revoked'] and result['usage_preserved']
@@ -120,7 +120,7 @@ def test_recovery_rehearsal_reuses_no_existing_directory(client, application, tm
     register(client)
     directory = tmp_path / 'drill'
     result = rehearse(application.state.database.path, directory)
-    assert result['passed'] and result['non_session_tables_preserved'] == 16
+    assert result['passed'] and result['non_session_tables_preserved'] == 18
     assert not result['formal_database_replaced']
     with pytest.raises(FileExistsError):
         rehearse(application.state.database.path, directory)
@@ -219,7 +219,7 @@ def test_host_and_security_headers(client):
 
 @pytest.mark.parametrize('changes', [{'access_mode': 'bad'}, {'allowed_hosts': ('*',)}, {'access_mode': 'shared'},
     {'access_mode': 'shared', 'cookie_secure': True, 'public_origin': 'http://example.invalid'},
-    {'access_mode': 'shared', 'cookie_secure': True, 'public_origin': 'https://example.invalid', 'allowed_hosts': ('example.invalid',)}])
+    {'access_mode': 'shared', 'cookie_secure': True, 'public_origin': 'https://example.invalid', 'allowed_hosts': ('other.invalid',)}])
 def test_bad_shared_configuration_fails_before_start(tmp_path, changes):
     with pytest.raises(ValueError):
         create_app(Settings(database_path=tmp_path / 'private.sqlite3', **changes))

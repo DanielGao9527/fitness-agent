@@ -16,6 +16,7 @@ const state = {
   user: null,
   view: "today",
   authMode: "login",
+  authBusy: false,
   day: localDate(),
   profile: {},
   meals: [],
@@ -108,7 +109,7 @@ async function api(path, options = {}) {
   const response = await fetch(`/api${path}`, {
     credentials: "same-origin",
     ...options,
-    headers: { "Content-Type": "application/json", ...options.headers },
+    headers: { "Content-Type": "application/json", ...window.GuestSession?.headers(), ...options.headers },
   });
   const result = response.status === 204 ? null : await response.json();
   if (!response.ok) {
@@ -119,6 +120,7 @@ async function api(path, options = {}) {
 }
 
 function showAuth() {
+  window.GuestSession?.clear();
   window.UsageView?.dispose();
   window.BodyMeasurements?.dispose();
   window.NutritionTargets?.dispose();
@@ -153,11 +155,16 @@ function showAuth() {
 }
 
 async function enterWorkspace(user) {
+  if (!user.is_guest) window.GuestSession?.clear();
   state.user = user;
   state.view = "today";
   $("#auth-screen").hidden = true;
   $("#workspace").hidden = false;
   $("#account-name").textContent = user.username;
+  $("#guest-banner").hidden = !user.is_guest;
+  const logout = $('[data-action="logout"]');
+  logout.title = user.is_guest ? "退出体验" : "退出登录";
+  logout.setAttribute("aria-label", logout.title);
   await refresh();
 }
 
@@ -488,6 +495,7 @@ document.addEventListener("click", async (event) => {
   if (!button || button.disabled) return;
   try {
     if (button.dataset.auth) {
+      if (state.authBusy) return;
       state.authMode = button.dataset.auth;
       document
         .querySelectorAll("[data-auth]")
@@ -511,6 +519,22 @@ document.addEventListener("click", async (event) => {
       else await refresh();
     }
     const action = button.dataset.action;
+    if (action === "guest-start") {
+      if (state.authBusy) return;
+      setAuthBusy(true);
+      $("#auth-error").textContent = "";
+      try {
+        window.GuestSession.start();
+        const user = await api("/auth/guest", { method: "POST", body: "{}" });
+        $("#auth-form").reset();
+        await enterWorkspace(user);
+      } catch (error) {
+        window.GuestSession.clear();
+        $("#auth-error").textContent = error.message;
+      } finally {
+        setAuthBusy(false);
+      }
+    }
     const kind = button.dataset.kind;
     const row = kind
       ? state[kind].find((item) => item.id === Number(button.dataset.id))
@@ -518,6 +542,7 @@ document.addEventListener("click", async (event) => {
     if (action === "logout") {
       if (window.BodyMeasurements && !window.BodyMeasurements.canLeave()) return;
       if (window.MealPlanActions && !window.MealPlanActions.canLeave()) return;
+      if (state.user?.is_guest && !window.confirm("退出体验将清空临时记录，确定退出？")) return;
       await api("/auth/logout", { method: "POST", body: "{}" });
       $("#auth-form").reset();
       showAuth();
@@ -596,10 +621,12 @@ document.addEventListener("submit", async (event) => {
   event.preventDefault();
   const button = $('[type="submit"]', form);
   if (button.disabled) return;
+  if (form.id === "auth-form" && state.authBusy) return;
   const errorElement = $(".form-error", form);
   errorElement.textContent = "";
   const data = Object.fromEntries(new FormData(form));
   button.disabled = true;
+  if (form.id === "auth-form") setAuthBusy(true);
   try {
     if (form.id === "auth-form") {
       const user = await api(`/auth/${state.authMode}`, {
@@ -657,9 +684,15 @@ document.addEventListener("submit", async (event) => {
   } catch (error) {
     errorElement.textContent = error.message;
   } finally {
+    if (form.id === "auth-form") setAuthBusy(false);
     if (button.isConnected) button.disabled = false;
   }
 });
+
+function setAuthBusy(busy) {
+  state.authBusy = busy;
+  document.querySelectorAll('#auth-screen button').forEach(button => { button.disabled = busy; });
+}
 
 async function initialize() {
   icons();
@@ -667,6 +700,8 @@ async function initialize() {
   try {
     const health = await api("/health");
     $('[data-auth="register"]').hidden = health.registration_enabled === false;
+    $('[data-action="guest-start"]').hidden = health.guest_enabled !== true;
+    $('#guest-notice').hidden = health.guest_enabled !== true;
   } catch (_) {
     // Authentication below retains the existing unavailable-service state.
   }
