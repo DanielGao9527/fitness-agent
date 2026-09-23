@@ -24,7 +24,7 @@ class QuickMealService:
             raise ModelError("COACH_CONTEXT_CHANGED", "对话已变化或还有待核对的内容，请刷新后再安排。", 409)
         turn = connection.execute("SELECT response FROM coach_turns WHERE conversation_id=? AND version=?",
                                   (str(conversation_id), version)).fetchone()
-        if not turn:
+        if not turn or json.loads(turn[0]).get("intent") == "knowledge":
             raise ModelError("COACH_CONTEXT_CHANGED", "当前没有可生成餐单的请求。", 409)
         return json.loads(turn[0])
 

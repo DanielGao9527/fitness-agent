@@ -50,11 +50,11 @@ async function main(){
     assert.equal(await page.locator('.coach-history').inputValue(),todayConversation,'older dates must not replace current-date conversation on entry');
     const beforeRevoke=requests.length;
     assert.equal((await page.request.delete(`${base}/api/meal-plans/consent`)).status(),200);
-    await page.locator('.coach-input').fill('接下来还有20分钟');
+    await page.locator('.coach-input').fill('安排晚餐');
     await page.getByRole('button',{name:'发送消息',exact:true}).click();
     await page.locator('.coach-consent .quick-consent').waitFor();
-    assert.equal(await page.locator('.coach-input').inputValue(),'接下来还有20分钟');
-    assert.equal(requests.length,beforeRevoke,'revocation must stop sending before storing a turn');
+    assert.equal(await page.locator('.coach-input').inputValue(),'');
+    assert.equal(requests.slice(beforeRevoke).filter(url=>url.endsWith('/recommend-meals')).length,0,'revocation stops meal generation, not ordinary chat');
     await consent(page);await send('接下来还有20分钟');
     assert.equal(await page.locator('.coach-consent input:checked').count(),0);
     assert.equal((await(await page.request.get(`${base}/api/workouts?day=${day}`)).json()).length,0);

@@ -116,6 +116,7 @@ class FixtureKnowledge:
 
 
 knowledge_routes.create_knowledge_model = lambda settings: FixtureKnowledge()
+coach_routes.create_knowledge_model = lambda settings: FixtureKnowledge()
 routes.knowledge_qa_status = lambda settings: "configured_unverified"
 
 
@@ -202,7 +203,7 @@ coach_routes.create_coach_model = lambda settings: FixtureCoach()
 coach_mode = "--coach" in sys.argv
 app = create_app(Settings(database_path=ROOT / "artifacts" / ("ui-coach-review-test.sqlite3" if coach_mode else "ui-drafts-test.sqlite3"),
                           ai_global_daily_limit=10000,  # Synthetic repeated browser runs; production budget is unchanged.
-                          training_plan_enabled=True, coach_enabled=coach_mode, model_provider="qwen" if coach_mode else "disabled", qwen_api_key="synthetic-fixture" if coach_mode else ""))
+                          knowledge_qa_enabled=True, training_plan_enabled=True, coach_enabled=coach_mode, model_provider="qwen" if coach_mode else "disabled", qwen_api_key="synthetic-fixture" if coach_mode else ""))
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8767, access_log=False)

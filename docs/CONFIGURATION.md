@@ -44,6 +44,8 @@
 
 多数模型能力还需要 `FITNESS_MODEL_PROVIDER=qwen` 和有效 Key；语音转写可独立于 provider 开关启用，仍需有效 Key。当天训练编排使用本地规则，检查训练开关，不额外调用模型生成训练动作。
 
+主聊天的一般知识摘答同样由 `FITNESS_KNOWLEDGE_QA_ENABLED` 控制，不借用配餐开关。资料可检索不代表知识模型已启用；明确问题可直接进入摘答，其他口语可能先需要 `FITNESS_COACH_ENABLED` 做结构化理解。一次口语问题可能消耗一次理解和一次摘答，均共用账号、游客及全站调用限额；失败或重复加载不自动重试。网页刷新不会重新发起模型调用。
+
 语音和照片模型分别使用 `FITNESS_QWEN_ASR_MODEL`、`FITNESS_QWEN_VISION_MODEL`。开关打开不代表供应商模型权限或计费状态已验证。模型名称、权限和额度应在所用供应商控制台核对，不在源码中写入个人账户信息。
 
 Windows 的 [启动脚本](../scripts/start.ps1) 提供相应 `-Enable...` 参数，说明见 [scripts](../scripts/README.md)。Linux 服务采用 [deploy](../deploy/README.md) 的环境文件和 systemd 配置。

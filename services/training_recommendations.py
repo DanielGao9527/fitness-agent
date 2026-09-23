@@ -305,7 +305,7 @@ class TrainingRecommendationService:
     def snapshot(self, connection, conversation_id, evidence):
         row = self.coach.owned(connection, conversation_id)
         data = self.coach.view(connection, row)
-        facts = {"day": data["day"], "version": data["version"], "pending": data["pending"], "intent": data["intent"],
+        facts = {"day": data["day"], "version": data["workflow_version"], "pending": data["pending"], "intent": data["intent"],
                  "profile": data["context"]["profile"], "constraints": data["constraints"],
                  "request": data["training_context"], "history": recent_training(connection, self.user_id, data["day"]),
                  "performance_history": performance_history(connection, self.user_id, data["day"])}
@@ -318,7 +318,8 @@ class TrainingRecommendationService:
         with self.database.connect() as connection:
             connection.execute("BEGIN IMMEDIATE")
             facts, fingerprint = self.snapshot(connection, conversation_id, evidence)
-            if facts["pending"] or facts["intent"] != "training" or facts["version"] != body.version:
+            latest = self.coach.owned(connection, conversation_id)
+            if latest["version"] != body.version or facts["pending"] or facts["intent"] != "training" or facts["version"] != body.version:
                 raise ModelError("TRAINING_CONTEXT_CHANGED", "对话已变化或补充尚待核对，请先刷新对话。", 409)
             row = connection.execute("SELECT response FROM coach_turns WHERE conversation_id=? AND version=?", (str(conversation_id), body.version)).fetchone()
             response = json.loads(row[0])

@@ -17,6 +17,47 @@ QUICK_QUESTIONS = ("今天剩下怎么吃？", "结合前几天的训练，今�
 MEAL_REQUESTS = {"今天剩下怎么吃", "下一餐吃什么", "晚上吃什么", "晚饭吃什么", "今天晚上怎么吃", "今天晚上吃什么", "今晚怎么吃", "今天吃什么", "下一餐", "饮食建议"}
 TRAINING_REQUESTS = {"结合前几天的训练，今天练什么", "结合前几天的训练,今天练什么", "今天练什么", "怎么练", "训练建议", "有氧建议"}
 
+# General question grammar is deliberately separate from personal commands.
+KNOWLEDGE_TOPIC = re.compile(r"训练|力量|有氧|运动|健身|肌肉|蛋白质|碳水|脂肪|营养|食物|食材|热量|卡路里|膳食|饮食|MET", re.I)
+KNOWLEDGE_QUESTION = re.compile(r"哪些|什么是|是什么|为什么|为何|一般|通常|通常情况下|主要来自|来源|频率|每周|一周|星期|几次|几天|多少|区别|含量|作用|如何|怎样|是否|能否|怎么", re.I)
+PERSONAL_REQUEST = re.compile(r"安排|推荐|帮我|给我|替换|换成|换掉|改成|改为|减少|增加|少吃|多吃|不吃|不想吃|不爱吃|不能吃|只吃|不要|避开|别加|只有|没有|本次|这次|我(?!想了解|想知道|想问)|今天|今晚|明天|下一餐|剩下|不喜欢", re.I)
+
+
+def general_question(message):
+    return bool(KNOWLEDGE_TOPIC.search(message) and KNOWLEDGE_QUESTION.search(message))
+
+
+def knowledge_only(message):
+    from services.knowledge_answers import SENSITIVE
+    return general_question(message) and not PERSONAL_REQUEST.search(message) and not SENSITIVE.search(message)
+
+
+def mixed_question(message):
+    from services.knowledge_answers import SENSITIVE
+    parts = [part for part in re.split(r"[，,；;。！？!?\n]", message) if part.strip()]
+    return (len(parts) > 1 and any(knowledge_only(part) for part in parts)
+            and any(PERSONAL_REQUEST.search(part) or SENSITIVE.search(part) for part in parts))
+
+
+def pending_turns(connection, conversation_id):
+    """Resolve explicit message IDs, never a high-water mark across unrelated turns."""
+    turns = connection.execute("SELECT version,message,response FROM coach_turns WHERE conversation_id=? ORDER BY version", (conversation_id,)).fetchall()
+    decoded = [(row, json.loads(row["response"])) for row in turns]
+    resolved = {version for _, response in decoded for version in response.get("reviewed_versions", [])}
+    return [{"version": row["version"], "message": row["message"]} for row, response in decoded
+            if response.get("status") == "needs_review" and row["version"] not in resolved]
+
+
+def workflow_version(connection, conversation_id):
+    row = connection.execute("SELECT COALESCE(MAX(version),0) FROM coach_turns WHERE conversation_id=? "
+        "AND COALESCE(json_extract(response,'$.intent'),'')!='knowledge'", (conversation_id,)).fetchone()
+    return row[0]
+
+
+def knowledge_response():
+    return {"text": "已收到一般知识问题，正在核对审核资料。", "source": "workflow",
+            "status": "knowledge", "intent": "knowledge"}
+
 
 def meal_adjustment(message):
     value = message.strip().rstrip("？?。！! ")
@@ -203,6 +244,10 @@ def apply_meal_changes(connection, user_id, row, context, changes, *, version=No
 
 def route(message):
     value = message.strip().rstrip("？?。！! ")
+    if knowledge_only(value):
+        return "knowledge"
+    if mixed_question(value):
+        return "unknown"
     if value in MEAL_REQUESTS or selection(value) or explicit_meal_changes(value) or (targeted(value)[0] and meal_adjustment(targeted(value)[1])):
         return "meal"
     if value in TRAINING_REQUESTS:
@@ -218,9 +263,10 @@ def plan_binding(connection, user_id, original, day, intent):
         "SELECT day,version,intent,pending FROM coach_conversations WHERE id=? AND user_id=?",
         (str(original["coach_id"]), user_id),
     ).fetchone()
-    valid = bool(row and row["day"] == day and row["version"] == original.get("coach_version")
+    task_version = workflow_version(connection, str(original["coach_id"])) if row else None
+    valid = bool(row and row["day"] == day and task_version == original.get("coach_version")
                  and row["intent"] == intent and not row["pending"])
-    binding = {"id": str(original["coach_id"]), "version": row["version"] if row else None,
+    binding = {"id": str(original["coach_id"]), "version": task_version,
                "valid": valid, "pending": bool(row and row["pending"])}
     context = meal_context(connection, str(original["coach_id"])) if row and intent == "meal" else {}
     if "meal_types" in context:
@@ -308,9 +354,11 @@ class CoachService:
         constraints = conversation_constraints(connection, row["id"])
         training = training_context(connection, row["id"])
         blocked = constraints.get("diet_caution") or row["intent"] == "training" and constraints.get("training_caution")
+        latest_intent = json.loads(turns[-1]["response"]).get("intent") if turns else None
         return {"id": row["id"], "title": row["title"], "day": row["day"], "version": row["version"],
+                "workflow_version": workflow_version(connection, row["id"]), "request_kind": latest_intent,
                 "pending": bool(row["pending"]), "intent": row["intent"],
-                "action": row["intent"] if row["version"] and not row["pending"] and not blocked and row["intent"] in ("meal", "training") else None,
+                "action": "knowledge" if latest_intent == "knowledge" else row["intent"] if row["version"] and not row["pending"] and not blocked and row["intent"] in ("meal", "training") else None,
                 "turns": [{**dict(turn), "response": json.loads(turn["response"])} for turn in turns],
                 "meal_context": meal_context(connection, row["id"]),
                 "meal_question": meal_question(meal_context(connection, row["id"])),
@@ -358,6 +406,13 @@ class CoachService:
             if row["version"] >= 40:
                 raise HTTPException(409, "本次对话已满40轮，请先核对未处理补充，再开启新对话")
             message = body.message
+            if route(message) == "knowledge":
+                version = row["version"] + 1
+                connection.execute("INSERT INTO coach_turns(id,conversation_id,client_id,version,message,response) VALUES (?,?,?,?,?,?)",
+                    (str(uuid4()), row["id"], str(body.client_id), version, message, json.dumps(knowledge_response(), ensure_ascii=False)))
+                connection.execute("UPDATE coach_conversations SET title=?,version=?,updated_at=CURRENT_TIMESTAMP WHERE id=?",
+                    (message[:40] if row["version"] == 0 else row["title"], version, row["id"]))
+                return self.view(connection, self.owned(connection, row["id"]))
             intake_statement = re.fullmatch(r"(?:我)?(今天已吃的都记录好了|今天已经吃的都记录好了|今天还没吃东西)[，,；;。\s]*(.*)", message)
             if intake_statement:
                 current_intake = planning_context(connection, self.user_id, date.fromisoformat(row["day"]))
@@ -368,7 +423,7 @@ class CoachService:
                 message = intake_statement[2] or ("安排" + "和".join(MEAL_NAMES[key] for key in previous_meals) if previous_meals else "今天剩下怎么吃")
             intent = route(message)
             training = training_context(connection, row["id"])
-            previous = connection.execute("SELECT input_payload FROM training_plans WHERE user_id=? AND day=? AND status IN ('draft','accepted') AND json_extract(input_payload,'$.coach_id')=? AND json_extract(input_payload,'$.coach_version')=? ORDER BY rowid DESC LIMIT 1", (self.user_id, row["day"], row["id"], row["version"])).fetchone()
+            previous = connection.execute("SELECT input_payload FROM training_plans WHERE user_id=? AND day=? AND status IN ('draft','accepted') AND json_extract(input_payload,'$.coach_id')=? AND json_extract(input_payload,'$.coach_version')=? ORDER BY rowid DESC LIMIT 1", (self.user_id, row["day"], row["id"], workflow_version(connection, row["id"]))).fetchone()
             if previous:
                 original = json.loads(previous[0])
                 training = merge_training(training, {"kind": "aerobic", "minutes": original["daily_minutes"], "time_basis": original.get("time_basis", "daily"), "activity": original["activity"]})
@@ -389,7 +444,7 @@ class CoachService:
                     context = apply_meal_command(connection, self.user_id, row, context, message, version=row["version"] + 1)
             pending = bool(row["pending"] or intent == "unknown")
             if pending:
-                answer = "补充已保存在本次对话，核对完整意思和限制之前暂停生成。长期食物过敏请保存在个人档案。"
+                answer = "消息已保留，需要先理解这次是知识提问、个人安排还是条件补充；尚未生成建议。"
             elif intent == "meal":
                 if meal_question(context):
                     answer = meal_question(context)
@@ -410,6 +465,7 @@ class CoachService:
             else:
                 answer = training_question(training)
             response = {"text": answer, "source": "workflow", "status": "needs_review" if pending else "guided", "intent": intent}
+            response["previous_intent"] = row["intent"]
             if context:
                 response["meal_context"] = context
             constraints = conversation_constraints(connection, row["id"])

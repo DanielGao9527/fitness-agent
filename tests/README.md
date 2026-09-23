@@ -18,6 +18,8 @@ Linux／macOS 将解释器路径换为 `.venv/bin/python`。可以指定一个�
 
 主要覆盖账号隔离、输入校验、草稿防重复、重启持久化、资料有效性、配餐约束、训练条件、备份恢复与共享访问边界。测试数据库应保持隔离，不将 `FITNESS_DB_PATH` 指向真实用户数据来运行测试。
 
+主聊天知识分流的集中用例在 `test_coach_knowledge.py`：原句及自然改写、与个人请求的区分、旧任务绑定、逐消息待办、混合请求、范围限制、幂等、重启、并发及来源变化。连同 `test_coach_reviews.py`、`test_coach_training.py`、`test_knowledge_answers.py` 等做相关回归；实际模型分类质量另行验证。
+
 ## 前端单元
 
 安装 Node.js 后，从仓库根目录运行单个 `*-unit.cjs` 文件，例如：
@@ -47,6 +49,8 @@ node tests/browser-assistant-quality.cjs
 ```
 
 套件会生成合成账号和截图等测试产物，检查普通桌面及较窄视口下的页面行为。完成后停止合成服务；测试产物不提交到公开仓库。
+
+`browser-coach-knowledge.cjs` 从主聊天发送知识问题，检查无配餐确认时可提问、摘要与出处可见、插问不重复推荐、刷新不重复调用，以及桌面和窄屏布局。既有配餐套件的 `browser-consent.cjs` 为其合成账号明确设置配餐授权，不代表知识提问也需要授权。
 
 ## 如何解释结果
 

@@ -14,13 +14,14 @@ from services.plan_foods import ALIASES, CATALOG_VERSION, FOODS, MEDICAL, SOFT
 from services.training_plans import HEALTH
 from services.training_context import training_context, recent_training, merge_training, training_question, SPLIT_ALIASES
 from services.meal_schedule import MEAL_ALIASES, selection, targeted, question as meal_question
+from services.coach import pending_turns, knowledge_response, PERSONAL_REQUEST, mixed_question
 
-POLICY = "coach-understanding-v10-profile-budget"
+POLICY = "coach-understanding-v11-knowledge-turns"
 QUESTIONS = {
     "none": "",
     "which_food": "你想调整哪一种食材？请写出餐单里的名称。",
     "which_meal": "要安排或修改哪一餐？请明确早餐、午餐或晚餐，以及各餐分别要修改什么。",
-    "which_request": "你想安排下一餐，还是调整训练？请补充具体想做的事。",
+    "which_request": "这次是想了解一般知识、安排饮食或训练，还是补充条件？请说明具体问题。",
     "which_training": "请明确要采用的训练结构或要替换的动作；尚未应用本次修改，原有条件仍保留。",
     "multiple_requests": "这次包含多个操作，请先说明要优先调整哪一项。其他限制仍会保留。",
     "conflicting_changes": "同一食材类别出现多个修改，请说明最终要哪一个；其他原话和限制仍保留。",
@@ -76,11 +77,7 @@ class CoachReviewService:
 
     def snapshot(self, connection, conversation_id):
         row = self.coach.owned(connection, conversation_id)
-        resolved = connection.execute("SELECT COALESCE(MAX(base_version),0) FROM coach_reviews WHERE conversation_id=? AND status='confirmed'", (row["id"],)).fetchone()[0]
-        turns = connection.execute(
-            "SELECT version,message FROM coach_turns WHERE conversation_id=? AND version>? "
-            "AND json_extract(response,'$.status')='needs_review' ORDER BY version", (row["id"], resolved),
-        ).fetchall()
+        turns = pending_turns(connection, row["id"])
         profile = connection.execute("SELECT payload FROM profiles WHERE user_id=?", (self.user_id,)).fetchone()
         profile = json.loads(profile[0]) if profile else {}
         previous = connection.execute(
@@ -132,6 +129,21 @@ class CoachReviewService:
         versions = [note.version for note in result.notes]
         if len(set(versions)) != len(versions) or set(versions) != set(originals):
             raise ModelError("COACH_INVALID_OUTPUT", "理解结果遗漏或重复了待核对原话，未应用。")
+        if result.scope == "knowledge":
+            from services.knowledge_answers import SENSITIVE
+            latest = originals.get(facts["version"], "")
+            note = next((note for note in result.notes if note.version == facts["version"]), None)
+            if (not latest or not note or result.command or result.commands or result.meal_changes or result.meal_types
+                    or result.training is not None):
+                raise ModelError("COACH_INVALID_OUTPUT", "知识提问不能夹带计划操作，原消息已保留。")
+            mixed = (PERSONAL_REQUEST.search(latest) or SENSITIVE.search(latest) or note.avoid or note.preferences
+                     or note.training_caution or note.diet_caution)
+            clarification = "multiple_requests" if mixed else "which_request" if note.unresolved else result.clarification
+            return {"scope": "knowledge", "command": "", "commands": [], "meal_changes": [], "meal_types": [],
+                    "training": None, "notes": [], "knowledge_version": facts["version"],
+                    "clarification": clarification,
+                    "question": "这条消息还包含个人条件或安排请求，请先明确要处理哪一项；完整原话和此前待办仍保留。" if mixed else QUESTIONS[clarification],
+                    "replacement_names": {}}
         notes = []
         for note in result.notes:
             original = originals[note.version]
@@ -225,6 +237,8 @@ class CoachReviewService:
                      or result.scope in ("strength", "other") and result.command == "")
             if not valid:
                 raise ModelError("COACH_INVALID_OUTPUT", "理解结果没有对应到已支持的操作，未应用。")
+        if mixed_question(originals.get(facts["version"], "")):
+            clarification = "multiple_requests"
         question = QUESTIONS[clarification]
         if clarification == "unhandled_constraint" and result.scope in ("aerobic", "strength"):
             question = "仍有无法完整核对的训练条件或限制，请补充具体项目、器械或注意情况；不要删除真实限制来绕过。"
@@ -240,6 +254,9 @@ class CoachReviewService:
         with self.database.connect() as connection:
             connection.execute("BEGIN IMMEDIATE")
             row, facts, fingerprint = self.snapshot(connection, conversation_id)
+            latest = connection.execute("SELECT response FROM coach_turns WHERE conversation_id=? AND version=?", (row["id"], row["version"])).fetchone()
+            if latest and json.loads(latest[0]).get("intent") == "knowledge":
+                raise ModelError("COACH_CONTEXT_CHANGED", "本条知识提问不会核对此前待办，请另发消息补充或澄清此前请求。", 409)
             existing = connection.execute("SELECT * FROM coach_reviews WHERE conversation_id=? AND client_id=?", (row["id"], str(body.client_id))).fetchone()
             if existing:
                 if existing["base_version"] != body.version:
@@ -259,6 +276,7 @@ class CoachReviewService:
             prompt = (ROOT / "prompts/coach_understanding.md").read_text(encoding="utf-8")
             prompt += "\nJSON Schema:\n" + json.dumps(CoachUnderstanding.model_json_schema(), ensure_ascii=False)
             message = {key: facts[key] for key in ("messages", "profile", "constraints", "current_meal")}
+            message["current_message_version"] = facts["version"]
             # A training-only request does not need dietary preferences or allergies for intent extraction.
             # The complete profile still participates in the fingerprint and recommendation safety checks.
             if "training_facts" in facts and not any(re.search(r"吃|餐|饭|食|过敏|忌口|营养", item["message"]) for item in facts["messages"]):
@@ -307,7 +325,7 @@ class CoachReviewService:
         review = self.latest(conversation_id)
         if not review or review["stale"] or review["status"] != "ready" or review.get("question"):
             return self.coach.get(conversation_id)
-        if review["scope"] not in ("meal", "aerobic", "strength"):
+        if review["scope"] not in ("meal", "aerobic", "strength", "knowledge"):
             return self.coach.get(conversation_id)
         return self.apply(conversation_id, version, review["id"], automatic=True)
 
@@ -326,6 +344,15 @@ class CoachReviewService:
             if review["status"] != "ready" or latest != review["id"] or fingerprint != review["context_hash"] or row["version"] != version:
                 raise ModelError("COACH_REVIEW_STALE", "理解尚未就绪、仍有缺项或上下文已变化，请重新核对；不会直接解除阻断。", 409)
             payload = json.loads(review["payload"])
+            if payload["scope"] == "knowledge":
+                previous = connection.execute("SELECT response FROM coach_turns WHERE conversation_id=? AND version=?", (row["id"], version)).fetchone()
+                original = json.loads(previous[0])
+                response = {**knowledge_response(), "review_id": review["id"], "reviewed_versions": [version]}
+                connection.execute("UPDATE coach_turns SET response=? WHERE conversation_id=? AND version=?", (encode(response), row["id"], version))
+                connection.execute("UPDATE coach_reviews SET status='confirmed' WHERE id=?", (review["id"],))
+                connection.execute("UPDATE coach_conversations SET pending=?,intent=?,updated_at=CURRENT_TIMESTAMP WHERE id=?",
+                    (int(bool(pending_turns(connection, row["id"]))), original.get("previous_intent", "unknown"), row["id"]))
+                return self.coach.view(connection, self.coach.owned(connection, row["id"]))
             constraints = dict(facts["constraints"])
             for note in payload["notes"]:
                 for key in ("food_avoid", "preferences"):

@@ -292,7 +292,7 @@ class CoachMealChange(InputModel):
 
 
 class CoachUnderstanding(InputModel):
-    scope: Literal["meal", "aerobic", "strength", "other", "unclear"]
+    scope: Literal["meal", "aerobic", "strength", "knowledge", "other", "unclear"]
     command: str = Field(max_length=120)
     commands: list[Annotated[str, Field(min_length=1, max_length=120)]] = Field(default_factory=list, max_length=3)
     meal_changes: list[CoachMealChange] = Field(default_factory=list, max_length=3)

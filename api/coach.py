@@ -16,6 +16,8 @@ from model.factory import create_meal_plan_model
 from rag.rag_service import KnowledgeUnavailable
 from services.meal_nutrient_reference import current_context
 from services.training_recommendations import TrainingRecommendationService
+from model.factory import create_knowledge_model, knowledge_qa_status
+from services.coach_knowledge import CoachKnowledgeService
 
 router = APIRouter(prefix="/api/coach/conversations")
 
@@ -25,12 +27,13 @@ def service(request, user):
 
 
 def with_plans(request, user, data):
+    data = CoachKnowledgeService(request.app.state.database, user["id"], request.app.state.knowledge).decorate(data)
     data = TrainingRecommendationService(request.app.state.database, user["id"], request.app.state.knowledge).decorate(data)
     plans = MealPlanService(request.app.state.database, user["id"], request.app.state.knowledge).list(data["day"])
     review = CoachReviewService(request.app.state.database, user["id"]).latest(data["id"])
     training = TrainingPlanService(request.app.state.database, user["id"], request.app.state.knowledge).list(data["day"])
     calculation = None
-    if data["intent"] == "meal":
+    if data["action"] == "meal":
         try:
             with request.app.state.database.connect() as connection:
                 connection.execute("BEGIN")
@@ -41,7 +44,22 @@ def with_plans(request, user, data):
             "meal_calculation": calculation,
             "meal_plans": [plan for plan in plans if plan["coach_id"] == data["id"]],
             "training_plans": [plan for plan in training if plan["coach_id"] == data["id"]],
-            "review": review, "understanding_status": coach_status(request.app.state.settings)}
+            "review": review, "understanding_status": coach_status(request.app.state.settings),
+            "knowledge_status": knowledge_qa_status(request.app.state.settings)}
+
+
+@router.post("/{conversation_id}/answer-knowledge")
+def answer_knowledge(conversation_id: UUID, body: CoachUnderstand, request: Request, user: User):
+    settings = request.app.state.settings
+
+    def factory():
+        model = create_knowledge_model(settings)
+        reserve_call(request.app.state.database, settings, user["id"])
+        return model
+
+    knowledge = CoachKnowledgeService(request.app.state.database, user["id"], request.app.state.knowledge)
+    run(lambda: knowledge.answer(conversation_id, body, factory, settings.qwen_model, knowledge_qa_status(settings)))
+    return with_plans(request, user, service(request, user).get(conversation_id))
 
 
 def run(operation):
@@ -115,11 +133,8 @@ def understand(conversation_id: UUID, body: CoachAutoUnderstand, request: Reques
         return model
 
     reviewer = CoachReviewService(request.app.state.database, user["id"])
-    if body.auto_apply:
-        run(MealConsentService(request, user).require)
-    run(lambda: reviewer.understand(conversation_id, body, factory, settings.qwen_model))
-    if body.auto_apply:
-        run(MealConsentService(request, user).require)
+    review = run(lambda: reviewer.understand(conversation_id, body, factory, settings.qwen_model))
+    if body.auto_apply and (review.get("scope") != "meal" or MealConsentService(request, user).get()["confirmed"]):
         run(lambda: reviewer.apply_ready(conversation_id, body.version))
     return with_plans(request, user, service(request, user).get(conversation_id))
 

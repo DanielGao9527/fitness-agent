@@ -16,7 +16,7 @@ window.CoachView = (() => {
     s.root.querySelector(".coach-stop").hidden=!s.busy;
     s.root.querySelector(".coach-delete").disabled=s.busy || !s.data;
     s.root.querySelector(".coach-day").readOnly=Boolean(s.data);
-    s.root.querySelectorAll('.coach-compose button,.coach-compose textarea,.coach-quick button,.coach-understand,.coach-confirm-understanding,.coach-review input,.coach-recommend,.coach-recommend-training,.coach-meal-selection input,.coach-meal-selection button')
+    s.root.querySelectorAll('.coach-recommend,.coach-meal-selection input,.coach-meal-selection button')
       .forEach(node=>node.disabled=s.busy || !s.consent?.confirmed);
   }
   function cancel() {
@@ -43,6 +43,7 @@ window.CoachView = (() => {
   function dispose() {const s=active;cancel();if(s)closePlan(s);active=null;}
   function replyText(data,turn) {
     const response=turn.response,request=response.quick_request;
+    if(response.intent==='knowledge')return response.knowledge?.answer || response.text;
     if(request?.status==='failed' && request.error)return `本次餐单未完整生成。${apiError(request.error).message}`;
     if(response.constraints?.diet_caution)return response.text;
     if(response.intent==='meal' && !request && response.status!=='needs_review' && !response.meal_context?.selection_required && !response.meal_context?.target_required){
@@ -74,15 +75,19 @@ window.CoachView = (() => {
     const data=s.data;
     if(data?.meal_consent)s.consent=data.meal_consent;
     const gate=s.root.querySelector('.coach-consent');
-    gate.innerHTML=s.consent && !s.consent.confirmed?window.QuickMeals.consent({meal_consent:s.consent}):'';
+    gate.innerHTML=s.consent && !s.consent.confirmed && (data?.request_kind==='meal' || data?.review?.scope==='meal' && data?.request_kind!=='knowledge')?window.QuickMeals.consent({meal_consent:s.consent}):'';
     gate.querySelector('form')?.addEventListener('submit',event=>{
       event.preventDefault();if(!event.target.reportValidity())return;
       operation(async(session,signal)=>{
         await api('/meal-plans/consent',{method:'PUT',signal,body:JSON.stringify({context_hash:session.consent.context_hash,adult_general_diet:true,constraints_reviewed:true})});
         const consent=await api('/meal-plans/consent',{signal});
         const refreshed=session.data?await api(`/coach/conversations/${session.data.id}`,{signal}):null;
-        return {consent,data:refreshed};
-      },(session,result)=>{session.consent=result.consent;session.data=result.data;draw(session);});
+        session.consent=consent;
+        if(refreshed?.pending && refreshed.review?.scope==='meal' && refreshed.review.status==='ready' && !refreshed.review.stale){
+          return {consent,...await recommend(session,await api(`/coach/conversations/${refreshed.id}/confirm-understanding`,{method:'POST',signal,body:JSON.stringify({version:refreshed.version,review_id:refreshed.review.id,reviewed:true})}),signal,crypto.randomUUID())};
+        }
+        return {consent,...(refreshed?await recommend(session,refreshed,signal,crypto.randomUUID()):{data:null})};
+      },(session,result)=>{session.consent=result.consent;showRecommendation(session,result);});
     });
     const select=s.root.querySelector(".coach-history");
     select.innerHTML='<option value="">新对话</option>'+s.list.map(item=>`<option value="${escapeHtml(item.id)}">${escapeHtml(item.day)} · ${escapeHtml(item.title)}</option>`).join("");
@@ -147,7 +152,12 @@ window.CoachView = (() => {
       const training=document.createElement("div");turn.append(training);
       const recommendation=data.turns.find(item=>item.version===version)?.response.training_recommendation;
       if(recommendation)training.innerHTML=renderTraining(recommendation,version===data.version);
-      if(version===data.version && data.intent==="training"){
+      const knowledge=data.turns.find(item=>item.version===version)?.response.knowledge;
+      if(knowledge?.sources?.length){
+        const references=document.createElement('div');references.className='coach-knowledge';
+        references.innerHTML=knowledge.sources.map(window.KnowledgeView.reference).join('');turn.append(references);
+      }
+      if(version===data.version && data.action==="training"){
         if(!data.pending && (!recommendation || recommendation.stale)){
           training.insertAdjacentHTML('beforeend',`<button type="button" class="coach-recommend-training">${icon('refresh-cw')}${recommendation?'按最新记录重新建议':'生成训练建议'}</button>`);
           training.querySelector('button').addEventListener('click',()=>operation((session,signal)=>recommend(session,data,signal,crypto.randomUUID()),showRecommendation));
@@ -160,8 +170,11 @@ window.CoachView = (() => {
     const root=s.root.querySelector(".coach-review"),data=s.data,review=data?.review;
     root.replaceChildren();
     if(!data?.pending)return;
+    if(data.request_kind==='knowledge'){
+      root.innerHTML='<p>此前仍有待核对的消息。请继续补充或澄清原请求；本条知识问答不会清除它们。</p>';return;
+    }
     const enabled=data.understanding_status==="configured_unverified";
-    const scopes={meal:"餐次安排 / 食材调整",aerobic:"基础有氧",strength:"力量训练需求",other:"其他请求（尚未开放）",unclear:"需要补充"};
+    const scopes={meal:"餐次安排 / 食材调整",aerobic:"基础有氧",strength:"力量训练需求",knowledge:"一般知识问题",other:"其他请求（尚未开放）",unclear:"需要补充"};
     if(review && !review.stale && ["ready","needs_input"].includes(review.status)){
       root.innerHTML=`<h3>核对这次理解</h3><p>${escapeHtml(scopes[review.scope])}${review.command?` · ${escapeHtml(review.command)}`:""}</p>
         ${review.meal_types?.length?`<p>餐次：${review.meal_types.map(key=>({breakfast:"早餐",lunch:"午餐",dinner:"晚餐"}[key])).join("、")}</p>`:""}
@@ -191,12 +204,18 @@ window.CoachView = (() => {
     if(active!==s || s.busy || !s.data?.pending)return;
     const id=s.data.id,version=s.data.version,client_id=crypto.randomUUID();
     operation(async(session,signal)=>{
-      try{return await recommend(session,await api(`/coach/conversations/${id}/understand`,{method:"POST",signal,body:JSON.stringify({version,client_id,auto_apply:Boolean(session.consent?.confirmed)})}),signal,client_id);}
+      try{return await recommend(session,await api(`/coach/conversations/${id}/understand`,{method:"POST",signal,body:JSON.stringify({version,client_id,auto_apply:true})}),signal,client_id);}
       catch(error){if(signal.aborted)throw error;return {data:await api(`/coach/conversations/${id}`,{signal}),error:error.message};}
     },(session,result)=>{session.data=result.data;draw(session);if(result.error){session.root.querySelector(".coach-error").textContent=result.error;session.root.querySelector(".coach-error").hidden=false;}});
   }
   async function recommend(session,data,signal,client_id) {
-    if(data.intent==='training' && !data.pending){
+    if(data.request_kind==='knowledge'){
+      if(data.turns.at(-1).response.knowledge)return {data};
+      session.root.querySelector('.coach-status').textContent='正在核对知识摘要与出处…';
+      try{return {data:await api(`/coach/conversations/${data.id}/answer-knowledge`,{method:'POST',signal,body:JSON.stringify({version:data.version,client_id})})};}
+      catch(error){if(signal.aborted)throw error;return {data:await api(`/coach/conversations/${data.id}`,{signal}),error:error.message};}
+    }
+    if(data.action==='training' && !data.pending){
       if(signal.aborted || active!==session || state.user!==session.user || !session.root.isConnected)throw new DOMException('Aborted','AbortError');
       session.root.querySelector('.coach-status').textContent='正在核对实际训练与可用动作…';
       try{return {data:await api(`/coach/conversations/${data.id}/recommend-training`,{method:'POST',signal,body:JSON.stringify({version:data.version,client_id})})};}
@@ -230,7 +249,7 @@ window.CoachView = (() => {
     },(s,result)=>{s.list=result.list;s.data=result.data;s.consent=result.consent;draw(s);});
   }
   function send() {
-    const s=active;if(!s || s.busy || !s.consent?.confirmed)return;
+    const s=active;if(!s || s.busy)return;
     const input=s.root.querySelector(".coach-input");
     const message=input.value.trim();if(!message || !s.root.querySelector(".coach-compose").reportValidity())return;
     const day=s.root.querySelector(".coach-day").value;
@@ -239,12 +258,10 @@ window.CoachView = (() => {
       s.pendingSend={message,version:s.data?.version || 0,client_id:crypto.randomUUID()};
     const body={...s.pendingSend},createId=s.createId,conversation=s.data?.id;
     operation(async(session,signal)=>{
-      const consent=await api('/meal-plans/consent',{signal});
-      if(!consent.confirmed)return {needsConsent:true,consent};
       const created=conversation?{id:conversation}:await api("/coach/conversations",{method:"POST",signal,body:JSON.stringify({client_id:createId,day})});
       const data=await api(`/coach/conversations/${created.id}/messages`,{method:"POST",signal,body:JSON.stringify(body)});
       let updated=data,error=null;
-      if(data.pending && data.understanding_status==="configured_unverified"){
+      if(data.request_kind!=='knowledge' && data.pending && data.understanding_status==="configured_unverified"){
         if(signal.aborted || active!==session || state.user!==session.user || !session.root.isConnected)throw new DOMException("Aborted","AbortError");
         session.root.querySelector(".coach-status").textContent="正在理解你的请求与补充…";
         try{updated=await api(`/coach/conversations/${data.id}/understand`,{method:"POST",signal,body:JSON.stringify({version:data.version,client_id:body.client_id,auto_apply:true})});}
