@@ -3,6 +3,7 @@ import io
 import sqlite3
 import tarfile
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -121,3 +122,35 @@ def test_backup_failure_restarts_previous_service_before_any_new_code(activation
         deploy.activate(candidate, previous)
     assert ("switch", candidate) not in calls
     assert calls[-1] == ("systemctl", "start", "fitness-agent")
+
+
+def test_build_uses_release_directory_when_called_from_private_root(tmp_path, monkeypatch):
+    caller = tmp_path / "root"
+    caller.mkdir()
+    (caller / "uv.toml").write_text("# Private administrator configuration\n")
+    monkeypatch.chdir(caller)
+    monkeypatch.setattr(deploy, "STATE", tmp_path)
+    release = tmp_path / ("a" * 40)
+    calls = []
+
+    def subprocess_stub(command, **options):
+        calls.append((command, options))
+        if command[0] == "runuser" and options.get("cwd") != release:
+            raise PermissionError("build account cannot inspect the administrator directory")
+        output = "/opt/fitness-python/cpython-3.12.14/bin/python3.12\n" if "find" in command else ""
+        return SimpleNamespace(stdout=output)
+
+    def download_archive(sha, destination):
+        with tarfile.open(destination, "w:gz") as archive:
+            member = tarfile.TarInfo("repository-sha/requirements.lock.txt")
+            member.size = 0
+            archive.addfile(member, io.BytesIO())
+
+    monkeypatch.setattr(deploy.subprocess, "run", subprocess_stub)
+    deploy.build(release, "a" * 40, SimpleNamespace(download_archive=download_archive))
+    assert Path.cwd() == caller
+    assert calls and all(options["cwd"] == release for _, options in calls)
+    uv_calls = [command for command, _ in calls if deploy.UV in command]
+    assert len(uv_calls) == 2
+    assert all("--no-config" in command for command in uv_calls)
+    assert (release / "requirements.lock.txt").exists()

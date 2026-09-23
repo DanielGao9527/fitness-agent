@@ -26,9 +26,9 @@ TOOLS = Path("/usr/local/lib/fitness-agent-deploy")
 UV = "/opt/fitness-tools/uv"
 
 
-def run(*command, capture=False, timeout=180):
+def run(*command, capture=False, timeout=180, cwd=None):
     return subprocess.run(command, check=True, text=True, timeout=timeout,
-                          stdout=subprocess.PIPE if capture else None)
+                          stdout=subprocess.PIPE if capture else None, cwd=cwd)
 
 
 def current_release():
@@ -69,21 +69,25 @@ def build(release, sha, source):
         source.download_archive(sha, archive)
         extract_archive(archive, release)
     python = run("env", "UV_PYTHON_INSTALL_DIR=/opt/fitness-python", UV,
-                 "python", "find", "--managed-python", "3.12", capture=True).stdout.strip()
-    if not Path(python).resolve().is_relative_to(Path("/opt/fitness-python")):
+                 "--no-config", "python", "find", "--managed-python", "3.12",
+                 capture=True, cwd=release).stdout.strip()
+    if not Path(python).resolve().is_relative_to(Path("/opt/fitness-python").resolve()):
         raise ValueError("Managed Python must be installed outside /root")
-    run("chown", "-R", "fitness-build:fitness-build", str(release))
+    run("chown", "-R", "fitness-build:fitness-build", str(release), cwd=release)
     builder = ("runuser", "-u", "fitness-build", "--", "env", "-i", "PATH=/usr/bin:/bin",
                "HOME=/var/cache/fitness-build", "UV_PYTHON_INSTALL_DIR=/opt/fitness-python",
                "PYTHONDONTWRITEBYTECODE=1")
     try:
-        run(*builder, UV, "venv", "--seed", "--python", python, str(release / ".venv"), timeout=300)
+        # runuser 会继承调用目录；从 /root 手动部署时必须先切到可访问的版本目录。
+        # 禁用 uv 自动发现配置，避免父目录或用户配置影响可复现安装。
+        run(*builder, UV, "--no-config", "venv", "--seed", "--python", python,
+            str(release / ".venv"), timeout=300, cwd=release)
         run(*builder, str(release / ".venv/bin/python"), "-m", "pip", "install", "--only-binary=:all:",
-            "-r", str(release / "requirements.lock.txt"), timeout=900)
-        run(*builder, str(release / ".venv/bin/python"), "-m", "pip", "check")
+            "-r", str(release / "requirements.lock.txt"), timeout=900, cwd=release)
+        run(*builder, str(release / ".venv/bin/python"), "-m", "pip", "check", cwd=release)
     finally:
-        run("chown", "-R", "root:root", str(release))
-        run("chmod", "-R", "u=rwX,go=rX", str(release))
+        run("chown", "-R", "root:root", str(release), cwd=release)
+        run("chmod", "-R", "u=rwX,go=rX", str(release), cwd=release)
 
 
 def wait_healthy(release):
