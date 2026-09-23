@@ -79,7 +79,7 @@ class Database:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with self.connect() as connection:
             version = connection.execute("PRAGMA user_version").fetchone()[0]
-            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13):
+            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14):
                 raise RuntimeError("Unsupported database schema version")
             connection.execute("PRAGMA journal_mode = WAL")
             if version == 1:
@@ -349,5 +349,30 @@ class Database:
                     CREATE UNIQUE INDEX body_measurements_user_day
                         ON body_measurements(user_id,day) WHERE deleted=0;
                     PRAGMA user_version = 13;
+                    COMMIT;
+                """)
+            if version < 14:
+                if version > 0:
+                    backup_path = self.path.with_name(self.path.name + ".pre-v14.bak")
+                    if not backup_path.exists():
+                        with sqlite3.connect(backup_path) as backup:
+                            connection.backup(backup)
+                connection.executescript("""
+                    BEGIN IMMEDIATE;
+                    CREATE TABLE guest_accounts (
+                        user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+                        tab_hash TEXT NOT NULL,
+                        client_hash TEXT NOT NULL,
+                        created_at INTEGER NOT NULL,
+                        expires_at INTEGER NOT NULL
+                    );
+                    CREATE INDEX guest_accounts_expiry ON guest_accounts(expires_at);
+                    CREATE TABLE guest_usage (
+                        day TEXT NOT NULL,
+                        client_hash TEXT NOT NULL,
+                        calls INTEGER NOT NULL CHECK(calls >= 0),
+                        PRIMARY KEY(day, client_hash)
+                    );
+                    PRAGMA user_version = 14;
                     COMMIT;
                 """)

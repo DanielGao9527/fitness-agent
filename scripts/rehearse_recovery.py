@@ -20,13 +20,14 @@ def rehearse(source, directory):
     restore_backup(backup, restored)
     Database(restored).initialize()
     before, after = fingerprints(backup), fingerprints(restored)
-    preserved = all(before[name] == after[name] for name in TABLES - {'sessions', 'meal_consents'})
+    retained = before.keys() - {'sessions', 'meal_consents'}
+    preserved = all(before[name] == after[name] for name in retained)
     with closing(readonly(restored)) as connection:
         revoked = connection.execute('SELECT COUNT(*) FROM sessions').fetchone()[0] == 0
         revoked = revoked and connection.execute('SELECT COUNT(*) FROM meal_consents').fetchone()[0] == 0
     if not preserved or not revoked:
         raise ValueError('Isolated recovery verification failed')
-    report = {'passed': True, 'schema': 13, 'non_session_tables_preserved': 16,
+    report = {'passed': True, 'schema': 14, 'non_session_tables_preserved': len(retained),
               'old_sessions_revoked': True, 'snapshot_usage_preserved': True,
               'formal_database_replaced': False, 'provider_calls': 0,
               'contains_private_data': True, 'encrypted': False}

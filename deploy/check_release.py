@@ -55,7 +55,9 @@ def health(settings):
         connection.request("GET", "/api/health", headers={"Host": urlsplit(settings.public_origin).netloc})
         response = connection.getresponse()
         payload = json.loads(response.read(65537))
-        if response.status != 200 or payload.get("status") != "ok" or payload.get("registration_enabled") is not False:
+        if (response.status != 200 or payload.get("status") != "ok"
+            or payload.get("registration_enabled") is not settings.registration_enabled
+            or payload.get("guest_enabled") is not settings.guest_enabled):
             raise ValueError("Health check failed")
         if "stage" in payload or "text_model" in payload:
             raise ValueError("Unexpected local diagnostics in shared mode")

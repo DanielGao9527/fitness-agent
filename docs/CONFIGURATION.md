@@ -15,7 +15,9 @@
 | `FITNESS_PUBLIC_ORIGIN` | 共享入口，如 `https://fitness.example.com` |
 | `FITNESS_ALLOWED_HOSTS` | 明确主机名，用逗号分隔，不写通配符、协议或端口 |
 | `FITNESS_COOKIE_SECURE` | HTTPS 共享必须为 `true` |
-| `FITNESS_REGISTRATION_ENABLED` | 是否允许新注册；共享模式必须为 `false` |
+| `FITNESS_REGISTRATION_ENABLED` | 是否允许网页注册；本机与共享模式均可配置，已有生产环境需显式改为 `true` |
+| `FITNESS_GUEST_ENABLED` | 是否开放游客；本机默认开启，共享环境未配置时默认关闭 |
+| `FITNESS_GUEST_AI_DAILY_LIMIT` | 同一网络每日共享游客 AI 次数，默认20；同时受账号及全站上限约束，0关闭游客付费调用 |
 | `FITNESS_MODEL_PROVIDER` | `disabled` 或 `qwen` |
 | `DASHSCOPE_API_KEY` | 服务端千问凭据，不进入浏览器、日志或 Git |
 | `FITNESS_QWEN_MODEL` | 文字模型名称；默认值以 `config.py` 为准 |
@@ -23,7 +25,7 @@
 | `FITNESS_AI_USER_DAILY_LIMIT` | 每个账号每日尝试次数上限 |
 | `FITNESS_AI_GLOBAL_DAILY_LIMIT` | 全服务每日尝试次数上限 |
 
-共享模式缺少 HTTPS、匹配主机、安全 Cookie 或注册未关闭时会拒绝启动。先通过可信私密入口建立试用账号，再关闭注册切入共享模式。
+共享模式缺少 HTTPS、匹配主机或安全 Cookie 时拒绝启动。注册与游客可独立开关；关闭注册不影响已有账号登录。公网注册沿用持久化频率限制，游客另有创建频率限制和模型额度，不替代网关层防滥用。已有v13数据库需先按[账号与游客](ACCOUNTS.md)完成一次维护迁移，不仅修改环境变量。
 
 ## 独立能力开关
 

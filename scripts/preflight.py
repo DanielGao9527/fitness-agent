@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from config import ROOT, Settings
 from services.backups import inspect_connection, readonly, verify_backup
 from services.business_time import BUSINESS_TIMEZONE
+from services.usage import shared_calls
 
 
 def check(settings, *, for_sharing=False, backup=None):
@@ -22,12 +23,14 @@ def check(settings, *, for_sharing=False, backup=None):
         checks.append({"name": "access_configuration", "passed": True})
     except ValueError:
         checks.append({"name": "access_configuration", "passed": False,
-            "action": "Set explicit allowed hosts, HTTPS public origin, secure cookies and close registration for shared mode."})
+            "action": "Set explicit allowed hosts, HTTPS public origin and secure cookies for shared mode."})
     try:
         with closing(readonly(settings.database_path)) as connection:
-            inspect_connection(connection)
+            connection.execute("BEGIN")
+            metadata = inspect_connection(connection)
             today = datetime.now(timezone.utc).date().isoformat()
-            calls = connection.execute("SELECT COALESCE(SUM(calls),0) FROM ai_usage WHERE day=?", (today,)).fetchone()[0]
+            calls = (shared_calls(connection, today) if metadata['schema'] == 14 else
+                     connection.execute("SELECT COALESCE(SUM(calls),0) FROM ai_usage WHERE day=?", (today,)).fetchone()[0])
         checks.append({"name": "personal_database", "passed": True})
     except (OSError, ValueError, sqlite3.Error):
         calls = None

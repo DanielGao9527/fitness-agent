@@ -14,8 +14,9 @@ from schemas import NutritionPreviewRequest, NutritionPreviewBatch
 from services.nutrition import NutritionPreviewStore
 from rag.rag_service import KnowledgeUnavailable
 from schemas import AgentRequest, Credentials, MealBatchCreate, MealCreate, MealDraft, MealInput, MealTextRequest, Profile, WorkoutCreate, WorkoutInput
-from schemas import DraftConfirm, DraftCreate, DraftUpdate, DraftVersion
+from schemas import DraftConfirm, DraftCreate, DraftUpdate, DraftVersion, GuestStart
 from security import COOKIE_NAME, DUMMY_HASH, current_user, hash_password, issue_session, token_hash, verify_password
+from services.guests import create_guest, delete_guest
 from services.records import RecordService
 from services.meal_drafts import MealDraftService, MealDraftStore
 from services.intake_targets import IntakeTargetService
@@ -59,6 +60,7 @@ def health(request: Request):
         "status": "ok",
         "business_timezone": BUSINESS_TIMEZONE, "business_day": business_today().isoformat(),
         "registration_enabled": request.app.state.settings.registration_enabled,
+        "guest_enabled": request.app.state.settings.guest_enabled,
         "coach_understanding": coach_status(request.app.state.settings),
         "meal_text": meal_text_status(request.app.state.settings),
         "knowledge": knowledge, "photo": photo_status(request.app.state.settings),
@@ -200,12 +202,20 @@ def register(body: Credentials, request: Request, response: Response):
     try:
         with request.app.state.database.connect() as connection:
             cursor = connection.execute(
-                "INSERT INTO users(username, password_hash) VALUES (?, ?)", (body.username.lower(), password_hash)
+                "INSERT INTO users(id,username,password_hash) SELECT COALESCE(MAX(id),0)+1,?,? FROM users WHERE id>0",
+                (body.username.lower(), password_hash)
             )
             user = {"id": cursor.lastrowid, "username": body.username.lower()}
     except sqlite3.IntegrityError:
         raise HTTPException(409, "用户名已被使用") from None
     issue_session(request, response, user["id"])
+    return user
+
+
+@router.post("/auth/guest", status_code=201)
+def guest(body: GuestStart, request: Request, response: Response):
+    user = create_guest(request)
+    issue_session(request, response, user["id"], guest=True)
     return user
 
 
@@ -224,7 +234,12 @@ def login(body: Credentials, request: Request, response: Response):
 @router.post("/auth/logout", status_code=204)
 def logout(request: Request, response: Response):
     with request.app.state.database.connect() as connection:
-        connection.execute("DELETE FROM sessions WHERE token_hash = ?", (token_hash(request.cookies.get(COOKIE_NAME, "")),))
+        connection.execute("BEGIN IMMEDIATE")
+        session = token_hash(request.cookies.get(COOKIE_NAME, ""))
+        old = connection.execute("SELECT user_id FROM sessions WHERE token_hash=?", (session,)).fetchone()
+        if old:
+            delete_guest(connection, old["user_id"])
+        connection.execute("DELETE FROM sessions WHERE token_hash = ?", (session,))
     response.delete_cookie(COOKIE_NAME, path="/")
 
 

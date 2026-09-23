@@ -284,6 +284,8 @@ def test_v11_backup_upgrade_and_restart_preserve_original_tables(tmp_path):
     with db.connect() as c:
         c.execute('DROP TABLE meal_intake_reviews')
         c.execute('DROP TABLE body_measurements')
+        c.execute('DROP TABLE guest_accounts')
+        c.execute('DROP TABLE guest_usage')
         c.execute('PRAGMA user_version=11')
         c.execute("INSERT INTO users(id,username,password_hash) VALUES (1,'synthetic','synthetic')")
         c.execute("INSERT INTO profiles(user_id,payload) VALUES (1,'{}')")
@@ -291,7 +293,7 @@ def test_v11_backup_upgrade_and_restart_preserve_original_tables(tmp_path):
     db.initialize()
     db.initialize()
     with db.connect() as c, sqlite3.connect(str(path) + '.pre-v12.bak') as backup:
-        assert c.execute('PRAGMA user_version').fetchone()[0] == 13
+        assert c.execute('PRAGMA user_version').fetchone()[0] == 14
         assert backup.execute('PRAGMA user_version').fetchone()[0] == 11
         assert len(tables) == 16
         for table in tables:
