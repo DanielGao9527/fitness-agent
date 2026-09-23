@@ -23,7 +23,7 @@ jobs:
       FITNESS_MODEL_PROVIDER: disabled
       DASHSCOPE_API_KEY: ''
       FITNESS_ACCESS_MODE: local
-      FITNESS_DB_PATH: ${{ runner.temp }}/fitness-ci.sqlite3
+      FITNESS_DB_PATH: /tmp/fitness-ci.sqlite3
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
