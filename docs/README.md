@@ -1,6 +1,6 @@
 # Fitness Agent · 项目总览
 
-更新：2026-10-14。这里是当前增强工作的唯一进度入口；阶段交接已归档。GitHub：[已交付增强版](https://github.com/DanielGao9527/fitness-agent/tree/codex/fitness-hybrid-retrieval)，分支 codex/fitness-hybrid-retrieval。
+更新：2026-10-15。这里是当前增强工作的唯一进度入口；阶段交接已归档。GitHub：[已交付增强版](https://github.com/DanielGao9527/fitness-agent/tree/codex/fitness-hybrid-retrieval)，分支 codex/fitness-hybrid-retrieval。
 
 面向中文饮食记录、餐次规划与当天训练建议，将自然语言和多模态识别结果变为可核对草稿，结合个人条件与公共知识证据给出建议。
 
@@ -12,7 +12,7 @@
 | 最终要交什么 | [最终交付与验收清单](DELIVERY.md) | 产品、代码、评测、演示和简历材料 |
 | 下一步怎么做 | [后续开发路线](ROADMAP.md) | 顺序、具体任务、通过条件和代码入口 |
 
-**当前结论：E1 已实现；E2 工程链路已接通，真实质量验收未收尾；E3b 零命中恢复、时间预算和固定响应回放已实装，真实质量对照待办；E4 治理流程待开发。** 本机 localhost:8765 已运行 e3-bounded-retrieval-v18，原账号和记录在备份核验后保留。
+**当前结论：E1 已实现；E2 工程链路已接通，真实质量验收未收尾；E3b 零命中恢复、时间预算和固定响应回放已实装，真实质量对照待办；E4a 私人反馈与摘录候选已接通，E4b 评测/审批/发布待开发。** 本机 localhost:8765 已运行 e4a-feedback-candidates-v19，原账号和记录在备份核验后保留。
 
 ## 项目主线
 
@@ -35,6 +35,6 @@
 - 验证：[测试说明](../tests/README.md)、[评测数据](../evals/README.md)、[脚本说明](../scripts/README.md)。
 - 历史：[归档索引](archive/README.md)。旧方案和日期记录用于追溯，当前结论以 STATUS 为准。
 
-最新接续点为 E4a 反馈与知识候选；E2/E3 真实质量验收仍按前置条件推进，结果以 STATUS 为准。
+最新接续点为 E4b 评测、审批和版本发布；E2/E3 真实质量验收仍按前置条件推进，结果以 STATUS 为准。
 
-E3b 本机已实装，本地代码提交 a24c534；当前 GitHub 同步遇到 TLS 网络错误，尚未推送。远端仍不能视为含本批代码，详见 EXECUTION。
+10 月 15 日已恢复 GitHub 同步，上批 E3b 已推送；本批 E4a 代码、验证和本机激活状态见 EXECUTION。

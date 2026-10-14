@@ -18,6 +18,7 @@ from api.training_plans import router as training_plan_router
 from api.coach import router as coach_router
 from api.meal_photos import router as photo_router
 from api.body_measurements import router as body_router
+from api.knowledge_workbench import router as workbench_router
 from model.vision import PHOTO_TYPES
 from config import ROOT, Settings
 from database import Database
@@ -147,6 +148,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     application.include_router(coach_router)
     application.include_router(photo_router)
     application.include_router(body_router)
+    application.include_router(workbench_router)
     application.mount("/static", StaticFiles(directory=ROOT / "static"), name="static")
 
     @application.get("/", include_in_schema=False)

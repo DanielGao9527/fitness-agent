@@ -1,3 +1,4 @@
+from schema_fixtures import strip_governance_v19
 """Synthetic lifecycle tests, not a semantic model accuracy benchmark."""
 from dataclasses import replace
 from datetime import date, timedelta
@@ -282,13 +283,14 @@ def test_v16_upgrade_preserves_old_tables_and_verified_backup(tmp_path):
     database = Database(path)
     database.initialize()
     with database.connect() as connection:
+        strip_governance_v19(connection)
         strip_memory_v18(connection)
         connection.execute('DROP TABLE coach_day_equipment')
         connection.execute('PRAGMA user_version=16')
         connection.execute("INSERT INTO users(id,username,password_hash) VALUES (1,'synthetic','synthetic')")
     before = fingerprints(path)
     backup = tmp_path / 'backup.sqlite3'
-    assert migrate(path, backup)['schema'] == 18
+    assert migrate(path, backup)['schema'] == 19
     assert verify_backup(backup)['schema'] == 16
     assert all(fingerprints(path)[name] == value for name, value in before.items())
     database.initialize()

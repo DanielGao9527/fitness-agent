@@ -1,3 +1,4 @@
+from schema_fixtures import strip_governance_v19
 """Warm context provenance, confirmation, revocation and private schema upgrade."""
 from concurrent.futures import ThreadPoolExecutor
 import sqlite3
@@ -203,6 +204,7 @@ def test_v17_nonempty_memory_upgrade_preserves_all_original_columns(tmp_path):
     database = Database(path)
     database.initialize()
     with database.connect() as connection:
+        strip_governance_v19(connection)
         strip_memory_v18(connection)
         connection.execute("PRAGMA user_version=17")
         connection.execute("INSERT INTO users(id,username,password_hash) VALUES(1,'fixture','synthetic')")
@@ -215,7 +217,7 @@ def test_v17_nonempty_memory_upgrade_preserves_all_original_columns(tmp_path):
         check_schema(Database, inspect_connection, path)
     backup = tmp_path / "verified.sqlite3"
     result = migrate(path, backup)
-    assert result["schema"] == 18 and result["tables"] == 25 and result["old_tables_preserved"]
+    assert result["schema"] == 19 and result["tables"] == 28 and result["old_tables_preserved"]
     assert fingerprints(path, columns=columns) == before
     assert fingerprints(backup) == before and verify_backup(backup)["schema"] == 17
     with database.connect() as connection:

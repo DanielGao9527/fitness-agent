@@ -41,7 +41,7 @@ window.CoachView = (() => {
       ${value.sources.length?`<details class="training-sources"><summary>参考依据</summary><ul>${value.sources.map(source=>`<li>${source.origin==='curated_text'||!source.url?`${escapeHtml(source.title)} · 训练参考笔记，作者归属未核实`:`<a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.publisher)} · ${escapeHtml(source.title)}</a>`}</li>`).join('')}</ul><p class="small muted">动作依据下列资料整理；组次与时间为一般健身建议，可按实际能力调整，不是恢复判断或个体处方。</p></details>`:''}</section>`;
     return latest?content:`<details class="training-history"><summary>当时的训练建议（不代表实际完成）</summary>${content}</details>`;
   }
-  function dispose() {const s=active;cancel();if(s)closePlan(s);active=null;}
+  function dispose() {const s=active;cancel();if(s)closePlan(s);window.KnowledgeWorkbenchView?.dispose();active=null;}
   function replyText(data,turn) {
     const response=turn.response,request=response.quick_request;
     if(response.intent==='knowledge')return response.knowledge?.answer || response.text;
@@ -75,6 +75,7 @@ window.CoachView = (() => {
     closePlan(s);
     const data=s.data;
     window.CoachMemoryView?.setConversation(data || null);
+    window.KnowledgeWorkbenchView?.setConversation(data || null);
     if(data?.meal_consent)s.consent=data.meal_consent;
     const gate=s.root.querySelector('.coach-consent');
     gate.innerHTML=s.consent && !s.consent.confirmed && (data?.request_kind==='meal' || data?.review?.scope==='meal' && data?.request_kind!=='knowledge')?window.QuickMeals.consent({meal_consent:s.consent}):'';
@@ -288,7 +289,7 @@ window.CoachView = (() => {
   function mount(root) {
     dispose();
     root.innerHTML=`<section class="coach-view" aria-label="个人助手"><div class="coach-toolbar"><label>对话<select class="coach-history" aria-label="历史对话"><option value="">新对话</option></select></label><label>记录日期<input type="date" class="coach-day" value="${escapeHtml(state.day)}" required></label><div class="coach-tools"><button type="button" class="icon-button coach-new" title="新对话" aria-label="新对话">${icon("plus")}</button><button type="button" class="icon-button coach-refresh" title="刷新对话" aria-label="刷新对话">${icon("refresh-cw")}</button><button type="button" class="icon-button coach-delete" title="删除对话" aria-label="删除对话">${icon("trash-2")}</button></div></div>
-      <div class="coach-context"></div><div class="coach-memory"></div><div class="coach-consent"></div><div class="coach-messages" role="log" aria-label="对话消息" aria-live="polite"></div><section class="coach-review" aria-live="polite"></section><div class="coach-action"></div><div class="coach-plan"></div>
+      <div class="coach-context"></div><div class="coach-memory"></div><div class="coach-workbench"></div><div class="coach-consent"></div><div class="coach-messages" role="log" aria-label="对话消息" aria-live="polite"></div><section class="coach-review" aria-live="polite"></section><div class="coach-action"></div><div class="coach-plan"></div>
       <p class="small muted">仅适用于无伤病的一般成人健身，不提供伤病或康复训练方案。</p>
       <div class="coach-quick">${questions.map((question,index)=>`<button type="button" data-question="${index}">${escapeHtml(question)}</button>`).join("")}</div>
       <form class="coach-compose"><label for="coach-message" class="sr-only">给助手的消息</label><textarea id="coach-message" class="coach-input" rows="2" maxlength="2000" placeholder="你想安排什么？" required></textarea><button type="submit" class="primary icon-button" title="发送消息" aria-label="发送消息">${icon("send")}</button></form>
@@ -297,6 +298,7 @@ window.CoachView = (() => {
     active={root,user:state.user,ticket:0,busy:false,data:null,list:[],day:state.day,createId:crypto.randomUUID(),pendingSend:null};
     const s=active;
     window.CoachMemoryView?.mount(root.querySelector(".coach-memory"));
+    window.KnowledgeWorkbenchView?.mount(root.querySelector(".coach-workbench"));
     root.querySelector(".coach-compose").addEventListener("submit",event=>{event.preventDefault();send();});
     root.querySelectorAll("[data-question]").forEach(button=>button.addEventListener("click",()=>{root.querySelector(".coach-input").value=questions[Number(button.dataset.question)];root.querySelector(".coach-input").focus();}));
     root.querySelector(".coach-stop").addEventListener("click",cancel);

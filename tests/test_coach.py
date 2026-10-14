@@ -1,3 +1,4 @@
+from schema_fixtures import strip_governance_v19
 import json
 import sqlite3
 from concurrent.futures import ThreadPoolExecutor
@@ -190,6 +191,7 @@ def test_v7_upgrade_preserves_rows_and_backup(tmp_path):
     database = Database(path)
     database.initialize()
     with database.connect() as connection:
+        strip_governance_v19(connection)
         connection.execute("DROP TABLE coach_turns")
         connection.execute("DROP TABLE meal_consents")
         connection.execute("DROP TABLE coach_reviews")
@@ -212,7 +214,7 @@ def test_v7_upgrade_preserves_rows_and_backup(tmp_path):
     database.initialize()
     database.initialize()
     with database.connect() as connection, sqlite3.connect(str(path) + ".pre-v8.bak") as backup:
-        assert connection.execute("PRAGMA user_version").fetchone()[0] == 18
+        assert connection.execute("PRAGMA user_version").fetchone()[0] == 19
         assert backup.execute("PRAGMA user_version").fetchone()[0] == 7
         from check_upgrade import TABLES
         for table in TABLES[:11]:
@@ -225,6 +227,7 @@ def test_v9_upgrade_preserves_conversation_and_consent(tmp_path):
     database = Database(path)
     database.initialize()
     with database.connect() as connection:
+        strip_governance_v19(connection)
         connection.execute("DROP TABLE coach_reviews")
         connection.execute("DROP TABLE intake_targets")
         connection.execute("DROP TABLE meal_intake_reviews")
@@ -245,7 +248,7 @@ def test_v9_upgrade_preserves_conversation_and_consent(tmp_path):
     database.initialize()
     from check_upgrade import TABLES
     with database.connect() as connection, sqlite3.connect(str(path) + ".pre-v10.bak") as backup:
-        assert connection.execute("PRAGMA user_version").fetchone()[0] == 18
+        assert connection.execute("PRAGMA user_version").fetchone()[0] == 19
         assert backup.execute("PRAGMA user_version").fetchone()[0] == 9
         for table in TABLES:
             assert [tuple(row) for row in connection.execute(f"SELECT * FROM {table}")] == backup.execute(f"SELECT * FROM {table}").fetchall()

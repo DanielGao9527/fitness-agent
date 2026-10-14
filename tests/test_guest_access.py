@@ -1,3 +1,4 @@
+from schema_fixtures import strip_governance_v19
 import secrets
 import sqlite3
 import time
@@ -220,6 +221,7 @@ def test_v13_migration_backup_and_regular_fingerprints(tmp_path):
     db = Database(path)
     db.initialize()
     with db.connect() as connection:
+        strip_governance_v19(connection)
         connection.executescript('DROP TABLE coach_day_equipment; DROP TABLE profile_fact_events; DROP TABLE coach_memory_digests; DROP TRIGGER IF EXISTS coach_memory_source_change; DROP TRIGGER IF EXISTS coach_memory_source_delete; DROP TABLE coach_memory_revisions; DROP TABLE coach_memory_entries; DROP TABLE guest_accounts; DROP TABLE guest_usage; PRAGMA user_version=13;')
         connection.execute("INSERT INTO users(id,username,password_hash) VALUES (1,'legacy','not-real')")
         connection.execute("INSERT INTO ai_usage VALUES ('2026-09-23',1,7)")
@@ -231,6 +233,6 @@ def test_v13_migration_backup_and_regular_fingerprints(tmp_path):
     db.initialize()
     assert fingerprints(path) == after
     snapshot, restored = tmp_path/'snapshot.sqlite3', tmp_path/'restored.sqlite3'
-    assert create_backup(path, snapshot)['schema'] == 18
+    assert create_backup(path, snapshot)['schema'] == 19
     assert restore_backup(snapshot, restored)['usage_preserved']
     assert fingerprints(restored)['ai_usage'] == after['ai_usage']

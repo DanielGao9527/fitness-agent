@@ -1,3 +1,4 @@
+from schema_fixtures import strip_governance_v19
 import json
 import sqlite3
 from concurrent.futures import ThreadPoolExecutor
@@ -216,6 +217,7 @@ def test_concurrent_confirmations_are_idempotent(client, application):
 def test_v1_migration_preserves_data_and_backup(tmp_path):
     path = tmp_path / "legacy.sqlite3"
     with sqlite3.connect(path) as connection:
+        strip_governance_v19(connection)
         connection.executescript(SCHEMA + "\nPRAGMA user_version=1;")
         connection.execute("INSERT INTO users(id,username,password_hash) VALUES (1,'legacy','test-hash')")
         connection.execute("INSERT INTO meals(user_id,client_id,day,payload) VALUES (1,'old',?,?)", (DAY, '{"name":"legacy meal"}'))
@@ -223,7 +225,7 @@ def test_v1_migration_preserves_data_and_backup(tmp_path):
     database.initialize()
     database.initialize()
     with database.connect() as connection:
-        assert connection.execute("PRAGMA user_version").fetchone()[0] == 18
+        assert connection.execute("PRAGMA user_version").fetchone()[0] == 19
         assert connection.execute("SELECT payload FROM meals").fetchone()[0] == '{"name":"legacy meal"}'
         assert connection.execute("SELECT COUNT(*) FROM meal_drafts").fetchone()[0] == 0
         assert connection.execute("PRAGMA foreign_key_check").fetchall() == []
@@ -235,6 +237,7 @@ def test_v1_migration_preserves_data_and_backup(tmp_path):
 def test_migration_failure_rolls_back_schema(tmp_path, monkeypatch):
     path = tmp_path / "legacy.sqlite3"
     with sqlite3.connect(path) as connection:
+        strip_governance_v19(connection)
         connection.executescript(SCHEMA + "\nPRAGMA user_version=1;")
     monkeypatch.setattr("database.DRAFT_SCHEMA", "CREATE TABLE temporary_change(id INTEGER); INVALID SQL;")
     with pytest.raises(sqlite3.Error):

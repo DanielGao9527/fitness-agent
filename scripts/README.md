@@ -9,7 +9,7 @@
 | [create_account.py](create_account.py) | 在私密交互终端创建账号，无需开放网页注册 |
 | [preflight.py](preflight.py) | 检查访问配置、数据库、备份与调用次数限制，不发起模型请求或部署 |
 | [backup.py](backup.py) | 创建一致性备份、校验备份、恢复到新路径 |
-| [migrate_memory.py](migrate_memory.py) | 在服务已停且备份目标为全新私有路径时，将 v14/v15/v16/v17 私人库显式升级为 v18，并按原有字段投影验证业务行不变；不部署或自动恢复服务 |
+| [migrate_memory.py](migrate_memory.py) | 在服务已停且备份目标为全新私有路径时，将 v14–v18 私人库显式升级为 v19，并按原有字段投影验证业务行不变；不部署或自动恢复服务 |
 | [evaluate_memory.py](evaluate_memory.py) | 默认固定 v1 的 100 组器械记忆场景；`--suite` 可选择独立冻结的 v2 新表达 24 条。标注接线与有预算真实评测分离，临时库、逐次记录、失败不重试；先使用 `--plan`，参见 [评测说明](../evals/memory/README.md) |
 | [report_memory_evaluation.py](report_memory_evaluation.py) | 支持 --suite，按所选版本的实际题量合并互不重叠且语料/源码/型号一致的评测分片；拒绝重复题目和模拟/真实混用，生成逐指标与场景族报告 |
 | [replay_memory_responses.py](replay_memory_responses.py) | 仅重放旧真实运行中的开发集结构化输出，对比当前后端处理；新增云调用0次，缺失响应单列，不评估新提示词效果或覆盖旧报告 |

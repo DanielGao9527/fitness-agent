@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-15",
+  "scope": "E4a owner-private feedback and reviewed-source excerpt candidates; engineering only",
+  "python_batches": [
+    {
+      "name": "feedback, chat, memory, guest and readiness",
+      "tests": 126,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "final workbench and workflow regression",
+      "tests": 144,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "all old-version upgrade and migration cases",
+      "tests": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "batches_overlap_and_must_not_be_summed": true,
+  "final_full_python_suite_rerun": false,
+  "frontend_units_passed": [
+    "knowledge-flow",
+    "coach-memory"
+  ],
+  "browser_flows_passed": [
+    "knowledge-workbench"
+  ],
+  "browser_widths": [
+    1440,
+    390,
+    320
+  ],
+  "visual_mobile_inspection_completed": true,
+  "source_hashes": {
+    "database.py": "b7639b792706d2ad2e09818b07449b84789d3a757704d492783c648088148ca5",
+    "schemas.py": "186b8a788bb4664351606357b004d020e405dc31e8078106a09a8918b2fed6f3",
+    "api/knowledge_workbench.py": "251734c20d9de3c42ac3e76c7da3583700ccef8568275496aec38de3cbece4c6",
+    "services/knowledge_feedback.py": "ab85aabcaddc46f17d2ae28fbee72ef540da8bbe0bb4c1d252163e792d3740a5",
+    "services/coach_knowledge.py": "46a58b6e7963bf9b966734053d0d95f75a82bc3e2eb76b4951ed807955058bb9",
+    "static/knowledge-workbench.js": "04eb900690f85ce41f114b9e62867af78573116d7c4fd3a74a6269f563204317"
+  },
+  "real_provider_calls": 0,
+  "public_candidate_publication_enabled": false,
+  "independent_model_quality_acceptance_completed": false,
+  "local_activation": {
+    "schema_before": 18,
+    "schema_after": 19,
+    "tables": 28,
+    "original_tables_all_fields_preserved_after_startup": 25,
+    "new_private_tables_empty": true,
+    "backup_migration_and_recovery_rehearsal_passed": true,
+    "stage": "e4a-feedback-candidates-v19"
+  },
+  "public_deployment_performed": false,
+  "private_databases_backups_uploads_and_logs_excluded": true
+}

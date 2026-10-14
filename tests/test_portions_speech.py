@@ -1,3 +1,4 @@
+from schema_fixtures import strip_governance_v19
 import base64
 import io
 import json
@@ -83,6 +84,7 @@ def test_legacy_retry_and_v2_migration(client, application, tmp_path):
     assert client.post("/api/meals", json=body).json()["id"] == first["id"]
     path = tmp_path / "v2.sqlite3"
     with sqlite3.connect(path) as connection:
+        strip_governance_v19(connection)
         connection.executescript(SCHEMA + DRAFT_SCHEMA + "PRAGMA user_version=2;")
     Database(path).initialize()
     with sqlite3.connect(path.with_name(path.name + ".pre-v3.bak")) as backup:

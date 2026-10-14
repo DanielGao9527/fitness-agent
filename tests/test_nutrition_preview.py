@@ -1,3 +1,4 @@
+from schema_fixtures import strip_governance_v19
 import json
 import sqlite3
 import time
@@ -136,6 +137,7 @@ def test_v3_upgrade_preserves_rows_and_backup(tmp_path):
     database = Database(path)
     database.initialize()
     with database.connect() as connection:
+        strip_governance_v19(connection)
         connection.execute("DROP TABLE coach_turns")
         connection.execute("DROP TABLE meal_consents")
         connection.execute("DROP TABLE coach_reviews")
@@ -161,7 +163,7 @@ def test_v3_upgrade_preserves_rows_and_backup(tmp_path):
         connection.execute("INSERT INTO meals(user_id,client_id,day,payload) VALUES (1,'fixture',?,?)", (DAY, '{"legacy":"unchanged"}'))
     database.initialize()
     with database.connect() as connection, sqlite3.connect(path.with_name(path.name + ".pre-v4.bak")) as backup:
-        assert connection.execute("PRAGMA user_version").fetchone()[0] == 18
+        assert connection.execute("PRAGMA user_version").fetchone()[0] == 19
         assert backup.execute("PRAGMA user_version").fetchone()[0] == 3
         assert tuple(connection.execute("SELECT * FROM meals").fetchone()) == backup.execute("SELECT * FROM meals").fetchone()
         assert connection.execute("PRAGMA foreign_key_check").fetchall() == []

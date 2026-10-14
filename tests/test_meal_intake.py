@@ -1,3 +1,4 @@
+from schema_fixtures import strip_governance_v19
 import json
 import sqlite3
 from concurrent.futures import ThreadPoolExecutor
@@ -282,6 +283,7 @@ def test_v11_backup_upgrade_and_restart_preserve_original_tables(tmp_path):
     db = Database(path)
     db.initialize()
     with db.connect() as c:
+        strip_governance_v19(c)
         c.execute('DROP TABLE meal_intake_reviews')
         c.execute('DROP TABLE body_measurements')
         c.execute('DROP TABLE coach_day_equipment')
@@ -300,7 +302,7 @@ def test_v11_backup_upgrade_and_restart_preserve_original_tables(tmp_path):
     db.initialize()
     db.initialize()
     with db.connect() as c, sqlite3.connect(str(path) + '.pre-v12.bak') as backup:
-        assert c.execute('PRAGMA user_version').fetchone()[0] == 18
+        assert c.execute('PRAGMA user_version').fetchone()[0] == 19
         assert backup.execute('PRAGMA user_version').fetchone()[0] == 11
         assert len(tables) == 16
         for table in tables:

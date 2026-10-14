@@ -1264,3 +1264,15 @@ dialog::backdrop {
 .guest-banner { margin: 0; padding: 8px 16px; background: #e9f4ee; color: #244b39; font-size: 13px; }
 [data-action="guest-start"] { margin-top: 12px; }
 #guest-notice { margin-bottom: 0; line-height: 1.5; }
+/* Private feedback workbench: keep long excerpts and controls within narrow screens. */
+.knowledge-workbench {margin:12px 0;padding:12px;border:1px solid var(--border,#ddd);border-radius:12px;min-width:0;}
+.knowledge-workbench form {display:grid;gap:10px;margin:12px 0;}
+.knowledge-workbench label {display:grid;gap:5px;min-width:0;}
+.knowledge-workbench select,.knowledge-workbench textarea,.knowledge-workbench input {max-width:100%;min-width:0;width:100%;}
+.knowledge-workbench button {white-space:normal;overflow-wrap:anywhere;max-width:100%;}
+.knowledge-workbench .candidate-confirm {display:flex;align-items:flex-start;gap:8px;}
+.knowledge-workbench .candidate-confirm input {width:auto;flex:none;}
+.workbench-text,.workbench-item {overflow-wrap:anywhere;white-space:pre-wrap;}
+.workbench-list {max-height:480px;overflow:auto;min-width:0;}
+.workbench-item {padding:12px 0;border-top:1px solid var(--border,#ddd);}
+.workbench-actions {display:flex;flex-wrap:wrap;gap:8px;margin:8px 0;}

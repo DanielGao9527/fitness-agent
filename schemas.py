@@ -810,6 +810,46 @@ class KnowledgeQuestion(InputModel):
     question: str = Field(min_length=1, max_length=1000)
 
 
+class KnowledgeFeedbackCreate(InputModel):
+    client_id: UUID
+    conversation_id: UUID
+    turn_version: int = Field(ge=1, strict=True)
+    answer_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    kind: Literal["personal_correction", "knowledge_issue"]
+    comment: str = Field(min_length=1, max_length=1000)
+
+
+class KnowledgeCandidateContent(InputModel):
+    content: str = Field(min_length=1, max_length=1000)
+    source_chunk_id: str = Field(pattern=r"^[a-z0-9][a-z0-9-]{0,79}:[a-z0-9][a-z0-9-]{0,79}$")
+    source_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    reviewed: bool = Field(strict=True)
+
+    @field_validator("reviewed")
+    @classmethod
+    def reviewed_source(cls, value):
+        if not value:
+            raise ValueError("请核对公共出处和连续摘录")
+        return value
+
+
+class KnowledgeCandidateCreate(KnowledgeCandidateContent):
+    client_id: UUID
+    feedback_id: UUID
+
+
+class KnowledgeCandidateUpdate(KnowledgeCandidateContent):
+    version: int = Field(ge=1, strict=True)
+
+
+class KnowledgeWorkbenchVersion(InputModel):
+    version: int = Field(ge=1, strict=True)
+
+
+class KnowledgeCandidateReject(KnowledgeWorkbenchVersion):
+    note: str = Field(min_length=1, max_length=300)
+
+
 class KnowledgeSelection(InputModel):
     status: Literal["answered", "insufficient", "personal_scope"]
     chunk_ids: list[Annotated[str, Field(min_length=1, max_length=161)]] = Field(max_length=3)

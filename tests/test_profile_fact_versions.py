@@ -1,3 +1,4 @@
+from schema_fixtures import strip_governance_v19
 """Personal fact revisions must protect final advice, including A -> B -> A."""
 from dataclasses import replace
 from concurrent.futures import ThreadPoolExecutor
@@ -220,6 +221,7 @@ def test_v15_migration_seeds_provenance_and_preserves_every_business_row(tmp_pat
     db = Database(source)
     db.initialize()
     with db.connect() as connection:
+        strip_governance_v19(connection)
         strip_memory_v18(connection)
         connection.execute('DROP TABLE coach_day_equipment')
         connection.execute('DROP TABLE profile_fact_events')
@@ -232,7 +234,7 @@ def test_v15_migration_seeds_provenance_and_preserves_every_business_row(tmp_pat
         check_schema(Database, inspect_connection, source)
     backup = tmp_path / 'before.sqlite3'
     result = migrate(source, backup)
-    assert result['schema'] == 18 and result['old_tables_preserved']
+    assert result['schema'] == 19 and result['old_tables_preserved']
     assert verify_backup(backup)['schema'] == 15
     assert all(fingerprints(source)[name] == value for name, value in before.items())
     with db.connect() as connection:
@@ -245,11 +247,11 @@ def test_v15_migration_seeds_provenance_and_preserves_every_business_row(tmp_pat
     fresh = tmp_path / 'v16.sqlite3'
     restored = tmp_path / 'restored.sqlite3'
     create_backup(source, fresh)
-    assert restore_backup(fresh, restored)['schema'] == 18
+    assert restore_backup(fresh, restored)['schema'] == 19
     assert fingerprints(source)['profile_fact_events'] == fingerprints(restored)['profile_fact_events']
     db.initialize()
     assert RecordService(db, 1).profile_snapshot()[1] == 1
-    with pytest.raises(ValueError, match='v14, v15, v16 or v17'):
+    with pytest.raises(ValueError, match='v14 through v18'):
         migrate(source, tmp_path / 'not-created.sqlite3')
 
 

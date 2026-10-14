@@ -79,7 +79,7 @@ class Database:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with self.connect() as connection:
             version = connection.execute("PRAGMA user_version").fetchone()[0]
-            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18):
+            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19):
                 raise RuntimeError("Unsupported database schema version")
             connection.execute("PRAGMA journal_mode = WAL")
             if version == 1:
@@ -513,5 +513,63 @@ class Database:
                             WHERE source_conversation_id=OLD.id;
                     END;
                     PRAGMA user_version = 18;
+                    COMMIT;
+                """)
+            if version < 19:
+                if version > 0:
+                    backup_path = self.path.with_name(self.path.name + ".pre-v19.bak")
+                    if not backup_path.exists():
+                        with closing(sqlite3.connect(backup_path)) as backup:
+                            connection.backup(backup)
+                connection.executescript("""
+                    BEGIN IMMEDIATE;
+                    CREATE TABLE knowledge_feedback (
+                        id TEXT PRIMARY KEY,
+                        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                        client_id TEXT NOT NULL,
+                        request_hash TEXT NOT NULL CHECK(length(request_hash)=64),
+                        conversation_id TEXT NOT NULL,
+                        turn_version INTEGER NOT NULL CHECK(turn_version >= 1),
+                        answer_hash TEXT NOT NULL CHECK(length(answer_hash)=64),
+                        source_snapshot TEXT NOT NULL,
+                        kind TEXT NOT NULL CHECK(kind IN ('personal_correction','knowledge_issue')),
+                        comment TEXT NOT NULL CHECK(length(comment) BETWEEN 1 AND 1000),
+                        version INTEGER NOT NULL DEFAULT 1 CHECK(version >= 1),
+                        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        UNIQUE(user_id,client_id),
+                        UNIQUE(user_id,conversation_id,turn_version,answer_hash,kind),
+                        UNIQUE(user_id,id),
+                        FOREIGN KEY(conversation_id,turn_version) REFERENCES coach_turns(conversation_id,version) ON DELETE CASCADE
+                    );
+                    CREATE TABLE knowledge_candidates (
+                        id TEXT PRIMARY KEY,
+                        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                        feedback_id TEXT NOT NULL,
+                        client_id TEXT NOT NULL,
+                        request_hash TEXT NOT NULL CHECK(length(request_hash)=64),
+                        content TEXT NOT NULL CHECK(length(content) BETWEEN 1 AND 1000),
+                        source_snapshot TEXT NOT NULL,
+                        source_hash TEXT NOT NULL CHECK(length(source_hash)=64),
+                        content_hash TEXT NOT NULL CHECK(length(content_hash)=64),
+                        status TEXT NOT NULL DEFAULT 'draft' CHECK(status IN ('draft','rejected')),
+                        review_note TEXT NOT NULL DEFAULT '' CHECK(length(review_note) <= 300),
+                        version INTEGER NOT NULL DEFAULT 1 CHECK(version >= 1),
+                        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        UNIQUE(user_id,client_id),
+                        UNIQUE(user_id,content_hash,source_hash),
+                        FOREIGN KEY(user_id,feedback_id) REFERENCES knowledge_feedback(user_id,id) ON DELETE CASCADE
+                    );
+                    CREATE TABLE knowledge_candidate_events (
+                        candidate_id TEXT NOT NULL REFERENCES knowledge_candidates(id) ON DELETE CASCADE,
+                        version INTEGER NOT NULL CHECK(version >= 1),
+                        action TEXT NOT NULL CHECK(action IN ('created','revised','rejected')),
+                        content_hash TEXT NOT NULL,
+                        source_hash TEXT NOT NULL,
+                        note TEXT NOT NULL DEFAULT '' CHECK(length(note) <= 300),
+                        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        PRIMARY KEY(candidate_id,version)
+                    );
+                    PRAGMA user_version = 19;
                     COMMIT;
                 """)

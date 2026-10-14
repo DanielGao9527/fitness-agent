@@ -9,6 +9,7 @@ from services.coach import CoachService, conversation_constraints, pending_turns
 from services.knowledge_answers import answer_question, outside_scope
 from services.meal_plans import digest, encode
 from services.records import RecordService
+from services.knowledge_feedback import answer_signature
 
 
 class CoachKnowledgeService:
@@ -106,6 +107,8 @@ class CoachKnowledgeService:
         profile = RecordService(self.database, self.user_id).get_profile()
         for turn in data["turns"]:
             value = turn["response"].get("knowledge")
+            if value and value.get("status") in ("answered", "insufficient"):
+                turn["feedback_target"] = {"answer_hash": answer_signature(turn["message"], value)}
             if not value or value.get("status") != "answered":
                 continue
             sources = value["sources"]
