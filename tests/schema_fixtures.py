@@ -12,5 +12,13 @@ def strip_memory_v18(connection):
 
 
 def strip_governance_v19(connection):
+    strip_review_v20(connection)
     for name in ("knowledge_candidate_events", "knowledge_candidates", "knowledge_feedback"):
+        connection.execute(f"DROP TABLE IF EXISTS {name}")
+
+
+def strip_review_v20(connection):
+    for name in ("knowledge_candidate_review_change", "knowledge_answer_review_change", "knowledge_reviewer_revoke", "knowledge_reviewer_delete", "knowledge_reviewer_account_delete"):
+        connection.execute(f"DROP TRIGGER IF EXISTS {name}")
+    for name in ("knowledge_review_events", "knowledge_review_gates", "knowledge_submissions", "knowledge_reviewers"):
         connection.execute(f"DROP TABLE IF EXISTS {name}")

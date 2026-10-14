@@ -29,7 +29,7 @@ def test_deployment_remains_blocked_until_explicit_migration(tmp_path):
     assert fingerprints(path) == before
     backup = tmp_path/'approved-backup.sqlite3'
     result = migrate(path, backup)
-    assert result['schema'] == 19 and result['tables'] == 28
+    assert result['schema'] == 20 and result['tables'] == 32
     assert result['old_tables_preserved'] and result['provider_calls'] == 0
     assert verify_backup(backup)['schema'] == 13
     assert fingerprints(backup) == before

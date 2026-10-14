@@ -10,6 +10,7 @@ from fastapi import HTTPException
 from fastapi.testclient import TestClient
 
 from app import create_app
+from services.business_time import business_today
 from database import Database
 from schemas import BodyMeasurementCreate, BodyMeasurementUpdate
 from services.body_measurements import BodyMeasurementService
@@ -44,7 +45,7 @@ def test_authentication_same_origin_and_no_model(client):
     {'weight_kg': None}, {'weight_kg': 0}, {'weight_kg': 401}, {'weight_kg': '72'},
     {'weight_kg': True}, {'weight_kg': False}, {'body_fat_percent': 76}, {'body_fat_percent': 0},
     {'body_fat_percent': True}, {'notes': 'a' * 301}, {'day': '2026-02-30'},
-    {'day': (date.today() + timedelta(days=1)).isoformat()}, {'unexpected': 'private'},
+    {'day': (business_today() + timedelta(days=1)).isoformat()}, {'unexpected': 'private'},
 ])
 def test_strict_validation(client, change):
     register(client)
@@ -203,7 +204,7 @@ def test_v12_upgrade_backup_and_original_seventeen_tables(tmp_path):
     with db.connect() as c, sqlite3.connect(str(path) + '.pre-v13.bak') as backup:
         assert len(tables) == 17
         assert backup.execute('PRAGMA user_version').fetchone()[0] == 12
-        assert c.execute('PRAGMA user_version').fetchone()[0] == 19
+        assert c.execute('PRAGMA user_version').fetchone()[0] == 20
         for table in tables:
             assert [tuple(row) for row in c.execute(f'SELECT * FROM {table} ORDER BY rowid')] == backup.execute(f'SELECT * FROM {table} ORDER BY rowid').fetchall()
         assert c.execute('SELECT COUNT(*) FROM body_measurements').fetchone()[0] == 0

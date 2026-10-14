@@ -6,11 +6,12 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app import create_app
+from services.business_time import business_today
 from test_foundation import application, client, register
 from test_nutrition_targets import setup, profile, preview, save_standard, state, day_body, request
 from test_body_measurements import update_body
 
-TODAY = date.today().isoformat()
+TODAY = business_today().isoformat()
 FORMULA = {"mode": "calculated", "use_profile": True}
 
 
@@ -112,7 +113,7 @@ def test_latest_measurement_syncs_but_older_backfill_does_not(client, applicatio
     assert after['target']['kcal'] > before['target']['kcal']
     assert client.get('/api/profile').json()['weight_kg'] == 80
     assert client.get('/api/profile').json()['body_fat_percent'] == 24
-    measure(client, day=(date.today()-timedelta(days=7)).isoformat(), weight_kg=85, body_fat_percent=25)
+    measure(client, day=(business_today()-timedelta(days=7)).isoformat(), weight_kg=85, body_fat_percent=25)
     assert client.get('/api/profile').json()['weight_kg'] == 80
     assert state(client)['version'] == after['version']
     data = current(client)
@@ -142,7 +143,7 @@ def test_partial_measurements_independent_and_no_daily_fake_rows(client):
     assert current(client)['review']['measurement_days'] == 1
     assert current(client)['metrics']['body_fat_percent']['count'] == 1
     assert current(client)['metrics']['body_fat_percent']['change'] is None
-    future = client.get('/api/body-measurements', params={'day': (date.today()+timedelta(days=30)).isoformat()}).json()
+    future = client.get('/api/body-measurements', params={'day': (business_today()+timedelta(days=30)).isoformat()}).json()
     assert future['current_body']['weight_kg']['value'] == 80
     assert future['records'] == []
 
@@ -172,7 +173,7 @@ def test_delete_latest_restores_manual_fallback_and_day_override_survives(client
     assert client.post('/api/nutrition-target/day', json=day_body(client, 3500)).status_code == 200
     record = measure(client)
     assert state(client)['target']['kcal'] == 3500
-    tomorrow = (date.today()+timedelta(days=1)).isoformat()
+    tomorrow = (business_today()+timedelta(days=1)).isoformat()
     assert state(client, tomorrow)['target']['kcal'] > baseline
     assert client.delete(f"/api/body-measurements/{record['id']}?version=1").status_code == 204
     assert client.get('/api/profile').json()['weight_kg'] == 70
@@ -183,7 +184,7 @@ def test_delete_latest_restores_manual_fallback_and_day_override_survives(client
 
 def test_delete_restores_previous_measurement_without_manual_baseline(client):
     register(client)
-    old = measure(client, day=(date.today()-timedelta(days=7)).isoformat(), weight_kg=75, body_fat_percent=22)
+    old = measure(client, day=(business_today()-timedelta(days=7)).isoformat(), weight_kg=75, body_fat_percent=22)
     latest = measure(client, weight_kg=74)
     assert client.get('/api/profile').json()['body_fat_percent'] == 22
     assert client.delete(f"/api/body-measurements/{latest['id']}?version=1").status_code == 204
@@ -196,7 +197,7 @@ def test_measurement_changes_future_formula_not_past_ledger(client, monkeypatch)
     import services.nutrition_targets as module
     configured(client)
     first = state(client)
-    monkeypatch.setattr(module, 'business_today', lambda: date.today() + timedelta(days=1))
+    monkeypatch.setattr(module, 'business_today', lambda: business_today() + timedelta(days=1))
     measure(client)
     assert state(client)['target']['id'] == first['target']['id']
     assert state(client, module.business_today().isoformat())['target']['kcal'] > first['target']['kcal']

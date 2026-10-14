@@ -850,6 +850,35 @@ class KnowledgeCandidateReject(KnowledgeWorkbenchVersion):
     note: str = Field(min_length=1, max_length=300)
 
 
+class KnowledgeReviewSubmit(KnowledgeWorkbenchVersion):
+    client_id: UUID
+    share_public_excerpt: bool = Field(strict=True)
+
+    @field_validator("share_public_excerpt")
+    @classmethod
+    def explicit_sharing(cls, value):
+        if not value:
+            raise ValueError("请明确同意仅提交公共摘录与出处供审核")
+        return value
+
+
+class KnowledgeReviewApprove(KnowledgeWorkbenchVersion):
+    gate_id: UUID
+    binding_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    reviewed: bool = Field(strict=True)
+
+    @field_validator("reviewed")
+    @classmethod
+    def explicit_review(cls, value):
+        if not value:
+            raise ValueError("请人工核对完整出处与适用范围")
+        return value
+
+
+class KnowledgeReviewReject(KnowledgeWorkbenchVersion):
+    reason: Literal["source_problem", "needs_context", "not_relevant"]
+
+
 class KnowledgeSelection(InputModel):
     status: Literal["answered", "insufficient", "personal_scope"]
     chunk_ids: list[Annotated[str, Field(min_length=1, max_length=161)]] = Field(max_length=3)

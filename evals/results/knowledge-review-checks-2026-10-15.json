@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-15",
+  "scope": "E4b.1 explicit public-excerpt submission and local/manual pre-review; publication not implemented",
+  "final_full_python_suite": {
+    "tests": 1887,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "previous_full_python_suite": {
+    "tests": 1887,
+    "failures": 12,
+    "errors": 0,
+    "skipped": 0
+  },
+  "previous_failures": "12 date-dependent test failures; mixed OS date vs Asia/Shanghai and collection-time tomorrow. Fixed tests only; no business validation relaxed.",
+  "targeted_python_suite": {
+    "tests": 106,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "batches_overlap_and_must_not_be_summed": true,
+  "frontend_units_passed": 13,
+  "browser_flows_passed": [
+    "knowledge-workbench",
+    "knowledge-review"
+  ],
+  "browser_widths": [
+    1440,
+    390,
+    320
+  ],
+  "visual_mobile_inspection_completed": true,
+  "real_provider_calls": 0,
+  "source_hashes": {
+    "database.py": "def7b64b10754216503f8eb827fcab3d6eb8d0d966ed5ace1928b03416c80415",
+    "schemas.py": "b6b0aa4bafb682a14773eaa340bbd19ed042503ae32bf97c1c9ffa7285b55451",
+    "api/knowledge_workbench.py": "ad361fbbf9c795fdcb76a2e8eca43ea8249eec28a4b1bef62c9bd1784bd312f2",
+    "services/knowledge_review.py": "8b1607e618cb105842622e4f08dae98362f405d5a0e89f10f8b152ee8d3ee998",
+    "services/knowledge_feedback.py": "ab85aabcaddc46f17d2ae28fbee72ef540da8bbe0bb4c1d252163e792d3740a5",
+    "scripts/knowledge_reviewer.py": "4d35c141b266b96f22f0b242e08b71b76c07eff867f280f8db3bb40bb8a4c713",
+    "services/backups.py": "0e2cdba6ae7caacf826c1afa55a58f2d4e3cba34a29fe2ac8c0ed5b047de20a7",
+    "static/knowledge-review.js": "aebc8573801c323be02309127d29e0f0733653ff124c0bbbfd4e451ac1a8a648",
+    "static/knowledge-workbench.js": "c76c0b96df7b8680d6d9b9fc6b6ac32437823414ca1b377c66dd51121af167b9"
+  },
+  "precheck_policy": "public-excerpt-precheck-v1",
+  "precheck_is_semantic_quality_evaluation": false,
+  "independent_model_quality_acceptance_completed": false,
+  "public_candidate_publication_enabled": false,
+  "public_deployment_performed": false,
+  "local_activation": {
+    "schema_before": 19,
+    "schema_after": 20,
+    "tables": 32,
+    "original_tables_all_fields_preserved_after_startup": 28,
+    "new_tables_empty": true,
+    "actual_account_roles_granted": 0,
+    "backup_migration_and_recovery_rehearsal_passed": true,
+    "stage": "e4b1-knowledge-pre-review-v20"
+  }
+}

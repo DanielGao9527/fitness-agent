@@ -233,6 +233,6 @@ def test_v13_migration_backup_and_regular_fingerprints(tmp_path):
     db.initialize()
     assert fingerprints(path) == after
     snapshot, restored = tmp_path/'snapshot.sqlite3', tmp_path/'restored.sqlite3'
-    assert create_backup(path, snapshot)['schema'] == 19
+    assert create_backup(path, snapshot)['schema'] == 20
     assert restore_backup(snapshot, restored)['usage_preserved']
     assert fingerprints(restored)['ai_usage'] == after['ai_usage']

@@ -239,7 +239,7 @@ def test_v6_migration_preserves_ten_tables(tmp_path):
         connection.execute("INSERT INTO meal_plans(id,user_id,client_id,day,meal_type,input_payload,context_hash,status) VALUES ('old',1,'old',?,'dinner','{}','hash','draft')", (DAY,))
     database.initialize()
     with database.connect() as connection, sqlite3.connect(str(path) + ".pre-v7.bak") as backup:
-        assert connection.execute("PRAGMA user_version").fetchone()[0] == 19
+        assert connection.execute("PRAGMA user_version").fetchone()[0] == 20
         assert backup.execute("PRAGMA user_version").fetchone()[0] == 6
         for table in ("users", "profiles", "meals", "workouts", "meal_drafts", "ai_usage", "nutrition_previews", "workout_previews", "sessions", "meal_plans"):
             assert [tuple(row) for row in connection.execute(f"SELECT * FROM {table}")] == backup.execute(f"SELECT * FROM {table}").fetchall()

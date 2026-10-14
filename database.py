@@ -79,7 +79,7 @@ class Database:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with self.connect() as connection:
             version = connection.execute("PRAGMA user_version").fetchone()[0]
-            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19):
+            if version not in range(21):
                 raise RuntimeError("Unsupported database schema version")
             connection.execute("PRAGMA journal_mode = WAL")
             if version == 1:
@@ -571,5 +571,121 @@ class Database:
                         PRIMARY KEY(candidate_id,version)
                     );
                     PRAGMA user_version = 19;
+                    COMMIT;
+                """)
+            if version < 20:
+                if version > 0:
+                    backup_path = self.path.with_name(self.path.name + ".pre-v20.bak")
+                    if not backup_path.exists():
+                        with closing(sqlite3.connect(backup_path)) as backup:
+                            connection.backup(backup)
+                connection.executescript("""
+                    BEGIN IMMEDIATE;
+                    CREATE TABLE knowledge_reviewers (
+                        user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+                        enabled INTEGER NOT NULL CHECK(enabled IN (0,1)),
+                        revision INTEGER NOT NULL CHECK(revision >= 1),
+                        updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+                    );
+                    CREATE TABLE knowledge_submissions (
+                        id TEXT PRIMARY KEY,
+                        candidate_id TEXT NOT NULL REFERENCES knowledge_candidates(id) ON DELETE CASCADE,
+                        candidate_version INTEGER NOT NULL CHECK(candidate_version >= 1),
+                        client_id TEXT NOT NULL,
+                        request_hash TEXT NOT NULL CHECK(length(request_hash)=64),
+                        content TEXT NOT NULL CHECK(length(content) BETWEEN 1 AND 1000),
+                        content_hash TEXT NOT NULL CHECK(length(content_hash)=64),
+                        source_snapshot TEXT NOT NULL,
+                        source_hash TEXT NOT NULL CHECK(length(source_hash)=64),
+                        status TEXT NOT NULL DEFAULT 'pending'
+                            CHECK(status IN ('pending','checked','approved','rejected','withdrawn','invalidated')),
+                        version INTEGER NOT NULL DEFAULT 1 CHECK(version >= 1),
+                        gate_id TEXT,
+                        reviewer_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+                        reviewer_revision INTEGER,
+                        reason TEXT NOT NULL DEFAULT '',
+                        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        UNIQUE(candidate_id,client_id)
+                    );
+                    CREATE UNIQUE INDEX knowledge_submission_active ON knowledge_submissions(candidate_id)
+                        WHERE status IN ('pending','checked','approved');
+                    CREATE TABLE knowledge_review_gates (
+                        id TEXT PRIMARY KEY,
+                        submission_id TEXT NOT NULL REFERENCES knowledge_submissions(id) ON DELETE CASCADE,
+                        binding_hash TEXT NOT NULL CHECK(length(binding_hash)=64),
+                        corpus_hash TEXT NOT NULL CHECK(length(corpus_hash)=64),
+                        policy TEXT NOT NULL,
+                        passed INTEGER NOT NULL CHECK(passed IN (0,1)),
+                        report TEXT NOT NULL,
+                        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+                    );
+                    CREATE TABLE knowledge_review_events (
+                        submission_id TEXT NOT NULL REFERENCES knowledge_submissions(id) ON DELETE CASCADE,
+                        version INTEGER NOT NULL CHECK(version >= 1),
+                        action TEXT NOT NULL,
+                        actor_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+                        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        PRIMARY KEY(submission_id,version)
+                    );
+                    CREATE TRIGGER knowledge_candidate_review_change AFTER UPDATE ON knowledge_candidates
+                    BEGIN
+                        UPDATE knowledge_submissions SET status='invalidated',reason='candidate_changed',
+                            version=version+1,updated_at=CURRENT_TIMESTAMP
+                            WHERE candidate_id=OLD.id AND status IN ('pending','checked','approved');
+                        INSERT INTO knowledge_review_events(submission_id,version,action)
+                            SELECT id,version,'candidate_changed' FROM knowledge_submissions
+                            WHERE candidate_id=OLD.id AND reason='candidate_changed'
+                            AND NOT EXISTS(SELECT 1 FROM knowledge_review_events e
+                                WHERE e.submission_id=knowledge_submissions.id AND e.version=knowledge_submissions.version);
+                    END;
+                    CREATE TRIGGER knowledge_answer_review_change AFTER UPDATE OF message,response ON coach_turns
+                        WHEN OLD.message IS NOT NEW.message OR OLD.response IS NOT NEW.response
+                    BEGIN
+                        UPDATE knowledge_submissions SET status='invalidated',reason='answer_changed',
+                            version=version+1,updated_at=CURRENT_TIMESTAMP
+                            WHERE status IN ('pending','checked','approved') AND candidate_id IN (
+                                SELECT c.id FROM knowledge_candidates c JOIN knowledge_feedback f ON f.id=c.feedback_id
+                                WHERE f.conversation_id=OLD.conversation_id AND f.turn_version=OLD.version);
+                        INSERT INTO knowledge_review_events(submission_id,version,action)
+                            SELECT id,version,'answer_changed' FROM knowledge_submissions WHERE reason='answer_changed'
+                            AND NOT EXISTS(SELECT 1 FROM knowledge_review_events e
+                                WHERE e.submission_id=knowledge_submissions.id AND e.version=knowledge_submissions.version);
+                    END;
+                    CREATE TRIGGER knowledge_reviewer_revoke AFTER UPDATE ON knowledge_reviewers
+                        WHEN OLD.revision<>NEW.revision OR NEW.enabled=0
+                    BEGIN
+                        UPDATE knowledge_submissions SET status='invalidated',reason='reviewer_changed',
+                            version=version+1,updated_at=CURRENT_TIMESTAMP
+                            WHERE reviewer_id=OLD.user_id AND status='approved';
+                        INSERT INTO knowledge_review_events(submission_id,version,action)
+                            SELECT id,version,'reviewer_changed' FROM knowledge_submissions
+                            WHERE reviewer_id=OLD.user_id AND reason='reviewer_changed'
+                            AND NOT EXISTS(SELECT 1 FROM knowledge_review_events e
+                                WHERE e.submission_id=knowledge_submissions.id AND e.version=knowledge_submissions.version);
+                    END;
+                    CREATE TRIGGER knowledge_reviewer_delete BEFORE DELETE ON knowledge_reviewers
+                    BEGIN
+                        UPDATE knowledge_submissions SET status='invalidated',reason='reviewer_changed',
+                            version=version+1,updated_at=CURRENT_TIMESTAMP
+                            WHERE reviewer_id=OLD.user_id AND status='approved';
+                        INSERT INTO knowledge_review_events(submission_id,version,action)
+                            SELECT id,version,'reviewer_changed' FROM knowledge_submissions
+                            WHERE reviewer_id=OLD.user_id AND reason='reviewer_changed'
+                            AND NOT EXISTS(SELECT 1 FROM knowledge_review_events e
+                                WHERE e.submission_id=knowledge_submissions.id AND e.version=knowledge_submissions.version);
+                    END;
+                    CREATE TRIGGER knowledge_reviewer_account_delete BEFORE DELETE ON users
+                    BEGIN
+                        UPDATE knowledge_submissions SET status='invalidated',reason='reviewer_changed',
+                            version=version+1,updated_at=CURRENT_TIMESTAMP
+                            WHERE reviewer_id=OLD.id AND status='approved';
+                        INSERT INTO knowledge_review_events(submission_id,version,action)
+                            SELECT id,version,'reviewer_changed' FROM knowledge_submissions
+                            WHERE reviewer_id=OLD.id AND reason='reviewer_changed'
+                            AND NOT EXISTS(SELECT 1 FROM knowledge_review_events e
+                                WHERE e.submission_id=knowledge_submissions.id AND e.version=knowledge_submissions.version);
+                    END;
+                    PRAGMA user_version = 20;
                     COMMIT;
                 """)

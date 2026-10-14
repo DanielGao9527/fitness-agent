@@ -19,7 +19,8 @@ Linux／macOS 使用 .venv/bin/python。已有本机工作区可复用外层虚�
 | 中文混合检索 | test_embeddings.py、test_hybrid_retrieval.py、test_hybrid_api.py；接口角色/顺序、RRF、缓存版本、额度、来源变化与词法降级 |
 | 知识分流与有限重试 | test_coach_knowledge.py、test_knowledge_answers.py、test_knowledge_loop.py；一次候选快照、原问题复核、引用失效、停止条件 |
 | 零命中恢复与策略回放 | test_knowledge_recovery.py、test_knowledge_replay.py；数字/单位、时间/否定、重复候选重排、额度、截止时间、迟到输出、冻结输入和无原文报告 |
-| 私人反馈与摘录候选 | test_knowledge_workbench.py；回答绑定、幂等、并发、内容/来源去重、显式核对、来源失效、隔离、修订、删除、重启与 v18→v19 迁移 |
+| 私人反馈与摘录候选 | test_knowledge_workbench.py；回答绑定、幂等、并发、内容/来源去重、显式核对、来源失效、隔离、修订、删除、重启与旧库迁移 |
+| 公共摘录预审 | test_knowledge_review.py；分享同意、服务端权限/游客隔离、字段白名单、版本与语料指纹、离线检查、人工预审、修订/来源/权限撤销失效、并发、删除、重启及 v19→v20 迁移 |
 | 会话／温／冷记忆 | test_coach_memory.py、test_coach_warm_memory.py；保存、读取、更正、删除、来源变化与本人隔离 |
 | 偏好原话与集合版本 | test_memory_provenance.py；显式核对、连续原话、来源撤销、集合 A→B→A、更正解绑、并发、隔离、重启及 v17→v18 非空旧笔记保留 |
 | 器械事实生命周期 | test_profile_fact_versions.py、test_equipment_memory_scopes.py、test_equipment_clarification.py；本次/今天/长期、显式确认、到期、A→B→A、并发、未知条件和 v17 迁移 |
@@ -69,6 +70,8 @@ node tests/browser-memory-provenance.cjs
 用户笔记页面另用 ui_fixture_server.py --memory（8771）与 browser-coach-memory.cjs。一般业务页面用 --coach（8767），当前有效套件列表见 [browser-current.json](browser-current.json)。旧页面脚本不全是当前验收入口；测试端口被占用时先确认归属，不停止未知服务。
 
 反馈工作台使用 ui_fixture_server.py --coach（8767）与 node tests/browser-knowledge-workbench.cjs，覆盖原回答选择、连续摘录核对、修订/搁置、文本转义、两账号隔离、刷新持久化、级联删除及 1440/390/320 宽度。测试服务为词法检索和模型替身，不向真实账号库写入数据。
+
+同一隔离服务可运行 node tests/browser-knowledge-review.cjs；需要 FITNESS_TEST_PYTHON 指向项目 Python（未指定时复用本工作区外层虚拟环境）。它仅通过本机管理命令为合成测试账号授予/撤回权限，验证本人分享、两账号字段隔离、工程检查、人工预审、修订失效、撤回后再提交和窄屏。只连接 artifacts/ui-coach-review-test.sqlite3，不操作正常账号库。
 
 ## 质量评测与解释边界
 

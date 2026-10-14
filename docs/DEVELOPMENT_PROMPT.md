@@ -5,10 +5,10 @@
 ## 开始
 
 1. 阅读 PRODUCT、ARCHITECTURE、EXECUTION、STATUS、ROADMAP；最终标准看 DELIVERY。
-2. 检查分支和现有改动，保留其他任务的工作；增强交付分支为 codex/fitness-hybrid-retrieval，当前源码和本机库均为 v19。
+2. 检查分支和现有改动，保留其他任务的工作；增强交付分支为 codex/fitness-hybrid-retrieval，当前源码和本机库均为 v20。
 3. 从 EXECUTION 的接续点推进。最新用户指令优先，变化同步到对应文档。
 
-当前 N3、E3b 与 E4a 工程已实装，本机运行 e4a-feedback-candidates-v19。下一工程阶段 E4b；N1 独立复核、N2 及 E3b 真实质量对照仍待办，不以固定响应回放替代。
+当前 N3、E3b、E4a 与 E4b.1 工程已实装，本机运行 e4b1-knowledge-pre-review-v20。下一工程阶段 E4b.2 正式质量门禁、版本发布与回滚；N1 独立复核、N2 及 E3b 真实质量对照仍待办，不以固定响应回放替代。
 
 ## 实现
 

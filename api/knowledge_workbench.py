@@ -5,8 +5,10 @@ from fastapi import APIRouter, HTTPException, Request, Response
 from api.routes import User
 from rag.rag_service import KnowledgeUnavailable
 from schemas import (KnowledgeFeedbackCreate, KnowledgeCandidateCreate, KnowledgeCandidateUpdate,
-                     KnowledgeCandidateReject, KnowledgeWorkbenchVersion)
+                     KnowledgeCandidateReject, KnowledgeWorkbenchVersion, KnowledgeReviewSubmit,
+                     KnowledgeReviewApprove, KnowledgeReviewReject)
 from services.knowledge_feedback import KnowledgeWorkbench
+from services.knowledge_review import KnowledgeReview
 
 router = APIRouter(prefix="/api/knowledge-workbench")
 
@@ -14,6 +16,10 @@ router = APIRouter(prefix="/api/knowledge-workbench")
 def service(request, user):
     # Local source lookup only: never binds a paid query encoder to a write request.
     return KnowledgeWorkbench(request.app.state.database, user["id"], request.app.state.knowledge)
+
+
+def review_service(request, user):
+    return KnowledgeReview(request.app.state.database, user["id"], request.app.state.knowledge)
 
 
 def run(operation):
@@ -68,3 +74,43 @@ def reject_candidate(identifier: UUID, body: KnowledgeCandidateReject, request: 
 def delete_candidate(identifier: UUID, body: KnowledgeWorkbenchVersion, request: Request, user: User):
     service(request, user).delete("knowledge_candidates", identifier, body.version)
     return Response(status_code=204)
+
+
+@router.get("/permissions")
+def permissions(request: Request, user: User):
+    return review_service(request, user).permissions()
+
+
+@router.get("/submissions")
+def submissions(request: Request, user: User):
+    return {"items": run(lambda: review_service(request, user).list())}
+
+
+@router.post("/candidates/{identifier}/submit", status_code=201)
+def submit(identifier: UUID, body: KnowledgeReviewSubmit, request: Request, user: User):
+    return run(lambda: review_service(request, user).submit(identifier, body))
+
+
+@router.post("/submissions/{identifier}/withdraw")
+def withdraw(identifier: UUID, body: KnowledgeWorkbenchVersion, request: Request, user: User):
+    return review_service(request, user).withdraw(identifier, body)
+
+
+@router.get("/review-queue")
+def review_queue(request: Request, user: User):
+    return {"items": run(lambda: review_service(request, user).list(queue=True))}
+
+
+@router.post("/review-queue/{identifier}/check")
+def check_submission(identifier: UUID, body: KnowledgeWorkbenchVersion, request: Request, user: User):
+    return run(lambda: review_service(request, user).check(identifier, body))
+
+
+@router.post("/review-queue/{identifier}/approve")
+def approve_submission(identifier: UUID, body: KnowledgeReviewApprove, request: Request, user: User):
+    return run(lambda: review_service(request, user).decide(identifier, body, approve=True))
+
+
+@router.post("/review-queue/{identifier}/reject")
+def reject_submission(identifier: UUID, body: KnowledgeReviewReject, request: Request, user: User):
+    return review_service(request, user).decide(identifier, body, approve=False)

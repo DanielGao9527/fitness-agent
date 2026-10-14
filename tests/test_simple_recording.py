@@ -104,9 +104,11 @@ def test_correction_delete_and_clear_reproject_weight(client):
 
 
 @pytest.mark.parametrize('changes', [{'weight_kg': None}, {'status': 'planned'}, {'sync_weight': 'true'},
-                                   {'day': (business_today()+timedelta(days=1)).isoformat()},
+                                   {'day': 'tomorrow'},
                                    {'_body_weight_saved_at': '2099-01-01'}])
 def test_invalid_weight_sync_is_atomic(client, changes):
+    if changes.get('day') == 'tomorrow':
+        changes = {**changes, 'day': (business_today()+timedelta(days=1)).isoformat()}
     configured(client)
     previous = weight(client)
     assert client.post('/api/workouts', json=training(**changes)).status_code == 422

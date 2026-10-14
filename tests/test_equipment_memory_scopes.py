@@ -290,7 +290,7 @@ def test_v16_upgrade_preserves_old_tables_and_verified_backup(tmp_path):
         connection.execute("INSERT INTO users(id,username,password_hash) VALUES (1,'synthetic','synthetic')")
     before = fingerprints(path)
     backup = tmp_path / 'backup.sqlite3'
-    assert migrate(path, backup)['schema'] == 19
+    assert migrate(path, backup)['schema'] == 20
     assert verify_backup(backup)['schema'] == 16
     assert all(fingerprints(path)[name] == value for name, value in before.items())
     database.initialize()

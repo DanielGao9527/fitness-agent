@@ -6,13 +6,15 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app import create_app
+from services.business_time import business_today
 from test_foundation import PASSWORD, application, client, register, meal
 from test_energy_estimates import inputs
 
-TODAY = date.today().isoformat()
+TODAY = business_today().isoformat()
 
 
-def state(client, day=TODAY):
+def state(client, day=None):
+    day = day or business_today().isoformat()
     response = client.get(f"/api/intake-target?day={day}")
     assert response.status_code == 200, response.text
     return response.json()
@@ -30,8 +32,9 @@ def profile(client, **values):
 
 
 def preview(client, standard=None, **values):
-    data = state(client)
-    return client.post('/api/nutrition-target/preview', json={"day": TODAY, "context_hash": data["context_hash"],
+    day = values.get("day") or business_today().isoformat()
+    data = state(client, day)
+    return client.post('/api/nutrition-target/preview', json={"day": day, "context_hash": data["context_hash"],
                       "standard": standard or {"inputs": inputs()}, **values})
 
 
@@ -40,7 +43,7 @@ def request(client, standard=None):
     result = preview(client, standard)
     assert result.status_code == 200, result.text
     data = result.json()
-    return {"day": TODAY, "context_hash": data["target_state"]["context_hash"], "version": data["target_state"]["version"],
+    return {"day": business_today().isoformat(), "context_hash": data["target_state"]["context_hash"], "version": data["target_state"]["version"],
             "kcal": data["calculation"]["kcal"], "standard": standard, "client_id": str(uuid4()), "confirmed": True, "general_adult": True}
 
 
@@ -48,7 +51,8 @@ def save_standard(client, standard=None):
     return client.post('/api/nutrition-target/standard', json=request(client, standard))
 
 
-def day_body(client, kcal=3500, day=TODAY):
+def day_body(client, kcal=3500, day=None):
+    day = day or business_today().isoformat()
     data = state(client, day)
     return {"day": day, "context_hash": data["context_hash"], "version": data["version"], "kcal": kcal,
             "client_id": str(uuid4()), "confirmed": True, "general_adult": True}
@@ -76,7 +80,7 @@ def test_standing_fixed_day_only_restore_and_restart(client, application):
     body = day_body(client)
     assert client.post('/api/nutrition-target/day', json=body).status_code == 200
     assert state(client)["target"]["kcal"] == 3500
-    tomorrow = (date.today() + timedelta(days=1)).isoformat()
+    tomorrow = (business_today() + timedelta(days=1)).isoformat()
     assert state(client, tomorrow)["target"]["kcal"] == 3200
     profile(client, goal="fat_loss", weight_kg=80)
     assert state(client)["target"]["kcal"] == 3500
@@ -122,7 +126,7 @@ def test_history_not_recalculated_after_profile_change(client, monkeypatch):
     import services.nutrition_targets as module
     setup(client)
     first = save_standard(client).json()
-    monkeypatch.setattr(module, 'business_today', lambda: date.today() + timedelta(days=1))
+    monkeypatch.setattr(module, 'business_today', lambda: business_today() + timedelta(days=1))
     profile(client, goal="fat_loss", weight_kg=75)
     assert state(client)["target"]["id"] == first["target"]["id"]
     assert state(client)["target"]["kcal"] == first["target"]["kcal"]
@@ -189,7 +193,7 @@ def test_day_without_baseline_does_not_leak_to_tomorrow(client):
     setup(client)
     assert client.post('/api/nutrition-target/day', json=day_body(client)).status_code == 200
     assert state(client)["target"]["kcal"] == 3500
-    assert state(client, (date.today()+timedelta(days=1)).isoformat())["status"] == "unset"
+    assert state(client, (business_today()+timedelta(days=1)).isoformat())["status"] == "unset"
 
 
 def test_macro_reference_updates_and_known_intake_changes_without_confirmation(client):

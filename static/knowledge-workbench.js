@@ -5,9 +5,9 @@ window.KnowledgeWorkbenchView=(()=>{
   const endpoint='/knowledge-workbench',labels={knowledge_issue:'知识资料问题',personal_correction:'个人信息纠正'};
   const live=s=>active===s&&state.user===s.user&&s.root.isConnected;
   const q=(s,selector)=>s.root.querySelector(selector);
-  function dispose(){active?.controller?.abort();active=null;}
+  function dispose(){active?.controller?.abort();window.KnowledgeReviewView?.dispose();active=null;}
   function message(s,text){q(s,'.workbench-status').textContent=text;}
-  function busy(s,value){s.busy=value;s.root.querySelectorAll('button,input,select,textarea').forEach(node=>node.disabled=value);}
+  function busy(s,value){s.busy=value;s.root.querySelectorAll('button,input,select,textarea').forEach(node=>{if(!node.closest('.knowledge-review'))node.disabled=value;});}
   function reviewed(s){q(s,'.candidate-reviewed').checked=false;s.pendingCandidate=null;}
   function setConversation(data){
     const s=active;if(!s)return;
@@ -24,6 +24,7 @@ window.KnowledgeWorkbenchView=(()=>{
   function render(s,data){
     const [feedback,candidates,sources]=data;
     s.feedback=feedback.items;s.candidates=candidates.items;s.sources=sources.items;s.sourceUnavailable=Boolean(sources.unavailable);
+    window.KnowledgeReviewView?.setCandidates(s.candidates);
     const old=q(s,'.candidate-source').value,pinned=s.sourceHash;
     q(s,'.candidate-source').innerHTML='<option value="">选择有效公共资料</option>'+s.sources.map(item=>`<option value="${escapeHtml(item.source.chunk_id)}">${escapeHtml(item.source.title)}</option>`).join('');
     const selected=s.sources.find(item=>item.source.chunk_id===old);
@@ -51,6 +52,8 @@ window.KnowledgeWorkbenchView=(()=>{
   function mount(root){
     dispose();if(!root)return;
     root.innerHTML=`<details class="knowledge-workbench"><summary>反馈与知识候选</summary><p class="small muted">反馈仅本人可见。个人纠正不会自动修改档案；知识候选只接受已审核公共资料的连续摘录，仍需后续评测、审批和发布。</p><form class="feedback-form"><label>反馈来源<select class="feedback-target" required><option value="">选择要反馈的知识回答</option></select></label><label>反馈类型<select class="feedback-kind"><option value="knowledge_issue">知识资料问题</option><option value="personal_correction">个人信息纠正</option></select></label><label>需要核对的问题<textarea class="feedback-comment" maxlength="1000" rows="2" required></textarea></label><button type="submit">保存反馈</button></form><button type="button" class="workbench-refresh">刷新工作台</button><p class="workbench-status small muted" role="status"></p><div class="feedback-list workbench-list"></div><section class="candidate-editor" hidden><h3>准备公共资料摘录候选</h3><form class="candidate-form"><label>公共出处<select class="candidate-source" required><option value="">选择有效公共资料</option></select></label><p class="candidate-reference workbench-text small"></p><label>连续摘录<textarea class="candidate-content" maxlength="1000" rows="3" required></textarea></label><label class="candidate-confirm"><input class="candidate-reviewed" type="checkbox" required>已核对出处与摘录，仅使用所选公共摘要，不包含私人信息</label><div class="workbench-actions"><button type="submit">保存候选</button><button class="candidate-cancel" type="button">取消修订</button></div></form></section><div class="candidate-list workbench-list"></div></details>`;
+    const reviewRoot=document.createElement('div');root.querySelector('.knowledge-workbench').append(reviewRoot);
+    window.KnowledgeReviewView?.mount(reviewRoot);
     const s=active={root,user:state.user,busy:false,targets:[],feedback:[],candidates:[],sources:[],conversation:null,sourceHash:null,edit:null,feedbackId:null};
     q(s,'.workbench-refresh').addEventListener('click',refresh);
     q(s,'.feedback-form').addEventListener('input',()=>{s.pendingFeedback=null;});

@@ -10,7 +10,7 @@ Fitness Agent 是 FastAPI 单体应用，原生网页与 API 同源，私人数�
                          services/ 业务编排
        ┌──────────────────────┼─────────────────────┐
        ↓                      ↓                     ↓
-私人 SQLite v19         公共资料与检索           model/ + prompts/
+私人 SQLite v20         公共资料与检索           model/ + prompts/
 档案/记录/记忆/反馈候选   FTS5 + 向量缓存          理解/估算/证据判断
 ~~~
 
@@ -20,7 +20,7 @@ Fitness Agent 是 FastAPI 单体应用，原生网页与 API 同源，私人数�
 | --- | --- |
 | [app.py](../app.py)、[config.py](../config.py) | 生命周期、模型开关、访问模式和配置 |
 | [api/](../api)、[schemas.py](../schemas.py)、[security.py](../security.py) | 路由、结构校验、会话认证；不信任正文 user_id |
-| [database.py](../database.py) | 私人表、事务和迁移；当前 v19、28 表 |
+| [database.py](../database.py) | 私人表、事务和迁移；当前源码 v20、32 表 |
 | [services/](../services) | 对话、确认、事实有效性、记录、配餐和训练规则 |
 | [model/](../model)、[prompts/](../prompts) | 供应商调用、结构化输出、错误分类和应用提示词 |
 | [rag/](../rag) | 审核公共资料、词法/向量召回、来源校验 |
@@ -110,15 +110,26 @@ api/coach.py → services/coach_knowledge.py → services/knowledge_answers.py �
 - 事务及递增版本保护修订、搁置和删除；事件保存动作、版本、哈希和本人审阅意见。每账号上限 100 条反馈、50 条候选。原对话/反馈删除、既有账号清理级联删除候选和事件。
 - [static/knowledge-workbench.js](../static/knowledge-workbench.js) 位于助手的“反馈与知识候选”折叠面板，显式核对后保存；账号/视图变化丢弃迟到回包。公共来源暂不可用时已有私人条目仍可查看、搁置或删除，新增/修订正文要求有效来源。页面及保存不调用云模型。
 
-当前只有本人私有草稿和搁置意见；跨用户公共审阅、评测通过、批准、发布或回滚都未开放。E4b 将在独立权限与门禁下处理公共发布，不能把本阶段称为自动学习完成。
+私人草稿与搁置意见只有本人可见。E4b.1 在用户明确同意后提交公共摘录，预审队列只导出固定公共字段；下述预审不等于发布。
+
+## 公共摘录预审 E4b.1
+
+[services/knowledge_review.py](../services/knowledge_review.py) 复用认证会话与来源目录；v20 新增 knowledge_reviewers、knowledge_submissions、knowledge_review_gates、knowledge_review_events 四表。提交表仍在私人库，未接入 RAG。
+
+- 本人通过 candidates/{id}/submit 显式提交内容/版本及分享同意，服务端从候选取公共正文和出处。本人只能查看/撤回自己的提交；审核人只能通过 review-queue 查看公共字段，不能反查本人反馈、问题、模型答案或私人意见。
+- 审核权限只由本机 scripts/knowledge_reviewer.py grant/revoke 配置既有正式账号。没有 HTTP 提权接口或首账号默认管理员；审核写请求在事务内重查权限，角色版本用于撤销旧预审，游客不具有审核资格。
+- check 只走本地目录和词法检索，不绑定付费编码器。记录 policy、候选内容/来源、有效语料和分词器指纹，以及出处/连续摘录/来源读取/词法冒烟检查。报告明确 semantic_quality=not_evaluated、release_regression=not_run、publication_allowed=false。
+- 人工预审绑定当前 gate_id、binding_hash 和提交版本，明确核对完整来源与范围后才通过。候选修订/搁置、原回答更新与角色撤销由触发器永久失效旧提交；观察到来源/语料变化时持久标记失效，拒绝过期请求不会回滚该失效。恢复同样正文或重新授予角色不能复活旧提交。
+- 目录故障不冒充来源撤回，暂时阻止检查和预审；仍可查看、撤回、驳回或删除。原候选/反馈/对话/账号清理级联删除提交、检查及事件。
+- static/knowledge-review.js 接在原工作台中，分别显示本人提交和有权限的审核队列；含显式同意、版本冲突、重复提交、迟到回包、撤回和窄屏布局。预审通过仍未发布，正式质量门禁、不可变版本构建及回滚按 ROADMAP 继续。
 
 
 ## 部署与数据边界
 
-当前代码支持 v19 备份/迁移。工作区启动脚本转接到增强仓库，显式绑定原虚拟环境和原数据库；外层 app.py 也转接到同一实现。端口占用时失败，不悄悄另开一个服务。已有模型密钥时本机启动入口默认启用 AI，ManualOnly 会从子进程环境移除模型密钥并关闭模型能力，正常环境在启动结束后恢复。
+当前代码支持 v20 备份/迁移。工作区启动脚本转接到增强仓库，显式绑定原虚拟环境和原数据库；外层 app.py 也转接到同一实现。端口占用时失败，不悄悄另开一个服务。已有模型密钥时本机启动入口默认启用 AI，ManualOnly 会从子进程环境移除模型密钥并关闭模型能力，正常环境在启动结束后恢复。
 
-9 月 29 日，本机原库在独立备份及副本演练后从 v13 升到 v17；18 张原有表在迁移和启动后指纹不变。10 月 14 日升级至 v18 后，E3b 无需再次改表；启动前独立备份、重启后原 25 表指纹一致。10 月 15 日 E4a 已在副本演练和备份后升级为 v19，原 25 表的所有原字段在升级和启动后指纹一致；当前标记 e4a-feedback-candidates-v19。deploy/check_release.py 比较实际库和候选代码结构，不匹配时阻止自动升级；Git 同步不代表公网部署，详见 [OPERATIONS](OPERATIONS.md)。
+9 月 29 日，本机原库在独立备份及副本演练后从 v13 升到 v17；18 张原有表在迁移和启动后指纹不变。10 月 14 日升级至 v18 后，E3b 无需再次改表；启动前独立备份、重启后原 25 表指纹一致。10 月 15 日 E4a 已在副本演练和备份后升级为 v19，原 25 表的所有原字段在升级和启动后指纹一致；E4b.1 继而从 v19 升级到 v20，原 28 表原字段在迁移和启动后指纹一致，新增四表为空；当前标记 e4b1-knowledge-pre-review-v20。deploy/check_release.py 比较实际库和候选代码结构，不匹配时阻止自动升级；Git 同步不代表公网部署，详见 [OPERATIONS](OPERATIONS.md)。
 
 共享模式要求 HTTPS、Host 白名单、安全 Cookie、单 worker 和私密数据/密钥目录。账号/游客隔离与清理详见 [ACCOUNTS](ACCOUNTS.md)，来源和隐私分别见 [KNOWLEDGE_SOURCES](KNOWLEDGE_SOURCES.md)、[PRIVACY](PRIVACY.md)。
 
-E4a 的反馈/摘录候选已接通；E4b 公共审核、评测门禁、审批、版本发布及回滚尚未接通。
+E4a 反馈/摘录候选和 E4b.1 提交/工程检查/人工预审已接通；E4b.2 正式质量门禁、版本发布与回滚尚未接通。
