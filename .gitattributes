@@ -11,3 +11,4 @@ data/knowledge/sources.json -text whitespace=blank-at-eol,blank-at-eof,space-bef
 evals/fitness_qa.jsonl -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 evals/memory/cases.jsonl -text
 evals/memory/expressions_v2/cases.jsonl -text
+evals/retrieval_loop/v1/cases.jsonl -text

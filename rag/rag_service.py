@@ -38,6 +38,10 @@ class KnowledgeRetriever(Protocol):
 
 
 class EmptyKnowledgeRetriever:
+    def search_snapshot(self, query: str, limit: int = 3, *, topic="all", today=None):
+        return RetrievalSnapshot(self.search(query, limit, topic=topic, today=today),
+                                 {"mode": "lexical", "reason": "empty_corpus", "embedding_called": False})
+
     def search(self, query: str, limit: int = 3, *, topic="all", today=None) -> list[KnowledgeHit]:
         return []
 
@@ -171,7 +175,7 @@ class LocalKnowledgeRetriever:
             sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
         return {"mode": "lexical", "requested_mode": "lexical", "tokenizer": self.tokenizer,
                 "corpus_version": self.sync().version, "corpus_hash": corpus_hash,
-                "text_template": TEXT_TEMPLATE, "degraded": False, "reason": None,
+                "text_template": TEXT_TEMPLATE, "degraded": False, "reason": None if documents else "empty_corpus",
                 "embedding_called": False}
 
     def search_snapshot(self, query: str, limit: int = 3, *, topic="all", today=None):

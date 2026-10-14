@@ -72,7 +72,7 @@ def health(request: Request):
         "training_plan": training_plan_status(request.app.state.settings),
     }
     if settings.access_mode == "local":
-        capabilities.update(stage="e2-memory-provenance-v18", model="not_configured",
+        capabilities.update(stage="e3-bounded-retrieval-v18", model="not_configured",
                             coach="guided_workflow", text_model=settings.qwen_model)
     return capabilities
 

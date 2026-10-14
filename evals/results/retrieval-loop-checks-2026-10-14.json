@@ -1,0 +1,69 @@
+{
+  "date": "2026-10-14",
+  "scope": "E3b engineering, not model-quality acceptance",
+  "python_batches": [
+    {
+      "name": "retrieval, source, chat and policy regression",
+      "tests": 160,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "provider, existing input workflows and knowledge API",
+      "tests": 194,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "main chat empty corpus and zero-hit recovery idempotence",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "final rewrite invariants, loop and replay regression",
+      "tests": 37,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "batches_overlap_and_must_not_be_summed": true,
+  "final_full_python_suite_rerun": false,
+  "frontend_units_passed": [
+    "knowledge-ask",
+    "knowledge-flow"
+  ],
+  "browser_flows_passed": [
+    "coach-knowledge"
+  ],
+  "browser_widths": [
+    1440,
+    390,
+    320
+  ],
+  "frozen_replay_contracts": {
+    "single": {
+      "passed": 24,
+      "total": 24
+    },
+    "bounded": {
+      "passed": 24,
+      "total": 24
+    }
+  },
+  "independent_semantic_review_completed": false,
+  "phase_timings_are_virtual": true,
+  "real_provider_calls": 0,
+  "local_activation": {
+    "schema": 18,
+    "table_fingerprints_preserved_after_startup": 25,
+    "backup_verified": true,
+    "stage": "e3-bounded-retrieval-v18"
+  },
+  "public_deployment_performed": false,
+  "private_databases_backups_and_logs_excluded": true
+}

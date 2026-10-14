@@ -8,6 +8,7 @@ from urllib.parse import urlsplit
 import httpx
 
 from model.factory import ModelError
+from model.deadlines import bounded_timeout, check_deadline
 
 
 class EmbeddingError(ModelError):
@@ -64,6 +65,7 @@ class QwenEmbeddingProvider:
             batch = texts[start:start + size]
             chars = sum(map(len, batch))
             with self._lock:
+                check_deadline()
                 if ((self.max_calls is not None and self.calls >= self.max_calls)
                         or (self.max_input_chars is not None and self.input_chars + chars > self.max_input_chars)):
                     raise EmbeddingError("EMBEDDING_BUDGET_EXCEEDED", "向量调用已达到本次运行预算，未继续请求。", 429)
@@ -75,7 +77,8 @@ class QwenEmbeddingProvider:
                        "parameters": {"text_type": text_type, "dimension": self.dimensions,
                                       "output_type": "dense"}}
             try:
-                with httpx.Client(timeout=httpx.Timeout(self.settings.embedding_timeout_seconds, connect=5),
+                timeout = bounded_timeout(self.settings.embedding_timeout_seconds)
+                with httpx.Client(timeout=httpx.Timeout(timeout, connect=min(5, timeout)),
                                   transport=self.transport, follow_redirects=False) as client:
                     with client.stream("POST", self.base_url + "/services/embeddings/text-embedding/text-embedding",
                                        headers={"Authorization": "Bearer " + self.settings.qwen_api_key},
@@ -87,9 +90,11 @@ class QwenEmbeddingProvider:
                                                  "向量服务未返回有效结果，请核对权限、地域、额度或稍后重试。", 503)
                         raw = bytearray()
                         for chunk in response.iter_bytes():
+                            check_deadline()
                             if len(raw) + len(chunk) > 2 * 1024 * 1024:
                                 raise EmbeddingError("EMBEDDING_INVALID_OUTPUT", "向量响应超出大小限制。")
                             raw.extend(chunk)
+                check_deadline()
                 body = json.loads(raw)
                 rows = body["output"]["embeddings"]
                 if not isinstance(rows, list) or len(rows) != len(batch):

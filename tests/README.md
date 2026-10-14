@@ -18,6 +18,7 @@ Linux／macOS 使用 .venv/bin/python。已有本机工作区可复用外层虚�
 | 配餐与训练 | 既有摄入、营养区间、有限禁忌、份量和时间约束；无可行解、实际记录与建议分离 |
 | 中文混合检索 | test_embeddings.py、test_hybrid_retrieval.py、test_hybrid_api.py；接口角色/顺序、RRF、缓存版本、额度、来源变化与词法降级 |
 | 知识分流与有限重试 | test_coach_knowledge.py、test_knowledge_answers.py、test_knowledge_loop.py；一次候选快照、原问题复核、引用失效、停止条件 |
+| 零命中恢复与策略回放 | test_knowledge_recovery.py、test_knowledge_replay.py；数字/单位、时间/否定、重复候选重排、额度、截止时间、迟到输出、冻结输入和无原文报告 |
 | 会话／温／冷记忆 | test_coach_memory.py、test_coach_warm_memory.py；保存、读取、更正、删除、来源变化与本人隔离 |
 | 偏好原话与集合版本 | test_memory_provenance.py；显式核对、连续原话、来源撤销、集合 A→B→A、更正解绑、并发、隔离、重启及 v17→v18 非空旧笔记保留 |
 | 器械事实生命周期 | test_profile_fact_versions.py、test_equipment_memory_scopes.py、test_equipment_clarification.py；本次/今天/长期、显式确认、到期、A→B→A、并发、未知条件和 v17 迁移 |

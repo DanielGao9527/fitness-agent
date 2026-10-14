@@ -1,0 +1,1987 @@
+{
+  "suite": {
+    "version": "knowledge-loop-replay-v1",
+    "synthetic_public": true,
+    "independent_semantic_review": false,
+    "cases": 24,
+    "cases_sha256": "23c340d39b583d64966dd60ff541d5e2c734609629e03ab1b4ae49feef87adc4",
+    "corpus_sha256": "547e5f5b4d8cde212dfe448139ad0628dd9fd91c62d39175f5eab541ba7ff962",
+    "source_date": "2026-10-14",
+    "description": "Frozen synthetic responses and candidate pages; engineering contracts only, not retrieval or model accuracy."
+  },
+  "policy_version": "knowledge-loop-v2",
+  "source_hashes": {
+    "services/knowledge_answers.py": "d4f53e4c24f1824aed7b616517da96a68d53e99213f3a5782c66d56910c5fa8f",
+    "services/knowledge_policy.py": "1a5022180e5ccf2b3a9ceb4f1472f75e9e5e0b53a6109198f9b58eac880d664a",
+    "model/deadlines.py": "dbf45c0010e6f285a770d20be3bbb237654c7f9a314d1e0d1a66a69bc503c858",
+    "prompts/knowledge_answer.md": "dbbcbd7369c7b06b96324b1fca5aeef6b4ec665106d48360820f8dc220f1ac16",
+    "scripts/replay_knowledge_loop.py": "55d45867a914ad86a9b9d045852513a018decf3611279f52ea70106f9784c3dd"
+  },
+  "real_provider_calls": 0,
+  "uses_private_database": false,
+  "not_model_quality": true,
+  "phase_timings_are_virtual": true,
+  "contracts": {
+    "single": {
+      "passed": 24,
+      "total": 24
+    },
+    "bounded": {
+      "passed": 24,
+      "total": 24
+    }
+  },
+  "transitions": {
+    "additional_answers": 2,
+    "fewer_answers": 0,
+    "changed_outcome": 13
+  },
+  "cases": [
+    {
+      "case_id": "zero_recovery",
+      "policy": "single",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "no_candidates",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 0
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [],
+            "decision": "no_candidates",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 0
+        },
+        "stop_reason": "no_candidates",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "zero_recovery",
+      "policy": "bounded",
+      "status": "answered",
+      "source_ids": [
+        "cdc-adults:strength"
+      ],
+      "stop_reason": "answered",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 2,
+        "embedding": 2,
+        "judgment": 2
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0,
+            "rewrite_reason": "evidence_gap"
+          },
+          {
+            "number": 2,
+            "candidate_ids": [
+              "cdc-adults:strength"
+            ],
+            "decision": "answered",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0,
+            "source_check_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 2,
+          "embedding": 2,
+          "judgment": 2
+        },
+        "stop_reason": "answered",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "gap_recovery",
+      "policy": "single",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "retry_budget_exhausted",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "retry_budget_exhausted",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "gap_recovery",
+      "policy": "bounded",
+      "status": "answered",
+      "source_ids": [
+        "cdc-adults:strength"
+      ],
+      "stop_reason": "answered",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 2,
+        "embedding": 2,
+        "judgment": 2
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0,
+            "rewrite_reason": "evidence_gap"
+          },
+          {
+            "number": 2,
+            "candidate_ids": [
+              "cdc-adults:strength"
+            ],
+            "decision": "answered",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0,
+            "source_check_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 2,
+          "embedding": 2,
+          "judgment": 2
+        },
+        "stop_reason": "answered",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "early_answer",
+      "policy": "single",
+      "status": "answered",
+      "source_ids": [
+        "cdc-adults:strength"
+      ],
+      "stop_reason": "answered",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:strength"
+            ],
+            "decision": "answered",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0,
+            "source_check_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "answered",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "early_answer",
+      "policy": "bounded",
+      "status": "answered",
+      "source_ids": [
+        "cdc-adults:strength"
+      ],
+      "stop_reason": "answered",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:strength"
+            ],
+            "decision": "answered",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0,
+            "source_check_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "answered",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "no_rewrite",
+      "policy": "single",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "insufficient",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "insufficient",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "no_rewrite",
+      "policy": "bounded",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "insufficient",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "insufficient",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "both_empty",
+      "policy": "single",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "no_candidates",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 0
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [],
+            "decision": "no_candidates",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 0
+        },
+        "stop_reason": "no_candidates",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "both_empty",
+      "policy": "bounded",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "no_candidates",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 2,
+        "embedding": 2,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0,
+            "rewrite_reason": "evidence_gap"
+          },
+          {
+            "number": 2,
+            "candidate_ids": [],
+            "decision": "no_candidates",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true
+          }
+        ],
+        "calls": {
+          "retrieval": 2,
+          "embedding": 2,
+          "judgment": 1
+        },
+        "stop_reason": "no_candidates",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "same_evidence",
+      "policy": "single",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "retry_budget_exhausted",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "retry_budget_exhausted",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "same_evidence",
+      "policy": "bounded",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "no_new_evidence",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 2,
+        "embedding": 2,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0,
+            "rewrite_reason": "evidence_gap"
+          },
+          {
+            "number": 2,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "no_new_evidence",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true
+          }
+        ],
+        "calls": {
+          "retrieval": 2,
+          "embedding": 2,
+          "judgment": 1
+        },
+        "stop_reason": "no_new_evidence",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "reordered_evidence",
+      "policy": "single",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "retry_budget_exhausted",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic",
+              "cdc-adults:strength"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "retry_budget_exhausted",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "reordered_evidence",
+      "policy": "bounded",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "no_new_evidence",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 2,
+        "embedding": 2,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic",
+              "cdc-adults:strength"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0,
+            "rewrite_reason": "evidence_gap"
+          },
+          {
+            "number": 2,
+            "candidate_ids": [
+              "cdc-adults:strength",
+              "cdc-adults:aerobic"
+            ],
+            "decision": "no_new_evidence",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true
+          }
+        ],
+        "calls": {
+          "retrieval": 2,
+          "embedding": 2,
+          "judgment": 1
+        },
+        "stop_reason": "no_new_evidence",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "scope_rejected",
+      "policy": "single",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "retry_budget_exhausted",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "retry_budget_exhausted",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "scope_rejected",
+      "policy": "bounded",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "rewrite_rejected",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0,
+            "rewrite_rejection": "scope"
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "rewrite_rejected",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "numeric_rejected",
+      "policy": "single",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "retry_budget_exhausted",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "retry_budget_exhausted",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "numeric_rejected",
+      "policy": "bounded",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "rewrite_rejected",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0,
+            "rewrite_rejection": "numeric_change"
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "rewrite_rejected",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "time_rejected",
+      "policy": "single",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "retry_budget_exhausted",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "retry_budget_exhausted",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "time_rejected",
+      "policy": "bounded",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "rewrite_rejected",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0,
+            "rewrite_rejection": "temporal_change"
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "rewrite_rejected",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "negation_rejected",
+      "policy": "single",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "retry_budget_exhausted",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "retry_budget_exhausted",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "negation_rejected",
+      "policy": "bounded",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "rewrite_rejected",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0,
+            "rewrite_rejection": "negation_change"
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "rewrite_rejected",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "punctuation_rejected",
+      "policy": "single",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "retry_budget_exhausted",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "retry_budget_exhausted",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "punctuation_rejected",
+      "policy": "bounded",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "rewrite_rejected",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0,
+            "rewrite_rejection": "same_query"
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "rewrite_rejected",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "invalid_json",
+      "policy": "single",
+      "status": "error",
+      "source_ids": [],
+      "stop_reason": "MODEL_INVALID_OUTPUT",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "retrieving",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "MODEL_INVALID_OUTPUT",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "invalid_json",
+      "policy": "bounded",
+      "status": "error",
+      "source_ids": [],
+      "stop_reason": "MODEL_INVALID_OUTPUT",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "retrieving",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "MODEL_INVALID_OUTPUT",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "unoffered_citation",
+      "policy": "single",
+      "status": "error",
+      "source_ids": [],
+      "stop_reason": "MODEL_INVALID_OUTPUT",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "answered",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "MODEL_INVALID_OUTPUT",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "unoffered_citation",
+      "policy": "bounded",
+      "status": "error",
+      "source_ids": [],
+      "stop_reason": "MODEL_INVALID_OUTPUT",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "answered",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "MODEL_INVALID_OUTPUT",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "withdraw_after_second",
+      "policy": "single",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "retry_budget_exhausted",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "retry_budget_exhausted",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "withdraw_after_second",
+      "policy": "bounded",
+      "status": "error",
+      "source_ids": [],
+      "stop_reason": "KNOWLEDGE_CHANGED",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 2,
+        "embedding": 2,
+        "judgment": 2
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0,
+            "rewrite_reason": "evidence_gap"
+          },
+          {
+            "number": 2,
+            "candidate_ids": [
+              "cdc-adults:strength"
+            ],
+            "decision": "answered",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0,
+            "source_check_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 2,
+          "embedding": 2,
+          "judgment": 2
+        },
+        "stop_reason": "KNOWLEDGE_CHANGED",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "late_first_judgment",
+      "policy": "single",
+      "status": "error",
+      "source_ids": [],
+      "stop_reason": "KNOWLEDGE_TIME_BUDGET",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:strength"
+            ],
+            "decision": "retrieving",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 46000.0
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "KNOWLEDGE_TIME_BUDGET",
+        "elapsed_ms": 46000.0
+      }
+    },
+    {
+      "case_id": "late_first_judgment",
+      "policy": "bounded",
+      "status": "error",
+      "source_ids": [],
+      "stop_reason": "KNOWLEDGE_TIME_BUDGET",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:strength"
+            ],
+            "decision": "retrieving",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 46000.0
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "KNOWLEDGE_TIME_BUDGET",
+        "elapsed_ms": 46000.0
+      }
+    },
+    {
+      "case_id": "late_first_search",
+      "policy": "single",
+      "status": "error",
+      "source_ids": [],
+      "stop_reason": "KNOWLEDGE_TIME_BUDGET",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 0
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:strength"
+            ],
+            "decision": "retrieving",
+            "retrieval_ms": 46000.0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 0
+        },
+        "stop_reason": "KNOWLEDGE_TIME_BUDGET",
+        "elapsed_ms": 46000.0
+      }
+    },
+    {
+      "case_id": "late_first_search",
+      "policy": "bounded",
+      "status": "error",
+      "source_ids": [],
+      "stop_reason": "KNOWLEDGE_TIME_BUDGET",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 0
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:strength"
+            ],
+            "decision": "retrieving",
+            "retrieval_ms": 46000.0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 0
+        },
+        "stop_reason": "KNOWLEDGE_TIME_BUDGET",
+        "elapsed_ms": 46000.0
+      }
+    },
+    {
+      "case_id": "late_second_judgment",
+      "policy": "single",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "retry_budget_exhausted",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "retry_budget_exhausted",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "late_second_judgment",
+      "policy": "bounded",
+      "status": "error",
+      "source_ids": [],
+      "stop_reason": "KNOWLEDGE_TIME_BUDGET",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 2,
+        "embedding": 2,
+        "judgment": 2
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0,
+            "rewrite_reason": "evidence_gap"
+          },
+          {
+            "number": 2,
+            "candidate_ids": [
+              "cdc-adults:strength"
+            ],
+            "decision": "retrieving",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 46000.0
+          }
+        ],
+        "calls": {
+          "retrieval": 2,
+          "embedding": 2,
+          "judgment": 2
+        },
+        "stop_reason": "KNOWLEDGE_TIME_BUDGET",
+        "elapsed_ms": 46000.0
+      }
+    },
+    {
+      "case_id": "no_third_round",
+      "policy": "single",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "retry_budget_exhausted",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "retry_budget_exhausted",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "no_third_round",
+      "policy": "bounded",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "retry_budget_exhausted",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 2,
+        "embedding": 2,
+        "judgment": 2
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0,
+            "rewrite_reason": "evidence_gap"
+          },
+          {
+            "number": 2,
+            "candidate_ids": [
+              "cdc-adults:strength"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 2,
+          "embedding": 2,
+          "judgment": 2
+        },
+        "stop_reason": "retry_budget_exhausted",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "unrelated_zero",
+      "policy": "single",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "no_candidates",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 0
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [],
+            "decision": "no_candidates",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 0
+        },
+        "stop_reason": "no_candidates",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "unrelated_zero",
+      "policy": "bounded",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "no_candidates",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "no_candidates",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "known_empty_corpus",
+      "policy": "single",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "no_candidates",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 0
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [],
+            "decision": "no_candidates",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "empty_corpus",
+            "embedding_called": true
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 0
+        },
+        "stop_reason": "no_candidates",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "known_empty_corpus",
+      "policy": "bounded",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "no_candidates",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 0
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [],
+            "decision": "no_candidates",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "empty_corpus",
+            "embedding_called": true
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 0
+        },
+        "stop_reason": "no_candidates",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "zero_cannot_answer",
+      "policy": "single",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "no_candidates",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 0
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [],
+            "decision": "no_candidates",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 0
+        },
+        "stop_reason": "no_candidates",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "zero_cannot_answer",
+      "policy": "bounded",
+      "status": "error",
+      "source_ids": [],
+      "stop_reason": "MODEL_INVALID_OUTPUT",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 1
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [],
+            "decision": "answered",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 1
+        },
+        "stop_reason": "MODEL_INVALID_OUTPUT",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "personal_boundary",
+      "policy": "single",
+      "status": "personal_scope",
+      "source_ids": [],
+      "stop_reason": "personal_scope",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 0,
+        "embedding": 0,
+        "judgment": 0
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [],
+        "calls": {
+          "retrieval": 0,
+          "embedding": 0,
+          "judgment": 0
+        },
+        "stop_reason": "personal_scope",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "personal_boundary",
+      "policy": "bounded",
+      "status": "personal_scope",
+      "source_ids": [],
+      "stop_reason": "personal_scope",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 0,
+        "embedding": 0,
+        "judgment": 0
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [],
+        "calls": {
+          "retrieval": 0,
+          "embedding": 0,
+          "judgment": 0
+        },
+        "stop_reason": "personal_scope",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "zero_then_declined",
+      "policy": "single",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "no_candidates",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 1,
+        "embedding": 1,
+        "judgment": 0
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 1,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [],
+            "decision": "no_candidates",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true
+          }
+        ],
+        "calls": {
+          "retrieval": 1,
+          "embedding": 1,
+          "judgment": 0
+        },
+        "stop_reason": "no_candidates",
+        "elapsed_ms": 0
+      }
+    },
+    {
+      "case_id": "zero_then_declined",
+      "policy": "bounded",
+      "status": "insufficient",
+      "source_ids": [],
+      "stop_reason": "insufficient",
+      "contract_passed": true,
+      "simulated_calls": {
+        "retrieval": 2,
+        "embedding": 2,
+        "judgment": 2
+      },
+      "trace": {
+        "policy_version": "knowledge-loop-v2",
+        "max_rounds": 2,
+        "time_budget_ms": 45000,
+        "attempts": [
+          {
+            "number": 1,
+            "candidate_ids": [],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0,
+            "rewrite_reason": "evidence_gap"
+          },
+          {
+            "number": 2,
+            "candidate_ids": [
+              "cdc-adults:aerobic"
+            ],
+            "decision": "insufficient",
+            "retrieval_ms": 0,
+            "mode": "hybrid",
+            "degraded_reason": "",
+            "embedding_called": true,
+            "judgment_ms": 0
+          }
+        ],
+        "calls": {
+          "retrieval": 2,
+          "embedding": 2,
+          "judgment": 2
+        },
+        "stop_reason": "insufficient",
+        "elapsed_ms": 0
+      }
+    }
+  ]
+}

@@ -113,6 +113,8 @@ class FixtureKnowledge:
         data = json.loads(message)
         if "timeout" in data["question"]:
             raise ModelError("MODEL_TIMEOUT", "测试替身：问答超时，问题已保留。", 504)
+        if not data["evidence"]:
+            return json.dumps({"status": "insufficient", "chunk_ids": []})
         return json.dumps({"status": "answered", "chunk_ids": [data["evidence"][0]["chunk_id"]]})
 
 
@@ -223,7 +225,7 @@ coach_mode = "--coach" in sys.argv or memory_mode or facts_mode
 fixture_name = "ui-coach-memory-test.sqlite3" if memory_mode else "ui-coach-review-test.sqlite3" if coach_mode else "ui-drafts-test.sqlite3"
 facts_directory = TemporaryDirectory(prefix="fitness-fact-ui-") if facts_mode else None
 fixture_path = Path(facts_directory.name) / "fixture.sqlite3" if facts_mode else ROOT / "artifacts" / fixture_name
-app = create_app(Settings(database_path=fixture_path, retrieval_mode="lexical" if facts_mode else "hybrid",
+app = create_app(Settings(database_path=fixture_path, retrieval_mode="lexical",  # Never call real embeddings from a browser fixture.
                           ai_global_daily_limit=10000,  # Synthetic repeated browser runs; production budget is unchanged.
                           knowledge_qa_enabled=True, training_plan_enabled=True, coach_enabled=coach_mode, model_provider="qwen" if coach_mode else "disabled", qwen_api_key="synthetic-fixture" if coach_mode else ""))
 

@@ -116,3 +116,13 @@ python scripts/evaluate_t2_pilot.py --live --max-calls 120 --max-input-chars 150
 ## 器械记忆真实模型单场景验收
 
 在本机私有环境已有 `DASHSCOPE_API_KEY` 时，可显式运行 `.\.venv\Scripts\python.exe scripts/verify_equipment_memory_live.py`。脚本用临时库和合成账号，限制最多一次千问理解调用，然后检查“确认哑铃→新会话建议→档案改徒手→旧来源不再检索→重新建议”的最终状态；退出即删除临时库，不打印密钥或模型原始输出。训练动作由受约束规则生成。它是单场景联调，不是记忆准确率评测，不能代替独立多轮题集或浏览器验收。
+
+## 有界检索固定响应回放
+
+~~~powershell
+.\.venv\Scripts\python.exe scripts/replay_knowledge_loop.py --output artifacts/knowledge-loop-replay
+~~~
+
+默认使用 [v1 合成流程集](../evals/retrieval_loop/v1/README.md)，也可用 --suite 指定同格式的冻结目录。校验案例与语料哈希，在临时公共索引中比较同一引擎的单轮/两轮策略；输出目录必须是新目录，不覆盖旧结果。无需密钥、网络或私人数据库。
+
+报告只保留 ID、停止原因、策略版本、模拟调用次数与虚拟阶段时间，不复制问题或原始模型输出。当前 24 个场景验证流程契约；不用于报告真实模型准确率、召回率、端到端延迟或费用改善。完整真实对照仍按 ROADMAP 单独验收。

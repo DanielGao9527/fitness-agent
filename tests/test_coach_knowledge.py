@@ -309,6 +309,25 @@ def test_no_evidence_and_index_unavailable(knowledge_chat):
     assert not model.messages and calls(app) == 0
 
 
+def test_zero_hit_recovery_in_main_chat_is_saved_once_and_reused(knowledge_chat, monkeypatch):
+    from test_knowledge_recovery import Pages
+    from test_knowledge_loop import ScriptedModel, answered, revise, SECOND
+    client, app, _ = knowledge_chat
+    retriever = Pages(app.state.knowledge, [[], [SECOND]])
+    model = ScriptedModel(revise("一周力量锻炼频率"), answered())
+    app.state.knowledge = retriever
+    monkeypatch.setattr(coach_api, "create_knowledge_model", lambda settings: model)
+    data = send(client, conversation(client), "力量训练一般一周做几次").json()
+    response = answer(client, data)
+    assert response.status_code == 200, response.text
+    saved = response.json()["turns"][-1]["response"]["knowledge"]
+    assert saved["status"] == "answered" and saved["retrieval"]["calls"]["judgment"] == 2
+    assert saved["sources"][0]["chunk_id"] == SECOND and calls(app) == 4
+    assert answer(client, data).status_code == 200
+    assert len(model.messages) == len(retriever.queries) == 2 and calls(app) == 4
+    assert client.get(f"{BASE}/{data['id']}").json()["turns"][-1]["response"]["knowledge"] == saved
+
+
 def test_concurrency_idempotence_and_restart(knowledge_chat):
     client, app, model = knowledge_chat
     initial = conversation(client)

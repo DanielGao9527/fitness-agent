@@ -6,6 +6,7 @@ import httpx
 
 from config import Settings
 from model.factory import ModelError
+from model.deadlines import bounded_timeout, check_deadline
 
 logger = logging.getLogger(__name__)
 
@@ -82,14 +83,23 @@ class QwenTextModel:
 
     def request(self, payload, *, output_limit=24000):
         try:
+            timeout = bounded_timeout(20.0)
             with httpx.Client(
-                timeout=httpx.Timeout(20.0, connect=5.0), transport=self.transport, follow_redirects=False
+                timeout=httpx.Timeout(timeout, connect=min(5.0, timeout)), transport=self.transport, follow_redirects=False
             ) as client:
-                response = client.post(
+                with client.stream("POST",
                     self.settings.qwen_base_url.rstrip("/") + "/chat/completions",
                     headers={"Authorization": f"Bearer {self.settings.qwen_api_key}"},
                     json=payload,
-                )
+                ) as upstream:
+                    raw = bytearray()
+                    for chunk in upstream.iter_bytes():
+                        check_deadline()
+                        if len(raw) + len(chunk) > output_limit * 4 + 24000:
+                            raise ModelError("MODEL_INVALID_OUTPUT", "千问返回内容过大，未展示结果。")
+                        raw.extend(chunk)
+                    response = httpx.Response(upstream.status_code, content=bytes(raw))
+            check_deadline()
         except httpx.TimeoutException:
             raise ModelError("MODEL_TIMEOUT", "千问响应超时，未保存记录；可稍后重试。", 504) from None
         except httpx.RequestError:

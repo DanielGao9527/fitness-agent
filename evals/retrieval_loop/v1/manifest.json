@@ -1,0 +1,10 @@
+{
+  "version": "knowledge-loop-replay-v1",
+  "synthetic_public": true,
+  "independent_semantic_review": false,
+  "cases": 24,
+  "cases_sha256": "23c340d39b583d64966dd60ff541d5e2c734609629e03ab1b4ae49feef87adc4",
+  "corpus_sha256": "547e5f5b4d8cde212dfe448139ad0628dd9fd91c62d39175f5eab541ba7ff962",
+  "source_date": "2026-10-14",
+  "description": "Frozen synthetic responses and candidate pages; engineering contracts only, not retrieval or model accuracy."
+}

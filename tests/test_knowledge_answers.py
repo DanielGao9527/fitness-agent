@@ -182,11 +182,14 @@ def test_unrelated_food_restriction_does_not_block_training_knowledge(qa):
     assert calls(app) == 1
 
 
-def test_no_evidence_has_no_cost(qa):
+def test_zero_evidence_can_decline_without_a_second_search(qa):
     client, app, model, _ = qa
+    model.output = json.dumps({"status": "insufficient", "chunk_ids": []})
     result = ask(client, "火星飞船引擎").json()
-    assert result["status"] == "insufficient" and not result["model_called"]
-    assert not result["sources"] and not model.messages and calls(app) == 0
+    assert result["status"] == "insufficient" and result["model_called"]
+    assert not result["sources"] and len(model.messages) == calls(app) == 1
+    assert model.messages[0]["evidence"] == []
+    assert result["retrieval"]["stop_reason"] == "no_candidates"
 
 
 @pytest.mark.parametrize("status", ["personal_scope", "insufficient"])

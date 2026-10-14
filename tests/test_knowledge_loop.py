@@ -13,7 +13,7 @@ from test_knowledge_answers import ask, calls, qa
 FIRST = "cdc-adults:aerobic"
 SECOND = "cdc-adults:strength"
 QUESTION = "力量训练频率"
-REVISED = "成年人每周力量训练频率"
+REVISED = "成年人力量训练的频率"
 
 
 class ScriptedModel:
