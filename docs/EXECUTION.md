@@ -1,6 +1,6 @@
 # 开发接续点
 
-更新：2026-10-15。事实见 [STATUS](STATUS.md)，路线见 [ROADMAP](ROADMAP.md)，完成标准见 [DELIVERY](DELIVERY.md)。上批 E4b.1 及文档已推送至 cbc8618；本批沿用 codex/fitness-hybrid-retrieval，Git 同步不代表公网部署。
+更新：2026-10-15。事实见 [STATUS](STATUS.md)，路线见 [ROADMAP](ROADMAP.md)，完成标准见 [DELIVERY](DELIVERY.md)。上批 E4b.1 及文档已推送至 cbc8618；本批 E4b.2a 功能提交 6bf6bc8 已推送至 codex/fitness-hybrid-retrieval。Git 同步不代表公网部署。
 
 ## 本批完成：E4b.2a 独立候选知识版本构建
 
