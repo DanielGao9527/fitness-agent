@@ -5,7 +5,7 @@
 ## 开始
 
 1. 阅读 PRODUCT、ARCHITECTURE、EXECUTION、STATUS、ROADMAP；最终标准看 DELIVERY。
-2. 检查分支和现有改动，保留其他任务的工作；增强交付分支为 codex/fitness-hybrid-retrieval。
+2. 检查分支和现有改动，保留其他任务的工作；增强交付分支为 codex/fitness-hybrid-retrieval，当前源码和本机库均为 v18。
 3. 从 EXECUTION 的接续点推进。最新用户指令优先，变化同步到对应文档。
 
 ## 实现

@@ -7,7 +7,7 @@ from contextlib import closing
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from services.backups import create_backup, restore_backup, verify_backup, fingerprints, readonly, TABLES
+from services.backups import create_backup, restore_backup, verify_backup, fingerprints, readonly, table_columns, inspect_connection
 from database import Database
 
 
@@ -19,15 +19,16 @@ def rehearse(source, directory):
     verify_backup(backup)
     restore_backup(backup, restored)
     Database(restored).initialize()
-    before, after = fingerprints(backup), fingerprints(restored)
+    before, after = fingerprints(backup), fingerprints(restored, columns=table_columns(backup))
     retained = before.keys() - {'sessions', 'meal_consents'}
     preserved = all(before[name] == after[name] for name in retained)
     with closing(readonly(restored)) as connection:
         revoked = connection.execute('SELECT COUNT(*) FROM sessions').fetchone()[0] == 0
         revoked = revoked and connection.execute('SELECT COUNT(*) FROM meal_consents').fetchone()[0] == 0
+        metadata = inspect_connection(connection)
     if not preserved or not revoked:
         raise ValueError('Isolated recovery verification failed')
-    report = {'passed': True, 'schema': 17, 'non_session_tables_preserved': len(retained),
+    report = {'passed': True, 'schema': metadata['schema'], 'non_session_tables_preserved': len(retained),
               'old_sessions_revoked': True, 'snapshot_usage_preserved': True,
               'formal_database_replaced': False, 'provider_calls': 0,
               'contains_private_data': True, 'encrypted': False}

@@ -109,6 +109,9 @@ def test_v8_upgrade_preserves_data_and_cascades_session(tmp_path):
         connection.execute("DROP TABLE coach_day_equipment")
         connection.execute("DROP TABLE profile_fact_events")
         connection.execute("DROP TABLE coach_memory_digests")
+        connection.execute("DROP TRIGGER IF EXISTS coach_memory_source_change")
+        connection.execute("DROP TRIGGER IF EXISTS coach_memory_source_delete")
+        connection.execute("DROP TABLE coach_memory_revisions")
         connection.execute("DROP TABLE coach_memory_entries")
         connection.execute("DROP TABLE guest_accounts")
         connection.execute("DROP TABLE guest_usage")
@@ -119,7 +122,7 @@ def test_v8_upgrade_preserves_data_and_cascades_session(tmp_path):
         before = {table: [tuple(row) for row in connection.execute(f"SELECT * FROM {table}")] for table in tables}
     database.initialize()
     with database.connect() as connection, sqlite3.connect(str(path) + ".pre-v9.bak") as backup:
-        assert connection.execute("PRAGMA user_version").fetchone()[0] == 17
+        assert connection.execute("PRAGMA user_version").fetchone()[0] == 18
         assert backup.execute("PRAGMA user_version").fetchone()[0] == 8
         for table in tables:
             assert [tuple(row) for row in connection.execute(f"SELECT * FROM {table}")] == before[table]

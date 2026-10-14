@@ -3,7 +3,7 @@ from uuid import UUID
 from fastapi import APIRouter, HTTPException, Request, Response
 
 from api.routes import User
-from schemas import (CoachCreate, CoachMessage, CoachMemorySearch, CoachMemoryEntryCreate,
+from schemas import (CoachCreate, CoachMessage, CoachMemorySearch, CoachMemoryEntryCreate, CoachMemoryEntryFromTurn,
                      CoachMemoryEntryUpdate, CoachMemoryEntryDelete, CoachMemoryDigestVersion, CoachVersion,
                      CoachUnderstand, CoachAutoUnderstand, CoachReviewConfirm)
 from model.factory import ModelError, coach_status, create_coach_model
@@ -22,7 +22,7 @@ from model.factory import create_knowledge_model, knowledge_qa_status
 from services.coach_knowledge import CoachKnowledgeService
 from services.knowledge_runtime import request_retriever
 from services.coach_memory import recall_confirmed_history
-from services.coach_memory_entries import entries, create_entry, update_entry, delete_entry
+from services.coach_memory_entries import entries, create_entry, create_from_turn, update_entry, delete_entry, memory_revision
 from services.coach_memory_digests import list_digests, propose_digest, approve_digest, delete_digest
 
 router = APIRouter(prefix="/api/coach/conversations")
@@ -39,13 +39,21 @@ def search_memory(body: CoachMemorySearch, request: Request, user: User):
 @router.get("/memory/entries")
 def list_memory_entries(request: Request, user: User):
     with request.app.state.database.connect() as connection:
-        return {"items": entries(connection, user["id"]), "used_as_current_constraint": False}
+        connection.execute("BEGIN")
+        return {"items": entries(connection, user["id"]), "revision": memory_revision(connection, user["id"]),
+                "used_as_current_constraint": False}
 
 
 @router.post("/memory/entries", status_code=201)
 def add_memory_entry(body: CoachMemoryEntryCreate, request: Request, user: User):
     with request.app.state.database.connect() as connection:
-        return create_entry(connection, user["id"], body.kind, body.content)
+        return create_entry(connection, user["id"], body.kind, body.content, category=body.category)
+
+
+@router.post("/memory/entries/from-turn", status_code=201)
+def add_memory_from_turn(body: CoachMemoryEntryFromTurn, request: Request, user: User):
+    with request.app.state.database.connect() as connection:
+        return create_from_turn(connection, user["id"], body)
 
 
 @router.put("/memory/entries/{entry_id}")

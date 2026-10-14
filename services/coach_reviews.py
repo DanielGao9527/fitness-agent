@@ -21,7 +21,7 @@ from services.coach_memory_digests import recall_digests
 from services.profile_facts import fact_revisions, write_profile
 from services.equipment_memory import candidate_from_model, check_equipment_context, EquipmentNeedsInput, day_snapshot, save_day, revoke_day, today
 
-POLICY = "coach-understanding-v15-equipment-exhaustive-list"
+POLICY = "coach-understanding-v16-memory-provenance"
 QUESTIONS = {
     "none": "",
     "which_food": "你想调整哪一种食材？请写出餐单里的名称。",

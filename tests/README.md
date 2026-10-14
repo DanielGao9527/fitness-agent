@@ -19,6 +19,7 @@ Linux／macOS 使用 .venv/bin/python。已有本机工作区可复用外层虚�
 | 中文混合检索 | test_embeddings.py、test_hybrid_retrieval.py、test_hybrid_api.py；接口角色/顺序、RRF、缓存版本、额度、来源变化与词法降级 |
 | 知识分流与有限重试 | test_coach_knowledge.py、test_knowledge_answers.py、test_knowledge_loop.py；一次候选快照、原问题复核、引用失效、停止条件 |
 | 会话／温／冷记忆 | test_coach_memory.py、test_coach_warm_memory.py；保存、读取、更正、删除、来源变化与本人隔离 |
+| 偏好原话与集合版本 | test_memory_provenance.py；显式核对、连续原话、来源撤销、集合 A→B→A、更正解绑、并发、隔离、重启及 v17→v18 非空旧笔记保留 |
 | 器械事实生命周期 | test_profile_fact_versions.py、test_equipment_memory_scopes.py、test_equipment_clarification.py；本次/今天/长期、显式确认、到期、A→B→A、并发、未知条件和 v17 迁移 |
 | 评测完整性 | test_memory_evaluation.py、test_memory_suite_versions.py、test_memory_response_replay.py；冻结哈希、场景族划分、标准答案隔离、预算、失败保留和重复分片拒绝 |
 | 本机启动兼容 | test_workspace_startup.py；原入口转增强源码、保留原库、无密钥/手动模式及端口占用。仅对应 Windows 工作区执行，独立克隆和其他平台跳过 |
@@ -58,6 +59,7 @@ node tests/knowledge-flow-unit.cjs
 ~~~powershell
 node tests/browser-equipment-scopes.cjs
 node tests/browser-profile-facts.cjs
+node tests/browser-memory-provenance.cjs
 ~~~
 
 检查未知范围不保存、显式确认、本次/今天/长期来源、刷新补问、双页面 A→B→A 冲突与 390/320 宽度。结束后停止本次测试服务。

@@ -74,7 +74,7 @@ window.CoachView = (() => {
   function draw(s) {
     closePlan(s);
     const data=s.data;
-    window.CoachMemoryView?.setConversation(data?.id || null);
+    window.CoachMemoryView?.setConversation(data || null);
     if(data?.meal_consent)s.consent=data.meal_consent;
     const gate=s.root.querySelector('.coach-consent');
     gate.innerHTML=s.consent && !s.consent.confirmed && (data?.request_kind==='meal' || data?.review?.scope==='meal' && data?.request_kind!=='knowledge')?window.QuickMeals.consent({meal_consent:s.consent}):'';

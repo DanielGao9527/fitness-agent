@@ -277,16 +277,18 @@ def test_model_cannot_promote_explicit_temporary_scope(scoped, text, expected):
 
 
 def test_v16_upgrade_preserves_old_tables_and_verified_backup(tmp_path):
+    from schema_fixtures import strip_memory_v18
     path = tmp_path / 'old.sqlite3'
     database = Database(path)
     database.initialize()
     with database.connect() as connection:
+        strip_memory_v18(connection)
         connection.execute('DROP TABLE coach_day_equipment')
         connection.execute('PRAGMA user_version=16')
         connection.execute("INSERT INTO users(id,username,password_hash) VALUES (1,'synthetic','synthetic')")
     before = fingerprints(path)
     backup = tmp_path / 'backup.sqlite3'
-    assert migrate(path, backup)['schema'] == 17
+    assert migrate(path, backup)['schema'] == 18
     assert verify_backup(backup)['schema'] == 16
     assert all(fingerprints(path)[name] == value for name, value in before.items())
     database.initialize()

@@ -1,0 +1,263 @@
+{
+  "dataset": {
+    "version": "fitness-equipment-expressions-v2",
+    "provenance": "self_authored_synthetic",
+    "human_independent_review": false,
+    "sha256": "6d8636509a8c0f96923a429ba6a77eb8ef5e1e6a8c2c2d694ada6739a5fde869",
+    "cases": 24,
+    "families": 8,
+    "split_counts": {
+      "dev": 12,
+      "holdout": 12
+    },
+    "base_day": "2026-09-29",
+    "scope": "New authored expressions and equipment lifecycle, not an independent or public benchmark",
+    "created_before_live_evaluation": true,
+    "split_unit": "family",
+    "independent_review_status": "pending",
+    "copied_external_examples": false,
+    "maximum_model_attempts": 27
+  },
+  "mode": "annotated",
+  "model": null,
+  "provider_attempts": 0,
+  "provider_responses": 0,
+  "provider_failures": 0,
+  "unfinished_attempts": [],
+  "missing_ids": [
+    "expressions-cross_day_context-01",
+    "expressions-cross_day_context-02",
+    "expressions-cross_day_context-03",
+    "expressions-explicit_denials-01",
+    "expressions-explicit_denials-02",
+    "expressions-explicit_denials-03",
+    "expressions-future_schedule-01",
+    "expressions-future_schedule-02",
+    "expressions-future_schedule-03",
+    "expressions-mixed_time_scope-01",
+    "expressions-mixed_time_scope-02",
+    "expressions-mixed_time_scope-03"
+  ],
+  "run_latency": [
+    {
+      "run": "memory_expressions_v2_n3_dev_20261014",
+      "n": 0,
+      "mean_seconds": null,
+      "p95_seconds": null
+    }
+  ],
+  "runs": [
+    "memory_expressions_v2_n3_dev_20261014"
+  ],
+  "all": {
+    "cases": {
+      "passed": 12,
+      "total": 12,
+      "rate": 1.0
+    },
+    "metrics": {
+      "accepted_candidate_exact": {
+        "passed": 12,
+        "total": 12,
+        "rate": 1.0
+      },
+      "advice_api_success": {
+        "passed": 18,
+        "total": 18,
+        "rate": 1.0
+      },
+      "advice_status": {
+        "passed": 18,
+        "total": 18,
+        "rate": 1.0
+      },
+      "clarification": {
+        "passed": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "confirmation_applied": {
+        "passed": 12,
+        "total": 12,
+        "rate": 1.0
+      },
+      "equipment_adoption": {
+        "passed": 18,
+        "total": 18,
+        "rate": 1.0
+      },
+      "exercise_resources": {
+        "passed": 18,
+        "total": 18,
+        "rate": 1.0
+      },
+      "manual_confirmation_required": {
+        "passed": 12,
+        "total": 12,
+        "rate": 1.0
+      },
+      "no_actual_record_writes": {
+        "passed": 12,
+        "total": 12,
+        "rate": 1.0
+      },
+      "no_false_candidate": {
+        "passed": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "no_unconfirmed_day_write": {
+        "passed": 15,
+        "total": 15,
+        "rate": 1.0
+      },
+      "no_unconfirmed_profile_write": {
+        "passed": 15,
+        "total": 15,
+        "rate": 1.0
+      },
+      "raw_candidate_exact": {
+        "passed": 12,
+        "total": 12,
+        "rate": 1.0
+      },
+      "superseded_advice_stale": {
+        "passed": 3,
+        "total": 3,
+        "rate": 1.0
+      }
+    },
+    "families": {
+      "day_with_noise": {
+        "passed": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "spoken_retraction": {
+        "passed": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "uncertainty_explanation": {
+        "passed": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "unspecified_context": {
+        "passed": 3,
+        "total": 3,
+        "rate": 1.0
+      }
+    }
+  },
+  "dev": {
+    "cases": {
+      "passed": 12,
+      "total": 12,
+      "rate": 1.0
+    },
+    "metrics": {
+      "accepted_candidate_exact": {
+        "passed": 12,
+        "total": 12,
+        "rate": 1.0
+      },
+      "advice_api_success": {
+        "passed": 18,
+        "total": 18,
+        "rate": 1.0
+      },
+      "advice_status": {
+        "passed": 18,
+        "total": 18,
+        "rate": 1.0
+      },
+      "clarification": {
+        "passed": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "confirmation_applied": {
+        "passed": 12,
+        "total": 12,
+        "rate": 1.0
+      },
+      "equipment_adoption": {
+        "passed": 18,
+        "total": 18,
+        "rate": 1.0
+      },
+      "exercise_resources": {
+        "passed": 18,
+        "total": 18,
+        "rate": 1.0
+      },
+      "manual_confirmation_required": {
+        "passed": 12,
+        "total": 12,
+        "rate": 1.0
+      },
+      "no_actual_record_writes": {
+        "passed": 12,
+        "total": 12,
+        "rate": 1.0
+      },
+      "no_false_candidate": {
+        "passed": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "no_unconfirmed_day_write": {
+        "passed": 15,
+        "total": 15,
+        "rate": 1.0
+      },
+      "no_unconfirmed_profile_write": {
+        "passed": 15,
+        "total": 15,
+        "rate": 1.0
+      },
+      "raw_candidate_exact": {
+        "passed": 12,
+        "total": 12,
+        "rate": 1.0
+      },
+      "superseded_advice_stale": {
+        "passed": 3,
+        "total": 3,
+        "rate": 1.0
+      }
+    },
+    "families": {
+      "day_with_noise": {
+        "passed": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "spoken_retraction": {
+        "passed": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "uncertainty_explanation": {
+        "passed": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "unspecified_context": {
+        "passed": 3,
+        "total": 3,
+        "rate": 1.0
+      }
+    }
+  },
+  "holdout": {
+    "cases": {
+      "passed": 0,
+      "total": 0,
+      "rate": null
+    },
+    "metrics": {},
+    "families": {}
+  }
+}

@@ -249,6 +249,24 @@ class CoachMemorySearch(InputModel):
 class CoachMemoryEntryCreate(InputModel):
     kind: Literal["user_preference", "assistant_note"]
     content: str = Field(min_length=1, max_length=200)
+    category: Literal["general_note", "communication_preference", "personal_term"] = "general_note"
+
+
+class CoachMemoryEntryFromTurn(InputModel):
+    category: Literal["communication_preference", "personal_term"]
+    content: str = Field(min_length=1, max_length=200)
+    conversation_id: UUID
+    conversation_version: int = Field(ge=1, strict=True)
+    source_version: int = Field(ge=1, strict=True)
+    memory_revision: int = Field(ge=0, strict=True)
+    reviewed: bool = Field(strict=True)
+
+    @field_validator("reviewed")
+    @classmethod
+    def explicit_review(cls, value):
+        if not value:
+            raise ValueError("请明确核对记忆内容、类型和原话来源")
+        return value
 
 
 class CoachMemoryEntryUpdate(InputModel):

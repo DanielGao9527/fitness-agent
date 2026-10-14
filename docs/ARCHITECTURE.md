@@ -10,7 +10,7 @@ Fitness Agent 是 FastAPI 单体应用，原生网页与 API 同源，私人数�
                          services/ 业务编排
        ┌──────────────────────┼─────────────────────┐
        ↓                      ↓                     ↓
-私人 SQLite v17         公共资料与检索           model/ + prompts/
+私人 SQLite v18         公共资料与检索           model/ + prompts/
 档案/记录/草稿/记忆       FTS5 + 向量缓存          理解/估算/证据判断
 ~~~
 
@@ -20,7 +20,7 @@ Fitness Agent 是 FastAPI 单体应用，原生网页与 API 同源，私人数�
 | --- | --- |
 | [app.py](../app.py)、[config.py](../config.py) | 生命周期、模型开关、访问模式和配置 |
 | [api/](../api)、[schemas.py](../schemas.py)、[security.py](../security.py) | 路由、结构校验、会话认证；不信任正文 user_id |
-| [database.py](../database.py) | 私人表、事务和迁移；当前 v17、24 表 |
+| [database.py](../database.py) | 私人表、事务和迁移；当前 v18、25 表 |
 | [services/](../services) | 对话、确认、事实有效性、记录、配餐和训练规则 |
 | [model/](../model)、[prompts/](../prompts) | 供应商调用、结构化输出、错误分类和应用提示词 |
 | [rag/](../rag) | 审核公共资料、词法/向量召回、来源校验 |
@@ -61,13 +61,23 @@ Fitness Agent 是 FastAPI 单体应用，原生网页与 API 同源，私人数�
 器械是当前实现最完整的事实链路：
 
 - 一次理解可返回带原话和版本的候选。[equipment_memory.py](../services/equipment_memory.py) 校验来源、否定与时间范围；没有范围依据为 unspecified，须用户选择。
-- 不确定、未来或混合范围通过 EquipmentNeedsInput 进入补问；[coach_reviews.py](../services/coach_reviews.py) 的当前策略 v15 保留原话/来源与人工范围校验。器械解析允许“其他器械都没有”等完整的末尾否定子句，不增加任何器械，也不吞掉后续未知限制。伪造来源仍拒绝，不把有限规则称为完整语义安全。
+- 不确定、未来或混合范围通过 EquipmentNeedsInput 进入补问；[coach_reviews.py](../services/coach_reviews.py) 的当前策略 v16 保留原话/来源与人工范围校验。器械解析允许“其他器械都没有”等完整的末尾否定子句，不增加任何器械，也不吞掉后续未知限制。伪造来源仍拒绝，不把有限规则称为完整语义安全。
 - 用户确认后，本次保存在会话、今天保存在 coach_day_equipment、长期写入既有 profiles.equipment。有效本次条件优先于当天，再使用长期档案；本次/当天最晚北京时间当日结束。
 - [profile_facts.py](../services/profile_facts.py) 统一长期事实事务与递增版本，profile_fact_events 保存来源元数据；当天条件有独立版本。A→B→A 不使旧结果复活。
 - [training_context.py](../services/training_context.py) 与建议/理解指纹核对版本，档案更正、到期或撤销会使相关旧理解、建议和动作替换失效。
 - 删除当天来源对话撤销当天值并保留版本计数；单独确认的长期档案需另行撤销。临时器械不进入跨会话冷证据或摘要。
 
 私人记忆、更正、删除均按认证用户隔离。自动模型写记忆、私人向量回忆、自动晋升/降级和普遍偏好语义提取尚未实现。
+
+### N3：偏好记忆的来源与撤销
+
+- 沿用 coach_memory_entries；v18 增加用途和原话来源，旧笔记保留为 general_note，不自动推断类型。明确分类的交流偏好限一个，个人术语可多条，共享 20 条/1,200 字上限。
+- from-turn 接口只接受本人对话中的连续用户原话，核对对话、消息及记忆集合版本和 reviewed=true。不接受助手回答、改写或正文 user_id，不调用模型。
+- coach_memory_revisions 在新增、更正、删除后递增，空列表也保留计数；理解指纹包含该版本，防止空集 A→B→A 后旧核对或生成结果复活。
+- SQLite 触发器在原话更正或对话删除时撤销引用条目，并递增条目及集合版本；原话改回去也不自动恢复。warm_memory 只发送有效条目，失效条目留在本人列表供核对或删除。
+- 修改来源条目是用户手工确认的新内容，清除原话绑定。删除原对话会停用独立保存的记忆，清除摘录需删除记忆条目；数据库删除账号时，条目和计数按外键级联清理。
+
+记忆只辅助理解交流和术语，不作为硬条件来源，也不保证固定摘答或规则训练建议会改变文字风格。独立标注复核及新真实模型质量仍待验收。
 
 ## E3a：有限检索纠正
 
@@ -85,9 +95,9 @@ api/coach.py → services/coach_knowledge.py → services/knowledge_answers.py �
 
 ## 部署与数据边界
 
-当前代码支持 v17 备份/迁移。工作区启动脚本转接到增强仓库，显式绑定原虚拟环境和原数据库；外层 app.py 也转接到同一实现。端口占用时失败，不悄悄另开一个服务。已有模型密钥时本机启动入口默认启用 AI，ManualOnly 会从子进程环境移除模型密钥并关闭模型能力，正常环境在启动结束后恢复。
+当前代码支持 v18 备份/迁移。工作区启动脚本转接到增强仓库，显式绑定原虚拟环境和原数据库；外层 app.py 也转接到同一实现。端口占用时失败，不悄悄另开一个服务。已有模型密钥时本机启动入口默认启用 AI，ManualOnly 会从子进程环境移除模型密钥并关闭模型能力，正常环境在启动结束后恢复。
 
-9 月 29 日，本机原库在独立备份及副本演练后从 v13 升到 v17；18 张原有表在迁移和启动后指纹不变。10 月 14 日只读核对仍为 v17、24 表，8765 当前未响应。deploy/check_release.py 比较实际库和候选代码结构，不匹配时阻止自动升级；Git 同步不代表公网部署，详见 [OPERATIONS](OPERATIONS.md)。
+9 月 29 日，本机原库在独立备份及副本演练后从 v13 升到 v17；18 张原有表在迁移和启动后指纹不变。10 月 14 日在副本演练和独立备份后再升级为 v18、25 表，原 24 表的所有原有字段指纹保持一致；localhost:8765 已运行新增功能。deploy/check_release.py 比较实际库和候选代码结构，不匹配时阻止自动升级；Git 同步不代表公网部署，详见 [OPERATIONS](OPERATIONS.md)。
 
 共享模式要求 HTTPS、Host 白名单、安全 Cookie、单 worker 和私密数据/密钥目录。账号/游客隔离与清理详见 [ACCOUNTS](ACCOUNTS.md)，来源和隐私分别见 [KNOWLEDGE_SOURCES](KNOWLEDGE_SOURCES.md)、[PRIVACY](PRIVACY.md)。
 

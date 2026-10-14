@@ -1,0 +1,72 @@
+{
+  "date": "2026-10-14",
+  "scope": "N3 source-bound user-confirmed warm memory; engineering validation",
+  "python_batches": [
+    {
+      "name": "memory provenance and existing migration/lifecycle",
+      "tests": 103,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "coach, training, guest and release workflows",
+      "tests": 142,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "all legacy upgrade and migration cases",
+      "tests": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "versioned evaluation and report tools",
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "account erasure and other-owner isolation",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "batches_overlap_and_must_not_be_summed": true,
+  "final_full_python_suite_rerun": false,
+  "frontend_memory_unit_passed": true,
+  "browser_flows_passed": [
+    "memory-provenance",
+    "equipment-scopes",
+    "profile-facts"
+  ],
+  "browser_widths": [
+    1280,
+    390,
+    320
+  ],
+  "annotation_dev_cases": {
+    "passed": 12,
+    "total": 12,
+    "not_model_quality": true
+  },
+  "holdout_cases_executed": 0,
+  "independent_human_annotation_review_completed": false,
+  "real_provider_calls": 0,
+  "local_activation": {
+    "schema_before": 17,
+    "schema_after": 18,
+    "tables": 25,
+    "backup_and_rehearsal_passed": true,
+    "original_columns_preserved_after_startup": true,
+    "service_stage": "e2-memory-provenance-v18"
+  },
+  "public_deployment_performed": false,
+  "private_databases_backups_and_logs_excluded": true
+}

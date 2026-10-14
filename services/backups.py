@@ -15,9 +15,10 @@ V14_TABLES = frozenset(("users", "sessions", "profiles", "meals", "workouts", "m
     "meal_intake_reviews", "body_measurements", "guest_accounts", "guest_usage"))
 V15_TABLES = V14_TABLES | {"coach_memory_entries", "coach_memory_digests"}
 V16_TABLES = V15_TABLES | {"profile_fact_events"}
-TABLES = V16_TABLES | {"coach_day_equipment"}
+V17_TABLES = V16_TABLES | {"coach_day_equipment"}
+TABLES = V17_TABLES | {"coach_memory_revisions"}
 LEGACY_TABLES = V14_TABLES - {"guest_accounts", "guest_usage"}
-SCHEMA_TABLES = {13: LEGACY_TABLES, 14: V14_TABLES, 15: V15_TABLES, 16: V16_TABLES, 17: TABLES}
+SCHEMA_TABLES = {13: LEGACY_TABLES, 14: V14_TABLES, 15: V15_TABLES, 16: V16_TABLES, 17: V17_TABLES, 18: TABLES}
 
 
 def readonly(path):
@@ -29,7 +30,7 @@ def inspect_connection(connection):
     version = connection.execute("PRAGMA user_version").fetchone()[0]
     tables = {row[0] for row in connection.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")}
     if tables != SCHEMA_TABLES.get(version):
-        raise ValueError("Only a complete schema-v13/v14/v15/v16/v17 personal database is supported")
+        raise ValueError("Only a complete schema-v13/v14/v15/v16/v17/v18 personal database is supported")
     if connection.execute("PRAGMA integrity_check").fetchall() != [("ok",)]:
         raise ValueError("Database integrity check failed")
     if connection.execute("PRAGMA foreign_key_check").fetchone():
@@ -46,13 +47,32 @@ def manifest_path(path):
     return Path(str(path) + ".manifest.json")
 
 
-def fingerprints(path):
+def table_columns(path):
     with closing(readonly(path)) as connection:
         connection.execute("BEGIN")
-        inspect_connection(connection)
-        return {name: hashlib.sha256(json.dumps(connection.execute(
-            f'SELECT * FROM "{name}" ORDER BY rowid').fetchall(), ensure_ascii=False).encode()).hexdigest()
-            for name in sorted(SCHEMA_TABLES[inspect_connection(connection)["schema"]])}
+        metadata = inspect_connection(connection)
+        return {name: tuple(row[1] for row in connection.execute(f'PRAGMA table_info("{name}")'))
+                for name in sorted(SCHEMA_TABLES[metadata["schema"]])}
+
+
+def fingerprints(path, *, columns=None):
+    with closing(readonly(path)) as connection:
+        connection.execute("BEGIN")
+        available = SCHEMA_TABLES[inspect_connection(connection)["schema"]]
+        if columns is not None and (not columns or not set(columns) <= available):
+            raise ValueError("Unknown fingerprint tables")
+        result = {}
+        for name in sorted(columns if columns is not None else available):
+            selection = "*"
+            if columns is not None:
+                actual = {row[1] for row in connection.execute(f'PRAGMA table_info("{name}")')}
+                requested = columns[name]
+                if not requested or len(requested) != len(set(requested)) or not set(requested) <= actual:
+                    raise ValueError("Unknown fingerprint columns")
+                selection = ",".join('"' + field.replace('"', '""') + '"' for field in requested)
+            rows = connection.execute(f'SELECT {selection} FROM "{name}" ORDER BY rowid').fetchall()
+            result[name] = hashlib.sha256(json.dumps(rows, ensure_ascii=False).encode()).hexdigest()
+        return result
 
 
 def verify_backup(path):

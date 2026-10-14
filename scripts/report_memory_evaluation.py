@@ -29,8 +29,8 @@ LABELS={
 }
 
 
-def combine(paths):
-    manifest,cases=load_suite()
+def combine(paths, *, suite=None):
+    manifest,cases=load_suite(suite)
     known={c['id']:c for c in cases}
     rows={}
     metas=[]
@@ -40,7 +40,7 @@ def combine(paths):
     for path in map(Path,paths):
         meta=json.loads((path/'run.json').read_text(encoding='utf-8'))
         summary=json.loads((path/'summary.json').read_text(encoding='utf-8'))
-        if meta['dataset']['sha256']!=manifest['sha256']:
+        if meta['dataset']!=manifest:
             raise ValueError('Dataset mismatch')
         if metas and any(meta[key]!=metas[0][key] for key in ('mode','model','protocol','source_hashes')):
             raise ValueError('Cannot mix model modes, models, protocols or source versions')
@@ -80,9 +80,11 @@ def fraction(metric):
 
 def markdown(result):
     title='真实模型固定合成场景结果' if result['mode']=='live' else '标注回放接线检查（不是模型效果）'
+    dataset=result['dataset']
+    reviewed='清单标记为已独立复核' if dataset.get('human_independent_review') else '无独立人工复核'
     lines=[f'# Fitness 记忆评测：{title}', '',
         f"题集 `{result['dataset']['version']}`；SHA-256 `{result['dataset']['sha256']}`。",
-        '100组＝20个场景族×5种器械变体，开发60组/留出40组。自建合成、无独立人工复核，不能外推真实用户准确率。', '',
+        f"{dataset['cases']}组＝{dataset['families']}个场景族，开发{dataset['split_counts']['dev']}组/留出{dataset['split_counts']['holdout']}组。自建合成、{reviewed}，不能外推真实用户准确率。", '',
         f"模式：{result['mode']}；型号：{result['model'] or '模型替身'}。",
         f"供应商尝试 {result['provider_attempts']} 次，取得响应 {result['provider_responses']} 次，连接/供应商失败 {result['provider_failures']} 次。",
         f"未收到结束事件的调用 {len(result['unfinished_attempts'])} 次；未运行场景 {len(result['missing_ids'])} 组。",
@@ -111,9 +113,10 @@ def markdown(result):
 def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('runs',nargs='+',type=Path)
+    parser.add_argument('--suite',type=Path,help='Frozen input directory; defaults to memory v1')
     parser.add_argument('--output',required=True,type=Path)
     args=parser.parse_args(argv)
-    result=combine(args.runs)
+    result=combine(args.runs,suite=args.suite)
     # A new directory preserves earlier reports and every underlying failure.
     args.output.mkdir(parents=True,exist_ok=False)
     (args.output/'report.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')

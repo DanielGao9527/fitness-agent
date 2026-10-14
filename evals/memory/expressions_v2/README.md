@@ -20,3 +20,5 @@ python scripts/evaluate_memory.py --suite evals/memory/expressions_v2 --mode ann
 2026-09-29 仅运行开发集标注模式：[首次 11/12](../../results/memory_expressions_v2_dev_20260929/summary.json)，修复后[同题 12/12](../../results/memory_expressions_v2_dev_fixed_20260929/summary.json)。题目与期望未修改，失败报告保留；新增供应商调用为 0。
 
 失败发生在“只有瑜伽垫，其他器械都没有”的已标注完整摘录被后端拒绝，修复限定为完整列表的否定结尾识别。通过结果验证从待确认草稿到最终动作的业务处理，不验证模型能否提取这些事实。留出集 12 条未运行，独立人工复核及真实模型调用待办。
+
+2026-10-14，v18 的 N3 来源记忆增量后，开发集同题标注回归仍为 12/12，供应商调用 0，留出仍未执行。新版报告器支持 --suite，见 [本次报告](../../results/memory_expressions_v2_n3_report_20261014/REPORT.md)。它不证明偏好语义提取、答案风格变化或模型准确率提升。

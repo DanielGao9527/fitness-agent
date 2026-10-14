@@ -93,7 +93,7 @@ def test_memory_capacity_and_private_backup(client, application, tmp_path):
     assert add(client, "user_preference", "超出条数").status_code == 409
     original = client.get(URL).json()["items"]
     snapshot, recovered = tmp_path / "private.sqlite3", tmp_path / "recovered.sqlite3"
-    assert create_backup(application.state.database.path, snapshot)["schema"] == 17
+    assert create_backup(application.state.database.path, snapshot)["schema"] == 18
     assert restore_backup(snapshot, recovered)["sessions_revoked"]
     with sqlite3.connect(recovered) as connection:
         assert connection.execute("SELECT COUNT(*) FROM coach_memory_entries").fetchone()[0] == len(original)
@@ -169,6 +169,9 @@ def test_v14_memory_migration_preserves_rows_and_backup(tmp_path):
         connection.execute("DROP TABLE coach_day_equipment")
         connection.execute("DROP TABLE profile_fact_events")
         connection.execute("DROP TABLE coach_memory_digests")
+        connection.execute("DROP TRIGGER IF EXISTS coach_memory_source_change")
+        connection.execute("DROP TRIGGER IF EXISTS coach_memory_source_delete")
+        connection.execute("DROP TABLE coach_memory_revisions")
         connection.execute("DROP TABLE coach_memory_entries")
         connection.execute("PRAGMA user_version=14")
         connection.execute("INSERT INTO users(id,username,password_hash) VALUES (1,'fixture','synthetic')")
@@ -178,7 +181,7 @@ def test_v14_memory_migration_preserves_rows_and_backup(tmp_path):
         check_schema(Database, inspect_connection, source)
     backup = tmp_path / "approved.sqlite3"
     result = migrate(source, backup)
-    assert result["schema"] == 17 and result["tables"] == 24
+    assert result["schema"] == 18 and result["tables"] == 25
     assert result["old_tables_preserved"]
     assert verify_backup(backup)["schema"] == 14
     assert all(fingerprints(source)[name] == value for name, value in before.items())
@@ -187,8 +190,8 @@ def test_v14_memory_migration_preserves_rows_and_backup(tmp_path):
 
     restored = tmp_path / "restored.sqlite3"
     fresh_backup = tmp_path / "new.sqlite3"
-    assert create_backup(source, fresh_backup)["schema"] == 17
-    assert restore_backup(fresh_backup, restored)["schema"] == 17
+    assert create_backup(source, fresh_backup)["schema"] == 18
+    assert restore_backup(fresh_backup, restored)["schema"] == 18
     with sqlite3.connect(restored) as connection:
-        assert inspect_connection(connection)["tables"] == 24
+        assert inspect_connection(connection)["tables"] == 25
     assert fingerprints(restored)["coach_memory_entries"] == fingerprints(source)["coach_memory_entries"]

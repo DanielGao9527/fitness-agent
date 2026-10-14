@@ -305,6 +305,9 @@ def test_v5_migration_preserves_rows_and_backup(tmp_path):
         connection.execute("DROP TABLE coach_day_equipment")
         connection.execute("DROP TABLE profile_fact_events")
         connection.execute("DROP TABLE coach_memory_digests")
+        connection.execute("DROP TRIGGER IF EXISTS coach_memory_source_change")
+        connection.execute("DROP TRIGGER IF EXISTS coach_memory_source_delete")
+        connection.execute("DROP TABLE coach_memory_revisions")
         connection.execute("DROP TABLE coach_memory_entries")
         connection.execute("DROP TABLE guest_accounts")
         connection.execute("DROP TABLE guest_usage")
@@ -316,7 +319,7 @@ def test_v5_migration_preserves_rows_and_backup(tmp_path):
         connection.execute("INSERT INTO profiles(user_id,payload) VALUES (1,?)", ('{"food_allergies":"西兰花过敏"}',))
     database.initialize()
     with database.connect() as connection, sqlite3.connect(str(path) + ".pre-v6.bak") as backup:
-        assert connection.execute("PRAGMA user_version").fetchone()[0] == 17
+        assert connection.execute("PRAGMA user_version").fetchone()[0] == 18
         assert backup.execute("PRAGMA user_version").fetchone()[0] == 5
         for table in ("users", "profiles", "meals", "workouts", "meal_drafts", "ai_usage", "nutrition_previews", "workout_previews", "sessions"):
             assert [tuple(row) for row in connection.execute(f"SELECT * FROM {table}")] == backup.execute(f"SELECT * FROM {table}").fetchall()

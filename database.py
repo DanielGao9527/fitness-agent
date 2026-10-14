@@ -1,5 +1,5 @@
 import sqlite3
-from contextlib import contextmanager
+from contextlib import closing, contextmanager
 from pathlib import Path
 
 SCHEMA = """
@@ -79,7 +79,7 @@ class Database:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with self.connect() as connection:
             version = connection.execute("PRAGMA user_version").fetchone()[0]
-            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17):
+            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18):
                 raise RuntimeError("Unsupported database schema version")
             connection.execute("PRAGMA journal_mode = WAL")
             if version == 1:
@@ -458,5 +458,60 @@ class Database:
                         updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
                     );
                     PRAGMA user_version = 17;
+                    COMMIT;
+                """)
+            if version < 18:
+                if version > 0:
+                    backup_path = self.path.with_name(self.path.name + ".pre-v18.bak")
+                    if not backup_path.exists():
+                        with closing(sqlite3.connect(backup_path)) as backup:
+                            connection.backup(backup)
+                connection.executescript("""
+                    BEGIN IMMEDIATE;
+                    ALTER TABLE coach_memory_entries ADD COLUMN category TEXT NOT NULL DEFAULT 'general_note'
+                        CHECK(category IN ('general_note','communication_preference','personal_term'));
+                    ALTER TABLE coach_memory_entries ADD COLUMN source_conversation_id TEXT
+                        REFERENCES coach_conversations(id) ON DELETE SET NULL;
+                    ALTER TABLE coach_memory_entries ADD COLUMN source_turn_version INTEGER
+                        CHECK(source_turn_version IS NULL OR source_turn_version >= 1);
+                    ALTER TABLE coach_memory_entries ADD COLUMN source_text_hash TEXT
+                        CHECK(source_text_hash IS NULL OR length(source_text_hash) = 64);
+                    ALTER TABLE coach_memory_entries ADD COLUMN source_revoked INTEGER NOT NULL DEFAULT 0
+                        CHECK(source_revoked IN (0,1));
+                    ALTER TABLE coach_memory_entries ADD COLUMN source_mode TEXT NOT NULL DEFAULT 'manual'
+                        CHECK(source_mode IN ('manual','conversation'))
+                        CHECK((source_mode='manual' AND source_revoked=0 AND source_conversation_id IS NULL
+                               AND source_turn_version IS NULL AND source_text_hash IS NULL)
+                              OR (source_mode='conversation' AND source_turn_version IS NOT NULL
+                                  AND source_text_hash IS NOT NULL));
+                    CREATE UNIQUE INDEX coach_memory_communication_slot ON coach_memory_entries(user_id)
+                        WHERE category='communication_preference';
+                    CREATE TABLE coach_memory_revisions (
+                        user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+                        revision INTEGER NOT NULL CHECK(revision >= 1)
+                    );
+                    INSERT INTO coach_memory_revisions(user_id,revision)
+                        SELECT DISTINCT user_id,1 FROM coach_memory_entries;
+                    CREATE TRIGGER coach_memory_source_change AFTER UPDATE OF message ON coach_turns
+                        WHEN OLD.message IS NOT NEW.message AND EXISTS (
+                            SELECT 1 FROM coach_memory_entries WHERE source_conversation_id=OLD.conversation_id
+                            AND source_turn_version=OLD.version AND source_mode='conversation')
+                    BEGIN
+                        UPDATE coach_memory_revisions SET revision=revision+1 WHERE user_id IN (
+                            SELECT user_id FROM coach_memory_entries WHERE source_conversation_id=OLD.conversation_id
+                            AND source_turn_version=OLD.version AND source_mode='conversation');
+                        UPDATE coach_memory_entries SET source_revoked=1,version=version+1,updated_at=CURRENT_TIMESTAMP
+                            WHERE source_conversation_id=OLD.conversation_id AND source_turn_version=OLD.version
+                            AND source_mode='conversation';
+                    END;
+                    CREATE TRIGGER coach_memory_source_delete BEFORE DELETE ON coach_conversations
+                        WHEN EXISTS (SELECT 1 FROM coach_memory_entries WHERE source_conversation_id=OLD.id)
+                    BEGIN
+                        UPDATE coach_memory_revisions SET revision=revision+1 WHERE user_id IN (
+                            SELECT user_id FROM coach_memory_entries WHERE source_conversation_id=OLD.id);
+                        UPDATE coach_memory_entries SET source_revoked=1,version=version+1,updated_at=CURRENT_TIMESTAMP
+                            WHERE source_conversation_id=OLD.id;
+                    END;
+                    PRAGMA user_version = 18;
                     COMMIT;
                 """)

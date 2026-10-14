@@ -13,7 +13,7 @@ def old_database(tmp_path):
     path = tmp_path/'old.sqlite3'
     Database(path).initialize()
     with sqlite3.connect(path) as connection:
-        connection.executescript('DROP TABLE coach_day_equipment; DROP TABLE profile_fact_events; DROP TABLE coach_memory_digests; DROP TABLE coach_memory_entries; DROP TABLE guest_accounts; DROP TABLE guest_usage; PRAGMA user_version=13;')
+        connection.executescript('DROP TABLE coach_day_equipment; DROP TABLE profile_fact_events; DROP TABLE coach_memory_digests; DROP TRIGGER IF EXISTS coach_memory_source_change; DROP TRIGGER IF EXISTS coach_memory_source_delete; DROP TABLE coach_memory_revisions; DROP TABLE coach_memory_entries; DROP TABLE guest_accounts; DROP TABLE guest_usage; PRAGMA user_version=13;')
         connection.execute("INSERT INTO users(id,username,password_hash) VALUES (1,'retained','synthetic')")
         connection.execute("INSERT INTO ai_usage VALUES ('2026-09-23',1,10)")
     return path
@@ -27,7 +27,7 @@ def test_deployment_remains_blocked_until_explicit_migration(tmp_path):
     assert fingerprints(path) == before
     backup = tmp_path/'approved-backup.sqlite3'
     result = migrate(path, backup)
-    assert result['schema'] == 17 and result['tables'] == 24
+    assert result['schema'] == 18 and result['tables'] == 25
     assert result['old_tables_preserved'] and result['provider_calls'] == 0
     assert verify_backup(backup)['schema'] == 13
     assert fingerprints(backup) == before

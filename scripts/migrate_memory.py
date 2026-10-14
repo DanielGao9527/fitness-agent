@@ -1,4 +1,4 @@
-"""Explicit offline v14/v15/v16-to-v17 memory upgrade; never stops or deploys a service."""
+"""Explicit offline v14/v15/v16/v17-to-v18 memory upgrade; never stops or deploys a service."""
 import argparse
 import sqlite3
 import sys
@@ -9,7 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from config import ROOT
 from database import Database
-from services.backups import create_backup, fingerprints, inspect_connection, readonly, verify_backup
+from services.backups import create_backup, fingerprints, inspect_connection, readonly, verify_backup, table_columns
 
 
 def migrate(database, backup):
@@ -18,15 +18,16 @@ def migrate(database, backup):
     if database.is_relative_to((ROOT / "static").resolve()):
         raise ValueError("Private database cannot be public")
     with closing(readonly(database)) as connection:
-        if inspect_connection(connection)["schema"] not in (14, 15, 16):
-            raise ValueError("Only schema v14, v15 or v16 can use this one-time upgrade")
+        if inspect_connection(connection)["schema"] not in (14, 15, 16, 17):
+            raise ValueError("Only schema v14, v15, v16 or v17 can use this one-time upgrade")
+    original_columns = table_columns(database)
     before = fingerprints(database)
     create_backup(database, backup)
     verify_backup(backup)
     if fingerprints(backup) != before:
         raise ValueError("Database changed during backup; stop the service before migration")
     Database(database).initialize()
-    after = fingerprints(database)
+    after = fingerprints(database, columns=original_columns)
     if any(before[name] != after[name] for name in before):
         raise ValueError("Old rows changed; keep service stopped and inspect the verified backup")
     with closing(readonly(database)) as connection:
@@ -47,7 +48,7 @@ def main(argv=None):
     except (OSError, ValueError, sqlite3.Error, RuntimeError, TimeoutError):
         print("Upgrade failed. Keep the service stopped and inspect the private backup; no automatic rollback.", file=sys.stderr)
         return 1
-    print("Schema v17 verified; previous business rows preserved. Service activation remains manual.")
+    print("Schema v18 verified; previous business columns and rows preserved. Service activation remains manual.")
     return 0
 
 

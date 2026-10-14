@@ -1071,8 +1071,12 @@ dialog::backdrop {
 .coach-memory { padding: 12px 0; border-bottom: 1px solid #dbe2df; }
 .coach-memory summary { cursor: pointer; font-weight: 600; }
 .coach-memory-form { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; }
-.coach-memory-form label { display: grid; gap: 4px; flex: 1 1 180px; }
-.coach-memory-form label:has(input) { flex: 3 1 280px; }
+.coach-memory-form label { display: grid; gap: 4px; flex: 1 1 180px; min-width: 0; }
+.coach-memory-form label:has(input), .coach-memory-form label:has(textarea) { flex: 3 1 280px; }
+.coach-memory-form input, .coach-memory-form select, .coach-memory-form textarea { width: 100%; min-width: 0; }
+.coach-memory-form .coach-memory-source-review { display: flex; align-items: flex-start; flex: 1 1 100%; }
+.coach-memory-form .coach-memory-source-review input { width: 16px; min-height: 16px; flex: 0 0 16px; padding: 0; margin-top: 3px; }
+.coach-memory-origin { flex: 1 1 100%; margin: 0; }
 .coach-memory-list { list-style: none; padding: 0; margin: 10px 0 0; }
 .coach-memory-list li { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 7px 0; border-top: 1px solid #e3e7e5; }
 .coach-memory-list li span { flex: 1 1 240px; overflow-wrap: anywhere; }

@@ -58,3 +58,26 @@ def test_plan_new_suite_does_not_call_provider_or_overwrite_results(monkeypatch,
     assert result['cases'] == 24 and result['maximum_model_attempts'] == 27
     assert main(['--plan', '--split', 'all']) == 0
     assert json.loads(capsys.readouterr().out)['cases'] == 100
+
+
+def test_versioned_report_uses_matching_suite_counts_and_retains_unrun_cases(tmp_path):
+    from scripts.report_memory_evaluation import combine, markdown
+    manifest,cases=load_suite(SUITE)
+    output=tmp_path/'run'
+    output.mkdir()
+    meta={'dataset':manifest,'mode':'annotated','model':None,'protocol':'test','source_hashes':{}}
+    (output/'run.json').write_text(json.dumps(meta),encoding='utf-8')
+    (output/'summary.json').write_text(json.dumps({'source_unchanged':True,'provider_latency':{'n':0}}),encoding='utf-8')
+    case=cases[0]
+    row={**{key:case[key] for key in ('id','family','split')},'passed':False,'steps':[]}
+    (output/'cases.jsonl').write_text(json.dumps(row)+'\n',encoding='utf-8')
+    result=combine([output],suite=SUITE)
+    assert len(result['missing_ids'])==23 and result['dataset']['cases']==24
+    text=markdown(result)
+    assert '24组＝8个场景族，开发12组/留出12组' in text
+    assert '100组' not in text and '不是模型效果' in text
+    with pytest.raises(ValueError,match='Dataset mismatch'):
+        combine([output])
+    (output/'run.json').write_text(json.dumps({**meta,'dataset':{**manifest,'cases':100}}),encoding='utf-8')
+    with pytest.raises(ValueError,match='Dataset mismatch'):
+        combine([output],suite=SUITE)
