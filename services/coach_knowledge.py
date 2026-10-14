@@ -6,7 +6,7 @@ from fastapi import HTTPException
 from model.factory import ModelError
 from rag.rag_service import KnowledgeUnavailable
 from services.coach import CoachService, conversation_constraints, pending_turns
-from services.knowledge_answers import answer_question, outside_scope
+from services.knowledge_answers import answer_question, outside_scope, retrieve_candidates
 from services.meal_plans import digest, encode
 from services.records import RecordService
 
@@ -68,14 +68,20 @@ class CoachKnowledgeService:
             if len(facts["question"]) > 1000:
                 raise ModelError("KNOWLEDGE_QUESTION_TOO_LONG", "知识问题请控制在1000字以内，原消息已保留。", 422)
             boundary = self.boundary(facts)
-            if not boundary:
-                hits = self.retriever.search(facts["question"], limit=6)
-                boundary = self.boundary(facts, {hit.topic for hit in hits})
+            candidates = None
+            # Resolve question/profile scope before an optional remote embedding call.
+            if not boundary and not outside_scope(facts["question"], facts["profile"]):
+                candidates = retrieve_candidates(facts["question"], self.retriever)
+                boundary = self.boundary(facts, {hit.topic for hit in candidates.hits})
             if boundary:
-                value = {"status": "context_pending", "answer": boundary, "sources": [], "model_called": False}
+                value = {"status": "context_pending", "answer": boundary, "sources": [],
+                         "model_called": bool(candidates and candidates.metadata.get("embedding_called"))}
+                if candidates is not None:
+                    value["retrieval"] = candidates.metadata
             else:
                 value = answer_question(facts["question"], self.retriever,
-                    RecordService(self.database, self.user_id), factory, model_name)
+                    RecordService(self.database, self.user_id), factory, model_name, candidate_snapshot=candidates,
+                    candidate_boundary=lambda topics: self.boundary(facts, topics))
                 if value["status"] == "personal_scope":
                     value["answer"] = "当前资料摘答只覆盖一般知识。这个问题或已保存的健康、饮食限制超出当前范围；未生成个人建议，也未清除限制。"
             with self.database.connect() as connection:

@@ -17,6 +17,7 @@ from services.profile_context import read_profile, ENERGY_FIELDS
 from services.body_state import project_body, sync_profile, utc_now
 from services.business_time import business_today
 from services.training_progression import validate_performance
+from services.profile_facts import write_profile, equipment_revision
 
 
 class RecordService:
@@ -25,27 +26,30 @@ class RecordService:
         self.user_id = user_id
 
     def get_profile(self):
-        with self.database.connect() as connection:
-            return read_profile(connection, self.user_id)
+        return self.profile_snapshot()[0]
 
-    def save_profile(self, profile: Profile):
+    def profile_snapshot(self):
+        with self.database.connect() as connection:
+            connection.execute("BEGIN")
+            return read_profile(connection, self.user_id), equipment_revision(connection, self.user_id)
+
+    def save_profile(self, profile: Profile, *, expected_equipment_revision=None, with_revision=False):
         payload = profile.model_dump(mode="json")
         with self.database.connect() as connection:
             connection.execute("BEGIN IMMEDIATE")
             previous = read_profile(connection, self.user_id)
             previous_row = connection.execute("SELECT payload FROM profiles WHERE user_id=?", (self.user_id,)).fetchone()
             raw = json.loads(previous_row[0]) if previous_row else {}
-            for key in (*ENERGY_FIELDS, "training_split"):
+            for key in (*ENERGY_FIELDS, "training_split", "equipment"):
                 if key not in profile.model_fields_set:
                     payload[key] = previous[key]
             payload = project_body(connection, self.user_id, raw, payload, manual=True)
-            connection.execute(
-                "INSERT INTO profiles(user_id, payload) VALUES (?, ?) "
-                "ON CONFLICT(user_id) DO UPDATE SET payload = excluded.payload",
-                (self.user_id, json.dumps(payload, ensure_ascii=False)),
-            )
+            revision = write_profile(connection, self.user_id, payload,
+                equipment_explicit="equipment" in profile.model_fields_set,
+                expected_equipment_revision=expected_equipment_revision)
             profile_changed(connection, self.user_id, previous, payload)
-        return {key: payload[key] for key in Profile.model_fields}
+        public = {key: payload[key] for key in Profile.model_fields}
+        return (public, revision) if with_revision else public
 
     @staticmethod
     def _table(table):

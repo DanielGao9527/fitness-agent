@@ -39,6 +39,7 @@ window.KnowledgeView = (() => {
       <div id="training-plan-panel" role="tabpanel" aria-label="训练建议" hidden></div>
       <div id="knowledge-browse" role="tabpanel" aria-label="查资料">
       <form id="knowledge-search" role="search"><label class="knowledge-query">资料检索<input name="query" maxlength="300" placeholder="例如：力量训练频率、饮食搭配" autocomplete="off"></label><button type="submit" class="primary icon-button" aria-label="检索资料" title="检索资料">${icon("search")}</button></form>
+      <p class="knowledge-search-cost muted small" hidden>本次已尝试语义检索：查询发送至服务端配置的向量模型，并计入 AI 使用次数；空白浏览不调用 AI。</p>
       <div class="segmented knowledge-topics" aria-label="资料分类">${Object.entries(categories).map(([value,label])=>`<button type="button" data-topic="${value}" aria-pressed="${value==="all"}" class="${value==="all" ? "selected" : ""}">${label}</button>`).join("")}</div>
       <p class="knowledge-state muted small" role="status"></p><p class="knowledge-error form-error" role="alert" hidden></p>
       <p class="knowledge-notice small">一般知识资料，不是个人处方。项目摘要非官方译文；原文免费可读，引用不表示原机构或政府认可本应用。</p>
@@ -90,16 +91,17 @@ window.KnowledgeView = (() => {
     const current=()=>active===s && ticket===s.ticket && state.user===s.user && s.root.isConnected;
     const error=s.root.querySelector(".knowledge-error"), status=s.root.querySelector(".knowledge-state"), results=s.root.querySelector(".knowledge-results");
     error.hidden=true;error.textContent="";status.textContent="正在检索…";results.replaceChildren();
-    const controller=s.controller, timeout=setTimeout(()=>controller.abort(),15000);
+    const controller=s.controller, timeout=setTimeout(()=>controller.abort(),30000);
     try {
       const data=await api("/knowledge/search",{method:"POST",signal:controller.signal,body:JSON.stringify({query:s.root.querySelector('[name="query"]').value.trim(),topic:s.topic,limit:20})});
       if(!current()) return;
-      status.textContent=`找到 ${data.hits.length} 条相关资料`;
+      s.root.querySelector('.knowledge-search-cost').hidden=!data.semantic_search_enabled;
+      status.textContent=`找到 ${data.hits.length} 条相关资料${data.retrieval?.degraded ? '；语义检索暂不可用，本次使用文字检索' : ''}`;
       results.innerHTML=data.hits.length ? data.hits.map(reference).join("") : `<div class="empty">${icon("search-x")}<h3>${data.status==="empty" ? "暂无可用资料" : "未找到匹配资料"}</h3></div>`;
       icons();
     } catch(failure) {
       if(!current()) return;
-      error.hidden=false;error.textContent=failure.name==="AbortError" ? "检索超时，输入已保留" : failure.message;
+      error.hidden=false;error.textContent=failure.name==="AbortError" ? "检索超时，输入已保留；已提交的云端请求仍计入使用次数" : failure.message;
       status.textContent="资料暂不可用";
     } finally {clearTimeout(timeout);}
   }

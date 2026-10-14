@@ -116,6 +116,12 @@ async function api(path, options = {}) {
     if (response.status === 401 && !path.startsWith("/auth/")) showAuth();
     throw apiError(result?.detail, response.status);
   }
+  if (path === "/profile" && result && response.headers?.has("X-Equipment-Revision")) {
+    // Local response metadata must not become part of the profile JSON input.
+    Object.defineProperty(result, "_equipmentRevision", {
+      value: Number(response.headers.get("X-Equipment-Revision")), enumerable: false,
+    });
+  }
   return result;
 }
 
@@ -340,7 +346,7 @@ function field(label, name, value, attributes = "") {
 
 function profileForm() {
   const p = state.profile;
-  return `<form id="profile-form" class="profile-form">
+  return `<form id="profile-form" class="profile-form" data-equipment-revision="${p._equipmentRevision ?? ''}">
     <section class="profile-section"><h2>个人信息</h2><div class="form-grid">
       ${field("称呼", "display_name", p.display_name, 'maxlength="40"')}
       <label>健身目标<select name="goal">${options({ fat_loss: "减脂", muscle_gain: "增肌", maintain: "维持" }, p.goal)}</select></label>
@@ -652,8 +658,10 @@ document.addEventListener("submit", async (event) => {
       delete data.regular_training;
       state.profile = await api("/profile", {
         method: "PUT",
+        headers: form.dataset.equipmentRevision !== '' ? {"X-Equipment-Revision": form.dataset.equipmentRevision} : {},
         body: JSON.stringify(data),
       });
+      form.dataset.equipmentRevision = state.profile._equipmentRevision ?? '';
       form.dataset.dirty = 'false';
       for (const name of ['weight_kg', 'body_fat_percent']) form.elements[name].value = state.profile[name] ?? '';
       $("#account-name").textContent =

@@ -220,7 +220,7 @@ def test_v13_migration_backup_and_regular_fingerprints(tmp_path):
     db = Database(path)
     db.initialize()
     with db.connect() as connection:
-        connection.executescript('DROP TABLE guest_accounts; DROP TABLE guest_usage; PRAGMA user_version=13;')
+        connection.executescript('DROP TABLE coach_day_equipment; DROP TABLE profile_fact_events; DROP TABLE coach_memory_digests; DROP TABLE coach_memory_entries; DROP TABLE guest_accounts; DROP TABLE guest_usage; PRAGMA user_version=13;')
         connection.execute("INSERT INTO users(id,username,password_hash) VALUES (1,'legacy','not-real')")
         connection.execute("INSERT INTO ai_usage VALUES ('2026-09-23',1,7)")
     before = fingerprints(path)
@@ -231,6 +231,6 @@ def test_v13_migration_backup_and_regular_fingerprints(tmp_path):
     db.initialize()
     assert fingerprints(path) == after
     snapshot, restored = tmp_path/'snapshot.sqlite3', tmp_path/'restored.sqlite3'
-    assert create_backup(path, snapshot)['schema'] == 14
+    assert create_backup(path, snapshot)['schema'] == 17
     assert restore_backup(snapshot, restored)['usage_preserved']
     assert fingerprints(restored)['ai_usage'] == after['ai_usage']

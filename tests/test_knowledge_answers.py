@@ -6,6 +6,7 @@ from fastapi.testclient import TestClient
 
 import api.knowledge as knowledge_api
 from model.factory import ModelError, create_knowledge_model, knowledge_qa_status
+from rag.rag_service import RetrievalSnapshot
 from schemas import Profile
 from services.records import RecordService
 from test_foundation import DAY, application, client, meal, register
@@ -29,6 +30,38 @@ class AnswerModel:
             return self.output
         ids = [entry["chunk_id"] for entry in self.messages[-1]["evidence"]]
         return json.dumps({"status": "answered", "chunk_ids": ids[:1]})
+
+
+class CountingRetriever:
+    """Original search/get_chunks protocol; rankings disappear on a second search."""
+
+    def __init__(self, base):
+        self.base = base
+        self.searches = 0
+        self.reads = []
+
+    def search(self, *args, **kwargs):
+        self.searches += 1
+        return self.base.search(*args, **kwargs) if self.searches == 1 else []
+
+    def get_chunks(self, chunk_ids, **kwargs):
+        self.reads.append(list(chunk_ids))
+        return self.base.get_chunks(chunk_ids, **kwargs)
+
+
+class SnapshotRetriever(CountingRetriever):
+    def __init__(self, base):
+        super().__init__(base)
+        self.snapshots = 0
+
+    def search_snapshot(self, query, **kwargs):
+        self.snapshots += 1
+        hits = self.base.search(query, **kwargs)
+        return RetrievalSnapshot(hits, {"mode": "hybrid", "requested_mode": "hybrid", "tokenizer": "jieba",
+            "corpus_version": "synthetic-v1", "degraded": False, "query": query,
+            "rankings": [{"chunk_id": hit.chunk_id, "lexical_rank": rank, "dense_rank": rank,
+                          "rrf_score": 2 / (60 + rank), "query": query, "vector": [0.1, 0.2]}
+                         for rank, hit in enumerate(hits, 1)]})
 
 
 @pytest.fixture
@@ -70,16 +103,64 @@ def test_answer_bound_to_real_evidence_and_no_business_writes(qa):
     assert client.get(f"/api/workouts?day={DAY}").json() == []
 
 
+def test_answer_uses_one_search_and_checks_selected_ids_independently_of_ranking(qa):
+    client, app, model, _ = qa
+    retriever = CountingRetriever(app.state.knowledge)
+    app.state.knowledge = retriever
+    result = ask(client)
+    assert result.status_code == 200, result.text
+    assert result.json()["status"] == "answered"
+    assert retriever.searches == 1
+    assert retriever.reads == [["cdc-adults:strength"]]
+    assert len(model.messages) == 1
+
+
+def test_snapshot_metadata_is_public_and_does_not_change_citation_shape(qa):
+    client, app, _, _ = qa
+    retriever = SnapshotRetriever(app.state.knowledge)
+    original = retriever.base.get_chunks(["cdc-adults:strength"])[0].model_dump()
+    app.state.knowledge = retriever
+    result = ask(client).json()
+    assert result["status"] == "answered"
+    assert result["sources"] == [original]
+    assert result["retrieval"]["mode"] == "hybrid"
+    assert result["retrieval"]["corpus_version"] == "synthetic-v1"
+    assert "query" not in json.dumps(result["retrieval"])
+    assert "vector" not in json.dumps(result["retrieval"])
+    assert retriever.snapshots == 1 and retriever.searches == 0
+    assert retriever.reads == [["cdc-adults:strength"]]
+
+
+def test_changed_selected_chunk_is_detected_by_id_lookup(qa, monkeypatch):
+    client, app, model, _ = qa
+    retriever = CountingRetriever(app.state.knowledge)
+    app.state.knowledge = retriever
+    original = retriever.get_chunks
+
+    def change_lookup():
+        monkeypatch.setattr(retriever, "get_chunks", lambda ids: [
+            hit.model_copy(update={"excerpt": "changed after selection"}) for hit in original(ids)])
+
+    model.on_call = change_lookup
+    result = ask(client)
+    assert result.status_code == 409
+    assert result.json()["detail"]["code"] == "KNOWLEDGE_CHANGED"
+    assert retriever.searches == 1 and retriever.reads == [["cdc-adults:strength"]]
+
+
 @pytest.mark.parametrize("question", [
     "我对西兰花过敏，晚餐吃什么", "肩受伤了，安排一个训练计划", "三分化计划怎么安排",
     "今晚吃多少千卡", "糖尿病怎么吃", "I have an injury, recommend a workout",
 ])
 def test_explicit_personal_and_health_questions_do_not_call_model(qa, question):
     client, app, model, _ = qa
+    retriever = CountingRetriever(app.state.knowledge)
+    app.state.knowledge = retriever
     result = ask(client, question).json()
     assert result["status"] == "personal_scope"
     assert not result["model_called"] and not result["sources"]
     assert not model.messages and calls(app) == 0
+    assert retriever.searches == 0 and retriever.reads == []
 
 
 @pytest.mark.parametrize("profile,question", [

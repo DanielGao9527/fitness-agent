@@ -1,0 +1,6 @@
+{"event": "attempt", "call": 1, "case": "stable-01", "request_sha256": "4e0fd8101875fd41a463538890651c0e1e2478b783fe78d03b545687acb29a32"}
+{"event": "failure", "call": 1, "code": "MODEL_UNAVAILABLE"}
+{"event": "attempt", "call": 2, "case": "stable-02", "request_sha256": "96460792a76dd5280b721c83be647f71a7babaa062fa995f1450767bc4596413"}
+{"event": "failure", "call": 2, "code": "MODEL_UNAVAILABLE"}
+{"event": "attempt", "call": 3, "case": "stable-03", "request_sha256": "c73d0a292354a45358257443783fa540742dbeb4283d21f354c1bccc8d69d2f7"}
+{"event": "failure", "call": 3, "code": "MODEL_UNAVAILABLE"}

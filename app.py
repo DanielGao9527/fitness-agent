@@ -70,7 +70,23 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     knowledge_path = settings.knowledge_index_path or settings.database_path.with_name("knowledge.sqlite3")
     if knowledge_path.resolve() == settings.database_path.resolve():
         raise ValueError("Knowledge index must not use the personal database path")
-    application.state.knowledge = LocalKnowledgeRetriever(settings.knowledge_source_path.resolve(), knowledge_path.resolve())
+    if settings.retrieval_mode not in ("lexical", "hybrid"):
+        raise ValueError("FITNESS_RETRIEVAL_MODE must be lexical or hybrid")
+    lexical = LocalKnowledgeRetriever(settings.knowledge_source_path.resolve(), knowledge_path.resolve(),
+                                      tokenizer=settings.retrieval_tokenizer)
+    application.state.knowledge = lexical
+    if settings.retrieval_mode == "hybrid":
+        from model.embeddings import QwenEmbeddingProvider
+        from rag.hybrid import HybridKnowledgeRetriever
+        from rag.vector_store import VectorStore
+        vector_path = settings.knowledge_vector_path or knowledge_path.with_name("knowledge-vectors.sqlite3")
+        if vector_path.resolve() in (settings.database_path.resolve(), knowledge_path.resolve(),
+                                     settings.knowledge_source_path.resolve()):
+            raise ValueError("Vector cache must be separate from personal data, sources and lexical index")
+        # Hybrid may be selected on a no-key installation. Keep account/record
+        # routes usable and report an explicit lexical fallback in that case.
+        provider = QwenEmbeddingProvider(settings) if settings.qwen_api_key else None
+        application.state.knowledge = HybridKnowledgeRetriever(lexical, provider, VectorStore(vector_path))
 
     @application.exception_handler(RequestValidationError)
     async def validation_error(request: Request, error: RequestValidationError):

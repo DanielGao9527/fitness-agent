@@ -1,0 +1,21 @@
+{
+  "version": "fitness-equipment-memory-v1",
+  "provenance": "self_authored_synthetic",
+  "human_independent_review": false,
+  "sha256": "b107eaac08888d4d952dafbe229e8a98c9ec1faa217aabf6516a1cbef066f3e8",
+  "cases": 100,
+  "families": 20,
+  "split_counts": {
+    "dev": 60,
+    "holdout": 40
+  },
+  "base_day": "2026-09-28",
+  "scope": "equipment-only business lifecycle; not a third-party memory benchmark",
+  "created_before_live_evaluation": true,
+  "split_unit": "family",
+  "design_references": [
+    "https://github.com/xiaowu0162/LongMemEval",
+    "https://github.com/snap-research/locomo"
+  ],
+  "copied_external_examples": false
+}

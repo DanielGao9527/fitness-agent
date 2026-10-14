@@ -334,6 +334,8 @@ class CoachService:
     def context(self, connection, day):
         start = date.fromordinal(max(1, date.fromisoformat(day).toordinal() - 6)).isoformat()
         from services.profile_context import read_profile
+        from services.profile_facts import fact_revisions
+        from services.equipment_memory import day_snapshot
         profile = read_profile(connection, self.user_id)
         meals = connection.execute("SELECT payload FROM meals WHERE user_id=? AND day=? ORDER BY id", (self.user_id, day)).fetchall()
         workouts = connection.execute("SELECT payload FROM workouts WHERE user_id=? AND day BETWEEN ? AND ? ORDER BY day DESC,id DESC",
@@ -341,6 +343,8 @@ class CoachService:
         completed = [json.loads(row[0]) for row in workouts if json.loads(row[0]).get("status") == "completed"]
         return {
             "day": day, "window_start": start, "window_days": 7,
+            "profile_fact_revisions": fact_revisions(connection, self.user_id),
+            "day_equipment": day_snapshot(connection, self.user_id, day),
             "profile": {key: profile[key] for key in ("goal", "experience", "equipment", "minutes_per_session", "training_days", "training_split", "preferences", "food_allergies")},
             "meal_count": len(meals), "recent_completed_count": len(completed),
             "completed_minutes_today": sum(item["minutes"] for item in completed if item["day"] == day),
@@ -431,7 +435,8 @@ class CoachService:
             if training_change is not None:
                 intent = "training"
                 if not row["pending"]:
-                    training = merge_training(training, training_change, self.context(connection, row["day"])["profile"])
+                    current = self.context(connection, row["day"])
+                    training = merge_training(training, training_change, current["profile"], current["profile_fact_revisions"])
             adjustment = meal_adjustment(targeted(message)[1])
             meal_changes = explicit_meal_changes(message)
             context = meal_context(connection, row["id"])
@@ -485,4 +490,6 @@ class CoachService:
             row = self.owned(connection, conversation_id)
             if row["version"] != version:
                 raise HTTPException(409, "对话已变化，请刷新后再确认删除")
+            from services.equipment_memory import revoke_day
+            revoke_day(connection, self.user_id, row["id"])
             connection.execute("DELETE FROM coach_conversations WHERE id=? AND user_id=?", (row["id"], self.user_id))

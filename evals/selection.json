@@ -1,0 +1,20 @@
+{
+  "frozen_at_utc": "2026-09-24T15:30:06Z",
+  "dataset_sha256": "ec6f7446a9560654a1056f8cdda9e1bbef22041c3c4fa043169f965795e75cec",
+  "source_sha256": "547e5f5b4d8cde212dfe448139ad0628dd9fd91c62d39175f5eab541ba7ff962",
+  "selection_split": "dev",
+  "answerable_queries": 164,
+  "selected": {
+    "model": "text-embedding-v4", "dimensions": 1024,
+    "tokenizer": "bigram", "method": "hybrid_rrf",
+    "candidate_limit": 20, "rrf_k": 60, "rrf_weights": [1, 1],
+    "text_template": "title-excerpt-keywords-v1", "answer_candidates": 6
+  },
+  "criterion": "Prefer Recall@6, then MRR@10 on dev. No test results read before this selection.",
+  "dev_comparison": {
+    "baseline": {"recall@6": 0.9939024390243902, "mrr@10": 0.9763719512195121},
+    "qwen3.7_bigram_rrf": {"recall@6": 0.9969512195121951, "mrr@10": 0.9878048780487805},
+    "v4_bigram_rrf": {"recall@6": 1.0, "mrr@10": 0.9939024390243902}
+  },
+  "test_plan": "Evaluate unchanged selected configuration and the original lexical baseline on all 72 answerable test queries; keep the 15 unanswerable cases separate. Retain all method ablations in the report. Do not revise configuration using these test results."
+}

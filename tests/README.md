@@ -1,59 +1,73 @@
-# 测试
+# 测试与复现
 
-测试分为后端回归、前端单元和隔离浏览器流程。默认回归使用合成数据和模型替身；真实供应商调用属于另外的手动验证，不包含在常规测试结论中。
+实际执行结果看 [STATUS](../docs/STATUS.md)。以下是运行入口与覆盖范围，不因脚本存在就视为已经验收。
 
 ## 后端回归
 
-在仓库根目录运行：
+在源码仓库根目录使用项目虚拟环境：
 
-```powershell
+~~~powershell
 .\.venv\Scripts\python.exe -m pytest
-```
+~~~
 
-Linux／macOS 将解释器路径换为 `.venv/bin/python`。可以指定一个文件定位问题，例如：
+Linux／macOS 使用 .venv/bin/python。已有本机工作区可复用外层虚拟环境；独立克隆先按 [安装说明](../README.md#本地启动) 创建环境。常规回归使用临时合成数据库与模型替身，不要求真实 API Key；不要将测试指向私人账号库。
 
-```powershell
+| 范围 | 主要入口与检查 |
+| --- | --- |
+| 账号、记录与草稿 | 认证和跨账号隔离、确认保存、幂等、输入校验、并发、重启与过期结果 |
+| 配餐与训练 | 既有摄入、营养区间、有限禁忌、份量和时间约束；无可行解、实际记录与建议分离 |
+| 中文混合检索 | test_embeddings.py、test_hybrid_retrieval.py、test_hybrid_api.py；接口角色/顺序、RRF、缓存版本、额度、来源变化与词法降级 |
+| 知识分流与有限重试 | test_coach_knowledge.py、test_knowledge_answers.py、test_knowledge_loop.py；一次候选快照、原问题复核、引用失效、停止条件 |
+| 会话／温／冷记忆 | test_coach_memory.py、test_coach_warm_memory.py；保存、读取、更正、删除、来源变化与本人隔离 |
+| 器械事实生命周期 | test_profile_fact_versions.py、test_equipment_memory_scopes.py、test_equipment_clarification.py；本次/今天/长期、显式确认、到期、A→B→A、并发、未知条件和 v17 迁移 |
+| 评测完整性 | test_memory_evaluation.py、test_memory_suite_versions.py、test_memory_response_replay.py；冻结哈希、场景族划分、标准答案隔离、预算、失败保留和重复分片拒绝 |
+| 本机启动兼容 | test_workspace_startup.py；原入口转增强源码、保留原库、无密钥/手动模式及端口占用。仅对应 Windows 工作区执行，独立克隆和其他平台跳过 |
+| 分享与恢复 | test_public_release.py、备份/迁移相关测试；访问边界、库结构、原表指纹和恢复持久化 |
+
+训练理解与一般知识不依赖饮食确认；配餐确认缺失或调用期间撤销时，只保留待核对草稿。取得确认后可以复用原理解，长期事实与实际记录仍须相应的明确操作。
+
+指定单文件示例：
+
+~~~powershell
 .\.venv\Scripts\python.exe -m pytest tests/test_public_release.py
-```
-
-主要覆盖账号隔离、输入校验、草稿防重复、重启持久化、资料有效性、配餐约束、训练条件、备份恢复与共享访问边界。测试数据库应保持隔离，不将 `FITNESS_DB_PATH` 指向真实用户数据来运行测试。
-
-主聊天知识分流的集中用例在 `test_coach_knowledge.py`：原句及自然改写、与个人请求的区分、旧任务绑定、逐消息待办、混合请求、范围限制、幂等、重启、并发及来源变化。连同 `test_coach_reviews.py`、`test_coach_training.py`、`test_knowledge_answers.py` 等做相关回归；实际模型分类质量另行验证。
+~~~
 
 ## 前端单元
 
-安装 Node.js 后，从仓库根目录运行单个 `*-unit.cjs` 文件，例如：
+安装 Node.js 后，从源码仓库运行任意 *-unit.cjs，例如：
 
-```powershell
-node tests/speech-flow-unit.cjs
-```
+~~~powershell
+node tests/coach-memory-unit.cjs
+node tests/knowledge-flow-unit.cjs
+~~~
 
-这些测试使用 DOM、媒体或接口替身，验证状态和交互逻辑；不会打开真实麦克风。
+测试使用 DOM、媒体与接口替身，检查内容转义、重复请求、迟到响应、取消和账号切换。不会打开真实麦克风或调用真实模型。
 
-## 浏览器流程
+## 隔离浏览器流程
 
-当前有效套件以 [browser-current.json](browser-current.json) 为准。浏览器脚本使用 Playwright，并调用本机 Chrome；需要预先安装这些测试依赖。
+需要 Node.js 可解析 Playwright，以及本机 Chrome。只对合成测试服务执行浏览器套件，不对真实账号服务造数据。
 
-先在独立终端启动合成服务：
+记忆范围、更正和冲突验证：
 
-```powershell
-.\.venv\Scripts\python.exe tests/ui_fixture_server.py --coach
-```
+~~~powershell
+.\.venv\Scripts\python.exe tests/ui_fixture_server.py --fact-versions
+~~~
 
-服务固定监听 `127.0.0.1:8767`，使用 `artifacts/` 下的隔离数据库和模型替身。不要用它保存真实记录或部署给用户。
+该进程监听 127.0.0.1:8772，使用临时库、模型替身和词法检索。在另一终端依次执行：
 
-再在另一个终端运行需要的套件：
+~~~powershell
+node tests/browser-equipment-scopes.cjs
+node tests/browser-profile-facts.cjs
+~~~
 
-```powershell
-node tests/browser-assistant-quality.cjs
-```
+检查未知范围不保存、显式确认、本次/今天/长期来源、刷新补问、双页面 A→B→A 冲突与 390/320 宽度。结束后停止本次测试服务。
 
-套件会生成合成账号和截图等测试产物，检查普通桌面及较窄视口下的页面行为。完成后停止合成服务；测试产物不提交到公开仓库。
+用户笔记页面另用 ui_fixture_server.py --memory（8771）与 browser-coach-memory.cjs。一般业务页面用 --coach（8767），当前有效套件列表见 [browser-current.json](browser-current.json)。旧页面脚本不全是当前验收入口；测试端口被占用时先确认归属，不停止未知服务。
 
-`browser-coach-knowledge.cjs` 从主聊天发送知识问题，检查无配餐确认时可提问、摘要与出处可见、插问不重复推荐、刷新不重复调用，以及桌面和窄屏布局。既有配餐套件的 `browser-consent.cjs` 为其合成账号明确设置配餐授权，不代表知识提问也需要授权。
+## 质量评测与解释边界
 
-## 如何解释结果
+[260 条检索 QA](../evals/README.md)、[100 组记忆 v1](../evals/memory/README.md) 和 [24 条新表达 v2](../evals/memory/expressions_v2/README.md) 都记录了来源、划分和局限。标注模式只验证业务接线；真实模式须显式预算，保留失败与未运行项。评测命令见 [scripts](../scripts/README.md)。
 
-替身测试通过只能说明对应输入和异常场景的工程行为符合预期。它不能证明营养测量准确、任意口语均能理解、真实语音／图片供应商可用、实体手机权限正常或云端部署完成。
+旧 test_knowledge.py 的 16 条 Top 3 检查属于已知回归案例，不是未见留出集。自建数据、外部 T2 抽样和真实模型结果分别报告；Recall/MRR/nDCG 不等于最终回答准确率，固定旧响应回放不等于新提示词效果。
 
-历史升级检查及旧页面脚本可能只用于特定兼容场景，不能把目录里所有 `browser-*.cjs` 都当成当前验收入口。真实接口检查工具说明见 [scripts/README.md](../scripts/README.md)。
+工程测试和模拟浏览器通过不证明营养测量准确、任意口语理解、供应商实时可用、实体手机权限或公网部署完成。

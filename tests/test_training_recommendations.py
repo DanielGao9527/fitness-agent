@@ -100,6 +100,15 @@ def test_cardio_not_counted_until_recorded_and_uses_calendar_week(plans):
     ('健身房和泳池', {'floor', 'pool'}, False),
     ('健身房但不能去泳池', {'floor'}, False),
     ('没有哑铃', set(), True), ('外星器械', set(), True),
+    ('只有瑜伽垫，其他器械都没有', {'floor'}, False),
+    ('哑铃; 其余设备没有。', {'dumbbell', 'floor'}, False),
+    ('只有哑铃，没有训练凳，其他器械都没有', {'dumbbell', 'floor'}, False),
+    ('没有哑铃，其他器械都没有', set(), True),
+    ('其他器械都没有', set(), True),
+    ('外星器械，其他器械都没有', set(), True),
+    ('哑铃，其他器械都没有办法确认', {'dumbbell', 'floor'}, True),
+    ('哑铃，其他器械都没有，哑铃也没有', {'dumbbell', 'floor'}, True),
+    ('瑜伽垫，其他器械都没有，但是肩膀疼', {'floor'}, True),
 ])
 def test_equipment_no_negated_or_invented_resources(text, expected, uncertain):
     assert equipment(text) == (expected, uncertain)

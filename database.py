@@ -79,7 +79,7 @@ class Database:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with self.connect() as connection:
             version = connection.execute("PRAGMA user_version").fetchone()[0]
-            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14):
+            if version not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17):
                 raise RuntimeError("Unsupported database schema version")
             connection.execute("PRAGMA journal_mode = WAL")
             if version == 1:
@@ -374,5 +374,89 @@ class Database:
                         PRIMARY KEY(day, client_hash)
                     );
                     PRAGMA user_version = 14;
+                    COMMIT;
+                """)
+            if version < 15:
+                if version > 0:
+                    backup_path = self.path.with_name(self.path.name + ".pre-v15.bak")
+                    if not backup_path.exists():
+                        with sqlite3.connect(backup_path) as backup:
+                            connection.backup(backup)
+                connection.executescript("""
+                    BEGIN IMMEDIATE;
+                    CREATE TABLE coach_memory_entries (
+                        id TEXT PRIMARY KEY,
+                        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                        kind TEXT NOT NULL CHECK(kind IN ('user_preference','assistant_note')),
+                        content TEXT NOT NULL CHECK(length(content) BETWEEN 1 AND 200),
+                        version INTEGER NOT NULL DEFAULT 1 CHECK(version >= 1),
+                        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+                    );
+                    CREATE INDEX coach_memory_entries_user ON coach_memory_entries(user_id, created_at, id);
+                    CREATE TABLE coach_memory_digests (
+                        id TEXT PRIMARY KEY,
+                        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                        conversation_id TEXT NOT NULL REFERENCES coach_conversations(id) ON DELETE CASCADE,
+                        source_versions TEXT NOT NULL,
+                        source_hash TEXT NOT NULL,
+                        summary TEXT NOT NULL CHECK(length(summary) BETWEEN 1 AND 480),
+                        status TEXT NOT NULL CHECK(status IN ('pending','approved')),
+                        version INTEGER NOT NULL DEFAULT 1 CHECK(version >= 1),
+                        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        UNIQUE(user_id, conversation_id)
+                    );
+                    CREATE INDEX coach_memory_digests_user ON coach_memory_digests(user_id, status, created_at);
+                    PRAGMA user_version = 15;
+                    COMMIT;
+                """)
+            if version < 16:
+                if version > 0:
+                    backup_path = self.path.with_name(self.path.name + ".pre-v16.bak")
+                    if not backup_path.exists():
+                        with sqlite3.connect(backup_path) as backup:
+                            connection.backup(backup)
+                connection.executescript("""
+                    BEGIN IMMEDIATE;
+                    CREATE TABLE profile_fact_events (
+                        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                        field TEXT NOT NULL CHECK(field IN ('equipment')),
+                        revision INTEGER NOT NULL CHECK(revision >= 1),
+                        action TEXT NOT NULL CHECK(action IN ('set','clear')),
+                        source TEXT NOT NULL CHECK(source IN ('legacy_profile','profile_edit','conversation_review')),
+                        conversation_id TEXT REFERENCES coach_conversations(id) ON DELETE SET NULL,
+                        turn_version INTEGER CHECK(turn_version >= 1),
+                        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        PRIMARY KEY(user_id,field,revision)
+                    );
+                    CREATE INDEX profile_fact_events_conversation ON profile_fact_events(conversation_id);
+                    INSERT INTO profile_fact_events(user_id,field,revision,action,source)
+                        SELECT user_id,'equipment',1,
+                               CASE WHEN json_extract(payload,'$.equipment')='' THEN 'clear' ELSE 'set' END,
+                               'legacy_profile'
+                        FROM profiles WHERE json_type(payload,'$.equipment')='text';
+                    PRAGMA user_version = 16;
+                    COMMIT;
+                """)
+            if version < 17:
+                if version > 0:
+                    backup_path = self.path.with_name(self.path.name + ".pre-v17.bak")
+                    if not backup_path.exists():
+                        with sqlite3.connect(backup_path) as backup:
+                            connection.backup(backup)
+                connection.executescript("""
+                    BEGIN IMMEDIATE;
+                    CREATE TABLE coach_day_equipment (
+                        user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+                        value TEXT NOT NULL CHECK(length(value) <= 300),
+                        valid_day TEXT NOT NULL,
+                        revision INTEGER NOT NULL CHECK(revision >= 1),
+                        profile_revision INTEGER NOT NULL CHECK(profile_revision >= 0),
+                        conversation_id TEXT REFERENCES coach_conversations(id) ON DELETE SET NULL,
+                        turn_version INTEGER NOT NULL CHECK(turn_version >= 1),
+                        updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+                    );
+                    PRAGMA user_version = 17;
                     COMMIT;
                 """)

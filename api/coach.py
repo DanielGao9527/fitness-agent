@@ -3,7 +3,9 @@ from uuid import UUID
 from fastapi import APIRouter, HTTPException, Request, Response
 
 from api.routes import User
-from schemas import CoachCreate, CoachMessage, CoachVersion, CoachUnderstand, CoachAutoUnderstand, CoachReviewConfirm
+from schemas import (CoachCreate, CoachMessage, CoachMemorySearch, CoachMemoryEntryCreate,
+                     CoachMemoryEntryUpdate, CoachMemoryEntryDelete, CoachMemoryDigestVersion, CoachVersion,
+                     CoachUnderstand, CoachAutoUnderstand, CoachReviewConfirm)
 from model.factory import ModelError, coach_status, create_coach_model
 from services.coach_reviews import CoachReviewService
 from services.usage import reserve_call
@@ -18,8 +20,70 @@ from services.meal_nutrient_reference import current_context
 from services.training_recommendations import TrainingRecommendationService
 from model.factory import create_knowledge_model, knowledge_qa_status
 from services.coach_knowledge import CoachKnowledgeService
+from services.knowledge_runtime import request_retriever
+from services.coach_memory import recall_confirmed_history
+from services.coach_memory_entries import entries, create_entry, update_entry, delete_entry
+from services.coach_memory_digests import list_digests, propose_digest, approve_digest, delete_digest
 
 router = APIRouter(prefix="/api/coach/conversations")
+
+
+@router.post("/memory/search")
+def search_memory(body: CoachMemorySearch, request: Request, user: User):
+    """Historical user messages for inspection, never current plan conditions."""
+    with request.app.state.database.connect() as connection:
+        rows = recall_confirmed_history(connection, user["id"], body.query, limit=5)
+    return {"items": rows, "scope": "confirmed_history", "used_as_current_constraint": False}
+
+
+@router.get("/memory/entries")
+def list_memory_entries(request: Request, user: User):
+    with request.app.state.database.connect() as connection:
+        return {"items": entries(connection, user["id"]), "used_as_current_constraint": False}
+
+
+@router.post("/memory/entries", status_code=201)
+def add_memory_entry(body: CoachMemoryEntryCreate, request: Request, user: User):
+    with request.app.state.database.connect() as connection:
+        return create_entry(connection, user["id"], body.kind, body.content)
+
+
+@router.put("/memory/entries/{entry_id}")
+def change_memory_entry(entry_id: UUID, body: CoachMemoryEntryUpdate, request: Request, user: User):
+    with request.app.state.database.connect() as connection:
+        return update_entry(connection, user["id"], entry_id, body.version, body.content)
+
+
+@router.delete("/memory/entries/{entry_id}", status_code=204)
+def remove_memory_entry(entry_id: UUID, body: CoachMemoryEntryDelete, request: Request, user: User):
+    with request.app.state.database.connect() as connection:
+        delete_entry(connection, user["id"], entry_id, body.version)
+    return Response(status_code=204)
+
+
+@router.get("/memory/digests")
+def memory_digests(request: Request, user: User):
+    with request.app.state.database.connect() as connection:
+        return {"items": list_digests(connection, user["id"]), "used_as_current_constraint": False}
+
+
+@router.post("/memory/digests/from-conversation/{conversation_id}", status_code=201)
+def make_memory_digest(conversation_id: UUID, request: Request, user: User):
+    with request.app.state.database.connect() as connection:
+        return propose_digest(connection, user["id"], conversation_id)
+
+
+@router.post("/memory/digests/{digest_id}/approve")
+def confirm_memory_digest(digest_id: UUID, body: CoachMemoryDigestVersion, request: Request, user: User):
+    with request.app.state.database.connect() as connection:
+        return approve_digest(connection, user["id"], digest_id, body.version)
+
+
+@router.delete("/memory/digests/{digest_id}", status_code=204)
+def remove_memory_digest(digest_id: UUID, body: CoachMemoryDigestVersion, request: Request, user: User):
+    with request.app.state.database.connect() as connection:
+        delete_digest(connection, user["id"], digest_id, body.version)
+    return Response(status_code=204)
 
 
 def service(request, user):
@@ -57,7 +121,7 @@ def answer_knowledge(conversation_id: UUID, body: CoachUnderstand, request: Requ
         reserve_call(request.app.state.database, settings, user["id"])
         return model
 
-    knowledge = CoachKnowledgeService(request.app.state.database, user["id"], request.app.state.knowledge)
+    knowledge = CoachKnowledgeService(request.app.state.database, user["id"], request_retriever(request, user))
     run(lambda: knowledge.answer(conversation_id, body, factory, settings.qwen_model, knowledge_qa_status(settings)))
     return with_plans(request, user, service(request, user).get(conversation_id))
 

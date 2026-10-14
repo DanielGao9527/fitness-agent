@@ -1,0 +1,44 @@
+{
+  "synthetic_account": true,
+  "private_records_used": false,
+  "real_embedding_model": "text-embedding-v4",
+  "real_answer_model": "qwen3.7-plus",
+  "total_calls": 6,
+  "results": [
+    {
+      "question": "力量训练一般一周做几次",
+      "status": "answered",
+      "answer": "以下是与你的问题相关的一般资料摘要，不是为你制定的个人建议。",
+      "source_ids": [
+        "cdc-adults:strength",
+        "acsm-2026:programming"
+      ],
+      "retrieval_mode": "hybrid",
+      "seconds": 2.5574849999975413,
+      "used_calls": 2,
+      "repeat_new_calls": 0
+    },
+    {
+      "question": "哪些食物含蛋白质",
+      "status": "answered",
+      "answer": "以下是与你的问题相关的一般资料摘要，不是为你制定的个人建议。",
+      "source_ids": [
+        "phe-eatwell:protein"
+      ],
+      "retrieval_mode": "hybrid",
+      "seconds": 2.3507299999764655,
+      "used_calls": 4,
+      "repeat_new_calls": 0
+    },
+    {
+      "question": "蛋白质一天吃多少",
+      "status": "insufficient",
+      "answer": "现有资料不足以直接回答这个问题。可以补充更具体的知识问题；不会用猜测补齐。",
+      "source_ids": [],
+      "retrieval_mode": "hybrid",
+      "seconds": 1.763452999992296,
+      "used_calls": 6,
+      "repeat_new_calls": 0
+    }
+  ]
+}

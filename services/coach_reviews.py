@@ -7,16 +7,21 @@ from pydantic import ValidationError
 
 from config import ROOT
 from model.factory import ModelError
-from schemas import CoachUnderstanding
+from schemas import CoachUnderstanding, CoachEquipmentMemory
 from services.coach import CoachService, apply_meal_command, apply_meal_commands, apply_meal_changes, validate_meal_changes, batch_meal_adjustments, conversation_constraints, meal_adjustment, meal_context, route
 from services.meal_plans import digest, encode
 from services.plan_foods import ALIASES, CATALOG_VERSION, FOODS, MEDICAL, SOFT
 from services.training_plans import HEALTH
 from services.training_context import training_context, recent_training, merge_training, training_question, SPLIT_ALIASES
 from services.meal_schedule import MEAL_ALIASES, selection, targeted, question as meal_question
-from services.coach import pending_turns, knowledge_response, PERSONAL_REQUEST, mixed_question
+from services.coach import pending_turns, knowledge_response, PERSONAL_REQUEST, mixed_question, knowledge_only
+from services.coach_memory import PAST_REFERENCE, recall_confirmed_history, confirmed_equipment
+from services.coach_memory_entries import warm_memory
+from services.coach_memory_digests import recall_digests
+from services.profile_facts import fact_revisions, write_profile
+from services.equipment_memory import candidate_from_model, check_equipment_context, EquipmentNeedsInput, day_snapshot, save_day, revoke_day, today
 
-POLICY = "coach-understanding-v11-knowledge-turns"
+POLICY = "coach-understanding-v15-equipment-exhaustive-list"
 QUESTIONS = {
     "none": "",
     "which_food": "你想调整哪一种食材？请写出餐单里的名称。",
@@ -91,6 +96,21 @@ class CoachReviewService:
                  "meal_context": meal_context(connection, row["id"]),
                  "current_meal": json.loads(previous["payload"])["items"] if previous else [],
                  "plan_id": previous["id"] if previous else None}
+        facts["warm_memory"] = warm_memory(connection, self.user_id)
+        facts["profile_fact_revisions"] = fact_revisions(connection, self.user_id)
+        facts["day_equipment"] = day_snapshot(connection, self.user_id, row["day"])
+        if turns and PAST_REFERENCE.search(turns[-1]["message"]):
+            current_turn = connection.execute(
+                "SELECT rowid FROM coach_turns WHERE conversation_id=? AND version=?",
+                (row["id"], row["version"])).fetchone()
+            facts["historical_evidence"] = recall_confirmed_history(
+                connection, self.user_id, turns[-1]["message"], before_day=row["day"],
+                before_turn_rowid=current_turn[0] if current_turn else None,
+                exclude_conversation_id=row["id"], limit=3)
+            facts["historical_digests"] = recall_digests(
+                connection, self.user_id, turns[-1]["message"], before_day=row["day"],
+                before_turn_rowid=current_turn[0] if current_turn else None,
+                exclude_conversation_id=row["id"], limit=2)
         facts["training_context"] = training_context(connection, row["id"])
         if "meal_types" in facts["meal_context"]:
             rows = connection.execute("SELECT id,meal_type,payload FROM meal_plans WHERE user_id=? AND day=? AND status IN ('draft','accepted') AND json_extract(input_payload,'$.coach_id')=? ORDER BY rowid DESC", (self.user_id, row["day"], row["id"])).fetchall()
@@ -98,7 +118,7 @@ class CoachReviewService:
             for previous in rows:
                 facts["current_meals"].setdefault(previous["meal_type"], {"id": previous["id"], "items": json.loads(previous["payload"])["items"]})
         # Only training-related interpretation receives exercise details, never meal-only requests.
-        if row["intent"] == "training" or facts["training_context"] and row["intent"] == "unknown" or any(re.search(r"训练|练|分化|卧推|游泳|泳池|哑铃|杠铃|龙门架|有氧|骑|步行|走路|器械|分钟|胸|肩|二头|三头", turn["message"]) for turn in turns):
+        if row["intent"] == "training" or facts["training_context"].get("kind") and row["intent"] == "unknown" or any(re.search(r"训练|练|分化|卧推|游泳|泳池|哑铃|杠铃|龙门架|有氧|骑|步行|走路|器械|分钟|胸|肩|二头|三头", turn["message"]) for turn in turns):
             context = self.coach.context(connection, row["day"])
             facts["training_facts"] = {"profile": {key: context["profile"][key] for key in ("goal", "experience", "equipment", "minutes_per_session", "training_split")},
                                        "history": recent_training(connection, self.user_id, row["day"])}
@@ -129,6 +149,17 @@ class CoachReviewService:
         versions = [note.version for note in result.notes]
         if len(set(versions)) != len(versions) or set(versions) != set(originals):
             raise ModelError("COACH_INVALID_OUTPUT", "理解结果遗漏或重复了待核对原话，未应用。")
+        memory, equipment_issue = None, None
+        try:
+            if result.equipment_memory is not None:
+                memory = candidate_from_model(result.equipment_memory, result.scope, originals, facts["day"], result.training)
+            if result.scope in ("aerobic", "strength"):
+                # Only the newest message is a new unresolved input here. Earlier
+                # uncertainty can be answered by a later explicit statement;
+                # an older candidate is still checked against its own source.
+                check_equipment_context(originals.get(facts["version"], ""))
+        except EquipmentNeedsInput as issue:
+            equipment_issue = issue
         if result.scope == "knowledge":
             from services.knowledge_answers import SENSITIVE
             latest = originals.get(facts["version"], "")
@@ -211,7 +242,17 @@ class CoachReviewService:
             if result.scope == "strength" and update.activity or result.scope == "aerobic" and update.focus:
                 raise ModelError("COACH_INVALID_OUTPUT", "训练类型与项目不一致，未应用。")
             changes = training_update(update, result.scope, facts)
-            training = merge_training(facts.get("training_context", {}), changes, facts.get("training_facts", {}).get("profile"))
+            if update.equipment:
+                try:
+                    # The legacy training-only slot must not bypass the same
+                    # context checks by omitting equipment_memory.
+                    source = next(message for message in reversed(list(originals.values())) if update.source_text in message)
+                    check_equipment_context(source)
+                except EquipmentNeedsInput as issue:
+                    equipment_issue = issue
+            if not equipment_issue:
+                training = merge_training(facts.get("training_context", {}), changes,
+                    facts.get("training_facts", {}).get("profile"), facts.get("profile_fact_revisions"))
         elif result.scope in ("aerobic", "strength"):
             training = merge_training(facts.get("training_context", {}), {"kind": result.scope})
             if any(alias in message for alias in SPLIT_ALIASES for message in originals.values()):
@@ -247,8 +288,43 @@ class CoachReviewService:
             from services.training_catalog import read_catalog
             keys = set(training["replacements"]) | set(training["replacements"].values())
             replacement_names = {item["id"]: item["name"] for item in read_catalog()[0] if item["id"] in keys}
+        equipment_on_confirmation = None
+        if memory is None and not equipment_issue and result.scope in ("aerobic", "strength"):
+            legacy = None
+            if not result.training or not result.training.equipment:
+                for source_version, original in originals.items():
+                    candidate = confirmed_equipment(original)
+                    if candidate is not None:
+                        legacy = CoachEquipmentMemory(source_version=source_version,
+                            source_text=original, value=candidate, scope="unspecified")
+            if legacy is not None:
+                # Legacy exact phrases also need a scope; an unqualified
+                # statement must not default to a durable profile write.
+                try:
+                    memory = candidate_from_model(legacy, result.scope, originals, facts["day"], result.training)
+                except EquipmentNeedsInput as issue:
+                    equipment_issue = issue
+            # Older model responses can still supply only training.equipment.
+            # Such open wording now requires an explicit scope selection.
+            if memory is None and not equipment_issue and result.training and result.training.equipment:
+                source_version = next(version for version, message in reversed(list(originals.items()))
+                                      if result.training.source_text in message)
+                try:
+                    memory = candidate_from_model(CoachEquipmentMemory(source_version=source_version,
+                        source_text=originals[source_version], value=result.training.equipment, scope="unspecified"),
+                        result.scope, originals, facts["day"], result.training)
+                except EquipmentNeedsInput as issue:
+                    equipment_issue = issue
+        if equipment_issue:
+            # Keep every original note and safety constraint visible. A needs_input
+            # review cannot be confirmed or auto-applied; no candidate is offered.
+            memory, training, equipment_on_confirmation, replacement_names = None, None, None, {}
+            clarification, question = equipment_issue.clarification, equipment_issue.question
         return {"scope": result.scope, "command": result.command, "commands": result.commands, "meal_changes": meal_changes, "notes": notes, "training": training, "meal_types": meal_types,
-                "question": question, "clarification": clarification, "replacement_names": replacement_names}
+                "question": question, "clarification": clarification, "replacement_names": replacement_names,
+                "equipment_clarification": equipment_issue.reason if equipment_issue else None,
+                "equipment_memory": memory,
+                "profile_equipment_on_confirmation": equipment_on_confirmation}
 
     def understand(self, conversation_id, body, factory, model_name):
         with self.database.connect() as connection:
@@ -276,6 +352,13 @@ class CoachReviewService:
             prompt = (ROOT / "prompts/coach_understanding.md").read_text(encoding="utf-8")
             prompt += "\nJSON Schema:\n" + json.dumps(CoachUnderstanding.model_json_schema(), ensure_ascii=False)
             message = {key: facts[key] for key in ("messages", "profile", "constraints", "current_meal")}
+            if (not knowledge_only(facts["messages"][-1]["message"])
+                    and (facts["warm_memory"]["user_preferences"] or facts["warm_memory"]["assistant_notes"])):
+                message["warm_memory"] = facts["warm_memory"]
+            if facts.get("historical_evidence"):
+                message["historical_evidence"] = facts["historical_evidence"]
+            if facts.get("historical_digests"):
+                message["historical_digests"] = facts["historical_digests"]
             message["current_message_version"] = facts["version"]
             # A training-only request does not need dietary preferences or allergies for intent extraction.
             # The complete profile still participates in the fingerprint and recommendation safety checks.
@@ -319,17 +402,21 @@ class CoachReviewService:
             raise
 
     def confirm(self, conversation_id, body):
-        return self.apply(conversation_id, body.version, body.review_id)
+        return self.apply(conversation_id, body.version, body.review_id, equipment_scope=body.equipment_scope)
 
     def apply_ready(self, conversation_id, version):
         review = self.latest(conversation_id)
         if not review or review["stale"] or review["status"] != "ready" or review.get("question"):
             return self.coach.get(conversation_id)
+        if review.get("profile_equipment_on_confirmation") is not None or review.get("equipment_memory"):
+            # The ordinary chat UI requests auto_apply. Keep durable candidates
+            # reviewable there instead of silently consuming their confirmation.
+            return self.coach.get(conversation_id)
         if review["scope"] not in ("meal", "aerobic", "strength", "knowledge"):
             return self.coach.get(conversation_id)
         return self.apply(conversation_id, version, review["id"], automatic=True)
 
-    def apply(self, conversation_id, version, review_id, automatic=False):
+    def apply(self, conversation_id, version, review_id, automatic=False, equipment_scope=None):
         with self.database.connect() as connection:
             connection.execute("BEGIN IMMEDIATE")
             row, facts, fingerprint = self.snapshot(connection, conversation_id)
@@ -344,6 +431,16 @@ class CoachReviewService:
             if review["status"] != "ready" or latest != review["id"] or fingerprint != review["context_hash"] or row["version"] != version:
                 raise ModelError("COACH_REVIEW_STALE", "理解尚未就绪、仍有缺项或上下文已变化，请重新核对；不会直接解除阻断。", 409)
             payload = json.loads(review["payload"])
+            memory = payload.get("equipment_memory")
+            if memory:
+                selected = equipment_scope or memory["scope"]
+                if automatic or selected not in ("session", "day", "long_term"):
+                    raise ModelError("COACH_SCOPE_REQUIRED", "请核对器械并选择本次、今天或长期，再确认。", 422)
+                if selected == "day" and row["day"] != today():
+                    raise ModelError("COACH_REVIEW_STALE", "当天器械已过期，请在今天的对话重新核对。", 409)
+                memory = {**memory, "scope": selected}
+            elif equipment_scope is not None:
+                raise ModelError("COACH_INVALID_OUTPUT", "当前草稿没有可选择范围的器械候选。", 422)
             if payload["scope"] == "knowledge":
                 previous = connection.execute("SELECT response FROM coach_turns WHERE conversation_id=? AND version=?", (row["id"], version)).fetchone()
                 original = json.loads(previous[0])
@@ -369,6 +466,28 @@ class CoachReviewService:
                 else:
                     context = apply_meal_command(connection, self.user_id, row, context, payload["command"], meal_types=payload.get("meal_types"))
             text = "已按本次请求更新建议条件，临时限制继续保留。" if automatic else "已按你的核对处理本次补充，临时限制继续保留；未修改长期档案或实际记录。"
+            saved_equipment = payload.get("profile_equipment_on_confirmation") if intent == "training" and not automatic else None
+            if memory:
+                saved_equipment = memory["value"] if memory["scope"] == "long_term" else None
+            if saved_equipment is not None:
+                from services.profile_context import read_profile
+                current = read_profile(connection, self.user_id)
+                raw = connection.execute("SELECT payload FROM profiles WHERE user_id=?", (self.user_id,)).fetchone()
+                # Retain body baseline/source metadata; changing equipment is not a body edit.
+                current = {**(json.loads(raw[0]) if raw else {}), **current}
+                current["equipment"] = saved_equipment
+                source_version = memory["source_version"] if memory else next(note["version"] for note in reversed(payload["notes"])
+                    if confirmed_equipment(note["message"]) == saved_equipment)
+                write_profile(connection, self.user_id, current, equipment_explicit=True,
+                    source="conversation_review", conversation_id=row["id"], turn_version=source_version,
+                    expected_equipment_revision=facts["profile_fact_revisions"]["equipment"])
+                revoke_day(connection, self.user_id)
+                text = "已按你的核对更新长期档案中的器械；实际训练记录未修改。"
+            if memory and memory["scope"] == "day":
+                save_day(connection, self.user_id, memory["value"], row["day"], row["id"], memory["source_version"])
+                text = "已确认今天的器械，可用于今天的新会话；北京时间零点到期，长期档案和实际记录未修改。"
+            elif memory and memory["scope"] == "session":
+                text = "已确认本次器械，仅用于当前对话，最晚北京时间零点到期；长期档案和实际记录未修改。"
             if intent == "meal" and meal_question(context):
                 text += meal_question(context)
             if payload.get("commands"):
@@ -383,6 +502,23 @@ class CoachReviewService:
             from services.coach import capture_meal_readiness
             capture_meal_readiness(connection, self.user_id, row["day"], response)
             training = payload.get("training") or facts["training_context"]
+            revisions = fact_revisions(connection, self.user_id)
+            response["equipment_memory_revisions"] = {
+                str(note["version"]): revisions["equipment"] for note in payload["notes"]
+                if confirmed_equipment(note["message"], allow_temporary=True) is not None}
+            if memory:
+                response["equipment_memory_claims"] = {str(memory["source_version"]): {
+                    "scope": memory["scope"], "value": memory["value"], "profile_revision": revisions["equipment"]}}
+            if memory and memory["scope"] == "session":
+                from services.profile_context import read_profile
+                training = merge_training(training or {}, {"kind": payload["scope"], "equipment": memory["value"]},
+                                          read_profile(connection, self.user_id), revisions)
+            elif memory or saved_equipment is not None:
+                # Day values are reloaded from SQL; durable values from the
+                # profile. Never persist their snapshot as a local override.
+                training = dict(training or {})
+                for key in ("equipment", "equipment_source", "equipment_valid_day", "equipment_day_revision", "replacements"):
+                    training.pop(key, None)
             if training:
                 response["training_context"] = training
                 if intent == "training" and not constraints.get("training_caution") and not constraints.get("diet_caution"):

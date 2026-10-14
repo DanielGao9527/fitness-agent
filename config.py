@@ -12,6 +12,14 @@ class Settings:
     database_path: Path
     knowledge_source_path: Path = ROOT / "data/knowledge/sources.json"
     knowledge_index_path: Path | None = None
+    knowledge_vector_path: Path | None = None
+    retrieval_mode: str = "hybrid"
+    retrieval_tokenizer: str = "jieba"
+    embedding_model: str = "text-embedding-v4"
+    embedding_dimensions: int = 1024
+    embedding_base_url: str = ""
+    embedding_batch_size: int = 10
+    embedding_timeout_seconds: float = 20.0
     cookie_secure: bool = False
     session_seconds: int = 7 * 24 * 60 * 60
     model_provider: str = "disabled"
@@ -58,6 +66,13 @@ class Settings:
         path = Path(os.getenv("FITNESS_DB_PATH", "data/runtime/fitness.sqlite3"))
         return cls(
             database_path=path if path.is_absolute() else ROOT / path,
+            retrieval_mode=os.getenv("FITNESS_RETRIEVAL_MODE", "hybrid").strip().lower(),
+            retrieval_tokenizer=os.getenv("FITNESS_RETRIEVAL_TOKENIZER", "jieba").strip().lower(),
+            embedding_model=os.getenv("FITNESS_EMBEDDING_MODEL", "text-embedding-v4").strip(),
+            embedding_dimensions=int(os.getenv("FITNESS_EMBEDDING_DIMENSIONS", "1024")),
+            embedding_base_url=os.getenv("FITNESS_EMBEDDING_BASE_URL", "").strip().rstrip("/"),
+            embedding_batch_size=int(os.getenv("FITNESS_EMBEDDING_BATCH_SIZE", "10")),
+            embedding_timeout_seconds=float(os.getenv("FITNESS_EMBEDDING_TIMEOUT_SECONDS", "20")),
             registration_enabled=os.getenv("FITNESS_REGISTRATION_ENABLED", "true").lower() == "true",
             guest_enabled=os.getenv("FITNESS_GUEST_ENABLED", "false" if os.getenv(
                 "FITNESS_ACCESS_MODE", "local").strip().lower() == "shared" else "true").lower() == "true",

@@ -284,6 +284,10 @@ def test_v11_backup_upgrade_and_restart_preserve_original_tables(tmp_path):
     with db.connect() as c:
         c.execute('DROP TABLE meal_intake_reviews')
         c.execute('DROP TABLE body_measurements')
+        c.execute('DROP TABLE coach_day_equipment')
+        c.execute('DROP TABLE profile_fact_events')
+        c.execute('DROP TABLE coach_memory_digests')
+        c.execute('DROP TABLE coach_memory_entries')
         c.execute('DROP TABLE guest_accounts')
         c.execute('DROP TABLE guest_usage')
         c.execute('PRAGMA user_version=11')
@@ -293,7 +297,7 @@ def test_v11_backup_upgrade_and_restart_preserve_original_tables(tmp_path):
     db.initialize()
     db.initialize()
     with db.connect() as c, sqlite3.connect(str(path) + '.pre-v12.bak') as backup:
-        assert c.execute('PRAGMA user_version').fetchone()[0] == 14
+        assert c.execute('PRAGMA user_version').fetchone()[0] == 17
         assert backup.execute('PRAGMA user_version').fetchone()[0] == 11
         assert len(tables) == 16
         for table in tables:

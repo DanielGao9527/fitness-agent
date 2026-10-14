@@ -1,6 +1,7 @@
 """Isolated browser fixture. Never use this server for real records or model validation."""
 import json
 import sys
+from tempfile import TemporaryDirectory
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -168,6 +169,20 @@ class FixtureCoach:
         notes = [{"version": item["version"], "avoid": [food for food in ("胡萝卜", "西兰花") if food in item["message"]],
                   "preferences": [], "training_caution": False, "diet_caution": False, "unresolved": False} for item in data["messages"]]
         command, scope, clarification = "下一餐吃什么", "meal", "none"
+        scope_examples = {
+            # Intentionally wrong model scope/uncertain candidate: the browser
+            # must exercise the server guard, not a perfect synthetic model.
+            "训练的地方可能只有哑铃，还没确认": ("只有哑铃", "session"),
+            "以后我训练的地方只有哑铃": ("只有哑铃", "long_term"),
+            "今天我训练的地方只能徒手": ("只能徒手", "day"),
+            "这次我训练的地方只有哑铃": ("只有哑铃", "session"),
+            "我训练的地方只有哑铃": ("只有哑铃", "session"),
+        }
+        if texts[-1] in scope_examples:
+            value, memory_scope = scope_examples[texts[-1]]
+            return json.dumps({"scope": "strength", "command": "", "clarification": "none", "notes": notes,
+                "equipment_memory": {"source_version": data["messages"][-1]["version"],
+                    "source_text": texts[-1], "value": value, "scope": memory_scope}})
         quality = {
             "我还是想试试三分化，你帮我把这一周重新排一下": {"split": "ppl", "weekly": True},
             "今天是在家练，只有哑铃，没有训练凳，帮我调整一下": {"equipment": "只有哑铃，没有训练凳"},
@@ -196,14 +211,21 @@ class FixtureCoach:
         if texts[-1] == "今天想练胸和三头，本次40分钟，有哑铃":
             return json.dumps({"scope": "strength", "command": "", "clarification": "none", "notes": notes,
                                "training": {"source_text": texts[-1], "minutes": 40, "time_basis": "session", "focus": "胸和三头", "equipment": "哑铃"}})
+        if texts[-1] == "在家，只有哑铃":
+            return json.dumps({"scope": "strength", "command": "", "clarification": "none", "notes": notes})
         return json.dumps({"scope": scope, "command": command, "clarification": clarification, "notes": notes})
 
 
 coach_routes.create_coach_model = lambda settings: FixtureCoach()
-coach_mode = "--coach" in sys.argv
-app = create_app(Settings(database_path=ROOT / "artifacts" / ("ui-coach-review-test.sqlite3" if coach_mode else "ui-drafts-test.sqlite3"),
+memory_mode = "--memory" in sys.argv
+facts_mode = "--fact-versions" in sys.argv
+coach_mode = "--coach" in sys.argv or memory_mode or facts_mode
+fixture_name = "ui-coach-memory-test.sqlite3" if memory_mode else "ui-coach-review-test.sqlite3" if coach_mode else "ui-drafts-test.sqlite3"
+facts_directory = TemporaryDirectory(prefix="fitness-fact-ui-") if facts_mode else None
+fixture_path = Path(facts_directory.name) / "fixture.sqlite3" if facts_mode else ROOT / "artifacts" / fixture_name
+app = create_app(Settings(database_path=fixture_path, retrieval_mode="lexical" if facts_mode else "hybrid",
                           ai_global_daily_limit=10000,  # Synthetic repeated browser runs; production budget is unchanged.
                           knowledge_qa_enabled=True, training_plan_enabled=True, coach_enabled=coach_mode, model_provider="qwen" if coach_mode else "disabled", qwen_api_key="synthetic-fixture" if coach_mode else ""))
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8767, access_log=False)
+    uvicorn.run(app, host="127.0.0.1", port=8772 if facts_mode else 8771 if memory_mode else 8767, access_log=False)

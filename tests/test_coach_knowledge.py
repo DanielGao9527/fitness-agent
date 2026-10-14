@@ -16,7 +16,7 @@ from services.records import RecordService
 from services.coach import pending_turns, plan_binding
 from test_foundation import application, client, register
 from test_knowledge import library, mutate
-from test_knowledge_answers import AnswerModel, calls
+from test_knowledge_answers import AnswerModel, CountingRetriever, SnapshotRetriever, calls
 from test_coach import BASE, conversation, send
 from test_coach_reviews import ReviewModel, understand, confirm
 
@@ -56,6 +56,44 @@ def test_main_chat_general_questions_without_meal_consent(knowledge_chat, questi
     assert saved["action"] == "knowledge"
     assert saved["constraints"] == {} and not saved["meal_plans"] and not saved["training_plans"]
     assert calls(app) == 1 and len(model.messages) == 1
+
+
+@pytest.mark.parametrize("retriever_type", [CountingRetriever, SnapshotRetriever])
+def test_chat_shares_one_candidate_snapshot_and_retry_does_not_search(knowledge_chat, retriever_type):
+    client, app, model = knowledge_chat
+    retriever = retriever_type(app.state.knowledge)
+    app.state.knowledge = retriever
+    data = send(client, conversation(client), "力量训练一般一周做几次").json()
+    result = answer(client, data)
+    assert result.status_code == 200, result.text
+    value = result.json()["turns"][-1]["response"]["knowledge"]
+    assert value["status"] == "answered"
+    assert value["sources"][0]["chunk_id"] == "cdc-adults:strength"
+    if retriever_type is SnapshotRetriever:
+        assert retriever.snapshots == 1 and retriever.searches == 0
+        assert value["retrieval"]["mode"] == "hybrid"
+    else:
+        assert retriever.searches == 1
+    assert "query" not in json.dumps(value["retrieval"])
+    # Chat decoration also checks fixed planning sources by ID; those are local reads.
+    assert ["cdc-adults:strength"] in retriever.reads
+    assert answer(client, data).status_code == 200
+    assert retriever.searches == (0 if retriever_type is SnapshotRetriever else 1)
+    if retriever_type is SnapshotRetriever:
+        assert retriever.snapshots == 1
+    assert len(model.messages) == 1 and calls(app) == 1
+
+
+def test_sensitive_profile_stops_before_optional_embedding(knowledge_chat):
+    client, app, model = knowledge_chat
+    retriever = SnapshotRetriever(app.state.knowledge)
+    app.state.knowledge = retriever
+    client.put("/api/profile", json={"preferences": "近期肩膀疼痛"})
+    data = send(client, conversation(client), "力量训练一般一周做几次").json()
+    result = answer(client, data).json()["turns"][-1]["response"]["knowledge"]
+    assert result["status"] == "personal_scope"
+    assert retriever.snapshots == 0 and retriever.searches == 0
+    assert not model.messages and calls(app) == 0
 
 
 @pytest.mark.parametrize("message", ["今天安排力量训练", "帮我安排晚餐", "把晚餐豆腐换成牛肉",
@@ -107,6 +145,8 @@ def test_meal_binding_keeps_its_original_version(knowledge_chat):
 
 def test_pending_notes_not_consumed_by_local_knowledge(knowledge_chat):
     client, app, model = knowledge_chat
+    retriever = SnapshotRetriever(app.state.knowledge)
+    app.state.knowledge = retriever
     first = send(client, conversation(client), "芒果过敏，还没说完").json()
     data = send(client, first, "哪些食物含蛋白质").json()
     result = answer(client, data).json()
@@ -116,6 +156,7 @@ def test_pending_notes_not_consumed_by_local_knowledge(knowledge_chat):
         assert [item['version'] for item in pending_turns(connection, data['id'])] == [1]
     assert understand(client, result, auto_apply=True).status_code == 409
     assert calls(app) == 0 and not model.messages
+    assert retriever.snapshots == 0 and retriever.searches == 0
 
 
 def test_model_classified_knowledge_only_resolves_current_message(knowledge_chat, monkeypatch):

@@ -1,0 +1,19 @@
+{
+  "version": "fitness-equipment-expressions-v2",
+  "provenance": "self_authored_synthetic",
+  "human_independent_review": false,
+  "sha256": "6d8636509a8c0f96923a429ba6a77eb8ef5e1e6a8c2c2d694ada6739a5fde869",
+  "cases": 24,
+  "families": 8,
+  "split_counts": {
+    "dev": 12,
+    "holdout": 12
+  },
+  "base_day": "2026-09-29",
+  "scope": "New authored expressions and equipment lifecycle, not an independent or public benchmark",
+  "created_before_live_evaluation": true,
+  "split_unit": "family",
+  "independent_review_status": "pending",
+  "copied_external_examples": false,
+  "maximum_model_attempts": 27
+}

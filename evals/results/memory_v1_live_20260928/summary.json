@@ -1,0 +1,182 @@
+{
+  "cases": {
+    "passed": 0,
+    "total": 3,
+    "rate": 0.0
+  },
+  "metrics": {
+    "accepted_candidate_exact": {
+      "passed": 0,
+      "total": 3,
+      "rate": 0.0
+    },
+    "advice_api_success": {
+      "passed": 3,
+      "total": 3,
+      "rate": 1.0
+    },
+    "advice_status": {
+      "passed": 3,
+      "total": 3,
+      "rate": 1.0
+    },
+    "confirmation_applied": {
+      "passed": 0,
+      "total": 3,
+      "rate": 0.0
+    },
+    "equipment_adoption": {
+      "passed": 0,
+      "total": 3,
+      "rate": 0.0
+    },
+    "exercise_resources": {
+      "passed": 3,
+      "total": 3,
+      "rate": 1.0
+    },
+    "manual_confirmation_required": {
+      "passed": 0,
+      "total": 3,
+      "rate": 0.0
+    },
+    "no_actual_record_writes": {
+      "passed": 3,
+      "total": 3,
+      "rate": 1.0
+    },
+    "no_unconfirmed_day_write": {
+      "passed": 3,
+      "total": 3,
+      "rate": 1.0
+    },
+    "no_unconfirmed_profile_write": {
+      "passed": 3,
+      "total": 3,
+      "rate": 1.0
+    },
+    "raw_candidate_exact": {
+      "passed": 0,
+      "total": 3,
+      "rate": 0.0
+    }
+  },
+  "families": {
+    "stable": {
+      "passed": 0,
+      "total": 3,
+      "rate": 0.0
+    }
+  },
+  "mode": "live",
+  "selected": 100,
+  "completed": 3,
+  "quality_claim": "synthetic_suite_only",
+  "model_invocations": 3,
+  "provider_calls": 3,
+  "provider_latency": {
+    "n": 3,
+    "mean_seconds": 0.041666666666666664,
+    "p95_seconds": 0.09399999998277053
+  },
+  "not_run_ids": [
+    "stable-04",
+    "stable-05",
+    "day_cross_session-01",
+    "day_cross_session-02",
+    "day_cross_session-03",
+    "day_cross_session-04",
+    "day_cross_session-05",
+    "session_isolation-01",
+    "session_isolation-02",
+    "session_isolation-03",
+    "session_isolation-04",
+    "session_isolation-05",
+    "scope_choice-01",
+    "scope_choice-02",
+    "scope_choice-03",
+    "scope_choice-04",
+    "scope_choice-05",
+    "day_expiry-01",
+    "day_expiry-02",
+    "day_expiry-03",
+    "day_expiry-04",
+    "day_expiry-05",
+    "session_expiry-01",
+    "session_expiry-02",
+    "session_expiry-03",
+    "session_expiry-04",
+    "session_expiry-05",
+    "profile_correction-01",
+    "profile_correction-02",
+    "profile_correction-03",
+    "profile_correction-04",
+    "profile_correction-05",
+    "profile_clear-01",
+    "profile_clear-02",
+    "profile_clear-03",
+    "profile_clear-04",
+    "profile_clear-05",
+    "no_confirmation-01",
+    "no_confirmation-02",
+    "no_confirmation-03",
+    "no_confirmation-04",
+    "no_confirmation-05",
+    "uncertain_claim-01",
+    "uncertain_claim-02",
+    "uncertain_claim-03",
+    "uncertain_claim-04",
+    "uncertain_claim-05",
+    "future_condition-01",
+    "future_condition-02",
+    "future_condition-03",
+    "future_condition-04",
+    "future_condition-05",
+    "mixed_scopes-01",
+    "mixed_scopes-02",
+    "mixed_scopes-03",
+    "mixed_scopes-04",
+    "mixed_scopes-05",
+    "semantic_correction-01",
+    "semantic_correction-02",
+    "semantic_correction-03",
+    "semantic_correction-04",
+    "semantic_correction-05",
+    "day_aba-01",
+    "day_aba-02",
+    "day_aba-03",
+    "day_aba-04",
+    "day_aba-05",
+    "delete_day_source-01",
+    "delete_day_source-02",
+    "delete_day_source-03",
+    "delete_day_source-04",
+    "delete_day_source-05",
+    "delete_durable_source-01",
+    "delete_durable_source-02",
+    "delete_durable_source-03",
+    "delete_durable_source-04",
+    "delete_durable_source-05",
+    "restart-01",
+    "restart-02",
+    "restart-03",
+    "restart-04",
+    "restart-05",
+    "account_isolation-01",
+    "account_isolation-02",
+    "account_isolation-03",
+    "account_isolation-04",
+    "account_isolation-05",
+    "during_model_correction-01",
+    "during_model_correction-02",
+    "during_model_correction-03",
+    "during_model_correction-04",
+    "during_model_correction-05",
+    "negated_equipment-01",
+    "negated_equipment-02",
+    "negated_equipment-03",
+    "negated_equipment-04",
+    "negated_equipment-05"
+  ],
+  "source_unchanged": true
+}

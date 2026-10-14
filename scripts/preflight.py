@@ -29,7 +29,7 @@ def check(settings, *, for_sharing=False, backup=None):
             connection.execute("BEGIN")
             metadata = inspect_connection(connection)
             today = datetime.now(timezone.utc).date().isoformat()
-            calls = (shared_calls(connection, today) if metadata['schema'] == 14 else
+            calls = (shared_calls(connection, today) if metadata['schema'] >= 14 else
                      connection.execute("SELECT COALESCE(SUM(calls),0) FROM ai_usage WHERE day=?", (today,)).fetchone()[0])
         checks.append({"name": "personal_database", "passed": True})
     except (OSError, ValueError, sqlite3.Error):

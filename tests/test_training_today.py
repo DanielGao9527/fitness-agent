@@ -90,21 +90,21 @@ def test_daily_confirmation_changes_at_beijing_day_boundary(client, monkeypatch)
     assert confirm(client).status_code == 200
 
 
-def test_auto_understanding_requires_consent_then_is_idempotent_and_no_actual_write(reviews):
+def test_training_understanding_without_diet_attestation_is_idempotent_and_no_actual_write(reviews):
     client, app, model, _ = reviews
     client.delete(URL)
     model.edit = lambda _, out: out.update(scope='strength', command='')
     data = send(client, conversation(client), '请帮我结合最近情况认真安排一下训练').json()
     assert data['pending']
     token = str(uuid4())
-    assert understand(client, data, client_id=token, auto_apply=True).status_code == 409
-    assert not model.messages
-    assert confirm(client).status_code == 200
+    # The daily attestation covers dietary planning. Training understanding does
+    # not require it; confirmed memory and actual-record writes remain separate.
     profile = client.get('/api/profile').json()
     response = understand(client, data, client_id=token, auto_apply=True)
     assert response.status_code == 200, response.text
     applied = response.json()
     assert not applied['pending'] and applied['intent'] == 'training'
+    assert not applied['meal_consent']['confirmed']
     assert applied['turns'][-1]['response']['source'] == 'applied_understanding'
     assert understand(client, data, client_id=token, auto_apply=True).status_code == 200
     assert len(model.messages) == 1
@@ -136,9 +136,42 @@ def test_auto_understanding_does_not_bypass_questions_or_changed_conditions(revi
     else:
         model.on_call = lambda: client.put('/api/profile',json={'food_allergies':'牛肉过敏'})
     response = understand(client,data,auto_apply=True)
-    assert response.status_code == (200 if kind in ('unclear','unresolved') else 409)
+    # Revocation preserves a ready draft but cannot auto-apply meal changes.
+    # A changed profile invalidates the model snapshot and is still a conflict.
+    assert response.status_code == (409 if kind == 'profile_changed' else 200)
     current = client.get(f"{BASE}/{data['id']}").json()
     assert current['pending'] and current['review']['status'] != 'confirmed'
+    assert current['action'] is None
+    if kind == 'revoked':
+        assert not current['meal_consent']['confirmed']
+        assert current['review']['status'] == 'ready'
+    assert client.get('/api/workouts', params={'day': DAY}).json() == []
+    assert client.get('/api/meals', params={'day': DAY}).json() == []
+
+
+@pytest.mark.parametrize('revoke_during_call', [False, True])
+def test_meal_understanding_waits_for_attestation_and_reuses_review(reviews, revoke_during_call):
+    client, _, model, _ = reviews
+    if revoke_during_call:
+        confirm(client)
+        model.on_call = lambda: client.delete(URL)
+    else:
+        client.delete(URL)
+    data = send(client, conversation(client), '请结合我的情况搭配接下来的餐次').json()
+    token = str(uuid4())
+    response = understand(client, data, client_id=token, auto_apply=True)
+    assert response.status_code == 200, response.text
+    pending = response.json()
+    assert pending['pending'] and pending['action'] is None
+    assert pending['review']['status'] == 'ready'
+    assert not pending['meal_consent']['confirmed']
+    assert not pending['meal_plans']
+    assert confirm(client).status_code == 200
+    applied = understand(client, data, client_id=token, auto_apply=True)
+    assert applied.status_code == 200, applied.text
+    assert not applied.json()['pending'] and applied.json()['action'] == 'meal'
+    assert len(model.messages) == 1
+    assert client.get('/api/meals', params={'day': DAY}).json() == []
 
 
 def test_auto_understanding_keeps_allergy_floor_and_sticky_constraints(reviews):

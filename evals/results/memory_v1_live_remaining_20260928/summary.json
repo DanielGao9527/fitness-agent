@@ -1,0 +1,212 @@
+{
+  "cases": {
+    "passed": 53,
+    "total": 95,
+    "rate": 0.5578947368421052
+  },
+  "metrics": {
+    "accepted_candidate_exact": {
+      "passed": 68,
+      "total": 90,
+      "rate": 0.7555555555555555
+    },
+    "account_isolation": {
+      "passed": 5,
+      "total": 5,
+      "rate": 1.0
+    },
+    "advice_api_success": {
+      "passed": 134,
+      "total": 135,
+      "rate": 0.9925925925925926
+    },
+    "advice_status": {
+      "passed": 134,
+      "total": 135,
+      "rate": 0.9925925925925926
+    },
+    "clarification": {
+      "passed": 0,
+      "total": 15,
+      "rate": 0.0
+    },
+    "concurrent_stale_rejection": {
+      "passed": 5,
+      "total": 5,
+      "rate": 1.0
+    },
+    "confirmation_applied": {
+      "passed": 73,
+      "total": 85,
+      "rate": 0.8588235294117647
+    },
+    "equipment_adoption": {
+      "passed": 112,
+      "total": 125,
+      "rate": 0.896
+    },
+    "exercise_resources": {
+      "passed": 123,
+      "total": 125,
+      "rate": 0.984
+    },
+    "manual_confirmation_required": {
+      "passed": 78,
+      "total": 90,
+      "rate": 0.8666666666666667
+    },
+    "no_actual_record_writes": {
+      "passed": 95,
+      "total": 95,
+      "rate": 1.0
+    },
+    "no_advice_without_facts": {
+      "passed": 10,
+      "total": 10,
+      "rate": 1.0
+    },
+    "no_false_candidate": {
+      "passed": 2,
+      "total": 15,
+      "rate": 0.13333333333333333
+    },
+    "no_unconfirmed_day_write": {
+      "passed": 110,
+      "total": 110,
+      "rate": 1.0
+    },
+    "no_unconfirmed_profile_write": {
+      "passed": 110,
+      "total": 110,
+      "rate": 1.0
+    },
+    "raw_candidate_exact": {
+      "passed": 62,
+      "total": 90,
+      "rate": 0.6888888888888889
+    },
+    "superseded_advice_stale": {
+      "passed": 5,
+      "total": 5,
+      "rate": 1.0
+    }
+  },
+  "families": {
+    "account_isolation": {
+      "passed": 4,
+      "total": 5,
+      "rate": 0.8
+    },
+    "day_aba": {
+      "passed": 2,
+      "total": 5,
+      "rate": 0.4
+    },
+    "day_cross_session": {
+      "passed": 4,
+      "total": 5,
+      "rate": 0.8
+    },
+    "day_expiry": {
+      "passed": 0,
+      "total": 5,
+      "rate": 0.0
+    },
+    "delete_day_source": {
+      "passed": 4,
+      "total": 5,
+      "rate": 0.8
+    },
+    "delete_durable_source": {
+      "passed": 4,
+      "total": 5,
+      "rate": 0.8
+    },
+    "during_model_correction": {
+      "passed": 5,
+      "total": 5,
+      "rate": 1.0
+    },
+    "future_condition": {
+      "passed": 0,
+      "total": 5,
+      "rate": 0.0
+    },
+    "mixed_scopes": {
+      "passed": 0,
+      "total": 5,
+      "rate": 0.0
+    },
+    "negated_equipment": {
+      "passed": 0,
+      "total": 3,
+      "rate": 0.0
+    },
+    "no_confirmation": {
+      "passed": 5,
+      "total": 5,
+      "rate": 1.0
+    },
+    "profile_clear": {
+      "passed": 4,
+      "total": 5,
+      "rate": 0.8
+    },
+    "profile_correction": {
+      "passed": 5,
+      "total": 5,
+      "rate": 1.0
+    },
+    "restart": {
+      "passed": 5,
+      "total": 5,
+      "rate": 1.0
+    },
+    "scope_choice": {
+      "passed": 0,
+      "total": 5,
+      "rate": 0.0
+    },
+    "semantic_correction": {
+      "passed": 0,
+      "total": 5,
+      "rate": 0.0
+    },
+    "session_expiry": {
+      "passed": 5,
+      "total": 5,
+      "rate": 1.0
+    },
+    "session_isolation": {
+      "passed": 4,
+      "total": 5,
+      "rate": 0.8
+    },
+    "stable": {
+      "passed": 2,
+      "total": 2,
+      "rate": 1.0
+    },
+    "uncertain_claim": {
+      "passed": 0,
+      "total": 5,
+      "rate": 0.0
+    }
+  },
+  "mode": "live",
+  "selected": 97,
+  "completed": 95,
+  "quality_claim": "synthetic_suite_only",
+  "model_invocations": 110,
+  "provider_calls": 110,
+  "provider_latency": {
+    "n": 110,
+    "mean_seconds": 6.401881818181772,
+    "p95_seconds": 8.702999999979511
+  },
+  "not_run_ids": [
+    "negated_equipment-04",
+    "negated_equipment-05"
+  ],
+  "source_unchanged": true
+}

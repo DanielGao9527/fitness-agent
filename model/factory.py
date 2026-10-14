@@ -95,7 +95,7 @@ def workout_status(settings: Settings) -> str:
 
 def create_knowledge_model(settings: Settings) -> TextModel:
     if not settings.knowledge_qa_enabled:
-        raise ModelError("MODEL_NOT_CONFIGURED", "资料问答尚未启用，仍可免费检索资料。", 503)
+        raise ModelError("MODEL_NOT_CONFIGURED", "资料问答尚未启用，仍可浏览资料。", 503)
     return create_meal_text_model(settings)
 
 

@@ -1,0 +1,341 @@
+{
+  "mode": "recorded_dev_replay",
+  "source_unchanged": true,
+  "provider_calls": 0,
+  "planned_dev_cases": 60,
+  "replayed_cases": 55,
+  "unavailable": [
+    {
+      "id": "stable-01",
+      "reason": "missing_recorded_response",
+      "baseline_errors": [
+        {
+          "code": "MODEL_UNAVAILABLE",
+          "message": "暂时无法连接千问，未保存记录。"
+        }
+      ]
+    },
+    {
+      "id": "stable-02",
+      "reason": "missing_recorded_response",
+      "baseline_errors": [
+        {
+          "code": "MODEL_UNAVAILABLE",
+          "message": "暂时无法连接千问，未保存记录。"
+        }
+      ]
+    },
+    {
+      "id": "stable-03",
+      "reason": "missing_recorded_response",
+      "baseline_errors": [
+        {
+          "code": "MODEL_UNAVAILABLE",
+          "message": "暂时无法连接千问，未保存记录。"
+        }
+      ]
+    },
+    {
+      "id": "session_isolation-04",
+      "reason": "missing_recorded_response",
+      "baseline_errors": [
+        {
+          "code": "MODEL_TIMEOUT",
+          "message": "千问响应超时，未保存记录；可稍后重试。"
+        }
+      ]
+    },
+    {
+      "id": "profile_clear-03",
+      "reason": "missing_recorded_response",
+      "baseline_errors": [
+        {
+          "code": "COACH_INVALID_OUTPUT",
+          "message": "理解结果格式不完整，原话已保留，未应用。"
+        }
+      ]
+    }
+  ],
+  "before": {
+    "cases": {
+      "passed": 29,
+      "total": 55,
+      "rate": 0.5272727272727272
+    },
+    "metrics": {
+      "accepted_candidate_exact": {
+        "passed": 35,
+        "total": 40,
+        "rate": 0.875
+      },
+      "advice_api_success": {
+        "passed": 79,
+        "total": 79,
+        "rate": 1.0
+      },
+      "advice_status": {
+        "passed": 79,
+        "total": 79,
+        "rate": 1.0
+      },
+      "clarification": {
+        "passed": 0,
+        "total": 15,
+        "rate": 0.0
+      },
+      "confirmation_applied": {
+        "passed": 35,
+        "total": 35,
+        "rate": 1.0
+      },
+      "equipment_adoption": {
+        "passed": 75,
+        "total": 75,
+        "rate": 1.0
+      },
+      "exercise_resources": {
+        "passed": 75,
+        "total": 75,
+        "rate": 1.0
+      },
+      "manual_confirmation_required": {
+        "passed": 40,
+        "total": 40,
+        "rate": 1.0
+      },
+      "no_actual_record_writes": {
+        "passed": 55,
+        "total": 55,
+        "rate": 1.0
+      },
+      "no_advice_without_facts": {
+        "passed": 4,
+        "total": 4,
+        "rate": 1.0
+      },
+      "no_false_candidate": {
+        "passed": 2,
+        "total": 15,
+        "rate": 0.13333333333333333
+      },
+      "no_unconfirmed_day_write": {
+        "passed": 55,
+        "total": 55,
+        "rate": 1.0
+      },
+      "no_unconfirmed_profile_write": {
+        "passed": 55,
+        "total": 55,
+        "rate": 1.0
+      },
+      "raw_candidate_exact": {
+        "passed": 29,
+        "total": 40,
+        "rate": 0.725
+      }
+    },
+    "families": {
+      "day_cross_session": {
+        "passed": 4,
+        "total": 5,
+        "rate": 0.8
+      },
+      "day_expiry": {
+        "passed": 0,
+        "total": 5,
+        "rate": 0.0
+      },
+      "future_condition": {
+        "passed": 0,
+        "total": 5,
+        "rate": 0.0
+      },
+      "mixed_scopes": {
+        "passed": 0,
+        "total": 5,
+        "rate": 0.0
+      },
+      "no_confirmation": {
+        "passed": 5,
+        "total": 5,
+        "rate": 1.0
+      },
+      "profile_clear": {
+        "passed": 4,
+        "total": 4,
+        "rate": 1.0
+      },
+      "profile_correction": {
+        "passed": 5,
+        "total": 5,
+        "rate": 1.0
+      },
+      "scope_choice": {
+        "passed": 0,
+        "total": 5,
+        "rate": 0.0
+      },
+      "session_expiry": {
+        "passed": 5,
+        "total": 5,
+        "rate": 1.0
+      },
+      "session_isolation": {
+        "passed": 4,
+        "total": 4,
+        "rate": 1.0
+      },
+      "stable": {
+        "passed": 2,
+        "total": 2,
+        "rate": 1.0
+      },
+      "uncertain_claim": {
+        "passed": 0,
+        "total": 5,
+        "rate": 0.0
+      }
+    }
+  },
+  "after": {
+    "cases": {
+      "passed": 31,
+      "total": 55,
+      "rate": 0.5636363636363636
+    },
+    "metrics": {
+      "accepted_candidate_exact": {
+        "passed": 40,
+        "total": 40,
+        "rate": 1.0
+      },
+      "advice_api_success": {
+        "passed": 79,
+        "total": 79,
+        "rate": 1.0
+      },
+      "advice_status": {
+        "passed": 79,
+        "total": 79,
+        "rate": 1.0
+      },
+      "clarification": {
+        "passed": 15,
+        "total": 15,
+        "rate": 1.0
+      },
+      "confirmation_applied": {
+        "passed": 35,
+        "total": 35,
+        "rate": 1.0
+      },
+      "equipment_adoption": {
+        "passed": 75,
+        "total": 75,
+        "rate": 1.0
+      },
+      "exercise_resources": {
+        "passed": 75,
+        "total": 75,
+        "rate": 1.0
+      },
+      "manual_confirmation_required": {
+        "passed": 40,
+        "total": 40,
+        "rate": 1.0
+      },
+      "no_actual_record_writes": {
+        "passed": 55,
+        "total": 55,
+        "rate": 1.0
+      },
+      "no_advice_without_facts": {
+        "passed": 4,
+        "total": 4,
+        "rate": 1.0
+      },
+      "no_false_candidate": {
+        "passed": 2,
+        "total": 15,
+        "rate": 0.13333333333333333
+      },
+      "no_unconfirmed_day_write": {
+        "passed": 55,
+        "total": 55,
+        "rate": 1.0
+      },
+      "no_unconfirmed_profile_write": {
+        "passed": 55,
+        "total": 55,
+        "rate": 1.0
+      },
+      "raw_candidate_exact": {
+        "passed": 29,
+        "total": 40,
+        "rate": 0.725
+      }
+    },
+    "families": {
+      "day_cross_session": {
+        "passed": 4,
+        "total": 5,
+        "rate": 0.8
+      },
+      "day_expiry": {
+        "passed": 0,
+        "total": 5,
+        "rate": 0.0
+      },
+      "future_condition": {
+        "passed": 0,
+        "total": 5,
+        "rate": 0.0
+      },
+      "mixed_scopes": {
+        "passed": 0,
+        "total": 5,
+        "rate": 0.0
+      },
+      "no_confirmation": {
+        "passed": 5,
+        "total": 5,
+        "rate": 1.0
+      },
+      "profile_clear": {
+        "passed": 4,
+        "total": 4,
+        "rate": 1.0
+      },
+      "profile_correction": {
+        "passed": 5,
+        "total": 5,
+        "rate": 1.0
+      },
+      "scope_choice": {
+        "passed": 0,
+        "total": 5,
+        "rate": 0.0
+      },
+      "session_expiry": {
+        "passed": 5,
+        "total": 5,
+        "rate": 1.0
+      },
+      "session_isolation": {
+        "passed": 4,
+        "total": 4,
+        "rate": 1.0
+      },
+      "stable": {
+        "passed": 2,
+        "total": 2,
+        "rate": 1.0
+      },
+      "uncertain_claim": {
+        "passed": 2,
+        "total": 5,
+        "rate": 0.4
+      }
+    }
+  }
+}

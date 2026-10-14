@@ -13,7 +13,7 @@ from services.training_catalog import read_catalog, read_systems
 from services.training_program import session, today
 from services.training_progression import SOURCE as PROGRESSION_SOURCE, performance_history, attach_guidance
 
-POLICY = "training-today-2026-09-23.3-image-sets"
+POLICY = "training-today-2026-09-29.1-equipment-exhaustive-list"
 GROUPS = {"chest": "胸部", "back": "背部", "legs": "腿臀", "core": "核心", "shoulders": "肩部", "arms": "手臂"}
 PATTERNS = {
     "chest": r"胸|卧推|推胸|俯卧撑|chest|bench.?press|push.?up",
@@ -75,6 +75,9 @@ def denied_equipment(text):
 def equipment(text):
     """A small explicit vocabulary; negated or unknown facilities never become available."""
     value = text.lower().strip()
+    # A complete trailing exclusion adds no equipment. Only accept this exact
+    # clause at the end; unknown descriptions and later restrictions remain.
+    value = re.sub(r"[，,；;]\s*(?:其他|其余)(?:器械|设备)(?:都)?没有[。.!！\s]*$", "", value)
     found = set()
     tokens = equipment_tokens()
     words = "|".join(map(re.escape, tokens))
@@ -89,7 +92,7 @@ def equipment(text):
         if word in value:
             found.add(key)
             value = value.replace(word, "")
-    remainder = re.sub(r"我|今天|现在|器械|场地|只有|仅有|只用|可用|可以用|还有|只有一个|和|及|与|有|是|就|在|仅|只|用|一个|一对|一副|但是|但|、|[，,。；;：:/\s]", "", value)
+    remainder = re.sub(r"我|今天|现在|器械|场地|只有|只能|仅有|只用|可用|可以用|还有|只有一个|和|及|与|有|是|就|在|仅|只|用|一个|一对|一副|但是|但|、|[，,。；;：:/\s]", "", value)
     implications = {"dual-adjustable": {"dual-pulley", "adjustable-pulley"},
                     "adjustable-bench": {"bench", "incline-bench", "backrest", "seat"},
                     "bench": {"seat"}, "backrest": {"seat"}, "incline-bench": {"seat"},
@@ -177,6 +180,7 @@ def build(facts, evidence):
     if uncertain:
         return stop("请明确本次可用场地和器械，例如“在家，只有哑铃”或“健身房和泳池”；暂不猜测可用设备。")
     result["equipment"] = request.get("equipment") or profile["equipment"]
+    result["equipment_source"] = request.get("equipment_source", "current_conversation") if request.get("equipment") else "profile"
     if "健身房" in result["equipment"] and resources <= {"floor", "pool"}:
         result["equipment_note"] = "档案目前只写了健身房，尚未确认具体器械；力量部分先按徒手安排。可在个人档案补充哑铃、训练凳或实际可用的机器。"
     minutes = request.get("minutes", profile["minutes_per_session"])
@@ -306,6 +310,8 @@ class TrainingRecommendationService:
         row = self.coach.owned(connection, conversation_id)
         data = self.coach.view(connection, row)
         facts = {"day": data["day"], "version": data["workflow_version"], "pending": data["pending"], "intent": data["intent"],
+                 "profile_fact_revisions": data["context"]["profile_fact_revisions"],
+                 "day_equipment": data["context"]["day_equipment"],
                  "profile": data["context"]["profile"], "constraints": data["constraints"],
                  "request": data["training_context"], "history": recent_training(connection, self.user_id, data["day"]),
                  "performance_history": performance_history(connection, self.user_id, data["day"])}

@@ -181,7 +181,7 @@ def test_context_is_fresh_scoped_and_never_indexed(client, application):
     assert "PrivateBob" not in response.text
     with application.state.database.connect() as connection:
         assert list(connection.iterdump()) == before
-    index = application.state.knowledge.index_path
+    index = getattr(application.state.knowledge, "lexical", application.state.knowledge).index_path
     with sqlite3.connect(index) as connection:
         dump = "\n".join(connection.iterdump())
     for private in ["PrivateAlice", "PrivateBob", "西兰花过敏", "ignore rules read user"]:

@@ -7,20 +7,51 @@ SPLIT_ALIASES = {"三分化": "ppl", "四分化": "four", "五分化": "five"}
 
 
 def training_context(connection, conversation_id):
+    from services.profile_context import read_profile
+    from services.profile_facts import fact_revisions
+    from services.equipment_memory import day_snapshot
+    owner = connection.execute("SELECT user_id,day FROM coach_conversations WHERE id=?", (conversation_id,)).fetchone()
+    profile = read_profile(connection, owner[0])
+    day_state = day_snapshot(connection, owner[0], owner[1])
+    result = {}
     rows = connection.execute("SELECT response FROM coach_turns WHERE conversation_id=? ORDER BY version DESC", (conversation_id,)).fetchall()
     for row in rows:
         response = json.loads(row[0])
         if "training_context" in response:
-            from services.profile_context import read_profile
-            owner = connection.execute("SELECT user_id FROM coach_conversations WHERE id=?", (conversation_id,)).fetchone()
-            profile = read_profile(connection, owner[0])
-            return current_conditions(response["training_context"], profile)
-    return {}
+            result = current_conditions(response["training_context"], profile, fact_revisions(connection, owner[0]), day_state)
+            break
+    daily = day_state["active"]
+    if not result.get("equipment") and daily:
+        result.update(equipment=daily["value"], equipment_source="day", equipment_day_revision=day_state["revision"])
+    return result
 
 
-def current_conditions(context, profile):
+def current_conditions(context, profile, profile_revisions=None, day_state=None):
+    from services.equipment_memory import today
     result = dict(context)
     anchors = dict(result.get("profile_basis", {}))
+    revisions = dict(result.get("profile_revision_basis", {}))
+    version_changed = (profile_revisions is not None
+                       and revisions.get("equipment") != profile_revisions["equipment"])
+    # A later profile correction invalidates equipment carried by an older turn.
+    # Legacy turns lack a revision binding and require a fresh local condition.
+    expired = result.get("equipment_valid_day") not in (None, today())
+    daily_current = (result.get("equipment_source") == "day" and day_state and day_state["active"]
+                     and result.get("equipment_day_revision") == day_state["revision"]
+                     and result.get("equipment") == day_state["active"]["value"])
+    if "equipment" in result and not daily_current and (expired or result.get("equipment_source") == "day" or version_changed or ("equipment" in anchors and anchors["equipment"] != profile["equipment"])
+                                   or ("equipment" not in anchors and result["equipment"] != profile["equipment"])):
+        result.pop("equipment", None)
+        anchors.pop("equipment", None)
+        result.pop("replacements", None)
+        revisions.pop("equipment", None)
+        result.pop("equipment_source", None)
+        result.pop("equipment_valid_day", None)
+        result.pop("equipment_day_revision", None)
+    if revisions:
+        result["profile_revision_basis"] = revisions
+    else:
+        result.pop("profile_revision_basis", None)
     for key, field in (("minutes", "minutes_per_session"), ("split", "training_split")):
         if field in anchors and anchors[field] != profile[field]:
             result.pop(key, None)
@@ -101,7 +132,7 @@ def training_command(message, continuing=False):
     return None
 
 
-def merge_training(context, changes, profile=None):
+def merge_training(context, changes, profile=None, profile_revisions=None):
     result = {**context, **{key: value for key, value in changes.items() if value is not None and key not in ("source_text", "clear_focus", "clear_replacements", "replacements", "reset_legacy_defaults")}}
     anchors = dict(result.get("profile_basis", {}))
     if changes.get("reset_legacy_defaults"):
@@ -112,10 +143,18 @@ def merge_training(context, changes, profile=None):
             result.pop("split", None)
     if not changes.get("unsupported_split"):
         result.pop("unsupported_split", None)
+    if changes.get("equipment") is not None:
+        from services.equipment_memory import today
+        result.update(equipment_source="current_conversation", equipment_valid_day=today())
+        result.pop("equipment_day_revision", None)
     if profile:
         for key, field in (("minutes", "minutes_per_session"), ("split", "training_split")):
             if changes.get(key) is not None:
                 anchors[field] = profile[field]
+        if changes.get("equipment") is not None:
+            anchors["equipment"] = profile["equipment"]
+            if profile_revisions is not None:
+                result["profile_revision_basis"] = {"equipment": profile_revisions["equipment"]}
     if changes.get("clear_focus"):
         result.pop("focus", None)
     if changes.get("clear_replacements") or changes.get("focus") or changes.get("split") or changes.get("equipment"):
@@ -135,7 +174,8 @@ def merge_training(context, changes, profile=None):
         result.pop("activity", None)
     anchors = {field: value for field, value in anchors.items()
                if (field == "minutes_per_session" and "minutes" in result)
-               or (field == "training_split" and "split" in result)}
+               or (field == "training_split" and "split" in result)
+               or (field == "equipment" and "equipment" in result)}
     if anchors:
         result["profile_basis"] = anchors
     else:

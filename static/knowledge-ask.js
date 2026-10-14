@@ -42,11 +42,11 @@ window.KnowledgeAsk = (() => {
       status=s.root.querySelector('.knowledge-ask-status'), error=s.root.querySelector('.knowledge-ask-error'), answer=s.root.querySelector('.knowledge-answer');
     s.busy=true;s.controller=new AbortController();button.disabled=true;stop.hidden=false;
     error.hidden=true;error.textContent="";answer.replaceChildren();status.textContent="正在核对资料…";
-    const controller=s.controller, timeout=setTimeout(()=>controller.abort(),35000);
+    const controller=s.controller, timeout=setTimeout(()=>controller.abort(),65000);
     try {
       const result=await api("/knowledge/ask",{method:"POST",signal:controller.signal,body:JSON.stringify({question})});
       if(!current()) return;
-      status.textContent="回答仅供参考，未写入实际记录";
+      status.textContent="回答仅供参考，未写入实际记录"+(result.retrieval?.degraded ? "；语义检索暂不可用，本次使用文字检索" : "");
       answer.innerHTML=`<p class="knowledge-answer-message">${escapeHtml(result.answer)}</p>${result.sources.length ? '<p class="knowledge-notice small">项目摘要非官方译文，原文免费可读；引用不表示原机构或政府认可本应用。</p>' : ""}${result.sources.map(s.reference).join("")}`;
       icons();
     } catch(failure) {

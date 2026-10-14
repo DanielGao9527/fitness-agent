@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-14",
+  "branch": "codex/fitness-hybrid-retrieval",
+  "application_source_sha256": "b2b188dfa4b4c6b3fd78e42f946996afd232d6b366514a25171f936043f060ae",
+  "source_hash_protocol": "sorted POSIX path + NUL + SHA256 of LF-normalized application file bytes; excludes test harness and runtime data",
+  "python_full": {
+    "tests": 1793,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "full_failure": {
+    "test": "tests/test_workspace_startup.py::test_occupied_port_does_not_silently_start_another_instance",
+    "cause": "Python inherited GBK; PowerShell 7 error output is UTF-8",
+    "resolution": "Select UTF-8 explicitly for pwsh in the subprocess capture helper; retain native encoding for legacy Windows PowerShell"
+  },
+  "python_startup_after_fix": {
+    "tests": 4,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "application_code_changed_after_full_run": false,
+  "frontend_unit_suites": {
+    "passed": 13,
+    "failed": 0
+  },
+  "browser_flows": [
+    {
+      "name": "equipment-scopes",
+      "passed": true
+    },
+    {
+      "name": "profile-facts",
+      "passed": true
+    }
+  ],
+  "browser_viewport_widths": [
+    1280,
+    390,
+    320
+  ],
+  "synthetic_test_data": true,
+  "real_provider_calls": 0,
+  "public_deployment_performed": false,
+  "local_public_vector_cache": {
+    "status": "ready",
+    "chunks": 133,
+    "offline_validation_only": true
+  },
+  "quality_limits": [
+    "No new real-model memory quality validation",
+    "Independent labels and v2 holdout are still pending",
+    "Browser simulation is not physical-phone acceptance",
+    "Full and targeted reruns remain separate batches"
+  ],
+  "private_artifacts_excluded_from_git": true
+}

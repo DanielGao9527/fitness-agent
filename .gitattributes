@@ -5,3 +5,9 @@
 *.service text eol=lf
 *.timer text eol=lf
 *.ps1 text eol=crlf
+
+# Frozen evaluation inputs must retain their exact bytes and recorded SHA-256.
+data/knowledge/sources.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+evals/fitness_qa.jsonl -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+evals/memory/cases.jsonl -text
+evals/memory/expressions_v2/cases.jsonl -text

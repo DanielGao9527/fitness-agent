@@ -10,6 +10,7 @@ h11==0.16.0
 httpcore==1.0.9
 httpx==0.28.1
 idna==3.19
+jieba==0.42.1
 iniconfig==2.3.0
 numpy==2.5.3
 packaging==26.3

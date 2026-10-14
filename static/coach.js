@@ -28,6 +28,7 @@ window.CoachView = (() => {
     if(value.stale && latest)return '<p class="training-stale">档案、实际训练或参考资料已变化，旧建议不再适用。</p>';
     const history=value.history.completed.slice(0,8), cardio=value.weekly_cardio;
     const content=`<section class="training-recommendation" aria-label="训练建议"><h3>${escapeHtml(value.title)}</h3><p>${escapeHtml(value.message)}</p>
+      ${value.equipment?`<p class="small">本次按${value.equipment_source==='profile'?'个人档案':value.equipment_source==='day'?'今天已确认条件':value.equipment_source==='current_conversation'?'当前对话':'当时记录'}的器械：${escapeHtml(value.equipment)}。器械有变化请更正后重新生成建议。</p>`:''}
       ${history.length?`<details class="training-records"><summary>近七天实际记录 · ${value.history.completed.length}项</summary><p class="small muted">${history.map(item=>`${escapeHtml(item.day.slice(5))} ${escapeHtml(item.name)} ${item.minutes}分钟`).join('；')}${value.history.completed.length>8?'；另有更多记录参与核对':''}</p></details>`:'<p class="small muted">近七天暂无已保存的完成记录，不代表没有训练。</p>'}
       ${value.structure?.reason?`<p class="small">${escapeHtml(value.structure.title)} · ${escapeHtml(value.structure.reason)}</p>`:''}
       ${value.equipment_note?`<p class="small training-gap">${escapeHtml(value.equipment_note)}</p>`:''}
@@ -73,6 +74,7 @@ window.CoachView = (() => {
   function draw(s) {
     closePlan(s);
     const data=s.data;
+    window.CoachMemoryView?.setConversation(data?.id || null);
     if(data?.meal_consent)s.consent=data.meal_consent;
     const gate=s.root.querySelector('.coach-consent');
     gate.innerHTML=s.consent && !s.consent.confirmed && (data?.request_kind==='meal' || data?.review?.scope==='meal' && data?.request_kind!=='knowledge')?window.QuickMeals.consent({meal_consent:s.consent}):'';
@@ -153,6 +155,10 @@ window.CoachView = (() => {
       const recommendation=data.turns.find(item=>item.version===version)?.response.training_recommendation;
       if(recommendation)training.innerHTML=renderTraining(recommendation,version===data.version);
       const knowledge=data.turns.find(item=>item.version===version)?.response.knowledge;
+      if(knowledge?.retrieval?.degraded){
+        const note=document.createElement('p');note.className='small muted';
+        note.textContent='语义检索暂不可用，本次使用文字检索。';turn.append(note);
+      }
       if(knowledge?.sources?.length){
         const references=document.createElement('div');references.className='coach-knowledge';
         references.innerHTML=knowledge.sources.map(window.KnowledgeView.reference).join('');turn.append(references);
@@ -187,7 +193,13 @@ window.CoachView = (() => {
           ${note.preferences.length?`<li>偏好：${note.preferences.map(escapeHtml).join("、")}</li>`:""}
           ${note.training_caution?"<li>本次训练请求超出一般健身适用范围</li>":""}${note.diet_caution?"<li>涉及特殊健康管理，一般建议暂停</li>":""}
           ${note.unresolved?"<li>还有未明确的限制</li>":""}${!note.avoid_names.length&&!note.preferences.length&&!note.training_caution&&!note.diet_caution&&!note.unresolved?"<li>未提取到额外限制，请核对是否遗漏</li>":""}
-        </ul></li>`).join("")}</ol><p class="small muted">仅本对话生效，不修改长期档案</p>
+        </ul></li>`).join("")}</ol>${review.equipment_memory
+          ? `<p class="small">器械候选：${escapeHtml(review.equipment_memory.value)}</p><label>使用范围<select class="coach-equipment-scope">
+              ${[['unspecified','请选择作用范围'],['session','本次：仅当前对话，最晚今天结束'],['day','今天：当天各会话可用，零点到期'],['long_term','长期：保存到个人档案']].map(([key,label])=>`<option value="${key==='unspecified'?'':key}" ${review.equipment_memory.scope===key?'selected':''}>${label}</option>`).join('')}
+            </select></label><p class="small muted">核对原话和范围后才保存。时间按北京时间；今天的条件可通过删除来源对话撤销，长期条件可在个人档案更正。</p>`
+          : review.profile_equipment_on_confirmation
+          ? `<p class="small">确认后将把可用器械“${escapeHtml(review.profile_equipment_on_confirmation)}”写入个人档案，供以后会话的训练建议使用；可随时在档案中更正。</p>`
+          : `<p class="small muted">${review.status==='needs_input'?'本次理解尚待补充，未应用任何修改。':'仅本对话生效，不修改长期档案'}</p>`}
         ${review.status==="ready"?`<label class="plan-check"><input type="checkbox" class="coach-review-checked">以上请求与限制完整、准确</label><button class="primary coach-confirm-understanding" type="button">${icon("check")}确认这次理解</button>`:`<p class="nutrition-question">${escapeHtml(review.question)}</p>`}`;
     } else {
       root.innerHTML=`<p class="small muted">${escapeHtml(review?.stale?"对话或档案已变化，旧理解不能沿用。":review?.error ? apiError({code:review.code,message:review.error}).message : review?.status==="generating"?"理解请求尚未完成，可刷新查看。":"补充尚待理解与核对。")}</p>`;
@@ -197,7 +209,9 @@ window.CoachView = (() => {
     root.querySelector(".coach-understand")?.addEventListener("click",()=>understand(s));
     root.querySelector(".coach-confirm-understanding")?.addEventListener("click",()=>{
       if(!root.querySelector(".coach-review-checked").checked){s.root.querySelector(".coach-error").hidden=false;s.root.querySelector(".coach-error").textContent="请先核对本次理解是否完整";return;}
-      operation(async(session,signal)=>recommend(session,await api(`/coach/conversations/${data.id}/confirm-understanding`,{method:"POST",signal,body:JSON.stringify({version:data.version,review_id:review.id,reviewed:true})}),signal,crypto.randomUUID()),showRecommendation);
+      const scope=root.querySelector('.coach-equipment-scope');
+      if(scope && !scope.value){s.root.querySelector('.coach-error').hidden=false;s.root.querySelector('.coach-error').textContent='请选择器械的作用范围';return;}
+      operation(async(session,signal)=>recommend(session,await api(`/coach/conversations/${data.id}/confirm-understanding`,{method:"POST",signal,body:JSON.stringify({version:data.version,review_id:review.id,reviewed:true,...(scope?{equipment_scope:scope.value}:{})})}),signal,crypto.randomUUID()),showRecommendation);
     });
   }
   function understand(s) {
@@ -274,7 +288,7 @@ window.CoachView = (() => {
   function mount(root) {
     dispose();
     root.innerHTML=`<section class="coach-view" aria-label="个人助手"><div class="coach-toolbar"><label>对话<select class="coach-history" aria-label="历史对话"><option value="">新对话</option></select></label><label>记录日期<input type="date" class="coach-day" value="${escapeHtml(state.day)}" required></label><div class="coach-tools"><button type="button" class="icon-button coach-new" title="新对话" aria-label="新对话">${icon("plus")}</button><button type="button" class="icon-button coach-refresh" title="刷新对话" aria-label="刷新对话">${icon("refresh-cw")}</button><button type="button" class="icon-button coach-delete" title="删除对话" aria-label="删除对话">${icon("trash-2")}</button></div></div>
-      <div class="coach-context"></div><div class="coach-consent"></div><div class="coach-messages" role="log" aria-label="对话消息" aria-live="polite"></div><section class="coach-review" aria-live="polite"></section><div class="coach-action"></div><div class="coach-plan"></div>
+      <div class="coach-context"></div><div class="coach-memory"></div><div class="coach-consent"></div><div class="coach-messages" role="log" aria-label="对话消息" aria-live="polite"></div><section class="coach-review" aria-live="polite"></section><div class="coach-action"></div><div class="coach-plan"></div>
       <p class="small muted">仅适用于无伤病的一般成人健身，不提供伤病或康复训练方案。</p>
       <div class="coach-quick">${questions.map((question,index)=>`<button type="button" data-question="${index}">${escapeHtml(question)}</button>`).join("")}</div>
       <form class="coach-compose"><label for="coach-message" class="sr-only">给助手的消息</label><textarea id="coach-message" class="coach-input" rows="2" maxlength="2000" placeholder="你想安排什么？" required></textarea><button type="submit" class="primary icon-button" title="发送消息" aria-label="发送消息">${icon("send")}</button></form>
@@ -282,6 +296,7 @@ window.CoachView = (() => {
       <button type="button" class="coach-stop" hidden>${icon("square")}停止等待</button><p class="coach-status small muted" role="status"></p><p class="coach-error form-error" role="alert" hidden></p></section>`;
     active={root,user:state.user,ticket:0,busy:false,data:null,list:[],day:state.day,createId:crypto.randomUUID(),pendingSend:null};
     const s=active;
+    window.CoachMemoryView?.mount(root.querySelector(".coach-memory"));
     root.querySelector(".coach-compose").addEventListener("submit",event=>{event.preventDefault();send();});
     root.querySelectorAll("[data-question]").forEach(button=>button.addEventListener("click",()=>{root.querySelector(".coach-input").value=questions[Number(button.dataset.question)];root.querySelector(".coach-input").focus();}));
     root.querySelector(".coach-stop").addEventListener("click",cancel);

@@ -186,6 +186,10 @@ def test_v10_upgrade_preserves_all_original_tables_and_backup(tmp_path):
         connection.execute("DROP TABLE intake_targets")
         connection.execute("DROP TABLE meal_intake_reviews")
         connection.execute("DROP TABLE body_measurements")
+        connection.execute("DROP TABLE coach_day_equipment")
+        connection.execute("DROP TABLE profile_fact_events")
+        connection.execute("DROP TABLE coach_memory_digests")
+        connection.execute("DROP TABLE coach_memory_entries")
         connection.execute("DROP TABLE guest_accounts")
         connection.execute("DROP TABLE guest_usage")
         connection.execute("PRAGMA user_version=10")
@@ -195,7 +199,7 @@ def test_v10_upgrade_preserves_all_original_tables_and_backup(tmp_path):
     database.initialize()
     with database.connect() as connection, sqlite3.connect(str(path) + ".pre-v11.bak") as backup:
         assert backup.execute("PRAGMA user_version").fetchone()[0] == 10
-        assert connection.execute("PRAGMA user_version").fetchone()[0] == 14
+        assert connection.execute("PRAGMA user_version").fetchone()[0] == 17
         tables = backup.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
         assert len(tables) == 15
         for (table,) in tables:

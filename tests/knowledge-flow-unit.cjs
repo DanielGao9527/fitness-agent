@@ -10,7 +10,7 @@ function setup() {
   const node = (props={}) => ({value:"",innerHTML:"",textContent:"",hidden:false,listeners:{},
     addEventListener(type,fn){this.listeners[type]=fn;},setAttribute(){},classList:{toggle(){}},
     replaceChildren(){this.innerHTML="";},...props});
-  const nodes = Object.fromEntries(["#knowledge-search",'[name="query"]',".knowledge-error",".knowledge-state",".knowledge-results"].map(key=>[key,node()]));
+  const nodes = Object.fromEntries(["#knowledge-search",'[name="query"]',".knowledge-error",".knowledge-state",".knowledge-results",".knowledge-search-cost"].map(key=>[key,node()]));
   const buttons=["all","training","nutrition"].map(topic=>node({dataset:{topic}}));
   const root=node({isConnected:true,querySelector:key=>nodes[key],querySelectorAll:selector=>selector==="[data-topic]" ? buttons : []});
   const requests=[];
@@ -65,6 +65,11 @@ async function main() {
   assert.ok(html.includes('&lt;script>'));
   assert.ok(!html.includes('<a ')&&!html.includes('<script>'));
   notes.module.dispose();
+  const hybrid=setup();
+  hybrid.requests[0].resolve({...result(),semantic_search_enabled:true,retrieval:{degraded:true}});await flush();
+  assert.equal(hybrid.nodes['.knowledge-search-cost'].hidden,false);
+  assert.ok(hybrid.nodes['.knowledge-state'].textContent.includes('本次使用文字检索'));
+  hybrid.module.dispose();
   console.log("Knowledge flow: cancellation, stale responses, account switch, escaping, filters and errors passed.");
 }
 main().catch(error=>{console.error(error);process.exitCode=1;});

@@ -1,0 +1,114 @@
+{
+  "cases": {
+    "passed": 11,
+    "total": 12,
+    "rate": 0.9166666666666666
+  },
+  "metrics": {
+    "accepted_candidate_exact": {
+      "passed": 11,
+      "total": 12,
+      "rate": 0.9166666666666666
+    },
+    "advice_api_success": {
+      "passed": 17,
+      "total": 18,
+      "rate": 0.9444444444444444
+    },
+    "advice_status": {
+      "passed": 17,
+      "total": 18,
+      "rate": 0.9444444444444444
+    },
+    "clarification": {
+      "passed": 3,
+      "total": 3,
+      "rate": 1.0
+    },
+    "confirmation_applied": {
+      "passed": 11,
+      "total": 12,
+      "rate": 0.9166666666666666
+    },
+    "equipment_adoption": {
+      "passed": 17,
+      "total": 18,
+      "rate": 0.9444444444444444
+    },
+    "exercise_resources": {
+      "passed": 17,
+      "total": 18,
+      "rate": 0.9444444444444444
+    },
+    "manual_confirmation_required": {
+      "passed": 11,
+      "total": 12,
+      "rate": 0.9166666666666666
+    },
+    "no_actual_record_writes": {
+      "passed": 12,
+      "total": 12,
+      "rate": 1.0
+    },
+    "no_false_candidate": {
+      "passed": 3,
+      "total": 3,
+      "rate": 1.0
+    },
+    "no_unconfirmed_day_write": {
+      "passed": 15,
+      "total": 15,
+      "rate": 1.0
+    },
+    "no_unconfirmed_profile_write": {
+      "passed": 15,
+      "total": 15,
+      "rate": 1.0
+    },
+    "raw_candidate_exact": {
+      "passed": 12,
+      "total": 12,
+      "rate": 1.0
+    },
+    "superseded_advice_stale": {
+      "passed": 3,
+      "total": 3,
+      "rate": 1.0
+    }
+  },
+  "families": {
+    "day_with_noise": {
+      "passed": 3,
+      "total": 3,
+      "rate": 1.0
+    },
+    "spoken_retraction": {
+      "passed": 3,
+      "total": 3,
+      "rate": 1.0
+    },
+    "uncertainty_explanation": {
+      "passed": 3,
+      "total": 3,
+      "rate": 1.0
+    },
+    "unspecified_context": {
+      "passed": 2,
+      "total": 3,
+      "rate": 0.6666666666666666
+    }
+  },
+  "mode": "annotated",
+  "selected": 12,
+  "completed": 12,
+  "quality_claim": "wiring_only_not_model_quality",
+  "model_invocations": 15,
+  "provider_calls": 0,
+  "provider_latency": {
+    "n": 0,
+    "mean_seconds": null,
+    "p95_seconds": null
+  },
+  "not_run_ids": [],
+  "source_unchanged": true
+}

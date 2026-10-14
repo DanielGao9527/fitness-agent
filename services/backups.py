@@ -9,11 +9,15 @@ from datetime import datetime, timezone
 from pathlib import Path
 from config import ROOT
 
-TABLES = frozenset(("users", "sessions", "profiles", "meals", "workouts", "meal_drafts",
+V14_TABLES = frozenset(("users", "sessions", "profiles", "meals", "workouts", "meal_drafts",
     "ai_usage", "nutrition_previews", "workout_previews", "meal_plans", "training_plans",
     "coach_conversations", "coach_turns", "meal_consents", "coach_reviews", "intake_targets",
     "meal_intake_reviews", "body_measurements", "guest_accounts", "guest_usage"))
-LEGACY_TABLES = TABLES - {"guest_accounts", "guest_usage"}
+V15_TABLES = V14_TABLES | {"coach_memory_entries", "coach_memory_digests"}
+V16_TABLES = V15_TABLES | {"profile_fact_events"}
+TABLES = V16_TABLES | {"coach_day_equipment"}
+LEGACY_TABLES = V14_TABLES - {"guest_accounts", "guest_usage"}
+SCHEMA_TABLES = {13: LEGACY_TABLES, 14: V14_TABLES, 15: V15_TABLES, 16: V16_TABLES, 17: TABLES}
 
 
 def readonly(path):
@@ -24,8 +28,8 @@ def readonly(path):
 def inspect_connection(connection):
     version = connection.execute("PRAGMA user_version").fetchone()[0]
     tables = {row[0] for row in connection.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")}
-    if (version, tables) not in ((13, LEGACY_TABLES), (14, TABLES)):
-        raise ValueError("Only a complete schema-v13/v14 personal database is supported")
+    if tables != SCHEMA_TABLES.get(version):
+        raise ValueError("Only a complete schema-v13/v14/v15/v16/v17 personal database is supported")
     if connection.execute("PRAGMA integrity_check").fetchall() != [("ok",)]:
         raise ValueError("Database integrity check failed")
     if connection.execute("PRAGMA foreign_key_check").fetchone():
@@ -48,7 +52,7 @@ def fingerprints(path):
         inspect_connection(connection)
         return {name: hashlib.sha256(json.dumps(connection.execute(
             f'SELECT * FROM "{name}" ORDER BY rowid').fetchall(), ensure_ascii=False).encode()).hexdigest()
-            for name in sorted(TABLES if inspect_connection(connection)["schema"] == 14 else LEGACY_TABLES)}
+            for name in sorted(SCHEMA_TABLES[inspect_connection(connection)["schema"]])}
 
 
 def verify_backup(path):

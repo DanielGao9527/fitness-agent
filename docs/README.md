@@ -1,19 +1,38 @@
-# 项目说明
+# Fitness Agent · 项目总览
 
-这里保留当前实现的说明，按你想了解的内容阅读：
+更新：2026-10-14。这里是当前增强工作的唯一进度入口；阶段交接已归档。GitHub：[fitness-agent](https://github.com/DanielGao9527/fitness-agent)，增强交付分支 codex/fitness-hybrid-retrieval。
 
-| 文档 | 内容 |
-| --- | --- |
-| [架构与数据流](ARCHITECTURE.md) | 页面、接口、业务服务、数据库与模型如何协作 |
-| [配置与模型接入](CONFIGURATION.md) | 环境变量、可选 AI 能力及无密钥运行方式 |
-| [账号、注册与游客](ACCOUNTS.md) | 三个入口、临时记录清理、额度以及已有服务器的升级边界 |
-| [部署](DEPLOYMENT.md) | GitHub 自动检查、发布分支与 Linux 服务器部署 |
-| [运维与恢复](OPERATIONS.md) | 启停、健康检查、备份和恢复 |
-| [知识与第三方资料](KNOWLEDGE_SOURCES.md) | 公共知识、营养参考、训练资料的来源与边界 |
-| [隐私与数据处理](PRIVACY.md) | 保存哪些数据、哪些请求会交给模型、公开仓库排除什么 |
+面向中文饮食记录、餐次规划与当天训练建议，将自然语言和多模态识别结果变为可核对草稿，结合个人条件与公共知识证据给出建议。
 
-开发过程中的历史交接、AI 开发指令、运行报告和本机配置不属于公开仓库。运行时提示词保留在 [prompts](../prompts/README.md)，它们是应用功能的一部分。
+## 先看这三份
 
-## 验证口径
+| 想了解什么 | 文档 | 内容 |
+| --- | --- | --- |
+| 现在做到哪了 | [当前基线与验证结果](STATUS.md) | 已实现、未完成、真实结果和已知问题 |
+| 最终要交什么 | [最终交付与验收清单](DELIVERY.md) | 产品、代码、评测、演示和简历材料 |
+| 下一步怎么做 | [后续开发路线](ROADMAP.md) | 顺序、具体任务、通过条件和代码入口 |
 
-单元及接口测试使用合成数据和模型替身；通过不等于真实模型效果、实体手机或公网环境已经验收。Linux 安装与测试以 GitHub Actions 和目标服务器的实际结果为准；部署配置文件存在也不代表服务器已接通。
+**当前结论：E1 已实现；E2 工程链路已接通，真实质量验收未收尾；E3 完成首版有界重检索；E4 治理流程待开发。** 9 月 29 日已统一本机增强入口和升级原库；10 月 14 日核对时 8765 未响应，日常按启动说明运行。
+
+## 项目主线
+
+| 已有业务底座 | 本轮增强主线 | 最终目标 |
+| --- | --- | --- |
+| 饮食/训练记录、草稿确认、受约束配餐、当天训练建议 | 中文混合检索 → 个人记忆 → 有界检索与回放 → 受控知识更新 | 一个能演示、能解释、能复现验证的个人项目 |
+
+技术栈：Python、FastAPI、Pydantic、SQLite/FTS5、jieba、阿里云 Embedding/千问 API、RRF、SciPy MILP/HiGHS。Agent 工作流和 Memory System 是设计能力；没有接入 Hermes 或 LangGraph 作为运行框架。
+
+## 开发入口与阅读顺序
+
+日常启动统一使用 fitness-agent/scripts/start.ps1，固定使用 localhost:8765；原 app:app 入口也转到增强代码，用户无需选择版本。当前源码仓库仍在 fitness-agent/data/runtime/remote-auth，外层保留的历史业务文件不再用于应用启动。
+
+开发前依次阅读 [PRODUCT](PRODUCT.md) → [ARCHITECTURE](ARCHITECTURE.md) → [EXECUTION](EXECUTION.md) → [DEVELOPMENT_PROMPT](DEVELOPMENT_PROMPT.md) → [STATUS](STATUS.md) → [ROADMAP](ROADMAP.md)。这些文件分别负责业务范围、当前实现、接续点、开发约束、已核实事实和未来计划。
+
+## 按需查阅
+
+- 运行：[安装与启动](../README.md#本地启动)、[配置](CONFIGURATION.md)、[账号](ACCOUNTS.md)、[部署](DEPLOYMENT.md)、[备份恢复](OPERATIONS.md)。
+- 数据：[知识来源](KNOWLEDGE_SOURCES.md)、[隐私](PRIVACY.md)、[应用提示词](../prompts/README.md)。
+- 验证：[测试说明](../tests/README.md)、[评测数据](../evals/README.md)、[脚本说明](../scripts/README.md)。
+- 历史：[归档索引](archive/README.md)。旧方案和日期记录用于追溯，当前结论以 STATUS 为准。
+
+当前发布工作只整理文档、验证并同步 Git；真实模型调用与公网部署分别验收，结果以 STATUS 为准。

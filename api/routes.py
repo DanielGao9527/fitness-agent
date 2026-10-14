@@ -3,7 +3,7 @@ from datetime import date
 from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Request, Response
+from fastapi import APIRouter, Depends, Header, HTTPException, Request, Response
 
 from agent.react_agent import FitnessAgent
 from agent.tools import FitnessTools
@@ -72,7 +72,7 @@ def health(request: Request):
         "training_plan": training_plan_status(request.app.state.settings),
     }
     if settings.access_mode == "local":
-        capabilities.update(stage="r1.30-training-references", model="not_configured",
+        capabilities.update(stage="e2c-memory-clarification-v17", model="not_configured",
                             coach="guided_workflow", text_model=settings.qwen_model)
     return capabilities
 
@@ -254,13 +254,25 @@ def own_usage(request: Request, user: User):
 
 
 @router.get("/profile")
-def get_profile(service: Records):
-    return service.get_profile()
+def get_profile(service: Records, response: Response):
+    profile, revision = service.profile_snapshot()
+    response.headers["X-Equipment-Revision"] = str(revision)
+    return profile
+
+
+@router.get("/profile/facts")
+def get_profile_facts(request: Request, user: User):
+    from services.profile_facts import current_fact
+    with request.app.state.database.connect() as connection:
+        return {"items": [current_fact(connection, user["id"])]}
 
 
 @router.put("/profile")
-def put_profile(body: Profile, service: Records):
-    return service.save_profile(body)
+def put_profile(body: Profile, service: Records, response: Response,
+                equipment_revision: Annotated[int | None, Header(alias="X-Equipment-Revision", ge=0)] = None):
+    profile, revision = service.save_profile(body, expected_equipment_revision=equipment_revision, with_revision=True)
+    response.headers["X-Equipment-Revision"] = str(revision)
+    return profile
 
 
 @router.get("/meals")
@@ -370,7 +382,8 @@ def save_nutrition_day(body: NutritionDaySave, request: Request, user: User):
 
 @router.post("/agent/chat")
 def chat(body: AgentRequest, service: Records, request: Request):
-    agent = FitnessAgent(FitnessTools(service), create_chat_model(), request.app.state.knowledge)
+    retriever = request.app.state.knowledge
+    agent = FitnessAgent(FitnessTools(service), create_chat_model(), getattr(retriever, "lexical", retriever))
     try:
         return agent.respond(body)
     except ModelNotConfigured as error:

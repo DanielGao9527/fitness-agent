@@ -242,6 +242,28 @@ class CoachMessage(CoachVersion):
     message: str = Field(min_length=1, max_length=2000)
 
 
+class CoachMemorySearch(InputModel):
+    query: str = Field(min_length=1, max_length=200)
+
+
+class CoachMemoryEntryCreate(InputModel):
+    kind: Literal["user_preference", "assistant_note"]
+    content: str = Field(min_length=1, max_length=200)
+
+
+class CoachMemoryEntryUpdate(InputModel):
+    version: int = Field(ge=1, strict=True)
+    content: str = Field(min_length=1, max_length=200)
+
+
+class CoachMemoryEntryDelete(InputModel):
+    version: int = Field(ge=1, strict=True)
+
+
+class CoachMemoryDigestVersion(InputModel):
+    version: int = Field(ge=1, strict=True)
+
+
 class CoachUnderstand(CoachVersion):
     version: int = Field(ge=1, le=40, strict=True)
     client_id: UUID
@@ -254,6 +276,7 @@ class CoachAutoUnderstand(CoachUnderstand):
 class CoachReviewConfirm(CoachVersion):
     review_id: UUID
     reviewed: Literal[True]
+    equipment_scope: Literal["session", "day", "long_term"] | None = None
 
     @field_validator("reviewed", mode="before")
     @classmethod
@@ -291,12 +314,20 @@ class CoachMealChange(InputModel):
     commands: list[Annotated[str, Field(min_length=1, max_length=120)]] = Field(min_length=1, max_length=3)
 
 
+class CoachEquipmentMemory(InputModel):
+    source_version: int = Field(ge=1, le=40, strict=True)
+    source_text: str = Field(min_length=1, max_length=2000)
+    value: str = Field(min_length=1, max_length=300)
+    scope: Literal["session", "day", "long_term", "unspecified"]
+
+
 class CoachUnderstanding(InputModel):
     scope: Literal["meal", "aerobic", "strength", "knowledge", "other", "unclear"]
     command: str = Field(max_length=120)
     commands: list[Annotated[str, Field(min_length=1, max_length=120)]] = Field(default_factory=list, max_length=3)
     meal_changes: list[CoachMealChange] = Field(default_factory=list, max_length=3)
     training: CoachTrainingUpdate | None = None
+    equipment_memory: CoachEquipmentMemory | None = None
     meal_types: list[Literal["breakfast", "lunch", "dinner"]] = Field(default_factory=list, max_length=3)
     clarification: Literal["none", "which_food", "which_meal", "which_request", "which_training", "multiple_requests", "unhandled_constraint"]
     notes: list[CoachNote] = Field(min_length=1, max_length=40)
@@ -764,9 +795,13 @@ class KnowledgeQuestion(InputModel):
 class KnowledgeSelection(InputModel):
     status: Literal["answered", "insufficient", "personal_scope"]
     chunk_ids: list[Annotated[str, Field(min_length=1, max_length=161)]] = Field(max_length=3)
+    retry_query: str = Field(default="", max_length=200)
+    retry_reason: Literal["none", "evidence_gap"] = "none"
 
     @model_validator(mode="after")
     def valid_selection(self):
         if (self.status == "answered") != bool(self.chunk_ids) or len(set(self.chunk_ids)) != len(self.chunk_ids):
             raise ValueError("Selection status and evidence disagree")
+        if (self.status != "insufficient" and self.retry_query) or bool(self.retry_query) != (self.retry_reason != "none"):
+            raise ValueError("Only insufficient evidence may request one search revision")
         return self

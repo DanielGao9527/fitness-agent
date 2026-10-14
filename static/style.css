@@ -1068,6 +1068,18 @@ dialog::backdrop {
 .coach-tools { display: flex; gap: 4px; }
 .coach-context { padding: 16px 0; border-bottom: 1px solid #dbe2df; }
 .coach-context:empty { display: none; }
+.coach-memory { padding: 12px 0; border-bottom: 1px solid #dbe2df; }
+.coach-memory summary { cursor: pointer; font-weight: 600; }
+.coach-memory-form { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; }
+.coach-memory-form label { display: grid; gap: 4px; flex: 1 1 180px; }
+.coach-memory-form label:has(input) { flex: 3 1 280px; }
+.coach-memory-list { list-style: none; padding: 0; margin: 10px 0 0; }
+.coach-memory-list li { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 7px 0; border-top: 1px solid #e3e7e5; }
+.coach-memory-list li span { flex: 1 1 240px; overflow-wrap: anywhere; }
+.coach-digest { margin-top: 14px; border-top: 1px solid #e3e7e5; }
+.coach-digest-list { list-style: none; padding: 0; }
+.coach-digest-list li { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 0; border-top: 1px solid #e3e7e5; }
+.coach-digest-list li span { flex: 1 1 260px; overflow-wrap: anywhere; }
 .coach-facts { padding-left: 20px; max-height: 230px; overflow: auto; font-size: 13px; overflow-wrap: anywhere; }
 .coach-messages { min-height: 130px; padding: 12px 0; }
 .coach-empty { color: #67766f; padding: 24px 0; }

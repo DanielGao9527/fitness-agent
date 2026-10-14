@@ -1,0 +1,99 @@
+{
+  "purpose": "Targeted diagnostic examples, NOT a representative benchmark or overall improvement rate",
+  "selection_rule": "Three single-character nutrition search terms plus the previously observed packaging paraphrase; all results retained",
+  "date": "2026-09-24",
+  "results": [
+    {
+      "query": "钙",
+      "methods": {
+        "bigram": {
+          "terms": [],
+          "top3": []
+        },
+        "jieba": {
+          "terms": [
+            "钙"
+          ],
+          "top3": [
+            "phe-eatwell:dairy"
+          ]
+        }
+      }
+    },
+    {
+      "query": "糖",
+      "methods": {
+        "bigram": {
+          "terms": [],
+          "top3": []
+        },
+        "jieba": {
+          "terms": [
+            "糖"
+          ],
+          "top3": []
+        }
+      }
+    },
+    {
+      "query": "盐",
+      "methods": {
+        "bigram": {
+          "terms": [],
+          "top3": []
+        },
+        "jieba": {
+          "terms": [
+            "盐"
+          ],
+          "top3": []
+        }
+      }
+    },
+    {
+      "query": "包装上的数值是整包的还是一小份的",
+      "methods": {
+        "bigram": {
+          "terms": [
+            "包装",
+            "装上",
+            "上的",
+            "的数",
+            "数值",
+            "值是",
+            "是整",
+            "整包",
+            "包的",
+            "的还",
+            "还是",
+            "是一",
+            "一小",
+            "小份",
+            "份的"
+          ],
+          "top3": [
+            "fda-allergy-label:cross-contact"
+          ]
+        },
+        "jieba": {
+          "terms": [
+            "包装",
+            "上",
+            "的",
+            "数值",
+            "是",
+            "整包",
+            "还是",
+            "一小",
+            "份"
+          ],
+          "top3": [
+            "fda-allergy-label:cross-contact",
+            "fda-label:servings",
+            "fda-allergy-label:ingredients"
+          ]
+        }
+      }
+    }
+  ]
+}
