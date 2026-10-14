@@ -5,6 +5,7 @@
 ## 基线
 
 - 仓库：[DanielGao9527/fitness-agent](https://github.com/DanielGao9527/fitness-agent)；增强交付分支 codex/fitness-hybrid-retrieval，开发基础提交 07b6ec2。本机源码在 fitness-agent/data/runtime/remote-auth。
+- 增强代码已提交并推送：[6d955d4](https://github.com/DanielGao9527/fitness-agent/commit/6d955d4cb4b864075726427668d68231f1fa5d96)，远端提交已核对一致。后续进度文档继续维护在同一分支。
 - 架构：FastAPI 单体＋原生网页；私人 SQLite schema v17、24 表；公共 FTS5/向量缓存独立。
 - 已有业务：多模态草稿、确认入库、幂等与过期结果保护、MILP 多餐规划、当天训练建议。
 - 9 月 29 日完成增强入口切换和原库 v13→v17 升级；先备份并在副本演练，迁移后原 18 表指纹不变，最后一次修复重启前后 24 表指纹一致。账号和记录保留。10 月 14 日只读核对仍为 v17、24 表。
@@ -61,6 +62,7 @@ E2 的冷证据仍主要在“上次”等明确回忆请求中按词项找回�
 - 历史后端批次：1777 项整仓回归通过，最终口语修复后 145 项专项通过；不将两批合并为一个最终版本全套成绩。
 - 10 月 14 日已重跑 13 套前端单元、器械范围和档案事实两个隔离浏览器流程，均通过，包含 390/320 宽度；不等于实体手机验收。
 - 10 月 14 日整仓 Python 批次：1792 通过、1 失败。失败是测试用 GBK 解码 PowerShell 7 的 UTF-8 输出；已修正测试读取方式，重跑全部 4 项启动兼容检查均通过。生产代码在整仓运行后未修改，不把两批拼成一次全绿。见 [发布检查](../evals/results/release-check-2026-10-14.json)。
+- Git 导出包中的语料及三个冻结题集与原字节一致；导出目录的 6 项题集完整性检查和评测 --plan 通过。未导出密钥、私人库、运行缓存或日志。
 
 [新表达 v2](../evals/memory/expressions_v2/README.md) 共 24 条、8 个场景族，开发/留出各 12；未独立人工审核。新增 --suite 可选择冻结题集，原 v1 不变。只运行了开发集标注接线，同一批输入修复前 [11/12](../evals/results/memory_expressions_v2_dev_20260929/summary.json)、修复后 [12/12](../evals/results/memory_expressions_v2_dev_fixed_20260929/summary.json)；这是业务处理检查，不是模型理解准确率。留出未执行、未用于修复，新真实质量仍待验证。
 

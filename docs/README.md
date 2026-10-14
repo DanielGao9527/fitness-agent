@@ -1,6 +1,6 @@
 # Fitness Agent · 项目总览
 
-更新：2026-10-14。这里是当前增强工作的唯一进度入口；阶段交接已归档。GitHub：[fitness-agent](https://github.com/DanielGao9527/fitness-agent)，增强交付分支 codex/fitness-hybrid-retrieval。
+更新：2026-10-14。这里是当前增强工作的唯一进度入口；阶段交接已归档。GitHub：[已交付增强版](https://github.com/DanielGao9527/fitness-agent/tree/codex/fitness-hybrid-retrieval)，分支 codex/fitness-hybrid-retrieval。
 
 面向中文饮食记录、餐次规划与当天训练建议，将自然语言和多模态识别结果变为可核对草稿，结合个人条件与公共知识证据给出建议。
 

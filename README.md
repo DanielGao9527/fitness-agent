@@ -2,7 +2,7 @@
 
 一个中文、多用户的饮食与训练管理应用。将实际记录、可追溯的公共知识和 AI 辅助理解结合起来，帮助用户核对饮食、制定当天建议并回顾变化。
 
-代码仓库：[DanielGao9527/fitness-agent](https://github.com/DanielGao9527/fitness-agent)。本批增强交付分支为 `codex/fitness-hybrid-retrieval`。
+代码仓库：[DanielGao9527/fitness-agent](https://github.com/DanielGao9527/fitness-agent)。[查看已交付增强版](https://github.com/DanielGao9527/fitness-agent/tree/codex/fitness-hybrid-retrieval)，分支为 `codex/fitness-hybrid-retrieval`。
 
 ## 当前进度 · 2026-10-14
 
