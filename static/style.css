@@ -1270,8 +1270,8 @@ dialog::backdrop {
 .knowledge-workbench label {display:grid;gap:5px;min-width:0;}
 .knowledge-workbench select,.knowledge-workbench textarea,.knowledge-workbench input {max-width:100%;min-width:0;width:100%;}
 .knowledge-workbench button {white-space:normal;overflow-wrap:anywhere;max-width:100%;}
-.knowledge-workbench .candidate-confirm {display:flex;align-items:flex-start;gap:8px;}
-.knowledge-workbench .candidate-confirm input {width:auto;flex:none;}
+.knowledge-workbench .candidate-confirm {display:flex;flex-direction:row;align-items:flex-start;gap:8px;margin:8px 0;white-space:normal;}
+.knowledge-workbench .candidate-confirm input {width:16px;height:16px;min-height:16px;flex:0 0 16px;padding:0;margin:3px 0 0;}
 .workbench-text,.workbench-item {overflow-wrap:anywhere;white-space:pre-wrap;}
 .workbench-list {max-height:480px;overflow:auto;min-width:0;}
 .workbench-item {padding:12px 0;border-top:1px solid var(--border,#ddd);}

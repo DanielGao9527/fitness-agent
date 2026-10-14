@@ -229,5 +229,24 @@ app = create_app(Settings(database_path=fixture_path, retrieval_mode="lexical", 
                           ai_global_daily_limit=10000,  # Synthetic repeated browser runs; production budget is unchanged.
                           knowledge_qa_enabled=True, training_plan_enabled=True, coach_enabled=coach_mode, model_provider="qwen" if coach_mode else "disabled", qwen_api_key="synthetic-fixture" if coach_mode else ""))
 
+if "--knowledge-build" in sys.argv:
+    from rag.hybrid import HybridKnowledgeRetriever
+    from rag.vector_store import VectorStore
+    class FixtureEmbedding:
+        identity = "synthetic-ui-build-v1"
+        dimensions = 2
+        def embed(self, texts, *, text_type, before_call=None):
+            if before_call:
+                before_call()
+            return [[1.0, 0.0] for _ in texts]
+    provider = FixtureEmbedding()
+    store = VectorStore(fixture_path.parent / "ui-build-vectors.sqlite3")
+    store.build(app.state.knowledge, provider)
+    # Existing chat stays lexical; these vectors only exercise local build mechanics.
+    class FixtureCachedRetriever(HybridKnowledgeRetriever):
+        def search_snapshot(self, *args, **kwargs):
+            return self.lexical.search_snapshot(*args, **kwargs)
+    app.state.knowledge = FixtureCachedRetriever(app.state.knowledge, provider, store)
+
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8772 if facts_mode else 8771 if memory_mode else 8767, access_log=False)

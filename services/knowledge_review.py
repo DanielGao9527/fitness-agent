@@ -61,6 +61,11 @@ class KnowledgeReview:
         return {hit["chunk_id"]: hit for hit in payloads}, signature({"sources": payloads, "engine": engine, "policy": POLICY})
 
     @staticmethod
+    def gate_binding(row, corpus_hash):
+        return signature({"policy": POLICY, "submission_id": row["id"], "candidate_version": row["candidate_version"],
+            "content_hash": row["content_hash"], "source_hash": row["source_hash"], "corpus_hash": corpus_hash})
+
+    @staticmethod
     def _event(connection, row, action, actor=None):
         connection.execute("INSERT INTO knowledge_review_events(submission_id,version,action,actor_id) VALUES (?,?,?,?)",
                            (row["id"], row["version"], action, actor))
@@ -101,10 +106,14 @@ class KnowledgeReview:
         if not current or signature(current) != row["source_hash"]:
             return "source_changed"
         if row["gate_id"]:
-            gate = connection.execute("SELECT corpus_hash,policy FROM knowledge_review_gates WHERE id=? AND submission_id=?",
+            gate = connection.execute("SELECT corpus_hash,policy,passed,binding_hash FROM knowledge_review_gates WHERE id=? AND submission_id=?",
                                       (row["gate_id"], row["id"])).fetchone()
             if gate is None or gate["corpus_hash"] != corpus_hash or gate["policy"] != POLICY:
                 return "corpus_changed"
+            if row["status"] in ("checked", "approved") and (not gate["passed"] or gate["binding_hash"] != self.gate_binding(row, corpus_hash)):
+                return "gate_changed"
+        elif row["status"] in ("checked", "approved"):
+            return "gate_changed"
         if row["status"] == "approved":
             role = reviewer(connection, row["reviewer_id"])
             if role is None or role["revision"] != row["reviewer_revision"]:
@@ -222,8 +231,7 @@ class KnowledgeReview:
                 self._validate(connection, row, *self._catalog())
                 raise HTTPException(409, "检查期间资料变化，请刷新后重试。")
             passed = all(checks.values())
-            binding = signature({"policy": POLICY, "submission_id": row["id"], "candidate_version": row["candidate_version"],
-                "content_hash": row["content_hash"], "source_hash": row["source_hash"], "corpus_hash": corpus_hash})
+            binding = self.gate_binding(row, corpus_hash)
             report = {"policy": POLICY, "checks": checks, "corpus_hash": corpus_hash, "source_count": len(sources),
                 "real_provider_calls": 0, "semantic_quality": "not_evaluated", "release_regression": "not_run", "publication_allowed": False}
             gate_id = str(uuid4())

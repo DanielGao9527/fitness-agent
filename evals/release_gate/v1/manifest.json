@@ -1,0 +1,13 @@
+{
+  "policy": "knowledge-build-dev-lexical-v1",
+  "dataset": "evals/fitness_qa.jsonl",
+  "dataset_sha256": "ec6f7446a9560654a1056f8cdda9e1bbef22041c3c4fa043169f965795e75cec",
+  "split": "dev",
+  "limit": 6,
+  "threshold": "No loss of relevant canonical chunk IDs per currently answerable development case; no new nonempty retrieval on unanswerable cases whose baseline is empty.",
+  "alias_policy": "Map reviewed excerpt IDs to original evidence IDs; duplicates never earn extra recall credit. Evaluate the actual top six returned hits, without filling positions removed by deduplication.",
+  "expired_evidence": "Cases with any unavailable labelled evidence are reported as not comparable, never silently removed or counted as passes.",
+  "quality_scope": "Self-authored source-labelled development regression; lexical engineering only, not independent semantic quality or hybrid ranking validation.",
+  "real_provider_calls": 0,
+  "publication_allowed": false
+}

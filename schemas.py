@@ -879,6 +879,22 @@ class KnowledgeReviewReject(KnowledgeWorkbenchVersion):
     reason: Literal["source_problem", "needs_context", "not_relevant"]
 
 
+class KnowledgeBuildSubmission(KnowledgeWorkbenchVersion):
+    id: UUID
+
+
+class KnowledgeBuildCreate(InputModel):
+    client_id: UUID
+    submissions: list[KnowledgeBuildSubmission] = Field(min_length=1, max_length=20)
+    confirmed: bool = Field(strict=True)
+
+    @model_validator(mode="after")
+    def explicit_build(self):
+        if not self.confirmed or len({item.id for item in self.submissions}) != len(self.submissions):
+            raise ValueError("请核对构建列表，重复提交不能重复选择")
+        return self
+
+
 class KnowledgeSelection(InputModel):
     status: Literal["answered", "insufficient", "personal_scope"]
     chunk_ids: list[Annotated[str, Field(min_length=1, max_length=161)]] = Field(max_length=3)

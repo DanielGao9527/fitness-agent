@@ -41,6 +41,46 @@ class FakeEmbedding:
                 for text in texts]
 
 
+def test_cache_only_copy_reuses_identical_text_and_never_calls_provider(setup_retrieval,tmp_path):
+    lexical,provider,source=setup_retrieval
+    source.build(lexical,provider,today=TODAY)
+    before=source.path.read_bytes();calls=provider.calls
+    mutate(lexical,lambda corpus:corpus['sources'][0]['sections'].append(
+        {**corpus['sources'][0]['sections'][0],'id':'identical-alias'}))
+    output=VectorStore(tmp_path/'candidate-vectors.sqlite3')
+    result=output.copy_cached(lexical,source,provider,today=TODAY)
+    assert result['chunk_count']==3 and result['content_alias_reuse']==1 and result['calls']==0
+    assert result['embedded_count']==0 and provider.calls==calls and source.path.read_bytes()==before
+    copied=output.load(lexical.export_documents(today=TODAY),provider)
+    assert copied['fda-label:identical-alias']==copied['fda-label:servings']
+
+
+def test_cache_only_copy_does_not_reuse_whole_paragraph_vector_for_shorter_text(setup_retrieval,tmp_path):
+    lexical,provider,source=setup_retrieval
+    source.build(lexical,provider,today=TODAY)
+    output=VectorStore(tmp_path/'candidate-vectors.sqlite3')
+    output.copy_cached(lexical,source,provider,today=TODAY)
+    before=output.path.read_bytes();calls=provider.calls
+    mutate(lexical,lambda corpus:corpus['sources'][0]['sections'][0].update(summary='阅读包装'))
+    with pytest.raises(VectorCacheUnavailable,match='incomplete'):
+        output.copy_cached(lexical,source,provider,today=TODAY)
+    assert output.path.read_bytes()==before and provider.calls==calls
+
+
+def test_cache_only_copy_rejects_model_mismatch_and_corruption_before_writing(setup_retrieval,tmp_path):
+    lexical,provider,source=setup_retrieval
+    source.build(lexical,provider,today=TODAY)
+    output=VectorStore(tmp_path/'candidate-vectors.sqlite3')
+    with pytest.raises(VectorCacheUnavailable,match='identity'):
+        output.copy_cached(lexical,source,FakeEmbedding('another-model'),today=TODAY)
+    assert not output.path.exists()
+    with sqlite3.connect(source.path) as connection:
+        connection.execute("UPDATE vectors SET vector_hash=?",('0'*64,))
+    with pytest.raises(VectorCacheUnavailable,match='invalid'):
+        output.copy_cached(lexical,source,provider,today=TODAY)
+    assert not output.path.exists()
+
+
 @pytest.fixture
 def setup_retrieval(tmp_path):
     corpus = {"version": "test-v1", "sources": [{

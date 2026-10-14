@@ -100,6 +100,52 @@ class VectorStore:
             result[document.hit.chunk_id] = self._decode(row, provider.dimensions)
         return result
 
+    def copy_cached(self, lexical, source_store, provider, *, today=None):
+        """Copy only identical encoded text for the same model; never call embed."""
+        if self.path in (source_store.path, lexical.source_path, lexical.index_path):
+            raise ValueError("Use a separate candidate vector cache")
+        documents = lexical.export_documents(today=today)
+        rows = source_store._rows(provider)
+        by_hash = {}
+        for key in sorted(rows):
+            by_hash.setdefault(rows[key][0], rows[key])
+        staged = {}
+        aliases = 0
+        for document in documents:
+            exact = rows.get(document.hit.chunk_id)
+            row = exact if exact and exact[0] == document.content_hash else by_hash.get(document.content_hash)
+            if row is None:
+                raise VectorCacheUnavailable("vector_cache_incomplete")
+            self._decode(row, provider.dimensions)
+            staged[document.hit.chunk_id] = row
+            aliases += not (exact and exact[0] == document.content_hash)
+        current = lexical.export_documents(today=today)
+        if documents != current:
+            raise VectorCacheUnavailable("sources_changed")
+        self._write(staged, provider, lexical.snapshot_metadata(current, today=today)["corpus_hash"])
+        return {"chunk_count": len(staged), "content_alias_reuse": aliases, "embedded_count": 0,
+                "calls": 0, "identity": provider.identity, "dimensions": provider.dimensions}
+
+    def _write(self, staged, provider, corpus_hash):
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            with self.lock, closing(sqlite3.connect(self.path, timeout=10)) as connection, connection:
+                connection.execute("BEGIN IMMEDIATE")
+                self._check_database(connection, allow_empty=True)
+                connection.execute(f"PRAGMA application_id={VECTOR_APP_ID}")
+                connection.execute("CREATE TABLE IF NOT EXISTS builds (identity TEXT PRIMARY KEY, "
+                    "dimensions INTEGER NOT NULL,template TEXT NOT NULL,corpus_hash TEXT NOT NULL)")
+                connection.execute("CREATE TABLE IF NOT EXISTS vectors (identity TEXT NOT NULL, "
+                    "chunk_id TEXT NOT NULL,text_hash TEXT NOT NULL,vector BLOB NOT NULL,vector_hash TEXT NOT NULL,"
+                    "PRIMARY KEY(identity,chunk_id))")
+                connection.execute("DELETE FROM vectors WHERE identity=?", (provider.identity,))
+                connection.executemany("INSERT INTO vectors VALUES (?,?,?,?,?)",
+                    [(provider.identity, key, *row) for key, row in staged.items()])
+                connection.execute("INSERT OR REPLACE INTO builds VALUES (?,?,?,?)",
+                    (provider.identity, provider.dimensions, TEXT_TEMPLATE, corpus_hash))
+        except (sqlite3.Error, OSError):
+            raise VectorCacheUnavailable("vector_cache_invalid") from None
+
     def build(self, lexical, provider, *, today=None, batch_size=10, before_call=None):
         """Offline-only operation. Failed encoding leaves every active build unchanged."""
         self._provider(provider)
@@ -150,24 +196,7 @@ class VectorStore:
         if initial != {document.hit.chunk_id: (document.content_hash, document.hit) for document in current}:
             raise VectorCacheUnavailable("sources_changed")
         corpus_hash = lexical.snapshot_metadata(current, today=today)["corpus_hash"]
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        try:
-            with self.lock, closing(sqlite3.connect(self.path, timeout=10)) as connection, connection:
-                connection.execute("BEGIN IMMEDIATE")
-                self._check_database(connection, allow_empty=True)
-                connection.execute(f"PRAGMA application_id={VECTOR_APP_ID}")
-                connection.execute("CREATE TABLE IF NOT EXISTS builds (identity TEXT PRIMARY KEY, "
-                    "dimensions INTEGER NOT NULL,template TEXT NOT NULL,corpus_hash TEXT NOT NULL)")
-                connection.execute("CREATE TABLE IF NOT EXISTS vectors (identity TEXT NOT NULL, "
-                    "chunk_id TEXT NOT NULL,text_hash TEXT NOT NULL,vector BLOB NOT NULL,vector_hash TEXT NOT NULL,"
-                    "PRIMARY KEY(identity,chunk_id))")
-                connection.execute("DELETE FROM vectors WHERE identity=?", (provider.identity,))
-                connection.executemany("INSERT INTO vectors VALUES (?,?,?,?,?)",
-                    [(provider.identity, key, *row) for key, row in staged.items()])
-                connection.execute("INSERT OR REPLACE INTO builds VALUES (?,?,?,?)",
-                    (provider.identity, provider.dimensions, TEXT_TEMPLATE, corpus_hash))
-        except (sqlite3.Error, OSError):
-            raise VectorCacheUnavailable("vector_cache_invalid") from None
+        self._write(staged, provider, corpus_hash)
         return {"chunk_count": len(staged), "cache_hits": reused, "embedded_count": len(missing),
                 "calls": getattr(provider, "calls", calls_before + batches) - calls_before,
                 "input_tokens": getattr(provider, "input_tokens", tokens_before) - tokens_before,

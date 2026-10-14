@@ -1,4 +1,5 @@
 from uuid import UUID
+import sqlite3
 
 from fastapi import APIRouter, HTTPException, Request, Response
 
@@ -6,9 +7,11 @@ from api.routes import User
 from rag.rag_service import KnowledgeUnavailable
 from schemas import (KnowledgeFeedbackCreate, KnowledgeCandidateCreate, KnowledgeCandidateUpdate,
                      KnowledgeCandidateReject, KnowledgeWorkbenchVersion, KnowledgeReviewSubmit,
-                     KnowledgeReviewApprove, KnowledgeReviewReject)
+                     KnowledgeReviewApprove, KnowledgeReviewReject, KnowledgeBuildCreate)
 from services.knowledge_feedback import KnowledgeWorkbench
 from services.knowledge_review import KnowledgeReview
+from services.knowledge_builds import KnowledgeBuilds
+from rag.vector_store import VectorCacheUnavailable
 
 router = APIRouter(prefix="/api/knowledge-workbench")
 
@@ -20,6 +23,23 @@ def service(request, user):
 
 def review_service(request, user):
     return KnowledgeReview(request.app.state.database, user["id"], request.app.state.knowledge)
+
+
+def build_service(request, user):
+    return KnowledgeBuilds(request.app.state.database, user["id"], request.app.state.knowledge,
+                          request.app.state.settings, request.app.state.knowledge_build_lock)
+
+
+def run_build(operation):
+    try:
+        return operation()
+    except VectorCacheUnavailable as error:
+        raise HTTPException(409, {"code": "KNOWLEDGE_BUILD_VECTOR_UNAVAILABLE", "reason": error.reason,
+            "message": "缺少完整且匹配的已有向量缓存；未调用云模型，在线知识库未切换。"}) from None
+    except KnowledgeUnavailable:
+        raise HTTPException(503, "公共资料暂不可核对，在线知识库未切换。") from None
+    except (OSError, ValueError, KeyError, TypeError, sqlite3.Error):
+        raise HTTPException(503, "构建资料或版本完整性检查失败，在线知识库未切换；请在本机检查。") from None
 
 
 def run(operation):
@@ -114,3 +134,14 @@ def approve_submission(identifier: UUID, body: KnowledgeReviewApprove, request: 
 @router.post("/review-queue/{identifier}/reject")
 def reject_submission(identifier: UUID, body: KnowledgeReviewReject, request: Request, user: User):
     return review_service(request, user).decide(identifier, body, approve=False)
+
+
+@router.get("/builds")
+def builds(request: Request, user: User):
+    service = build_service(request, user)
+    return {"items": run_build(service.list), "failures": run_build(service.failures), "publication_enabled": False}
+
+
+@router.post("/builds", status_code=201)
+def create_build(body: KnowledgeBuildCreate, request: Request, user: User):
+    return run_build(lambda: build_service(request, user).build(body))

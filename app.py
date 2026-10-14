@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import sqlite3
+import threading
 from contextlib import asynccontextmanager, suppress
 from urllib.parse import urlsplit
 
@@ -67,6 +68,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     )
     application.state.settings = settings
     application.state.database = database
+    application.state.knowledge_build_lock = threading.RLock()
     application.state.access_guard = access_guard
     knowledge_path = settings.knowledge_index_path or settings.database_path.with_name("knowledge.sqlite3")
     if knowledge_path.resolve() == settings.database_path.resolve():

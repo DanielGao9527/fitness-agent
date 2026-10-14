@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-15",
+  "scope": "E4b.2a isolated public candidate package build; engineering only, no online activation",
+  "final_targeted_python_suite": {
+    "tests": 290,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "final_full_python_suite_rerun": false,
+  "earlier_full_suite_belongs_to_e4b1": 1887,
+  "frontend_units_passed": 13,
+  "browser_flows_passed": [
+    "knowledge-builds",
+    "knowledge-review",
+    "knowledge-workbench"
+  ],
+  "browser_widths": [
+    1440,
+    390,
+    320
+  ],
+  "visual_mobile_inspection_completed": true,
+  "real_provider_calls": 0,
+  "build_vector_policy": "same embedding identity/dimensions/template and exact encoded text hash; cache-only, never encode",
+  "browser_vectors": "explicitly synthetic fixture, not model quality evidence",
+  "release_regression": "frozen self-authored development lexical Top 6 non-regression; aliases cannot earn duplicate credit",
+  "independent_semantic_quality_acceptance_completed": false,
+  "hybrid_ranking_acceptance_completed": false,
+  "candidate_publication_enabled": false,
+  "source_hashes": {
+    "app.py": "5dba3ccacfa966354c172435363bb3e866ad278a2df04afde8ea390235be9f35",
+    "api/knowledge_workbench.py": "b5d3cc8cf1a385101fed76a5448ea5a0ce4696589848811b6e4416a5584a3ec5",
+    "schemas.py": "3d62476a2471e07e4855deffe27b8bd9fbff317ef179b9ed8a7ccb3f7d4d3648",
+    "rag/vector_store.py": "088b0fb692beaf3e1686d3adea7deaef4627e09b785f5c9b3c4ec7b2ac4bc280",
+    "services/knowledge_review.py": "5aa284161e3b1c669f06559f26208f54fd55701b6596e52d101325c5b67fbc3d",
+    "services/knowledge_builds.py": "236230148973befe68ce2843fd21abd5745d0d2c88cf0c17af87d2f937b1b0e3",
+    "services/knowledge_build_gate.py": "558fd970376346b67cf59dd8fb38dc5bd5a23d680374b51c95a532ff7352bbd0",
+    "static/knowledge-review.js": "5c27b8508f199477fcc5130270c40caf9fe660b39b6d06e5e6b7c78d4f9ee900",
+    "static/style.css": "b1305cf48821502bce2e026f8150d4bfa151c59b21f0a6c0a627412da01de9ad",
+    "evals/release_gate/v1/manifest.json": "e10c3ff32bf26b60312c489a09224d31cab6945b8ccf5b45093143ece379be7f"
+  },
+  "local_activation": {
+    "schema_before": 20,
+    "schema_after": 20,
+    "schema_migration_required": false,
+    "original_tables_all_fields_preserved_after_startup": 32,
+    "backup_and_recovery_rehearsal_passed": true,
+    "actual_accounts_granted_roles": 0,
+    "actual_candidate_builds_created": 0,
+    "online_knowledge_source_switched": false,
+    "stage": "e4b2a-candidate-build-v20"
+  },
+  "public_deployment_performed": false,
+  "private_databases_credentials_packages_and_logs_excluded": true
+}

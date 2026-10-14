@@ -20,5 +20,14 @@
     "workouts",
     "diet-workflow",
     "drafts"
-  ]
+  ],
+  "additional_suites": {
+    "knowledge-builds": {
+      "fixture_flags": [
+        "--coach",
+        "--knowledge-build"
+      ],
+      "notice": "Synthetic cache fixture, no real embeddings; includes an expected missing-excerpt-vector failure."
+    }
+  }
 }
