@@ -5,7 +5,7 @@
 ## 基线
 
 - 仓库：[DanielGao9527/fitness-agent](https://github.com/DanielGao9527/fitness-agent)；增强交付分支 codex/fitness-hybrid-retrieval，开发基础提交 07b6ec2。本机源码在 fitness-agent/data/runtime/remote-auth。
-- 已推送增强基线及 N3 来源记忆：[1e5367f](https://github.com/DanielGao9527/fitness-agent/commit/1e5367f8f1a93cb9ba4d0a04d610abf90c6f07f1)。E3b 及接续文档已于 10 月 15 日恢复推送至 3b4eec4；E4a 在同一增强分支继续交付，历史指标及旧报告不变。
+- 已推送增强基线及 N3 来源记忆：[1e5367f](https://github.com/DanielGao9527/fitness-agent/commit/1e5367f8f1a93cb9ba4d0a04d610abf90c6f07f1)。E3b 及接续文档已于 10 月 15 日恢复推送至 3b4eec4。E4a 本地代码提交 f1679cb，本机已运行；本次 GitHub 推送再次遇到 TLS 中断，API 也暂不可达，尚未同步本批代码。历史指标及旧报告不变。
 - 架构：FastAPI 单体＋原生网页；私人 SQLite schema v19、28 表；公共 FTS5/向量缓存独立。
 - 已有业务：多模态草稿、确认入库、幂等与过期结果保护、MILP 多餐规划、当天训练建议。
 - 9 月 29 日完成增强入口切换和原库 v13→v17 升级；先备份并在副本演练，迁移后原 18 表指纹不变，最后一次修复重启前后 24 表指纹一致。账号和记录保留。10 月 14 日 N3 在独立备份及副本演练后升级至 v18；原 24 表所有原有字段在升级和启动后指纹一致。
