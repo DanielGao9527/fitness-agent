@@ -895,6 +895,19 @@ class KnowledgeBuildCreate(InputModel):
         return self
 
 
+class KnowledgeReleaseRegister(InputModel):
+    id: UUID
+    manifest_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    confirmed: bool = Field(strict=True)
+
+    @field_validator("confirmed")
+    @classmethod
+    def explicit_registration(cls, value):
+        if not value:
+            raise ValueError("请核对具体构建版本，登记不会发布知识")
+        return value
+
+
 class KnowledgeSelection(InputModel):
     status: Literal["answered", "insufficient", "personal_scope"]
     chunk_ids: list[Annotated[str, Field(min_length=1, max_length=161)]] = Field(max_length=3)

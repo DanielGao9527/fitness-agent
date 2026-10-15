@@ -7,10 +7,11 @@ from api.routes import User
 from rag.rag_service import KnowledgeUnavailable
 from schemas import (KnowledgeFeedbackCreate, KnowledgeCandidateCreate, KnowledgeCandidateUpdate,
                      KnowledgeCandidateReject, KnowledgeWorkbenchVersion, KnowledgeReviewSubmit,
-                     KnowledgeReviewApprove, KnowledgeReviewReject, KnowledgeBuildCreate)
+                     KnowledgeReviewApprove, KnowledgeReviewReject, KnowledgeBuildCreate, KnowledgeReleaseRegister)
 from services.knowledge_feedback import KnowledgeWorkbench
 from services.knowledge_review import KnowledgeReview
 from services.knowledge_builds import KnowledgeBuilds
+from services.knowledge_releases import KnowledgeReleases
 from rag.vector_store import VectorCacheUnavailable
 
 router = APIRouter(prefix="/api/knowledge-workbench")
@@ -40,6 +41,11 @@ def run_build(operation):
         raise HTTPException(503, "公共资料暂不可核对，在线知识库未切换。") from None
     except (OSError, ValueError, KeyError, TypeError, sqlite3.Error):
         raise HTTPException(503, "构建资料或版本完整性检查失败，在线知识库未切换；请在本机检查。") from None
+
+
+def release_service(request, user):
+    return KnowledgeReleases(request.app.state.database, user["id"], request.app.state.knowledge,
+                             request.app.state.settings, request.app.state.knowledge_build_lock)
 
 
 def run(operation):
@@ -145,3 +151,23 @@ def builds(request: Request, user: User):
 @router.post("/builds", status_code=201)
 def create_build(body: KnowledgeBuildCreate, request: Request, user: User):
     return run_build(lambda: build_service(request, user).build(body))
+
+
+@router.get("/releases")
+def releases(request: Request, user: User):
+    return {"items": run_build(lambda: release_service(request, user).list()), "publication_enabled": False}
+
+
+@router.post("/releases", status_code=201)
+def register_release(body: KnowledgeReleaseRegister, request: Request, user: User):
+    return run_build(lambda: release_service(request, user).register(body))
+
+
+@router.post("/releases/{identifier}/check")
+def check_release(identifier: UUID, body: KnowledgeWorkbenchVersion, request: Request, user: User):
+    return run_build(lambda: release_service(request, user).check(identifier, body))
+
+
+@router.post("/releases/{identifier}/withdraw")
+def withdraw_release(identifier: UUID, body: KnowledgeWorkbenchVersion, request: Request, user: User):
+    return release_service(request, user).withdraw(identifier, body)

@@ -18,7 +18,16 @@ def strip_governance_v19(connection):
 
 
 def strip_review_v20(connection):
+    strip_releases_v21(connection)
     for name in ("knowledge_candidate_review_change", "knowledge_answer_review_change", "knowledge_reviewer_revoke", "knowledge_reviewer_delete", "knowledge_reviewer_account_delete"):
         connection.execute(f"DROP TRIGGER IF EXISTS {name}")
     for name in ("knowledge_review_events", "knowledge_review_gates", "knowledge_submissions", "knowledge_reviewers"):
+        connection.execute(f"DROP TABLE IF EXISTS {name}")
+
+
+def strip_releases_v21(connection):
+    for name in ("knowledge_release_event", "knowledge_release_submission_change", "knowledge_release_submission_delete",
+                 "knowledge_release_reviewer_change", "knowledge_release_reviewer_delete", "knowledge_release_account_delete"):
+        connection.execute(f"DROP TRIGGER IF EXISTS {name}")
+    for name in ("knowledge_release_events", "knowledge_release_members", "knowledge_releases"):
         connection.execute(f"DROP TABLE IF EXISTS {name}")

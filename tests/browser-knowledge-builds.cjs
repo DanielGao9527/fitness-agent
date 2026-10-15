@@ -48,11 +48,31 @@ async function main(){
     assert.equal(built.new_chunks,0);assert.equal(built.deduplicated,1);
     assert.doesNotMatch(await page.locator('.knowledge-build-list').textContent(),/private-build-marker/);
     const directory=path.resolve(__dirname,'../artifacts/knowledge-builds',built.id),manifest=fs.readFileSync(path.join(directory,'manifest.json'));
+    const registerButton=page.locator(`[data-release-register="${built.id}"]`);
+    await registerButton.click();assert.match(await page.locator('.review-status').textContent(),/勾选登记确认/);
+    await page.locator(`[data-release-confirm="${built.id}"]`).check();await registerButton.click();
+    await page.waitForFunction(()=>document.querySelector('.review-status')?.textContent.includes('版本已登记'));
+    await page.locator(`[data-release-check="${built.id}"]`).click();
+    await page.waitForFunction(()=>document.querySelector('.review-status')?.textContent.includes('检查已记录'));
+    const registry=await page.evaluate(async(id)=>(await api('/knowledge-workbench/releases')).items.find(item=>item.id===id),built.id);
+    assert.equal(registry.status,'blocked');assert.equal(registry.publication_allowed,false);
+    assert.deepEqual(registry.report.blockers,['independent_semantic_quality','hybrid_ranking_quality','activation_and_rollback']);
+    assert.doesNotMatch(await page.locator('.knowledge-release-list').textContent(),/private-build-marker/);
+    assert.match(await page.locator('.knowledge-release-list').textContent(),/独立语义质量/);
     for(const [width,height] of [[1440,1000],[390,844],[320,740]]){
       await page.setViewportSize({width,height});await page.locator('.knowledge-build-section').scrollIntoViewIfNeeded();
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
       await page.screenshot({path:path.resolve(__dirname,`../artifacts/knowledge-builds-${width}.png`)});
+      await page.locator('.knowledge-release-section').scrollIntoViewIfNeeded();
+      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
+      await page.screenshot({path:path.resolve(__dirname,`../artifacts/knowledge-releases-${width}.png`)});
     }
+    await page.locator(`[data-release-withdraw="${built.id}"]`).click();
+    assert.match(await page.locator('.review-status').textContent(),/请先确认撤回/);
+    await page.locator(`[data-release-withdraw-confirm="${built.id}"]`).check();
+    await page.locator(`[data-release-withdraw="${built.id}"]`).click();
+    await page.waitForFunction(()=>document.querySelector('.review-status')?.textContent.includes('登记已撤回'));
+    assert.equal(await page.locator(`[data-release-register="${built.id}"]`).count(),0);
     const short=await page.evaluate(async({candidate,source})=>{
       const work='/knowledge-workbench',post=(url,body)=>api(url,{method:'POST',body:JSON.stringify(body)});
       const updated=await api(work+'/candidates/'+candidate.id,{method:'PUT',body:JSON.stringify({version:candidate.version,content:Array.from(candidate.content).slice(0,20).join(''),source_chunk_id:source.source.chunk_id,source_hash:source.source_hash,reviewed:true})});
@@ -68,7 +88,7 @@ async function main(){
     assert.deepEqual(fs.readdirSync(path.dirname(directory),{withFileTypes:true}).filter(item=>item.isDirectory()).map(item=>item.name).sort(),before);
     assert.deepEqual(fs.readFileSync(path.join(directory,'manifest.json')),manifest);
     assert.deepEqual(errors,[]);
-    console.log(JSON.stringify({passed:true,real_provider_calls:0,checks:['explicit selection and confirmation','private field separation','isolated complete package','identical-text dedup','no online activation','shorter excerpt blocks missing encoding','prior package preserved','1440/390/320']}));
+    console.log(JSON.stringify({passed:true,real_provider_calls:0,checks:['explicit selection and confirmation','private field separation','isolated complete package','identical-text dedup','confirmed version registration','readiness reports missing quality','confirmed withdrawal','no online activation','shorter excerpt blocks missing encoding','prior package preserved','1440/390/320']}));
   }catch(error){await page.screenshot({path:path.resolve(__dirname,'../artifacts/knowledge-builds-failure.png'),fullPage:true});throw error;}
   finally{
     execFileSync(python,[path.resolve(__dirname,'../scripts/knowledge_reviewer.py'),'revoke','--database',fixture,'--username',username],{stdio:'pipe'});

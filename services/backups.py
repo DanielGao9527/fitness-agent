@@ -18,9 +18,10 @@ V16_TABLES = V15_TABLES | {"profile_fact_events"}
 V17_TABLES = V16_TABLES | {"coach_day_equipment"}
 V18_TABLES = V17_TABLES | {"coach_memory_revisions"}
 V19_TABLES = V18_TABLES | {"knowledge_feedback", "knowledge_candidates", "knowledge_candidate_events"}
-TABLES = V19_TABLES | {"knowledge_reviewers", "knowledge_submissions", "knowledge_review_gates", "knowledge_review_events"}
+V20_TABLES = V19_TABLES | {"knowledge_reviewers", "knowledge_submissions", "knowledge_review_gates", "knowledge_review_events"}
+TABLES = V20_TABLES | {"knowledge_releases", "knowledge_release_members", "knowledge_release_events"}
 LEGACY_TABLES = V14_TABLES - {"guest_accounts", "guest_usage"}
-SCHEMA_TABLES = {13: LEGACY_TABLES, 14: V14_TABLES, 15: V15_TABLES, 16: V16_TABLES, 17: V17_TABLES, 18: V18_TABLES, 19: V19_TABLES, 20: TABLES}
+SCHEMA_TABLES = {13: LEGACY_TABLES, 14: V14_TABLES, 15: V15_TABLES, 16: V16_TABLES, 17: V17_TABLES, 18: V18_TABLES, 19: V19_TABLES, 20: V20_TABLES, 21: TABLES}
 
 
 def readonly(path):
@@ -32,7 +33,7 @@ def inspect_connection(connection):
     version = connection.execute("PRAGMA user_version").fetchone()[0]
     tables = {row[0] for row in connection.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")}
     if tables != SCHEMA_TABLES.get(version):
-        raise ValueError("Only a complete schema-v13/v14/v15/v16/v17/v18/v19/v20 personal database is supported")
+        raise ValueError("Only a complete schema-v13/v14/v15/v16/v17/v18/v19/v20/v21 personal database is supported")
     if connection.execute("PRAGMA integrity_check").fetchall() != [("ok",)]:
         raise ValueError("Database integrity check failed")
     if connection.execute("PRAGMA foreign_key_check").fetchone():

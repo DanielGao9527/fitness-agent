@@ -316,10 +316,10 @@ def test_v19_upgrade_preserves_feedback_and_candidate_fields_and_restores(tmp_pa
         connection.execute('PRAGMA user_version=19')
     columns,before=table_columns(path),fingerprints(path)
     result=migrate(path,tmp_path/'before.sqlite3')
-    assert result['schema']==20 and result['tables']==32
+    assert result['schema']== 21 and result['tables']== 35
     assert fingerprints(path,columns=columns)==before
     with sqlite3.connect(str(path)+'.pre-v20.bak') as old:
         assert old.execute('PRAGMA user_version').fetchone()[0]==19
     snapshot,restored=tmp_path/'snapshot.sqlite3',tmp_path/'restored.sqlite3'
     create_backup(path,snapshot)
-    assert restore_backup(snapshot,restored)['schema']==20
+    assert restore_backup(snapshot,restored)['schema']== 21

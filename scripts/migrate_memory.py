@@ -1,4 +1,4 @@
-"""Explicit offline v14-v19 to v20 upgrade; never stops or deploys a service."""
+"""Explicit offline v14-v20 to v21 upgrade; never stops or deploys a service."""
 import argparse
 import sqlite3
 import sys
@@ -18,8 +18,8 @@ def migrate(database, backup):
     if database.is_relative_to((ROOT / "static").resolve()):
         raise ValueError("Private database cannot be public")
     with closing(readonly(database)) as connection:
-        if inspect_connection(connection)["schema"] not in (14, 15, 16, 17, 18, 19):
-            raise ValueError("Only schema v14 through v19 can use this one-time upgrade")
+        if inspect_connection(connection)["schema"] not in (14, 15, 16, 17, 18, 19, 20):
+            raise ValueError("Only schema v14 through v20 can use this one-time upgrade")
     original_columns = table_columns(database)
     before = fingerprints(database)
     create_backup(database, backup)
@@ -48,7 +48,7 @@ def main(argv=None):
     except (OSError, ValueError, sqlite3.Error, RuntimeError, TimeoutError):
         print("Upgrade failed. Keep the service stopped and inspect the private backup; no automatic rollback.", file=sys.stderr)
         return 1
-    print("Schema v20 verified; previous business columns and rows preserved. Service activation remains manual.")
+    print("Schema v21 verified; previous business columns and rows preserved. Service activation remains manual.")
     return 0
 
 

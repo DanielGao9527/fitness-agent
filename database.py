@@ -79,7 +79,7 @@ class Database:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with self.connect() as connection:
             version = connection.execute("PRAGMA user_version").fetchone()[0]
-            if version not in range(21):
+            if version not in range(22):
                 raise RuntimeError("Unsupported database schema version")
             connection.execute("PRAGMA journal_mode = WAL")
             if version == 1:
@@ -687,5 +687,85 @@ class Database:
                                 WHERE e.submission_id=knowledge_submissions.id AND e.version=knowledge_submissions.version);
                     END;
                     PRAGMA user_version = 20;
+                    COMMIT;
+                """)
+            if version < 21:
+                if version > 0:
+                    backup_path = self.path.with_name(self.path.name + ".pre-v21.bak")
+                    if not backup_path.exists():
+                        with closing(sqlite3.connect(backup_path)) as backup:
+                            connection.backup(backup)
+                connection.executescript("""
+                    BEGIN IMMEDIATE;
+                    CREATE TABLE knowledge_releases (
+                        id TEXT PRIMARY KEY,
+                        manifest_hash TEXT NOT NULL CHECK(length(manifest_hash)=64),
+                        registrant_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+                        registrant_revision INTEGER NOT NULL CHECK(registrant_revision >= 1),
+                        status TEXT NOT NULL CHECK(status IN ('registered','blocked','withdrawn','invalidated')),
+                        version INTEGER NOT NULL DEFAULT 1 CHECK(version >= 1),
+                        reason TEXT NOT NULL,
+                        report TEXT NOT NULL DEFAULT '{}',
+                        actor_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+                        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+                    );
+                    CREATE TABLE knowledge_release_members (
+                        release_id TEXT NOT NULL REFERENCES knowledge_releases(id) ON DELETE CASCADE,
+                        submission_id TEXT NOT NULL REFERENCES knowledge_submissions(id) ON DELETE CASCADE,
+                        submission_version INTEGER NOT NULL CHECK(submission_version >= 1),
+                        PRIMARY KEY(release_id,submission_id)
+                    );
+                    CREATE INDEX knowledge_release_submission ON knowledge_release_members(submission_id);
+                    CREATE TABLE knowledge_release_events (
+                        release_id TEXT NOT NULL REFERENCES knowledge_releases(id) ON DELETE CASCADE,
+                        version INTEGER NOT NULL CHECK(version >= 1),
+                        action TEXT NOT NULL,
+                        report TEXT NOT NULL,
+                        actor_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+                        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        PRIMARY KEY(release_id,version)
+                    );
+                    CREATE TRIGGER knowledge_release_event AFTER UPDATE ON knowledge_releases
+                        WHEN NEW.version != OLD.version
+                    BEGIN
+                        INSERT INTO knowledge_release_events(release_id,version,action,report,actor_id)
+                            VALUES (NEW.id,NEW.version,NEW.reason,NEW.report,NEW.actor_id);
+                    END;
+                    CREATE TRIGGER knowledge_release_submission_change AFTER UPDATE ON knowledge_submissions
+                        WHEN NEW.version != OLD.version OR NEW.status != OLD.status
+                    BEGIN
+                        UPDATE knowledge_releases SET status='invalidated',reason='submission_changed',report='{}',
+                            actor_id=NULL,version=version+1,updated_at=CURRENT_TIMESTAMP
+                            WHERE status IN ('registered','blocked') AND id IN (
+                                SELECT release_id FROM knowledge_release_members WHERE submission_id=OLD.id);
+                    END;
+                    CREATE TRIGGER knowledge_release_submission_delete BEFORE DELETE ON knowledge_submissions
+                    BEGIN
+                        UPDATE knowledge_releases SET status='invalidated',reason='submission_deleted',report='{}',
+                            actor_id=NULL,version=version+1,updated_at=CURRENT_TIMESTAMP
+                            WHERE status IN ('registered','blocked') AND id IN (
+                                SELECT release_id FROM knowledge_release_members WHERE submission_id=OLD.id);
+                    END;
+                    CREATE TRIGGER knowledge_release_reviewer_change AFTER UPDATE ON knowledge_reviewers
+                        WHEN NEW.revision != OLD.revision OR NEW.enabled=0
+                    BEGIN
+                        UPDATE knowledge_releases SET status='invalidated',reason='registrant_changed',report='{}',
+                            actor_id=NULL,version=version+1,updated_at=CURRENT_TIMESTAMP
+                            WHERE registrant_id=OLD.user_id AND status IN ('registered','blocked');
+                    END;
+                    CREATE TRIGGER knowledge_release_reviewer_delete BEFORE DELETE ON knowledge_reviewers
+                    BEGIN
+                        UPDATE knowledge_releases SET status='invalidated',reason='registrant_changed',report='{}',
+                            actor_id=NULL,version=version+1,updated_at=CURRENT_TIMESTAMP
+                            WHERE registrant_id=OLD.user_id AND status IN ('registered','blocked');
+                    END;
+                    CREATE TRIGGER knowledge_release_account_delete BEFORE DELETE ON users
+                    BEGIN
+                        UPDATE knowledge_releases SET status='invalidated',reason='registrant_changed',report='{}',
+                            actor_id=NULL,version=version+1,updated_at=CURRENT_TIMESTAMP
+                            WHERE registrant_id=OLD.id AND status IN ('registered','blocked');
+                    END;
+                    PRAGMA user_version = 21;
                     COMMIT;
                 """)

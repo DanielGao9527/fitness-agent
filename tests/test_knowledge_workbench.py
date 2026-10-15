@@ -172,13 +172,13 @@ def test_v18_upgrade_preserves_every_original_field_and_verified_backup(tmp_path
     columns, before = table_columns(path), fingerprints(path)
     backup = tmp_path / "before-v19.sqlite3"
     result = migrate(path, backup)
-    assert result["schema"] == 20 and result["tables"] == 32 and result["old_tables_preserved"]
+    assert result["schema"] == 21 and result["tables"] == 35 and result["old_tables_preserved"]
     assert fingerprints(path, columns=columns) == before and fingerprints(backup) == before
     with sqlite3.connect(str(path) + ".pre-v19.bak") as old:
         assert old.execute("PRAGMA user_version").fetchone()[0] == 18
     fresh, restored = tmp_path / "after.sqlite3", tmp_path / "restored.sqlite3"
     create_backup(path, fresh)
-    assert restore_backup(fresh, restored)["schema"] == 20
+    assert restore_backup(fresh, restored)["schema"] == 21
 
 
 def test_unavailable_sources_preserve_private_management_and_block_new_content(workbench):

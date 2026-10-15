@@ -21,11 +21,11 @@ def main(argv=None):
         parser.error("Use an existing absolute private database path")
     try:
         with closing(readonly(args.database)) as connection:
-            if inspect_connection(connection)["schema"] != 20:
-                raise ValueError("Upgrade to schema v20 first")
+            if inspect_connection(connection)["schema"] not in (20, 21):
+                raise ValueError("Upgrade to schema v20 or v21 first")
         result = set_reviewer(Database(args.database), args.username, args.operation == "grant")
     except (OSError, ValueError, sqlite3.Error):
-        print("Role update failed; use an existing non-guest account and a verified v20 database.", file=sys.stderr)
+        print("Role update failed; use an existing non-guest account and a verified v20/v21 database.", file=sys.stderr)
         return 1
     print(f"Reviewer enabled={result['enabled']}, revision={result['revision']}; no knowledge published.")
     return 0

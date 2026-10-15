@@ -204,7 +204,7 @@ def test_v10_upgrade_preserves_all_original_tables_and_backup(tmp_path):
     database.initialize()
     with database.connect() as connection, sqlite3.connect(str(path) + ".pre-v11.bak") as backup:
         assert backup.execute("PRAGMA user_version").fetchone()[0] == 10
-        assert connection.execute("PRAGMA user_version").fetchone()[0] == 20
+        assert connection.execute("PRAGMA user_version").fetchone()[0] == 21
         tables = backup.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
         assert len(tables) == 15
         for (table,) in tables:

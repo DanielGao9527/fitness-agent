@@ -153,7 +153,8 @@ class KnowledgeBuilds:
 
     def _view(self, manifest, report, *, stale=False, unavailable=False):
         stale = stale or report["protocol_sha256"] != digest(PROTOCOL_PATH)
-        return {"id": manifest["id"], "date": manifest["date"], "status": "built_not_published", "published": False,
+        return {"id": manifest["id"], "manifest_hash": digest(self._child(manifest["id"]) / "manifest.json"),
+            "date": manifest["date"], "status": "built_not_published", "published": False,
             "publication_allowed": False, "currently_stale": stale, "source_unavailable": unavailable,
             "selected_submissions": len(manifest["selection"]), "new_chunks": manifest["new_chunks"],
             "deduplicated": sum(item["deduplicated"] for item in manifest["selection"]),

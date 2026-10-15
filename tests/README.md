@@ -22,6 +22,7 @@ Linux／macOS 使用 .venv/bin/python。已有本机工作区可复用外层虚�
 | 私人反馈与摘录候选 | test_knowledge_workbench.py；回答绑定、幂等、并发、内容/来源去重、显式核对、来源失效、隔离、修订、删除、重启与旧库迁移 |
 | 公共摘录预审 | test_knowledge_review.py；分享同意、服务端权限/游客隔离、字段白名单、版本与语料指纹、离线检查、人工预审、修订/来源/权限撤销失效、并发、删除、重启及 v19→v20 迁移 |
 | 候选知识版本 | test_knowledge_builds.py、test_knowledge_build_gate.py；完整包/内容去重/缓存身份、缺短摘录编码停止、实际 Top 6 不刷分、只评 dev、变更/故障/并发、损坏文件、失败诊断及线上库保持 |
+| 版本登记与发布准备 | test_knowledge_releases.py；哈希/来源组成、角色和字段边界、并发/重启、撤回/删除/权限及文件变化失效、临时故障、非空恢复、v20→v21 迁移；不测试为真实质量通过 |
 | 会话／温／冷记忆 | test_coach_memory.py、test_coach_warm_memory.py；保存、读取、更正、删除、来源变化与本人隔离 |
 | 偏好原话与集合版本 | test_memory_provenance.py；显式核对、连续原话、来源撤销、集合 A→B→A、更正解绑、并发、隔离、重启及 v17→v18 非空旧笔记保留 |
 | 器械事实生命周期 | test_profile_fact_versions.py、test_equipment_memory_scopes.py、test_equipment_clarification.py；本次/今天/长期、显式确认、到期、A→B→A、并发、未知条件和 v17 迁移 |

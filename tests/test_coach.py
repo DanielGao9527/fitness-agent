@@ -214,7 +214,7 @@ def test_v7_upgrade_preserves_rows_and_backup(tmp_path):
     database.initialize()
     database.initialize()
     with database.connect() as connection, sqlite3.connect(str(path) + ".pre-v8.bak") as backup:
-        assert connection.execute("PRAGMA user_version").fetchone()[0] == 20
+        assert connection.execute("PRAGMA user_version").fetchone()[0] == 21
         assert backup.execute("PRAGMA user_version").fetchone()[0] == 7
         from check_upgrade import TABLES
         for table in TABLES[:11]:
@@ -248,7 +248,7 @@ def test_v9_upgrade_preserves_conversation_and_consent(tmp_path):
     database.initialize()
     from check_upgrade import TABLES
     with database.connect() as connection, sqlite3.connect(str(path) + ".pre-v10.bak") as backup:
-        assert connection.execute("PRAGMA user_version").fetchone()[0] == 20
+        assert connection.execute("PRAGMA user_version").fetchone()[0] == 21
         assert backup.execute("PRAGMA user_version").fetchone()[0] == 9
         for table in TABLES:
             assert [tuple(row) for row in connection.execute(f"SELECT * FROM {table}")] == backup.execute(f"SELECT * FROM {table}").fetchall()

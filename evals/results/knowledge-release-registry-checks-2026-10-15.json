@@ -1,0 +1,86 @@
+{
+  "date": "2026-10-15",
+  "scope": "E4b.2b.1 persistent pre-release registration, readiness, withdrawal and irreversible invalidation; not formal quality acceptance",
+  "final_release_module": {
+    "tests": 32,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "initial_repository_suite_excluding_release_module": {
+    "tests": 1919,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0
+  },
+  "initial_failure_causes": [
+    "stale expected non-session table count (30 -> 33)",
+    "stale expected migration error message (v19 -> v20)"
+  ],
+  "final_follow_up_suites": {
+    "recovery_and_local_readiness": {
+      "tests": 33,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "profile_migration": {
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "release_tooling": {
+    "tests": 36,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "final_full_single_run_passed": false,
+  "frontend_unit_suites_passed": 13,
+  "browser_flows_passed": [
+    "knowledge-builds (includes release readiness and withdrawal)",
+    "knowledge-review",
+    "knowledge-workbench"
+  ],
+  "browser_widths": [
+    1440,
+    390,
+    320
+  ],
+  "visual_390_inspection_completed": true,
+  "browser_vectors": "synthetic cache only; no semantic quality claim",
+  "real_provider_calls": 0,
+  "candidate_publication_enabled": false,
+  "formal_quality_acceptance_completed": false,
+  "online_activation_and_rollback_implemented": false,
+  "local_activation": {
+    "schema_before": 20,
+    "schema_after": 21,
+    "table_count_after": 35,
+    "original_tables_all_fields_preserved_after_startup": 32,
+    "backup_upgrade_and_recovery_rehearsals_passed": true,
+    "new_registry_tables_empty": true,
+    "actual_accounts_granted_roles": 0,
+    "actual_builds_or_registrations_created": 0,
+    "online_knowledge_source_switched": false,
+    "stage": "e4b2b1-release-registry-v21"
+  },
+  "frozen_inputs_unchanged": 6,
+  "public_deployment_performed": false,
+  "source_hashes": {
+    "database.py": "9a40c178424a255171be1d82d7f8e07577f8a43d7de76599da5ca4d24b7dd759",
+    "api/knowledge_workbench.py": "cea2c986ff2ec8924f935ff3a2c1a7ae326d69d4e0c78770d2825dcad8184432",
+    "api/routes.py": "69b3ded6edb4d1b19bfa958a7a5437938b78de57daf51f5880e2c4fa9a641f54",
+    "schemas.py": "ee09024ca9fe40a3831c21a8e684d12d0adb55d981355b7a4ad66166b13cee3d",
+    "services/knowledge_releases.py": "862e59ce64d6817e8e4a6045e6d8390baa30523e0311b9adcf99f3cdb2c933ca",
+    "services/knowledge_builds.py": "36e60ffd360a4389b67eeb57da17bf3a12d37ac00757f05cdd69f6c4918fbff2",
+    "services/knowledge_review.py": "5aa284161e3b1c669f06559f26208f54fd55701b6596e52d101325c5b67fbc3d",
+    "services/backups.py": "7aa19cf49be6e8b79c5482b9d0a1079f680c49de1a2d3b282723cb8b9e6fd100",
+    "scripts/migrate_memory.py": "509eddcc26f7fd91d5628da271fb8a43a2da66582e6386ad7fd193a864394e0f",
+    "scripts/knowledge_reviewer.py": "79ed3ccd3a92d787838ed3e9dffbf9bb80e7972032863546d6d204f9b1bcc631",
+    "static/knowledge-review.js": "d21cfb7eea61bb0186852553e2bd6fc8ce4bc985f9bf779612af418be9fa8cda",
+    "static/index.html": "95f27e89374481fea6e34f24d3347ee70d93380b66f4924c3f1e37a02eb35e20"
+  }
+}
