@@ -33,6 +33,8 @@
 
 完整结果见 [发布闭环检查](../evals/results/knowledge-publication-checks-2026-10-15.json)，协议见 [发布质量协议](../evals/release_quality/v1/README.md)。
 
+简历证据已集中到 [增强证据与简历交接](ENHANCEMENT_EVIDENCE.md)，逐项列出基线、改法、结果和限制。离线准备包含 24 条既有记忆题的空复核表、24 条新语义草案（开发/留出各 12，暂拟可答 16/不足 8）；均待独立复核，草案未运行，不新增供应商调用或改动正式标签。见 [准备包](../evals/acceptance/preparation_v1.json)。
+
 ## 可使用的真实效果证据
 
 外部 T2 固定抽样为 100 题、1,000 文档，每篇统一前 6,000 字符，同题、同文档和同标签：

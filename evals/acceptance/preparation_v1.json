@@ -1,0 +1,1039 @@
+{
+  "version": "fitness-acceptance-preparation-v1",
+  "created_at": "2026-10-15",
+  "source_commit": "bb2bd38",
+  "kind": "review worksheet and unexecuted draft; not runtime or approved gold",
+  "provider_calls": 0,
+  "real_user_data_used": false,
+  "review_completed": false,
+  "memory_review": {
+    "source": "evals/memory/expressions_v2/cases.jsonl",
+    "source_sha256": "6d8636509a8c0f96923a429ba6a77eb8ef5e1e6a8c2c2d694ada6739a5fde869",
+    "gold_authority": "unchanged original suite; this worksheet is not a replacement",
+    "checklist": [
+      "user source exactness",
+      "scope and time",
+      "value preserves restrictions",
+      "confirmation",
+      "final resources/source",
+      "correction/expiry/deletion",
+      "family split"
+    ],
+    "cases": [
+      {
+        "id": "expressions-unspecified_context-01",
+        "family": "unspecified_context",
+        "split": "dev",
+        "source_line": 1,
+        "case_sha256": "4b34593b2e46ceeccece548dfd60f612c5fc25a967319ebf51ba5affba43b462",
+        "step_count": 3,
+        "maximum_understanding_calls": 1,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      },
+      {
+        "id": "expressions-unspecified_context-02",
+        "family": "unspecified_context",
+        "split": "dev",
+        "source_line": 2,
+        "case_sha256": "11f84e17f600463f3d7d74e4563c8d110cca69ae21135f2ca5c58fcd3cfe85fa",
+        "step_count": 3,
+        "maximum_understanding_calls": 1,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      },
+      {
+        "id": "expressions-unspecified_context-03",
+        "family": "unspecified_context",
+        "split": "dev",
+        "source_line": 3,
+        "case_sha256": "fe8f9fb5a217d50f99886733310742bc56ac5e723cac82a30e6f69161cbcfa84",
+        "step_count": 3,
+        "maximum_understanding_calls": 1,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      },
+      {
+        "id": "expressions-day_with_noise-01",
+        "family": "day_with_noise",
+        "split": "dev",
+        "source_line": 4,
+        "case_sha256": "462f489795edd0a87103bb59929b3e20c769f2df585542c708f98a88d59e8601",
+        "step_count": 2,
+        "maximum_understanding_calls": 1,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      },
+      {
+        "id": "expressions-day_with_noise-02",
+        "family": "day_with_noise",
+        "split": "dev",
+        "source_line": 5,
+        "case_sha256": "625cd992cfd53522ddd8c6b8549c9c63862f46e3078d47e15d32d4d9c92f1d8a",
+        "step_count": 2,
+        "maximum_understanding_calls": 1,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      },
+      {
+        "id": "expressions-day_with_noise-03",
+        "family": "day_with_noise",
+        "split": "dev",
+        "source_line": 6,
+        "case_sha256": "1b1cfe286fb453bc323bb2af56b55d490efded47f6be276c9d2d4e20990fad95",
+        "step_count": 2,
+        "maximum_understanding_calls": 1,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      },
+      {
+        "id": "expressions-spoken_retraction-01",
+        "family": "spoken_retraction",
+        "split": "dev",
+        "source_line": 7,
+        "case_sha256": "db2153b79eecec0fc16ecf597643eea4332c9543ba31a7fd1e7bae9ba2137c8b",
+        "step_count": 5,
+        "maximum_understanding_calls": 2,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      },
+      {
+        "id": "expressions-spoken_retraction-02",
+        "family": "spoken_retraction",
+        "split": "dev",
+        "source_line": 8,
+        "case_sha256": "247008f2e9481735412e3906260a52246f6f57c88d9abbdcf5ea9ee11096a483",
+        "step_count": 5,
+        "maximum_understanding_calls": 2,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      },
+      {
+        "id": "expressions-spoken_retraction-03",
+        "family": "spoken_retraction",
+        "split": "dev",
+        "source_line": 9,
+        "case_sha256": "e7e8268ccc99c6ec68a5ed05d93bf44be169f82f9cf6cbf59c45d012a4404755",
+        "step_count": 5,
+        "maximum_understanding_calls": 2,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      },
+      {
+        "id": "expressions-uncertainty_explanation-01",
+        "family": "uncertainty_explanation",
+        "split": "dev",
+        "source_line": 10,
+        "case_sha256": "713389912ab985270998d25993d66002b2ddfdc36826699a8e744e58f5bb8f62",
+        "step_count": 2,
+        "maximum_understanding_calls": 1,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      },
+      {
+        "id": "expressions-uncertainty_explanation-02",
+        "family": "uncertainty_explanation",
+        "split": "dev",
+        "source_line": 11,
+        "case_sha256": "62dc47d1e55396183f717feca5dcc352b8b7f6057caeb8f37f0dbd6fd9ca659c",
+        "step_count": 2,
+        "maximum_understanding_calls": 1,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      },
+      {
+        "id": "expressions-uncertainty_explanation-03",
+        "family": "uncertainty_explanation",
+        "split": "dev",
+        "source_line": 12,
+        "case_sha256": "d731ca04db5c4df516901738b8bfe347239cecc3aa19925c23fa806db0baaf06",
+        "step_count": 2,
+        "maximum_understanding_calls": 1,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      },
+      {
+        "id": "expressions-future_schedule-01",
+        "family": "future_schedule",
+        "split": "holdout",
+        "source_line": 13,
+        "case_sha256": "583244a16b53f4ab43f6e692b0cea6c4d6967153c308d676ff017b26f114e6f1",
+        "step_count": 2,
+        "maximum_understanding_calls": 1,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      },
+      {
+        "id": "expressions-future_schedule-02",
+        "family": "future_schedule",
+        "split": "holdout",
+        "source_line": 14,
+        "case_sha256": "d552314854941362d9d05028aadb9149632e0185b74cb68ce5aa5ee5fa4e56fa",
+        "step_count": 2,
+        "maximum_understanding_calls": 1,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      },
+      {
+        "id": "expressions-future_schedule-03",
+        "family": "future_schedule",
+        "split": "holdout",
+        "source_line": 15,
+        "case_sha256": "742c3c1986cf197de332507330e3ba407009e3ef6b3d72563405aea5752df492",
+        "step_count": 2,
+        "maximum_understanding_calls": 1,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      },
+      {
+        "id": "expressions-mixed_time_scope-01",
+        "family": "mixed_time_scope",
+        "split": "holdout",
+        "source_line": 16,
+        "case_sha256": "f74272216e213aede7144bb81be01c0216593c05d09c86563151d9eb29ecf45c",
+        "step_count": 2,
+        "maximum_understanding_calls": 1,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      },
+      {
+        "id": "expressions-mixed_time_scope-02",
+        "family": "mixed_time_scope",
+        "split": "holdout",
+        "source_line": 17,
+        "case_sha256": "35611c0048623283c862727485d2bc4cfc80acc0c343f296d5718dd8aeeaf49b",
+        "step_count": 2,
+        "maximum_understanding_calls": 1,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      },
+      {
+        "id": "expressions-mixed_time_scope-03",
+        "family": "mixed_time_scope",
+        "split": "holdout",
+        "source_line": 18,
+        "case_sha256": "75d87ff689175e8a6d2d304227cb1dadc2e0cdf75fcd7396cc8331609dc17164",
+        "step_count": 2,
+        "maximum_understanding_calls": 1,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      },
+      {
+        "id": "expressions-explicit_denials-01",
+        "family": "explicit_denials",
+        "split": "holdout",
+        "source_line": 19,
+        "case_sha256": "96314bde8a0a8a7586a7bfa92a896dcc1f7650e8f24f0edd4e0e7c9ad616e69e",
+        "step_count": 2,
+        "maximum_understanding_calls": 1,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      },
+      {
+        "id": "expressions-explicit_denials-02",
+        "family": "explicit_denials",
+        "split": "holdout",
+        "source_line": 20,
+        "case_sha256": "92fa2d81a857bcbdac99209a8dfa27762091313a2926b05028b93b89027c86cd",
+        "step_count": 2,
+        "maximum_understanding_calls": 1,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      },
+      {
+        "id": "expressions-explicit_denials-03",
+        "family": "explicit_denials",
+        "split": "holdout",
+        "source_line": 21,
+        "case_sha256": "0bea1f94598b4dc401c2e1e76cecd33ed486a824515efad71cdb50e92f6b5357",
+        "step_count": 2,
+        "maximum_understanding_calls": 1,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      },
+      {
+        "id": "expressions-cross_day_context-01",
+        "family": "cross_day_context",
+        "split": "holdout",
+        "source_line": 22,
+        "case_sha256": "f3832eec34aebaed53defd54bf16f37c6962a3c13a92878e174dac2c6c28b312",
+        "step_count": 4,
+        "maximum_understanding_calls": 1,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      },
+      {
+        "id": "expressions-cross_day_context-02",
+        "family": "cross_day_context",
+        "split": "holdout",
+        "source_line": 23,
+        "case_sha256": "14b6f4317eaefb4f848791fb3f852313dd2d6503f0ffccc067f1d91d7ec9e6a3",
+        "step_count": 4,
+        "maximum_understanding_calls": 1,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      },
+      {
+        "id": "expressions-cross_day_context-03",
+        "family": "cross_day_context",
+        "split": "holdout",
+        "source_line": 24,
+        "case_sha256": "15c25cb387b79e3480ffa731ba8ab488b3fe0f9a24baa16b400c061d0df32aec",
+        "step_count": 4,
+        "maximum_understanding_calls": 1,
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        }
+      }
+    ],
+    "case_digest_encoding": "SHA-256 of UTF-8 json.dumps(case, ensure_ascii=False, sort_keys=True); source_line is 1-based"
+  },
+  "retrieval_semantic_draft": {
+    "provenance": "self_authored_from_current_public_summaries_not_external_benchmark",
+    "corpus": "data/knowledge/sources.json",
+    "corpus_sha256": "547e5f5b4d8cde212dfe448139ad0628dd9fd91c62d39175f5eab541ba7ff962",
+    "source_validity_date": "2026-10-15",
+    "author_saw_corpus_and_implementation": true,
+    "new_draft_rankings_or_responses_used_to_select_cases": false,
+    "independent_review_status": "pending",
+    "execution_status": "not_run",
+    "formal_frozen_suite_created": false,
+    "scope": "general knowledge extracts, not main-chat routing or autonomous learning",
+    "baseline": {
+      "kind": "current-engine controlled ablation",
+      "max_rounds": 1
+    },
+    "candidate": {
+      "max_rounds": 2
+    },
+    "historical_e3a_commit": "1e5367f",
+    "historical_e3a_already_had_nonempty_two_round_retrieval": true,
+    "controls": {
+      "text_model": "qwen3.6-plus",
+      "embedding_model": "text-embedding-v4",
+      "dimensions": 1024,
+      "tokenizer": "jieba",
+      "candidate_limit": 20,
+      "rrf_k": 60,
+      "per_arm_time_budget_seconds": 45
+    },
+    "budget_plan": {
+      "authorized_for_this_draft": false,
+      "cases": 24,
+      "max_single_remote_calls_per_case": 2,
+      "max_bounded_remote_calls_per_case": 4,
+      "max_paired_remote_calls": 144,
+      "assumes_document_vectors_prepared_and_no_additional_routing_or_judge_calls": true
+    },
+    "cases": [
+      {
+        "id": "loop-semantic-draft-01",
+        "family": "strength_frequency",
+        "split": "dev",
+        "question": "一般成年人，肌肉强化活动每周最低要安排几天？",
+        "candidate_answerable": true,
+        "candidate_expected_status": "answered",
+        "reference_chunk_ids": [
+          "cdc-adults:strength"
+        ],
+        "reference_set_exhaustive": false,
+        "required_meaning": "一般成人每周至少两天，覆盖主要肌群；不推出个人分化或动作处方。",
+        "wrong_answer_example": "用今天练哪些动作替代每周频率。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": true,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      },
+      {
+        "id": "loop-semantic-draft-02",
+        "family": "strength_frequency",
+        "split": "dev",
+        "question": "每星期练一次力量，是否就达到了资料里的一般频率建议？",
+        "candidate_answerable": true,
+        "candidate_expected_status": "answered",
+        "reference_chunk_ids": [
+          "cdc-adults:strength"
+        ],
+        "reference_set_exhaustive": false,
+        "required_meaning": "一般成人每周至少两天，覆盖主要肌群；不推出个人分化或动作处方。",
+        "wrong_answer_example": "用今天练哪些动作替代每周频率。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": false,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      },
+      {
+        "id": "loop-semantic-draft-03",
+        "family": "aerobic_volume",
+        "split": "dev",
+        "question": "一般成人一周累计的中等强度有氧活动，资料给出的最低时长是多少？",
+        "candidate_answerable": true,
+        "candidate_expected_status": "answered",
+        "reference_chunk_ids": [
+          "cdc-adults:aerobic"
+        ],
+        "reference_set_exhaustive": false,
+        "required_meaning": "每周中等强度至少150分钟或高强度75分钟，允许等效组合。",
+        "wrong_answer_example": "只说坚持运动，没有回答周时长或混淆两种强度。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": false,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      },
+      {
+        "id": "loop-semantic-draft-04",
+        "family": "aerobic_volume",
+        "split": "dev",
+        "question": "把中等强度换成高强度后，一周有氧时间的最低建议分别是多少？",
+        "candidate_answerable": true,
+        "candidate_expected_status": "answered",
+        "reference_chunk_ids": [
+          "cdc-adults:aerobic"
+        ],
+        "reference_set_exhaustive": false,
+        "required_meaning": "每周中等强度至少150分钟或高强度75分钟，允许等效组合。",
+        "wrong_answer_example": "只说坚持运动，没有回答周时长或混淆两种强度。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": false,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      },
+      {
+        "id": "loop-semantic-draft-05",
+        "family": "protein_foods",
+        "split": "dev",
+        "question": "除了肉，资料还列出了哪些蛋白质食物类别？",
+        "candidate_answerable": true,
+        "candidate_expected_status": "answered",
+        "reference_chunk_ids": [
+          "phe-eatwell:protein"
+        ],
+        "reference_set_exhaustive": false,
+        "required_meaning": "豆、鱼、蛋等是蛋白质食物类别；豆类还提供膳食纤维。",
+        "wrong_answer_example": "把食物类别变成没有出处的个人摄入量。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": false,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      },
+      {
+        "id": "loop-semantic-draft-06",
+        "family": "protein_foods",
+        "split": "dev",
+        "question": "豆类为什么能作为肉类的替代选择？资料还提到了哪种营养成分？",
+        "candidate_answerable": true,
+        "candidate_expected_status": "answered",
+        "reference_chunk_ids": [
+          "phe-eatwell:protein"
+        ],
+        "reference_set_exhaustive": false,
+        "required_meaning": "豆、鱼、蛋等是蛋白质食物类别；豆类还提供膳食纤维。",
+        "wrong_answer_example": "把食物类别变成没有出处的个人摄入量。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": false,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      },
+      {
+        "id": "loop-semantic-draft-07",
+        "family": "serving_label",
+        "split": "dev",
+        "question": "营养标签写的热量是一份的，吃了两份时应该怎样换算？",
+        "candidate_answerable": true,
+        "candidate_expected_status": "answered",
+        "reference_chunk_ids": [
+          "fda-label:servings"
+        ],
+        "reference_set_exhaustive": false,
+        "required_meaning": "核对一份和总份数，两份按两倍；标签份量不是个人推荐份量。",
+        "wrong_answer_example": "直接把标签一份当作每个人应吃的份量。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": false,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      },
+      {
+        "id": "loop-semantic-draft-08",
+        "family": "serving_label",
+        "split": "dev",
+        "question": "营养标签上的每份大小，是要求所有人都按这个份量吃吗？",
+        "candidate_answerable": true,
+        "candidate_expected_status": "answered",
+        "reference_chunk_ids": [
+          "fda-label:servings"
+        ],
+        "reference_set_exhaustive": false,
+        "required_meaning": "核对一份和总份数，两份按两倍；标签份量不是个人推荐份量。",
+        "wrong_answer_example": "直接把标签一份当作每个人应吃的份量。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": false,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      },
+      {
+        "id": "loop-semantic-draft-09",
+        "family": "unsupported_protein_dose",
+        "split": "dev",
+        "question": "一般成年人每天应摄入多少克蛋白质？",
+        "candidate_answerable": false,
+        "candidate_expected_status": "insufficient",
+        "reference_chunk_ids": [],
+        "reference_set_exhaustive": false,
+        "required_meaning": "当前摘要没有支持每日或按体重蛋白质克数的证据，应明确不足。",
+        "wrong_answer_example": "列鱼、蛋、肉，冒充回答每天多少克，或凭模型常识补数值。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": false,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      },
+      {
+        "id": "loop-semantic-draft-10",
+        "family": "unsupported_protein_dose",
+        "split": "dev",
+        "question": "能只凭这些资料确定蛋白质每天按每千克体重多少克计算吗？",
+        "candidate_answerable": false,
+        "candidate_expected_status": "insufficient",
+        "reference_chunk_ids": [],
+        "reference_set_exhaustive": false,
+        "required_meaning": "当前摘要没有支持每日或按体重蛋白质克数的证据，应明确不足。",
+        "wrong_answer_example": "列鱼、蛋、肉，冒充回答每天多少克，或凭模型常识补数值。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": false,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      },
+      {
+        "id": "loop-semantic-draft-11",
+        "family": "unsupported_water_dose",
+        "split": "dev",
+        "question": "资料给出了一般成年人每天饮水量的固定毫升数吗？",
+        "candidate_answerable": false,
+        "candidate_expected_status": "insufficient",
+        "reference_chunk_ids": [],
+        "reference_set_exhaustive": false,
+        "required_meaning": "当前公共摘要未给出可引用的每日饮水量公式或固定毫升数，需复核完整语料后确定不足标签。",
+        "wrong_answer_example": "无出处给固定毫升数。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": false,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      },
+      {
+        "id": "loop-semantic-draft-12",
+        "family": "unsupported_water_dose",
+        "split": "dev",
+        "question": "按每千克体重计算每日饮水量，资料里具体是多少毫升？",
+        "candidate_answerable": false,
+        "candidate_expected_status": "insufficient",
+        "reference_chunk_ids": [],
+        "reference_set_exhaustive": false,
+        "required_meaning": "当前公共摘要未给出可引用的每日饮水量公式或固定毫升数，需复核完整语料后确定不足标签。",
+        "wrong_answer_example": "无出处给固定毫升数。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": false,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      },
+      {
+        "id": "loop-semantic-draft-13",
+        "family": "talk_test",
+        "split": "holdout",
+        "question": "运动时还能聊天但唱不了歌，按资料属于哪种大致强度？",
+        "candidate_answerable": true,
+        "candidate_expected_status": "answered",
+        "reference_chunk_ids": [
+          "cdc-intensity:talk-test"
+        ],
+        "reference_set_exhaustive": false,
+        "required_meaning": "能交谈但不能唱歌通常为中等强度，说少量词即需换气通常为高强度；是粗略判断。",
+        "wrong_answer_example": "把强度现象当作个人诊断。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": false,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      },
+      {
+        "id": "loop-semantic-draft-14",
+        "family": "talk_test",
+        "split": "holdout",
+        "question": "说不了几个词就得停下来换气时，谈话测试怎样判断强度？",
+        "candidate_answerable": true,
+        "candidate_expected_status": "answered",
+        "reference_chunk_ids": [
+          "cdc-intensity:talk-test"
+        ],
+        "reference_set_exhaustive": false,
+        "required_meaning": "能交谈但不能唱歌通常为中等强度，说少量词即需换气通常为高强度；是粗略判断。",
+        "wrong_answer_example": "把强度现象当作个人诊断。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": false,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      },
+      {
+        "id": "loop-semantic-draft-15",
+        "family": "whole_grain",
+        "split": "holdout",
+        "question": "全谷物主食与精制淀粉类相比，资料强调了哪种营养差别？",
+        "candidate_answerable": true,
+        "candidate_expected_status": "answered",
+        "reference_chunk_ids": [
+          "phe-eatwell:starch"
+        ],
+        "reference_set_exhaustive": false,
+        "required_meaning": "米饭、面包、土豆、面食等属于淀粉类；全谷物通常含更多膳食纤维。",
+        "wrong_answer_example": "把膳食纤维差别说成固定减脂效果。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": false,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      },
+      {
+        "id": "loop-semantic-draft-16",
+        "family": "whole_grain",
+        "split": "holdout",
+        "question": "资料所说的淀粉类主食包含哪些常见食物，全谷物版本有什么特点？",
+        "candidate_answerable": true,
+        "candidate_expected_status": "answered",
+        "reference_chunk_ids": [
+          "phe-eatwell:starch"
+        ],
+        "reference_set_exhaustive": false,
+        "required_meaning": "米饭、面包、土豆、面食等属于淀粉类；全谷物通常含更多膳食纤维。",
+        "wrong_answer_example": "把膳食纤维差别说成固定减脂效果。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": false,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      },
+      {
+        "id": "loop-semantic-draft-17",
+        "family": "dairy_selection",
+        "split": "holdout",
+        "question": "选择植物奶替代品时，资料提醒重点核对哪两点？",
+        "candidate_answerable": true,
+        "candidate_expected_status": "answered",
+        "reference_chunk_ids": [
+          "phe-eatwell:dairy"
+        ],
+        "reference_set_exhaustive": false,
+        "required_meaning": "植物替代品关注无糖、强化钙；奶类选较低脂较低糖并看标签。",
+        "wrong_answer_example": "将奶类类别当作过敏或不耐受安全保证。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": false,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      },
+      {
+        "id": "loop-semantic-draft-18",
+        "family": "dairy_selection",
+        "split": "holdout",
+        "question": "挑选奶类时，资料对脂肪和糖有什么一般选择方向？",
+        "candidate_answerable": true,
+        "candidate_expected_status": "answered",
+        "reference_chunk_ids": [
+          "phe-eatwell:dairy"
+        ],
+        "reference_set_exhaustive": false,
+        "required_meaning": "植物替代品关注无糖、强化钙；奶类选较低脂较低糖并看标签。",
+        "wrong_answer_example": "将奶类类别当作过敏或不耐受安全保证。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": false,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      },
+      {
+        "id": "loop-semantic-draft-19",
+        "family": "activity_accumulation",
+        "split": "holdout",
+        "question": "有氧活动必须每次连续做很久吗，资料允许怎样累计？",
+        "candidate_answerable": true,
+        "candidate_expected_status": "answered",
+        "reference_chunk_ids": [
+          "cdc-adults:accumulate"
+        ],
+        "reference_set_exhaustive": false,
+        "required_meaning": "活动可拆短时段、分散累计；做一些比完全不做好，减少久坐有价值。",
+        "wrong_answer_example": "无出处设置每次必须达到的分钟数。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": false,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      },
+      {
+        "id": "loop-semantic-draft-20",
+        "family": "activity_accumulation",
+        "split": "holdout",
+        "question": "没有大段运动时间时，短时活动和少坐一点是否仍有意义？",
+        "candidate_answerable": true,
+        "candidate_expected_status": "answered",
+        "reference_chunk_ids": [
+          "cdc-adults:accumulate"
+        ],
+        "reference_set_exhaustive": false,
+        "required_meaning": "活动可拆短时段、分散累计；做一些比完全不做好，减少久坐有价值。",
+        "wrong_answer_example": "无出处设置每次必须达到的分钟数。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": false,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      },
+      {
+        "id": "loop-semantic-draft-21",
+        "family": "unsupported_starting_load",
+        "split": "holdout",
+        "question": "资料能给出第一次哑铃卧推应该用多少公斤的统一起始重量吗？",
+        "candidate_answerable": false,
+        "candidate_expected_status": "insufficient",
+        "reference_chunk_ids": [],
+        "reference_set_exhaustive": false,
+        "required_meaning": "当前摘要不支持统一初始负重的精确公斤数，需复核完整语料后确定不足标签。",
+        "wrong_answer_example": "用加重比例或动作示例换算确定初始公斤数。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": false,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      },
+      {
+        "id": "loop-semantic-draft-22",
+        "family": "unsupported_starting_load",
+        "split": "holdout",
+        "question": "成年初学者第一次做杠铃深蹲，每边到底放多少公斤？",
+        "candidate_answerable": false,
+        "candidate_expected_status": "insufficient",
+        "reference_chunk_ids": [],
+        "reference_set_exhaustive": false,
+        "required_meaning": "当前摘要不支持统一初始负重的精确公斤数，需复核完整语料后确定不足标签。",
+        "wrong_answer_example": "用加重比例或动作示例换算确定初始公斤数。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": false,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      },
+      {
+        "id": "loop-semantic-draft-23",
+        "family": "unsupported_oil_amount",
+        "split": "holdout",
+        "question": "现有资料规定一般成年人每天食用油要精确到多少克吗？",
+        "candidate_answerable": false,
+        "candidate_expected_status": "insufficient",
+        "reference_chunk_ids": [],
+        "reference_set_exhaustive": false,
+        "required_meaning": "当前摘要没有每日用油克数的充分出处，需复核完整语料后确定不足标签。",
+        "wrong_answer_example": "用油脂类别摘要替代每日克数或编造份量。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": false,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      },
+      {
+        "id": "loop-semantic-draft-24",
+        "family": "unsupported_oil_amount",
+        "split": "holdout",
+        "question": "仅凭这份知识库，能确定每人每日食用油的固定克数吗？",
+        "candidate_answerable": false,
+        "candidate_expected_status": "insufficient",
+        "reference_chunk_ids": [],
+        "reference_set_exhaustive": false,
+        "required_meaning": "当前摘要没有每日用油克数的充分出处，需复核完整语料后确定不足标签。",
+        "wrong_answer_example": "用油脂类别摘要替代每日克数或编造份量。",
+        "review": {
+          "status": "pending",
+          "reviewer": null,
+          "reviewed_at": null,
+          "comments": null
+        },
+        "static_scope_preflight": {
+          "would_stop_as_personal_scope": false,
+          "provider_calls": 0,
+          "question_unchanged": true
+        }
+      }
+    ],
+    "exact_normalized_question_duplicates_with_existing_260": [],
+    "topic_overlap_with_existing_corpus_and_suites": true,
+    "scope_flags_to_review": [
+      "loop-semantic-draft-01"
+    ],
+    "gold_and_wrong_answer_examples_must_not_be_sent_to_tested_model": true
+  },
+  "existing_e1_evidence": {
+    "source": "evals/results/t2-pilot-2026-09-25.json",
+    "baseline_recall6": 0.7210751748251748,
+    "candidate_recall6": 0.8415745643245642,
+    "delta_percentage_points": 12.049938949938943,
+    "dense_recall6": 0.8851499611499611,
+    "rerun_performed": false,
+    "source_working_bytes_sha256_at_preparation": "e4ea3a6842c1f436e077cca9894ed51d70605ba6178443e6e88566f7ead6b71a",
+    "source_json_sha256": "f72e126b037628d5b86450218e5d79ef74d95c950ff29b2b329dc3129181db2b",
+    "source_json_digest_format": "SHA-256 of UTF-8 json.dumps(parsed_json, ensure_ascii=False, sort_keys=True, separators=(comma,colon)); non-frozen result text can have platform line endings"
+  },
+  "preparation_validation": {
+    "memory_case_bindings_checked": 24,
+    "source_references_exist_and_current": true,
+    "semantic_family_split_checked": true,
+    "semantic_reference_ids_disjoint_between_splits": true,
+    "static_scope_flags_kept_for_review": [
+      "loop-semantic-draft-01"
+    ],
+    "label_correctness_or_independent_review_proved": false,
+    "retrieval_executed": false,
+    "model_calls": 0
+  }
+}
