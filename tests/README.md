@@ -20,6 +20,7 @@ Linux／macOS 使用 .venv/bin/python。已有本机工作区可复用外层虚�
 | 知识分流与有限重试 | test_coach_knowledge.py、test_knowledge_answers.py、test_knowledge_loop.py；一次候选快照、原问题复核、引用失效、停止条件 |
 | 零命中恢复与策略回放 | test_knowledge_recovery.py、test_knowledge_replay.py；数字/单位、时间/否定、重复候选重排、额度、截止时间、迟到输出、冻结输入和无原文报告 |
 | 单/两轮语义评测工具 | test_knowledge_loop_evaluation.py；冻结数据/划分、默认零调用与私人库隔离、人工复核绑定、预算/失败停止、降级中止、增益/退步判分；模拟供应商不提供真实质量 |
+| 个人记忆到最终训练建议 | test_memory_training_chain.py；跨会话长期条件、实际/计划区分、记录/器械更正、未观察的新增删除/改回/移日/状态往返、旧理解与有氧计划失效、重启/隔离、事务回滚及 v22→v23；明确禁止真实供应商 |
 | 私人反馈与摘录候选 | test_knowledge_workbench.py；回答绑定、幂等、并发、内容/来源去重、显式核对、来源失效、隔离、修订、删除、重启与旧库迁移 |
 | 公共摘录预审 | test_knowledge_review.py；分享同意、服务端权限/游客隔离、字段白名单、版本与语料指纹、离线检查、人工预审、修订/来源/权限撤销失效、并发、删除、重启及 v19→v20 迁移 |
 | 候选知识版本 | test_knowledge_builds.py、test_knowledge_build_gate.py；完整包/内容去重/缓存身份、缺短摘录编码停止、实际 Top 6 不刷分、只评 dev、变更/故障/并发、损坏文件、失败诊断及线上库保持 |
@@ -93,3 +94,5 @@ node tests/browser-memory-provenance.cjs
 工程测试和模拟浏览器通过不证明营养测量准确、任意口语理解、供应商实时可用、实体手机权限或公网部署完成。
 
 发布浏览器使用独立合成服务：tests/ui_fixture_server.py --coach --knowledge-build --knowledge-publish，再运行 node tests/browser-knowledge-builds.cjs --publication。包含批准/切换/回滚各自确认；没有生产配置绕过开关，不连接正常账号库。
+
+统一记忆链路浏览器复现：先在项目虚拟环境运行 `python tests/ui_fixture_server.py --fact-versions`（仅临时8772服务、合成模型及数据库），在已有Playwright环境执行 `node tests/browser-memory-training-chain.cjs`；结束关闭测试服务。不可改成日常8765或实际数据库。该流程验证真实UI/API，不验证供应商语义质量。

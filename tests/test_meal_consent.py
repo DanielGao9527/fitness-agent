@@ -124,7 +124,7 @@ def test_v8_upgrade_preserves_data_and_cascades_session(tmp_path):
         before = {table: [tuple(row) for row in connection.execute(f"SELECT * FROM {table}")] for table in tables}
     database.initialize()
     with database.connect() as connection, sqlite3.connect(str(path) + ".pre-v9.bak") as backup:
-        assert connection.execute("PRAGMA user_version").fetchone()[0] == 22
+        assert connection.execute("PRAGMA user_version").fetchone()[0] == 23
         assert backup.execute("PRAGMA user_version").fetchone()[0] == 8
         for table in tables:
             assert [tuple(row) for row in connection.execute(f"SELECT * FROM {table}")] == before[table]

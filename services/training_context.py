@@ -70,6 +70,13 @@ def current_conditions(context, profile, profile_revisions=None, day_state=None)
     return result
 
 
+def record_revisions(connection, user_id, start, end):
+    # Empty dates retain their revisions after deletion, so A→B→A stays visible.
+    return [dict(row) for row in connection.execute(
+        "SELECT day,revision FROM training_record_revisions WHERE user_id=? AND day BETWEEN ? AND ? ORDER BY day",
+        (user_id, start, end))]
+
+
 def recent_training(connection, user_id, day):
     start = date.fromordinal(max(1, date.fromisoformat(day).toordinal() - 6)).isoformat()
     rows = connection.execute("SELECT day,payload FROM workouts WHERE user_id=? AND day BETWEEN ? AND ? ORDER BY day DESC,id DESC", (user_id, start, day)).fetchall()
@@ -78,7 +85,8 @@ def recent_training(connection, user_id, day):
         item = json.loads(row["payload"])
         if item.get("status") == "completed":
             completed.append({"day": row["day"], **{key: item.get(key) for key in ("name", "minutes", "details")}})
-    return {"window_start": start, "day": day, "completed": completed}
+    return {"window_start": start, "day": day, "completed": completed,
+            "record_revisions": record_revisions(connection, user_id, start, day)}
 
 
 def training_command(message, continuing=False):

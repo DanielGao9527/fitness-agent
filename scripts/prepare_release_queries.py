@@ -31,8 +31,8 @@ def main(argv=None):
     receipt = None
     try:
         with closing(readonly(args.database)) as connection:
-            if inspect_connection(connection)['schema'] != 22:
-                raise ValueError('Current schema v22 required')
+            if inspect_connection(connection)['schema'] not in (22, 23):
+                raise ValueError('Current schema v22 or v23 required')
         settings = Settings.from_env()
         protocol, protocol_hash, dataset = knowledge_quality.protocol()
         # Public source parsing only; never initializes or reads private business rows.

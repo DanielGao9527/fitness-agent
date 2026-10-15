@@ -194,7 +194,7 @@ def test_schema21_migration_preserves_nonempty_old_tables(tmp_path):
         connection.execute("INSERT INTO users(id,username,password_hash) VALUES (1,'synthetic','placeholder')")
     columns,before=table_columns(path),fingerprints(path)
     result=migrate(path,tmp_path/'backup.sqlite3')
-    assert result['schema']==22 and result['tables']==38
+    assert result['schema']==23 and result['tables']==39
     assert fingerprints(path,columns=columns)==before
 
 

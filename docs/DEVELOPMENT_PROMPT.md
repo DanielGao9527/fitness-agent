@@ -5,10 +5,10 @@
 ## 开始
 
 1. 阅读 PRODUCT、ARCHITECTURE、EXECUTION、STATUS、ROADMAP；最终标准看 DELIVERY。
-2. 检查分支和现有改动，保留其他任务的工作；增强交付分支为 codex/fitness-hybrid-retrieval，当前源码及本机原库均 v22。
+2. 检查分支和现有改动，保留其他任务的工作；增强交付分支为 codex/fitness-hybrid-retrieval，当前源码及本机原库均 v23/39表。
 3. 从 EXECUTION 的接续点推进。最新用户指令优先，变化同步到对应文档。
 
-当前 N3、E3b、E4a、E4b.1 和 E4b.2a 工程已实装，本机运行 e4b2b2-knowledge-publication-v22。E4b.2b.1 版本登记、发布准备检查和撤回已实现；E4b.2b.2 的服务端门禁、批准、原子切换、回滚及旧引用失效已接通。记忆 24 组真实同题对照、N2 范围修复/开发回放及 4 题真实修复验收已完成，E3b 真实质量对照及知识发布正常标签复核待办。不以小验收替代整体质量，也不把所有者复核称为外部盲审。
+当前 N3、E3b、E4 发布工程已实装，本机运行 e2-training-record-invalidation-v23。记忆24组真实同题对照、范围修复及4题真实回归已完成；E3 dev复核结果两侧均11/12、净0个百分点，留出未授权。最新跨会话→实际训练→更正失效链路隔离验收与v23本机切换完成，原38表保留，新增真实调用0；报告见 evals/results/memory-training-chain-2026-10-16.json。知识发布正常标签及剩余统一演示待办，不把工程通过或所有者复核称为独立语义盲评。
 
 ## 实现
 

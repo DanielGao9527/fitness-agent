@@ -12,7 +12,7 @@ from schemas import TrainingPlanRequest, TrainingPlanSelection
 from services.profile_context import read_profile
 from services.meal_plans import digest, encode
 from services.coach import plan_binding, require_plan_binding
-from services.training_context import recent_training
+from services.training_context import recent_training, record_revisions
 
 REQUIRED = ("cdc-activities:moderate", "cdc-start:gradual", "cdc-intensity:talk-test", "nia-activity:preparation")
 POLICY = "2026-09-19.3"
@@ -54,7 +54,8 @@ class TrainingPlanService:
     def snapshot(self, connection, day, sources, original=None):
         profile = read_profile(connection, self.user_id)
         rows = connection.execute("SELECT id,payload FROM workouts WHERE user_id=? AND day=? ORDER BY id", (self.user_id, day)).fetchall()
-        facts = {"profile": profile, "workouts": [{"id": row["id"], **json.loads(row["payload"])} for row in rows]}
+        facts = {"profile": profile, "workouts": [{"id": row["id"], **json.loads(row["payload"])} for row in rows],
+                 "record_revisions": record_revisions(connection, self.user_id, day, day)}
         binding = plan_binding(connection, self.user_id, original, day, "training")
         if binding is not None:
             facts["coach"] = binding

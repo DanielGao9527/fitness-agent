@@ -306,11 +306,11 @@ def test_schema20_migration_preserves_old_rows_and_recovery(tmp_path):
     columns,before = table_columns(path),fingerprints(path)
     backup = tmp_path/'before.sqlite3'
     result = migrate(path,backup)
-    assert result['schema'] == 22 and result['tables'] == 38 and result['old_tables_preserved']
+    assert result['schema'] == 23 and result['tables'] == 39 and result['old_tables_preserved']
     assert fingerprints(path,columns=columns) == before
     with sqlite3.connect(str(path)+'.pre-v21.bak') as connection:
         assert connection.execute('PRAGMA user_version').fetchone()[0] == 20
     Database(path).initialize()
     fresh = tmp_path/'fresh.sqlite3'
     create_backup(path,fresh)
-    assert restore_backup(fresh,tmp_path/'restored.sqlite3')['schema'] == 22
+    assert restore_backup(fresh,tmp_path/'restored.sqlite3')['schema'] == 23

@@ -79,7 +79,7 @@ class Database:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with self.connect() as connection:
             version = connection.execute("PRAGMA user_version").fetchone()[0]
-            if version not in range(23):
+            if version not in range(24):
                 raise RuntimeError("Unsupported database schema version")
             connection.execute("PRAGMA journal_mode = WAL")
             if version == 1:
@@ -851,5 +851,49 @@ class Database:
                                 SELECT release_id FROM knowledge_publications WHERE approver_id=OLD.id AND state='approved');
                     END;
                     PRAGMA user_version = 22;
+                    COMMIT;
+                """)
+            if version < 23:
+                connection.executescript("""
+                    BEGIN IMMEDIATE;
+                    CREATE TABLE training_record_revisions (
+                        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                        day TEXT NOT NULL,
+                        revision INTEGER NOT NULL CHECK(revision >= 1),
+                        PRIMARY KEY(user_id,day)
+                    );
+                    INSERT INTO training_record_revisions(user_id,day,revision)
+                        SELECT user_id,day,1 FROM workouts
+                        WHERE json_extract(payload,'$.status')='completed' GROUP BY user_id,day;
+                    CREATE TRIGGER training_record_insert AFTER INSERT ON workouts
+                        WHEN json_extract(NEW.payload,'$.status')='completed'
+                    BEGIN
+                        INSERT INTO training_record_revisions VALUES (NEW.user_id,NEW.day,1)
+                        ON CONFLICT(user_id,day) DO UPDATE SET revision=revision+1;
+                    END;
+                    CREATE TRIGGER training_record_delete AFTER DELETE ON workouts
+                        WHEN json_extract(OLD.payload,'$.status')='completed'
+                            AND EXISTS(SELECT 1 FROM users WHERE id=OLD.user_id)
+                    BEGIN
+                        INSERT INTO training_record_revisions VALUES (OLD.user_id,OLD.day,1)
+                        ON CONFLICT(user_id,day) DO UPDATE SET revision=revision+1;
+                    END;
+                    CREATE TRIGGER training_record_update AFTER UPDATE OF day,payload,user_id ON workouts
+                        WHEN (json_extract(OLD.payload,'$.status')='completed'
+                              OR json_extract(NEW.payload,'$.status')='completed')
+                         AND (OLD.user_id<>NEW.user_id OR OLD.day<>NEW.day
+                              OR json_extract(OLD.payload,'$.status','$.name','$.minutes','$.details','$.performance')
+                                 IS NOT json_extract(NEW.payload,'$.status','$.name','$.minutes','$.details','$.performance'))
+                    BEGIN
+                        INSERT INTO training_record_revisions
+                            SELECT OLD.user_id,OLD.day,1 WHERE json_extract(OLD.payload,'$.status')='completed'
+                        ON CONFLICT(user_id,day) DO UPDATE SET revision=revision+1;
+                        INSERT INTO training_record_revisions
+                            SELECT NEW.user_id,NEW.day,1 WHERE json_extract(NEW.payload,'$.status')='completed'
+                                AND (json_extract(OLD.payload,'$.status') IS NOT 'completed'
+                                     OR OLD.user_id<>NEW.user_id OR OLD.day<>NEW.day)
+                        ON CONFLICT(user_id,day) DO UPDATE SET revision=revision+1;
+                    END;
+                    PRAGMA user_version = 23;
                     COMMIT;
                 """)

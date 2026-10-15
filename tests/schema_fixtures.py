@@ -35,9 +35,16 @@ def strip_releases_v21(connection):
 
 
 def strip_publications_v22(connection):
+    strip_training_records_v23(connection)
     for name in ("knowledge_live_event", "knowledge_publication_registration", "knowledge_publication_head",
                  "knowledge_publication_delete", "knowledge_publication_reviewer_update",
                  "knowledge_publication_reviewer_delete", "knowledge_publication_account_delete"):
         connection.execute(f"DROP TRIGGER IF EXISTS {name}")
     for name in ("knowledge_live_events", "knowledge_live", "knowledge_publications"):
         connection.execute(f"DROP TABLE IF EXISTS {name}")
+
+
+def strip_training_records_v23(connection):
+    for name in ("training_record_insert", "training_record_delete", "training_record_update"):
+        connection.execute(f"DROP TRIGGER IF EXISTS {name}")
+    connection.execute("DROP TABLE IF EXISTS training_record_revisions")

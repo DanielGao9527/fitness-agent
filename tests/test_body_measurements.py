@@ -204,7 +204,7 @@ def test_v12_upgrade_backup_and_original_seventeen_tables(tmp_path):
     with db.connect() as c, sqlite3.connect(str(path) + '.pre-v13.bak') as backup:
         assert len(tables) == 17
         assert backup.execute('PRAGMA user_version').fetchone()[0] == 12
-        assert c.execute('PRAGMA user_version').fetchone()[0] == 22
+        assert c.execute('PRAGMA user_version').fetchone()[0] == 23
         for table in tables:
             assert [tuple(row) for row in c.execute(f'SELECT * FROM {table} ORDER BY rowid')] == backup.execute(f'SELECT * FROM {table} ORDER BY rowid').fetchall()
         assert c.execute('SELECT COUNT(*) FROM body_measurements').fetchone()[0] == 0

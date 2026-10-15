@@ -1,0 +1,146 @@
+{
+  "date": "2026-10-16",
+  "kind": "memory_to_actual_training_suggestion_engineering_acceptance",
+  "base_commit": "4e80da1320431c536dcfda8c6cab4cf1b66eb9b6",
+  "real_provider_calls": 0,
+  "new_semantic_quality_score": false,
+  "scope": [
+    "explicitly confirmed long-term equipment used in a new conversation",
+    "recent completed workouts change final action selection; suggestions and planned rows are not completed history",
+    "equipment and actual-record corrections invalidate old advice; corrected advice uses latest facts",
+    "unseen record creation/deletion and edit/restore do not revive old suggestions or pending reviews/plans",
+    "restart, authenticated ownership, transaction rollback and migration safety"
+  ],
+  "reproduced_before_fix": {
+    "tests": 3,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 6.797,
+    "sha256": "ee9711760a0647302a19c6c0081f5b9da54061b9813368acdd5f766355d09ca6",
+    "failed_cases": [
+      "test_actual_record_aba_never_revives_old_suggestion[create_delete]",
+      "test_actual_record_aba_never_revives_old_suggestion[edit_restore]"
+    ]
+  },
+  "fix": {
+    "schema_before": 22,
+    "schema_after": 23,
+    "new_table": "training_record_revisions",
+    "new_table_fields": [
+      "user_id",
+      "day",
+      "revision"
+    ],
+    "method": "Transaction-bound insert/update/delete triggers for completed-workout changes; per-user/day counters in suggestion/review/plan context fingerprints; deletion retains date counters.",
+    "unchanged_or_duplicate_writes_no_bump": true,
+    "pure_planned_records_no_bump": true,
+    "unrelated_dates_and_other_users_do_not_invalidate": true,
+    "raw_workout_text_in_new_table": false
+  },
+  "final_chain_tests": {
+    "tests": 12,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 14.082,
+    "sha256": "4b4523554f608a6768cc3de190f4beb6e31c256d243667bc3848969a3d1d8ff6",
+    "failed_cases": []
+  },
+  "application_run": {
+    "tests": 2103,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 1196.666,
+    "sha256": "dcf3da7bd26cb9770863a4c79aa955aa35bf67b0d01df9d2eedf6acc8c787ac5",
+    "failed_cases": [
+      "test_recovery_rehearsal_reuses_no_existing_directory",
+      "test_v15_migration_seeds_provenance_and_preserves_every_business_row"
+    ]
+  },
+  "corrected_test_files": {
+    "memory-training-readiness-recheck-20261016.xml": {
+      "tests": 33,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 14.825,
+      "sha256": "d6761ecb282dbae425f1d7bc6a83a7e9515bd9280da9720e8aa7270e6537094b",
+      "failed_cases": []
+    },
+    "memory-training-profile-recheck-20261016.xml": {
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 14.056,
+      "sha256": "83396d3c901582db5040b6ba05973410c91ec39b3f6ad89e0ce209c762f55332",
+      "failed_cases": []
+    }
+  },
+  "application_result_notice": "Original 2103-case run retained two obsolete schema-count/message assertions. Those tests were corrected and their full files passed separately (33 and 16). No claim of a single all-green 2103-case rerun; 12-case chain subset is not added to application count.",
+  "publisher_separate_run": {
+    "tests": 36,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 1.063,
+    "sha256": "03c191da35baf699dcf0e25288d98a6e0e7c37d5ad43415ce9344f81e0ec9d64",
+    "failed_cases": []
+  },
+  "browsers": {
+    "date": "2026-10-16",
+    "real_provider_calls": 0,
+    "fixture": "tests/ui_fixture_server.py --fact-versions, localhost:8772, disposable database and synthetic model",
+    "passed": true,
+    "scripts": {
+      "tests/browser-memory-training-chain.cjs": "43407532ca82da6372724b2d35ce9ee95a76dec70caf3b3138cd1b56ca761984",
+      "tests/browser-equipment-scopes.cjs": "7b9bb8c574b8945e07be978baf20c35071097aeb7246792adc89f4c92fdf2c46"
+    },
+    "viewports": [
+      1280,
+      390,
+      320
+    ],
+    "screenshot_sha256": "9834eb72fd8e06a4c6ca8233022667d7798fd908c824cf151ab24b705108d84f",
+    "visual_review_390": true,
+    "initial_browser_failures": {
+      "count": 2,
+      "cause": "New test expected 推类, while existing rendered title is 推：胸、肩、三头. Corrected only test locator.",
+      "real_provider_calls": 0
+    }
+  },
+  "activation": {
+    "local_url": "http://localhost:8765",
+    "schema": 23,
+    "tables": 39,
+    "old_tables_preserved_after_migration_and_restart": 38,
+    "backup_verified": true,
+    "isolated_upgrade_and_recovery_passed": true,
+    "stage": "e2-training-record-invalidation-v23",
+    "coach_review_policy": "coach-understanding-v17-equipment-scope-review",
+    "private_receipt_sha256": "39a009023871d7c383992f45a3a24eb8368c22e852e9805e87132c59ca79ecda",
+    "temporary_ui_server_stopped": true
+  },
+  "public_corpus_sha256": "547e5f5b4d8cde212dfe448139ad0628dd9fd91c62d39175f5eab541ba7ff962",
+  "public_corpus_unchanged": true,
+  "source_sha256": {
+    "database.py": "f4b6e391bef77239512be948cd0443ae35e1d8b5d09704bdce147fea14cdb67b",
+    "api/routes.py": "3a11fa6f50b6773cd7b020b4215a7960f3025144f197a8f33d8cd2fef79d7f17",
+    "services/training_context.py": "a87ef79233e9c6f5d74d8cadf58d6598d5d6c7482dcabf936313262c130701ea",
+    "services/training_plans.py": "41cd5f0f16c6129126494ed6ac4a78b4fcdc2168eaec1aae3ed390a6de4579ad",
+    "services/backups.py": "44affcb1bdf1d15c25056645975fc7a430521af1855fa0d2c063fcc871d1d2fd",
+    "scripts/migrate_memory.py": "f2449745605821ac1c96869bd83b5587ff3b095fee678bd10579879fc4d7f742",
+    "scripts/knowledge_reviewer.py": "56a98c988749b374d303dc22ffca4260429dd2e103ce33a4d72c8af6f53dcc05",
+    "scripts/prepare_release_queries.py": "6bde571535be65f5dc575ec6a256c093d29a1636e0a38b02b7a8c77b1f656d26",
+    "tests/test_memory_training_chain.py": "149bbb02dffa2121e32cdb3fa31e2924ebcdf43d9d666ff2fc6353a75b59f39a",
+    "tests/schema_fixtures.py": "eb6e58f33dd4aae97a1008513e225f6333b9bd779c6ba9df5dfa4ce2c8531654"
+  },
+  "limits": [
+    "API and browser acceptance use isolated synthetic accounts/database and a synthetic understanding model; not new real-model or independent quality evidence",
+    "current recommendations are for today using a seven-day actual-record window; no week/month autonomous planning added",
+    "prior E2 semantic failures and E3 scope false positive remain; public release labels and remaining unified demos still pending",
+    "raw responses, personal materials, backups and activation receipt remain local"
+  ]
+}

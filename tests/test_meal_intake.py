@@ -302,7 +302,7 @@ def test_v11_backup_upgrade_and_restart_preserve_original_tables(tmp_path):
     db.initialize()
     db.initialize()
     with db.connect() as c, sqlite3.connect(str(path) + '.pre-v12.bak') as backup:
-        assert c.execute('PRAGMA user_version').fetchone()[0] == 22
+        assert c.execute('PRAGMA user_version').fetchone()[0] == 23
         assert backup.execute('PRAGMA user_version').fetchone()[0] == 11
         assert len(tables) == 16
         for table in tables:

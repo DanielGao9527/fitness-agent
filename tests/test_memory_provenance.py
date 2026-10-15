@@ -217,7 +217,7 @@ def test_v17_nonempty_memory_upgrade_preserves_all_original_columns(tmp_path):
         check_schema(Database, inspect_connection, path)
     backup = tmp_path / "verified.sqlite3"
     result = migrate(path, backup)
-    assert result["schema"] == 22 and result["tables"] == 38 and result["old_tables_preserved"]
+    assert result["schema"] == 23 and result["tables"] == 39 and result["old_tables_preserved"]
     assert fingerprints(path, columns=columns) == before
     assert fingerprints(backup) == before and verify_backup(backup)["schema"] == 17
     with database.connect() as connection:
