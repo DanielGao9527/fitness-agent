@@ -19,9 +19,9 @@ from services.coach_memory import PAST_REFERENCE, recall_confirmed_history, conf
 from services.coach_memory_entries import warm_memory
 from services.coach_memory_digests import recall_digests
 from services.profile_facts import fact_revisions, write_profile
-from services.equipment_memory import candidate_from_model, check_equipment_context, EquipmentNeedsInput, day_snapshot, save_day, revoke_day, today
+from services.equipment_memory import candidate_from_model, check_equipment_context, equipment_only_statement, EquipmentNeedsInput, day_snapshot, save_day, revoke_day, today
 
-POLICY = "coach-understanding-v16-memory-provenance"
+POLICY = "coach-understanding-v17-equipment-scope-review"
 QUESTIONS = {
     "none": "",
     "which_food": "你想调整哪一种食材？请写出餐单里的名称。",
@@ -320,8 +320,22 @@ class CoachReviewService:
             # review cannot be confirmed or auto-applied; no candidate is offered.
             memory, training, equipment_on_confirmation, replacement_names = None, None, None, {}
             clarification, question = equipment_issue.clarification, equipment_issue.question
+        clarification_resolution = None
+        if (memory and memory["scope"] == "unspecified" and result.scope == "strength"
+                and clarification == "which_training" and len(originals) == 1
+                and not any((result.command, result.commands, meal_changes, meal_types))
+                and not any(note[key] for note in notes for key in
+                            ("food_avoid", "preferences", "training_caution", "diet_caution", "unresolved"))
+                and (result.training is None or not any(value is not None for key, value in
+                     result.training.model_dump().items() if key not in ("source_text", "equipment")))
+                and equipment_only_statement(memory["source_text"], memory["value"])):
+            # The existing explicit scope picker resolves this one missing field.
+            # Do not remove questions about other operations or unknown text.
+            clarification, question = "none", ""
+            clarification_resolution = "equipment_scope_selection"
         return {"scope": result.scope, "command": result.command, "commands": result.commands, "meal_changes": meal_changes, "notes": notes, "training": training, "meal_types": meal_types,
                 "question": question, "clarification": clarification, "replacement_names": replacement_names,
+                "clarification_resolution": clarification_resolution,
                 "equipment_clarification": equipment_issue.reason if equipment_issue else None,
                 "equipment_memory": memory,
                 "profile_equipment_on_confirmation": equipment_on_confirmation}

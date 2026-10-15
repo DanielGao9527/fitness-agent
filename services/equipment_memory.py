@@ -100,6 +100,28 @@ def candidate_from_model(candidate, scope, originals, day, update=None):
     return {**candidate.model_dump(), "scope": proposed}
 
 
+def equipment_only_statement(source, value):
+    """Recognize a limited declaration envelope around an already checked value.
+
+    This is only a repair guard for a redundant model question, not an intent
+    classifier. Every remaining character must belong to a supported framing or
+    review phrase; an extra/unknown request keeps the original blocking state.
+    """
+    if source.count(value) != 1:
+        return False
+    prefix, suffix = source.split(value)
+    punctuation = r"[\s，,。；;：:]*"
+    topic = r"(?:说到|关于|问的是)(?:(?:我|家里|家中)的?)?(?:训练)?(?:器械|设备|条件)"
+    subject = (r"(?:我(?:现在|目前|这边|手头|家里|家中)?|家里|家中|在家)"
+               r"(?:的)?(?:(?:可用|能用)的?)?(?:(?:训练)?(?:器械|设备|条件)|训练的地方|训练场地)?(?:是|为)?")
+    defer = r"先(?:别|不要)(?:给我|帮我)?(?:排动作|安排训练)"
+    before = punctuation + rf"(?:{defer}{punctuation})?(?:{topic}{punctuation})?(?:{subject}{punctuation})?"
+    review = (r"(?:(?:请|你|帮我|麻烦你)?先?(?:核对|确认)(?:一下|清楚|这些器械|这个条件)?"
+              r"|先把(?:这个条件|这些器械)(?:弄明白|核对清楚))")
+    after = punctuation + rf"(?:{review})?" + r"[\s，,。；;！!]*"
+    return bool(re.fullmatch(before, prefix) and re.fullmatch(after, suffix))
+
+
 def scoped_evidence(binding, profile, revision):
     if binding.get("profile_revision") != revision:
         return False

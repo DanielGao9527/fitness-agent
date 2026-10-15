@@ -16,6 +16,7 @@
 | [check_memory_baseline.py](check_memory_baseline.py) | 从已提交 Git 快照离线核对历史版与当前版的记忆评测协议；临时账号/数据库，禁用模型与外网，不产生质量分数 |
 | [evaluate_memory_pair.py](evaluate_memory_pair.py) | 用各版原有 API 对齐同题器械工作流，冻结共享评测器，逐指标配对；默认只测接线，真实运行要求匹配的人工复核和调用预算，见[对照协议](../evals/memory/PAIRED.md) |
 | [resume_memory_pair.py](resume_memory_pair.py) | 在新明确预算内复用完整响应场景、补齐中断；答错也缓存，默认遇错停，超时/连接补跑需单独授权且有限轮数，不扩大总上限 |
+| [replay_memory_pair_dev.py](replay_memory_pair_dev.py) | 只用同题报告的开发集原响应验证后台修复，留出不回放；禁外网、临时库、明确确认，输出计数而非新模型提升率，见[回放协议](../evals/memory/PAIRED.md#修复开发集的离线回放) |
 | [rehearse_recovery.py](rehearse_recovery.py) | 在独立新目录演练恢复并核对数据库 |
 | [build_knowledge_vectors.py](build_knowledge_vectors.py) | 默认只盘点审核公开块；显式 `--live` 才按预算调用云端构建文档向量 |
 | [evaluate_retrieval.py](evaluate_retrieval.py) | 用项目 QA 对比词法、jieba、向量与 RRF；不调用答案模型 |

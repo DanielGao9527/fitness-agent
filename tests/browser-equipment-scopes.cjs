@@ -34,6 +34,17 @@ async function main() {
       await page.locator('.coach-equipment-scope').waitFor({state: 'hidden'});
       return response.json();
     };
+    await send('我这边的训练器械是哑铃和训练凳，请先核对。');
+    await page.getByText('器械已识别，请选择使用范围；确认后才会生效。', {exact: true}).waitFor();
+    assert.equal(await page.locator('.coach-equipment-scope').inputValue(), '');
+    await page.locator('.coach-review-checked').check();
+    await page.locator('.coach-confirm-understanding').click();
+    await page.locator('.coach-error').getByText('请选择器械的作用范围', {exact: true}).waitFor();
+    const scopeOnly = await confirm('session');
+    assert.equal(scopeOnly.turns.some(turn => turn.response.training_recommendation), false);
+    assert.equal(await page.locator('.training-recommendation').count(), 0);
+    assert.equal((await (await context.request.get(base + '/api/profile')).json()).equipment, '在家，徒手');
+    await page.getByRole('button', {name: '新对话', exact: true}).click();
     await page.locator('#coach-message').fill('训练的地方可能只有哑铃，还没确认');
     await page.getByRole('button', {name: '发送消息', exact: true}).click();
     await page.locator('.nutrition-question').getByText('这些器械是否实际可用还不确定。', {exact: false}).waitFor();
@@ -70,7 +81,9 @@ async function main() {
     assert.equal(local.training_context.equipment_source, 'current_conversation');
     assert.deepEqual(errors, []);
     console.log(JSON.stringify({passed: true, real_provider_calls: 0,
-      checks: ['uncertain input asks a question without confirm button', 'question survives refresh',
+      checks: ['redundant model question uses explicit scope picker', 'scope repair does not auto-apply',
+        'fact confirmation does not automatically request a training plan',
+        'uncertain input asks a question without confirm button', 'question survives refresh',
         'followup continues the same conversation', 'unknown scope blocks save', 'explicit scope confirmation', 'long-term profile write',
         'day override preserves profile', 'final advice shows day source', 'session override', '390/320 layout']}));
   } finally { await browser.close(); }

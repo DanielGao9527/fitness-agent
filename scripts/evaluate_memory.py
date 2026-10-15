@@ -101,8 +101,9 @@ class MeasuredModel:
 
 
 class Scenario:
-    def __init__(self,case,directory,measured,base_day):
+    def __init__(self,case,directory,measured,base_day,*,auto_apply=True):
         self.case,self.model=case,measured
+        self.auto_apply=auto_apply
         self.day=date.fromisoformat(base_day)
         self.sessions={}
         self.clients={}
@@ -163,7 +164,7 @@ class Scenario:
             self.model.step,self.model.last=step,None
             self.model.during=(lambda:self.mutation(step['during'])) if step['during'] else None
             response=client.post(f"{BASE}/{data['id']}/understand",json={
-                'version':data['version'],'client_id':str(uuid4()),'auto_apply':True}) if data['pending'] else None
+                'version':data['version'],'client_id':str(uuid4()),'auto_apply':self.auto_apply}) if data['pending'] else None
             self.model.during=None
             status=response.status_code if response is not None else 200
             output=response.json() if response is not None else data

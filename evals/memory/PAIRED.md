@@ -68,6 +68,18 @@ python scripts/resume_memory_pair.py artifacts/memory-pair-live-new --review-fil
 
 跨阶段继续不具备连续运行的延迟可比性。保留每阶段真实耗时，不把断点拼接报告当作线上耗时提升或稳定 SLA。
 
+## 修复开发集的离线回放
+
+`scripts/replay_memory_pair_dev.py` 只读取完整同题报告中属于 dev 的增强版结构化响应，经当前 API 和相同确认操作回放。开发集所有有响应的场景都保留，答错也不重抽；留出响应不读取、不回放，缺响应另列。使用临时账号/数据库、固定日期、auto_apply=false 和原有判分要求，不替换模型输出。
+
+```powershell
+python scripts/replay_memory_pair_dev.py artifacts/memory-pair-live-complete-20261016/report.json --output artifacts/memory-scope-dev-replay-new
+```
+
+输出限定在 artifacts 的新目录；应用默认实例的导入也绑定临时库并清除运行环境覆盖/凭据。记录原报告及当前源码哈希、零云调用、外网阻断计数、缺失项及共同检查的计数。所有质量比例和百分点保持 null，标记 real_model_quality=false。这能验证后台修复，不能评价新提示词、泛化或训练专业质量，也不能覆盖原 de32154 的真实成绩。
+
+v17 仅在原话/器械已校验、单条明确声明、没有其他操作或安全缺项、全文剩余文字符合有限核对表达时，修复冗余 which_training，仍须用户选择范围并明确确认。未知文字/动作替换/未支持结构/其他待办继续阻断；它不是通用意图分类或完整语义安全系统。新提示词质量须另外授权真实验证。
+
 ## 与正式验收的关系
 
 这个对照检查器械理解、确认、跨会话采用及更正等已有链路，不评估所有偏好、长期自然对话或医疗安全，也不覆盖 E3 检索循环。E3 的单/两轮语义对照及知识发布正常标签复核仍按 ROADMAP 分开推进。失败的网络调用不算旧版准确率差；接线通过也不算模型增强效果。

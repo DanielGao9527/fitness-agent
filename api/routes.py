@@ -72,8 +72,10 @@ def health(request: Request):
         "training_plan": training_plan_status(request.app.state.settings),
     }
     if settings.access_mode == "local":
+        from services.coach_reviews import POLICY as coach_review_policy
         capabilities.update(stage="e4b2b2-knowledge-publication-v22", model="not_configured",
-                            coach="guided_workflow", text_model=settings.qwen_model)
+                            coach="guided_workflow", text_model=settings.qwen_model,
+                            coach_review_policy=coach_review_policy)
     return capabilities
 
 

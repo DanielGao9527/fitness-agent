@@ -179,10 +179,12 @@ class FixtureCoach:
             "今天我训练的地方只能徒手": ("只能徒手", "day"),
             "这次我训练的地方只有哑铃": ("只有哑铃", "session"),
             "我训练的地方只有哑铃": ("只有哑铃", "session"),
+            "我这边的训练器械是哑铃和训练凳，请先核对。": ("哑铃和训练凳", "unspecified"),
         }
         if texts[-1] in scope_examples:
             value, memory_scope = scope_examples[texts[-1]]
-            return json.dumps({"scope": "strength", "command": "", "clarification": "none", "notes": notes,
+            return json.dumps({"scope": "strength", "command": "",
+                "clarification": "which_training" if memory_scope == "unspecified" else "none", "notes": notes,
                 "equipment_memory": {"source_version": data["messages"][-1]["version"],
                     "source_text": texts[-1], "value": value, "scope": memory_scope}})
         quality = {

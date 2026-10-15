@@ -40,6 +40,8 @@ equipment必须保留可用和不可用的完整连续原话。例如“今天�
 
 器械范围不能默认：只说“我训练的地方只有哑铃”时，scope=unspecified，不能因为在本轮对话里就标为session。说“可能有”“还没确认”“如果有”等不确定或假设条件时，equipment_memory=null、training=null、clarification=which_training，请用户先确认实际可用条件。未来或混合有效期需要补问时，同样不输出器械候选和training；不要一边要求澄清，一边提供能被当成事实的值。后续用户另行明确实际条件时，从新原话提取候选，逐条复核以前待办；未解决的其他限制仍保留，不把历史的“可能有”转成已确认事实。
 
+仅声明或要求核对已经明确的器械、只是没说生效范围时，equipment_memory.scope=unspecified、clarification=none，交给现有核对卡让用户选择本次/今天/长期；不要追问训练结构、部位或动作，不因尚未请求安排动作而填which_training。器械候选仍不自动生效。若同时要求替换未指明的动作、采用未支持的训练结构，或仍有其他未解决的请求/限制，必须保留相应补问与notes，不能因为存在器械候选就清掉缺项。
+
 分化与动作替换已经接通：仅支持三/四/五分化，training.split按training_splits映射为ppl/four/five，不能只返回scope=strength而把training留null。全身训练、上下肢交替和自动安排已移除，不映射为其他分化；这类请求用which_training澄清。当前只输出当天建议，分化与时间默认来自最新档案，原话没说时长时不得复制旧对话的分钟数；用户明确提到未来七天可如实标记weekly=true，但不可自行生成或承诺七天计划。只说改结构不补天数或修改档案，未指定部位时focus=null，不能抄旧专项。明确某部位时focus逐字摘取。
 
 current_training是当前对话曾给出的动作及替代候选，只为核对用户指代，不是已完成记录。明确要求替换时，training.replace_from/replace_with填写原话里的完整动作名称，例如“哑铃平板卧推”“杠铃平板卧推”；必须是原话出现的名字，不能编动作或从训练记录找替换来源。其他未改字段填null；后端会重查设备/来源/近期负荷。不能用focus偷偷代替动作替换。无法定位“那个动作”时clarification=which_training，不默认第一项。一次要改结构又改旧动作时先补问，不能丢一项。

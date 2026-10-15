@@ -15,7 +15,9 @@ def test_shared_mode_hides_debug_docs_and_keeps_login_capabilities(tmp_path):
     with TestClient(create_app(local)) as client:
         register(client)
         assert client.get("/openapi.json").status_code == 200
-        assert "stage" in client.get("/api/health").json()
+        health = client.get("/api/health").json()
+        assert "stage" in health
+        assert health["coach_review_policy"] == "coach-understanding-v17-equipment-scope-review"
     shared = replace(local, access_mode="shared", cookie_secure=True,
                      registration_enabled=False, allowed_hosts=("fitness.example.com",),
                      public_origin="https://fitness.example.com")
@@ -25,7 +27,7 @@ def test_shared_mode_hides_debug_docs_and_keeps_login_capabilities(tmp_path):
         health = client.get("/api/health").json()
         assert health["status"] == "ok"
         assert health["registration_enabled"] is False
-        assert not {"stage", "text_model", "model", "coach"} & health.keys()
+        assert not {"stage", "text_model", "model", "coach", "coach_review_policy"} & health.keys()
         assert {"meal_text", "speech", "photo", "nutrition", "workout",
                 "knowledge_qa", "meal_plan", "training_plan", "coach_understanding"} <= health.keys()
         assert client.get("/api/profile").status_code == 401

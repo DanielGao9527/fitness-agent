@@ -195,7 +195,7 @@ window.CoachView = (() => {
           ${note.training_caution?"<li>本次训练请求超出一般健身适用范围</li>":""}${note.diet_caution?"<li>涉及特殊健康管理，一般建议暂停</li>":""}
           ${note.unresolved?"<li>还有未明确的限制</li>":""}${!note.avoid_names.length&&!note.preferences.length&&!note.training_caution&&!note.diet_caution&&!note.unresolved?"<li>未提取到额外限制，请核对是否遗漏</li>":""}
         </ul></li>`).join("")}</ol>${review.equipment_memory
-          ? `<p class="small">器械候选：${escapeHtml(review.equipment_memory.value)}</p><label>使用范围<select class="coach-equipment-scope">
+          ? `<p class="small">器械候选：${escapeHtml(review.equipment_memory.value)}</p>${review.status==='ready' && review.equipment_memory.scope==='unspecified'?'<p class="small">器械已识别，请选择使用范围；确认后才会生效。</p>':''}<label>使用范围<select class="coach-equipment-scope">
               ${[['unspecified','请选择作用范围'],['session','本次：仅当前对话，最晚今天结束'],['day','今天：当天各会话可用，零点到期'],['long_term','长期：保存到个人档案']].map(([key,label])=>`<option value="${key==='unspecified'?'':key}" ${review.equipment_memory.scope===key?'selected':''}>${label}</option>`).join('')}
             </select></label><p class="small muted">核对原话和范围后才保存。时间按北京时间；今天的条件可通过删除来源对话撤销，长期条件可在个人档案更正。</p>`
           : review.profile_equipment_on_confirmation
@@ -212,7 +212,11 @@ window.CoachView = (() => {
       if(!root.querySelector(".coach-review-checked").checked){s.root.querySelector(".coach-error").hidden=false;s.root.querySelector(".coach-error").textContent="请先核对本次理解是否完整";return;}
       const scope=root.querySelector('.coach-equipment-scope');
       if(scope && !scope.value){s.root.querySelector('.coach-error').hidden=false;s.root.querySelector('.coach-error').textContent='请选择器械的作用范围';return;}
-      operation(async(session,signal)=>recommend(session,await api(`/coach/conversations/${data.id}/confirm-understanding`,{method:"POST",signal,body:JSON.stringify({version:data.version,review_id:review.id,reviewed:true,...(scope?{equipment_scope:scope.value}:{})})}),signal,crypto.randomUUID()),showRecommendation);
+      operation(async(session,signal)=>{
+        const confirmed=await api(`/coach/conversations/${data.id}/confirm-understanding`,{method:"POST",signal,body:JSON.stringify({version:data.version,review_id:review.id,reviewed:true,...(scope?{equipment_scope:scope.value}:{})})});
+        // This repair only confirms a fact; the user has not requested a plan.
+        return review.clarification_resolution==='equipment_scope_selection'?{data:confirmed}:recommend(session,confirmed,signal,crypto.randomUUID());
+      },showRecommendation);
     });
   }
   function understand(s) {
