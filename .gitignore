@@ -22,3 +22,9 @@ artifacts/
 *.egg-info/
 .DS_Store
 Thumbs.db
+
+# Local working material and personal career drafts
+/docs/ENHANCEMENT_EVIDENCE.md
+**/CV_*.md
+**/*RESUME*.md
+/evals/acceptance/

@@ -33,7 +33,6 @@
 
 完整结果见 [发布闭环检查](../evals/results/knowledge-publication-checks-2026-10-15.json)，协议见 [发布质量协议](../evals/release_quality/v1/README.md)。
 
-简历证据已集中到 [增强证据与简历交接](ENHANCEMENT_EVIDENCE.md)，逐项列出基线、改法、结果和限制。离线准备包含 24 条既有记忆题的空复核表、24 条新语义草案（开发/留出各 12，暂拟可答 16/不足 8）；均待独立复核，草案未运行，不新增供应商调用或改动正式标签。见 [准备包](../evals/acceptance/preparation_v1.json)。
 
 ## 可使用的真实效果证据
 
@@ -55,4 +54,4 @@
 
 ## 接续点
 
-第一步工程已推送 [23eecf3](https://github.com/DanielGao9527/fitness-agent/commit/23eecf3)。当前型号访问已恢复，小场景联调通过；下一步仍是 N1 独立标签复核及 E2/E3 质量对照，再完成五个演示和简历，不自动重跑旧失败请求。具体边界见 [EXECUTION](EXECUTION.md)、[ROADMAP](ROADMAP.md)、[DELIVERY](DELIVERY.md)；不追加自动知识提取、更多记忆层或其他业务。历史过程留在归档和旧结果中，不覆盖失败或不利结论。
+第一步工程已推送 [23eecf3](https://github.com/DanielGao9527/fitness-agent/commit/23eecf3)。当前型号访问已恢复，小场景联调通过；下一步仍是 N1 独立标签复核及 E2/E3 质量对照，再完成五个演示和对外说明，不自动重跑旧失败请求。具体边界见 [EXECUTION](EXECUTION.md)、[ROADMAP](ROADMAP.md)、[DELIVERY](DELIVERY.md)；不追加自动知识提取、更多记忆层或其他业务。历史过程留在归档和旧结果中，不覆盖失败或不利结论。

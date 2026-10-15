@@ -2,7 +2,7 @@
 
 整理日期：2026-09-29。这里保存阶段设计、旧交接与整理前快照；它们记录当时状态，不作为当前开发指令。当前入口是 [项目总览](../README.md)。
 
-## 阶段证据：13 份
+## 阶段证据：12 份
 
 | 主题 | 资料 |
 | --- | --- |
@@ -12,7 +12,6 @@
 | 记忆事实管理 | [版本/来源](2026-09/MEMORY_E2D_FACT_VERSIONS.md)、[作用范围](2026-09/MEMORY_E2D_SCOPES.md) |
 | 记忆验证与修复 | [首版评测](2026-09/MEMORY_E2C_EVALUATION.md)、[补问修复](2026-09/MEMORY_E2C_CLARIFICATION_FIX_2026-09-29.md) |
 | 检索循环 | [E3a 初版](2026-09/E3_BOUNDED_RETRIEVAL.md) |
-| 历史目标 | [9 月 27 日交付计划](2026-09/CV_TARGET_DELIVERY_PLAN_2026-09-27.md)，当前标准以 [DELIVERY](../DELIVERY.md) 为准 |
 
 ## 整理前快照
 
