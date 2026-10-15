@@ -16,7 +16,8 @@ import time
 from unittest.mock import patch
 from uuid import uuid4
 
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+if __name__ == '__main__':
+    sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 
 from fastapi.testclient import TestClient
 from app import create_app
