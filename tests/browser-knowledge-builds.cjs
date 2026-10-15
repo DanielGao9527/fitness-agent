@@ -5,6 +5,7 @@ const path=require('node:path');
 const fs=require('node:fs');
 
 async function main(){
+  const publication=process.argv.includes('--publication');
   const fixture=path.resolve(__dirname,'../artifacts/ui-coach-review-test.sqlite3');
   assert.ok(fs.existsSync(fixture),'Start ui_fixture_server.py --coach --knowledge-build on 8767');
   const python=process.env.FITNESS_TEST_PYTHON||path.resolve(__dirname,'../../../../.venv/Scripts/python.exe');
@@ -55,10 +56,31 @@ async function main(){
     await page.locator(`[data-release-check="${built.id}"]`).click();
     await page.waitForFunction(()=>document.querySelector('.review-status')?.textContent.includes('检查已记录'));
     const registry=await page.evaluate(async(id)=>(await api('/knowledge-workbench/releases')).items.find(item=>item.id===id),built.id);
-    assert.equal(registry.status,'blocked');assert.equal(registry.publication_allowed,false);
-    assert.deepEqual(registry.report.blockers,['independent_semantic_quality','hybrid_ranking_quality','activation_and_rollback']);
+    assert.equal(registry.status,publication?'registered':'blocked');assert.equal(registry.publication_allowed,false);
+    assert.deepEqual(registry.report.blockers,publication?[]:['independent_semantic_quality','hybrid_ranking_quality']);
     assert.doesNotMatch(await page.locator('.knowledge-release-list').textContent(),/private-build-marker/);
-    assert.match(await page.locator('.knowledge-release-list').textContent(),/独立语义质量/);
+    if(!publication)assert.match(await page.locator('.knowledge-release-list').textContent(),/独立语义质量/);
+    if(publication){
+      await page.locator(`[data-publication-approve="${built.id}"]`).click();
+      assert.match(await page.locator('.review-status').textContent(),/请先核对出处/);
+      await page.locator(`[data-publication-approve-confirm="${built.id}"]`).check();
+      await page.locator(`[data-publication-approve="${built.id}"]`).click();
+      await page.waitForFunction(()=>document.querySelector('.review-status')?.textContent.includes('版本已批准'));
+      await page.locator(`[data-publication-switch="${built.id}"]`).click();
+      assert.match(await page.locator('.review-status').textContent(),/请先确认切换/);
+      await page.locator(`[data-publication-switch-confirm="${built.id}"]`).check();
+      await page.locator(`[data-publication-switch="${built.id}"]`).click();
+      await page.waitForFunction(()=>document.querySelector('.review-status')?.textContent.includes('在线知识版本已切换'));
+      const active=await page.evaluate(async()=>await api('/knowledge-workbench/live'));
+      assert.equal(active.release_id,built.id);
+      const catalog=await page.evaluate(async()=>await api('/knowledge'));
+      assert.equal(catalog.version,'knowledge-build-'+built.id);
+      await page.locator('.knowledge-rollback-button').click();
+      assert.match(await page.locator('.review-status').textContent(),/请先确认回滚/);
+      await page.locator('.knowledge-rollback-confirm').check();await page.locator('.knowledge-rollback-button').click();
+      await page.waitForFunction(()=>document.querySelector('.review-status')?.textContent.includes('已回滚在线版本'));
+      assert.equal((await page.evaluate(async()=>await api('/knowledge-workbench/live'))).base_active,true);
+    }
     for(const [width,height] of [[1440,1000],[390,844],[320,740]]){
       await page.setViewportSize({width,height});await page.locator('.knowledge-build-section').scrollIntoViewIfNeeded();
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
@@ -88,7 +110,7 @@ async function main(){
     assert.deepEqual(fs.readdirSync(path.dirname(directory),{withFileTypes:true}).filter(item=>item.isDirectory()).map(item=>item.name).sort(),before);
     assert.deepEqual(fs.readFileSync(path.join(directory,'manifest.json')),manifest);
     assert.deepEqual(errors,[]);
-    console.log(JSON.stringify({passed:true,real_provider_calls:0,checks:['explicit selection and confirmation','private field separation','isolated complete package','identical-text dedup','confirmed version registration','readiness reports missing quality','confirmed withdrawal','no online activation','shorter excerpt blocks missing encoding','prior package preserved','1440/390/320']}));
+    console.log(JSON.stringify({passed:true,synthetic_publication_flow:publication,real_provider_calls:0,checks:['explicit selection and confirmation','private field separation','isolated complete package','identical-text dedup','confirmed version registration',publication?'manual approval and atomic switch/rollback':'readiness reports missing quality','confirmed withdrawal',publication?'back to original corpus after rollback':'no online activation','shorter excerpt blocks missing encoding','prior package preserved','1440/390/320']}));
   }catch(error){await page.screenshot({path:path.resolve(__dirname,'../artifacts/knowledge-builds-failure.png'),fullPage:true});throw error;}
   finally{
     execFileSync(python,[path.resolve(__dirname,'../scripts/knowledge_reviewer.py'),'revoke','--database',fixture,'--username',username],{stdio:'pipe'});

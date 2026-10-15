@@ -26,6 +26,7 @@ def content_signature(content):
 
 class KnowledgeWorkbench:
     def __init__(self, database, user_id, retriever):
+        retriever = getattr(retriever, "governance_base", retriever)
         self.database, self.user_id, self.retriever = database, user_id, retriever
 
     def _owned(self, connection, table, identifier):

@@ -908,6 +908,33 @@ class KnowledgeReleaseRegister(InputModel):
         return value
 
 
+class KnowledgePublicationApprove(KnowledgeWorkbenchVersion):
+    binding_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    reviewed: bool = Field(strict=True)
+
+    @field_validator("reviewed")
+    @classmethod
+    def explicit_approval(cls, value):
+        if not value:
+            raise ValueError("请核对质量报告和完整来源后批准")
+        return value
+
+
+class KnowledgeLiveSwitch(InputModel):
+    client_id: UUID
+    expected_revision: int = Field(ge=0, strict=True)
+    action: Literal["activate", "rollback"]
+    release_id: UUID | None
+    publication_version: int | None = Field(default=None, ge=1, strict=True)
+    confirmed: bool = Field(strict=True)
+
+    @model_validator(mode="after")
+    def explicit_switch(self):
+        if not self.confirmed or bool(self.release_id) != (self.publication_version is not None):
+            raise ValueError("请核对切换目标及批准版本")
+        return self
+
+
 class KnowledgeSelection(InputModel):
     status: Literal["answered", "insufficient", "personal_scope"]
     chunk_ids: list[Annotated[str, Field(min_length=1, max_length=161)]] = Field(max_length=3)

@@ -36,6 +36,7 @@ def set_reviewer(database, username, enabled):
 
 class KnowledgeReview:
     def __init__(self, database, user_id, retriever):
+        retriever = getattr(retriever, "governance_base", retriever)
         self.database, self.user_id, self.retriever = database, user_id, retriever
         self.workbench = KnowledgeWorkbench(database, user_id, retriever)
 

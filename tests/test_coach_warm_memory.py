@@ -94,7 +94,7 @@ def test_memory_capacity_and_private_backup(client, application, tmp_path):
     assert add(client, "user_preference", "超出条数").status_code == 409
     original = client.get(URL).json()["items"]
     snapshot, recovered = tmp_path / "private.sqlite3", tmp_path / "recovered.sqlite3"
-    assert create_backup(application.state.database.path, snapshot)["schema"] == 21
+    assert create_backup(application.state.database.path, snapshot)["schema"] == 22
     assert restore_backup(snapshot, recovered)["sessions_revoked"]
     with sqlite3.connect(recovered) as connection:
         assert connection.execute("SELECT COUNT(*) FROM coach_memory_entries").fetchone()[0] == len(original)
@@ -183,7 +183,7 @@ def test_v14_memory_migration_preserves_rows_and_backup(tmp_path):
         check_schema(Database, inspect_connection, source)
     backup = tmp_path / "approved.sqlite3"
     result = migrate(source, backup)
-    assert result["schema"] == 21 and result["tables"] == 35
+    assert result["schema"] == 22 and result["tables"] == 38
     assert result["old_tables_preserved"]
     assert verify_backup(backup)["schema"] == 14
     assert all(fingerprints(source)[name] == value for name, value in before.items())
@@ -192,8 +192,8 @@ def test_v14_memory_migration_preserves_rows_and_backup(tmp_path):
 
     restored = tmp_path / "restored.sqlite3"
     fresh_backup = tmp_path / "new.sqlite3"
-    assert create_backup(source, fresh_backup)["schema"] == 21
-    assert restore_backup(fresh_backup, restored)["schema"] == 21
+    assert create_backup(source, fresh_backup)["schema"] == 22
+    assert restore_backup(fresh_backup, restored)["schema"] == 22
     with sqlite3.connect(restored) as connection:
-        assert inspect_connection(connection)["tables"] == 35
+        assert inspect_connection(connection)["tables"] == 38
     assert fingerprints(restored)["coach_memory_entries"] == fingerprints(source)["coach_memory_entries"]

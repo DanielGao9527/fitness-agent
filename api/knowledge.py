@@ -70,7 +70,7 @@ def ask(body: KnowledgeQuestion, request: Request, service: Records, user: User)
 
     try:
         retriever = request_retriever(request, user)
-        if hasattr(retriever, "for_request"):
+        if getattr(retriever, "requires_embedding_preflight", hasattr(retriever, "for_request")):
             # Configuration-only preflight: an unavailable answer feature must not
             # consume a paid query embedding before reporting that it is disabled.
             create_knowledge_model(settings)

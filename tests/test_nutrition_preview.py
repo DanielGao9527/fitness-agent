@@ -163,7 +163,7 @@ def test_v3_upgrade_preserves_rows_and_backup(tmp_path):
         connection.execute("INSERT INTO meals(user_id,client_id,day,payload) VALUES (1,'fixture',?,?)", (DAY, '{"legacy":"unchanged"}'))
     database.initialize()
     with database.connect() as connection, sqlite3.connect(path.with_name(path.name + ".pre-v4.bak")) as backup:
-        assert connection.execute("PRAGMA user_version").fetchone()[0] == 21
+        assert connection.execute("PRAGMA user_version").fetchone()[0] == 22
         assert backup.execute("PRAGMA user_version").fetchone()[0] == 3
         assert tuple(connection.execute("SELECT * FROM meals").fetchone()) == backup.execute("SELECT * FROM meals").fetchone()
         assert connection.execute("PRAGMA foreign_key_check").fetchall() == []

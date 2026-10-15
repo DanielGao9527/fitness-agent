@@ -28,6 +28,15 @@
         "--knowledge-build"
       ],
       "notice": "Synthetic cache fixture, no real embeddings; includes an expected missing-excerpt-vector failure."
+    },
+    "knowledge-publications": {
+      "fixture_flags": [
+        "--coach",
+        "--knowledge-build",
+        "--knowledge-publish"
+      ],
+      "command": "node tests/browser-knowledge-builds.cjs --publication",
+      "notice": "Standalone synthetic labels and vectors only; no production bypass or semantic quality evidence."
     }
   }
 }

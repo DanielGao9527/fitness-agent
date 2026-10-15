@@ -68,6 +68,8 @@ def check_portion_limits(items, limits):
 
 class MealPlanService:
     def __init__(self, database, user_id, retriever):
+        # Fixed planning constraints keep their original reviewed catalog authority.
+        retriever = getattr(retriever, "governance_base", retriever)
         self.database, self.user_id, self.retriever = database, user_id, retriever
 
     def evidence(self):

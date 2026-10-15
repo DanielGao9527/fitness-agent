@@ -289,6 +289,7 @@ def build(facts, evidence):
 
 class TrainingRecommendationService:
     def __init__(self, database, user_id, retriever):
+        retriever = getattr(retriever, "governance_base", retriever)
         self.database, self.user_id, self.retriever = database, user_id, retriever
         self.coach = CoachService(database, user_id)
 

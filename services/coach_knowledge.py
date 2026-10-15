@@ -83,6 +83,9 @@ class CoachKnowledgeService:
                 _, current, _, current_hash = self.snapshot(connection, conversation_id)
                 if current_hash != fingerprint:
                     raise ModelError("COACH_CONTEXT_CHANGED", "问答期间消息、档案或条件已变化，未显示旧结果；请重新提问。", 409)
+                if (hasattr(self.retriever, "valid_snapshot") and value.get("status") == "answered"
+                        and not self.retriever.valid_snapshot(value.get("retrieval", {}), connection=connection)):
+                    raise ModelError("KNOWLEDGE_CHANGED", "保存前知识版本已变化，未保存旧回答。", 409)
                 current["knowledge"].update(value)
                 self.save(connection, conversation_id, body.version, current)
         except Exception as error:
@@ -115,6 +118,8 @@ class CoachKnowledgeService:
             try:
                 current = {hit.chunk_id: hit.model_dump() for hit in self.retriever.get_chunks([hit["chunk_id"] for hit in sources])}
                 valid = all(current.get(hit["chunk_id"]) == hit for hit in sources)
+                if hasattr(self.retriever, "valid_snapshot"):
+                    valid = valid and self.retriever.valid_snapshot(value.get("retrieval", {}))
             except KnowledgeUnavailable:
                 valid = False
             if not valid:

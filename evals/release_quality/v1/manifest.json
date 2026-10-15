@@ -1,0 +1,14 @@
+{
+  "policy": "knowledge-release-quality-v1",
+  "dataset": "evals/fitness_qa.jsonl",
+  "dataset_sha256": "ec6f7446a9560654a1056f8cdda9e1bbef22041c3c4fa043169f965795e75cec",
+  "split": "test",
+  "review_status": "pending_review",
+  "label_review_sha256": null,
+  "candidate_limit": 20,
+  "rrf_k": 60,
+  "limit": 10,
+  "min_mean_recall6": 0.8,
+  "threshold": "No per-case loss in Recall@6 or MRR@10; all labelled evidence must remain valid; both searches must use hybrid ranking without fallback; candidate mean Recall@6 must be at least 0.80 (a predeclared acceptance floor, not a measured improvement).",
+  "notice": "Existing source-labelled self-authored holdout. Independent human relevance-label review remains pending. No production release until review and complete matching public query vectors exist. This protocol measures retrieval relevance, not generated-answer accuracy."
+}

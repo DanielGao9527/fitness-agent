@@ -64,7 +64,7 @@ def test_registry_and_readiness_are_persistent_bound_and_never_publish(release):
     assert checked['status'] == 'blocked' and checked['version'] == 2
     assert not checked['published'] and not checked['publication_allowed']
     report = checked['report']
-    assert all(report['engineering_checks'].values()) and len(report['blockers']) == 3
+    assert all(report['engineering_checks'].values()) and len(report['blockers']) == 2
     assert report['real_provider_calls'] == provider.calls == 0
     assert report['independent_semantic_quality'] == report['hybrid_ranking_quality'] == 'not_evaluated'
     assert report['manifest_sha256'] == package['manifest_hash']
@@ -83,7 +83,7 @@ def test_registry_and_readiness_are_persistent_bound_and_never_publish(release):
     assert app.state.knowledge is retriever and retriever.lexical.source_path.read_bytes() == source
     assert retriever.vector_store.path.read_bytes() == vector
     assert files == {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in directory.iterdir()}
-    for action in ('approve','publish','activate','rollback'):
+    for action in ('publish','activate','rollback'):
         assert client.post(WORK+'/releases/'+item['id']+'/'+action, json={'version':2,'passed':True}).status_code == 404
 
 
@@ -306,11 +306,11 @@ def test_schema20_migration_preserves_old_rows_and_recovery(tmp_path):
     columns,before = table_columns(path),fingerprints(path)
     backup = tmp_path/'before.sqlite3'
     result = migrate(path,backup)
-    assert result['schema'] == 21 and result['tables'] == 35 and result['old_tables_preserved']
+    assert result['schema'] == 22 and result['tables'] == 38 and result['old_tables_preserved']
     assert fingerprints(path,columns=columns) == before
     with sqlite3.connect(str(path)+'.pre-v21.bak') as connection:
         assert connection.execute('PRAGMA user_version').fetchone()[0] == 20
     Database(path).initialize()
     fresh = tmp_path/'fresh.sqlite3'
     create_backup(path,fresh)
-    assert restore_backup(fresh,tmp_path/'restored.sqlite3')['schema'] == 21
+    assert restore_backup(fresh,tmp_path/'restored.sqlite3')['schema'] == 22

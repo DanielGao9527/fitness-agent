@@ -79,7 +79,7 @@ class Database:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with self.connect() as connection:
             version = connection.execute("PRAGMA user_version").fetchone()[0]
-            if version not in range(22):
+            if version not in range(23):
                 raise RuntimeError("Unsupported database schema version")
             connection.execute("PRAGMA journal_mode = WAL")
             if version == 1:
@@ -767,5 +767,89 @@ class Database:
                             WHERE registrant_id=OLD.id AND status IN ('registered','blocked');
                     END;
                     PRAGMA user_version = 21;
+                    COMMIT;
+                """)
+            if version < 22:
+                if version > 0:
+                    backup_path = self.path.with_name(self.path.name + ".pre-v22.bak")
+                    if not backup_path.exists():
+                        with closing(sqlite3.connect(backup_path)) as backup:
+                            connection.backup(backup)
+                connection.executescript("""
+                    BEGIN IMMEDIATE;
+                    CREATE TABLE knowledge_publications (
+                        release_id TEXT PRIMARY KEY REFERENCES knowledge_releases(id) ON DELETE CASCADE,
+                        release_version INTEGER NOT NULL CHECK(release_version>=1),
+                        quality_hash TEXT NOT NULL CHECK(length(quality_hash)=64),
+                        approver_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+                        approver_revision INTEGER NOT NULL CHECK(approver_revision>=1),
+                        state TEXT NOT NULL CHECK(state IN ('approved','invalidated')),
+                        version INTEGER NOT NULL DEFAULT 1 CHECK(version>=1),
+                        reason TEXT NOT NULL DEFAULT 'approved',
+                        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+                    );
+                    CREATE TABLE knowledge_live (
+                        id INTEGER PRIMARY KEY CHECK(id=1),
+                        release_id TEXT REFERENCES knowledge_publications(release_id) ON DELETE SET NULL,
+                        revision INTEGER NOT NULL CHECK(revision>=0),
+                        action TEXT NOT NULL,
+                        actor_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+                        client_id TEXT,
+                        request_hash TEXT
+                    );
+                    INSERT INTO knowledge_live(id,revision,action) VALUES (1,0,'base');
+                    CREATE TABLE knowledge_live_events (
+                        revision INTEGER PRIMARY KEY CHECK(revision>=1),
+                        release_id TEXT,
+                        previous_id TEXT,
+                        action TEXT NOT NULL,
+                        actor_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+                        client_id TEXT UNIQUE,
+                        request_hash TEXT,
+                        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+                    );
+                    CREATE TRIGGER knowledge_live_event AFTER UPDATE ON knowledge_live
+                        WHEN NEW.revision != OLD.revision
+                    BEGIN
+                        INSERT INTO knowledge_live_events(revision,release_id,previous_id,action,actor_id,client_id,request_hash)
+                            VALUES (NEW.revision,NEW.release_id,OLD.release_id,NEW.action,NEW.actor_id,NEW.client_id,NEW.request_hash);
+                    END;
+                    CREATE TRIGGER knowledge_publication_registration AFTER UPDATE ON knowledge_releases
+                        WHEN NEW.version != OLD.version OR NEW.status IN ('withdrawn','invalidated')
+                    BEGIN
+                        UPDATE knowledge_publications SET state='invalidated',reason='registration_changed',version=version+1
+                            WHERE release_id=OLD.id AND state='approved';
+                    END;
+                    CREATE TRIGGER knowledge_publication_head AFTER UPDATE ON knowledge_publications
+                        WHEN NEW.state!='approved'
+                    BEGIN
+                        UPDATE knowledge_live SET release_id=NULL,revision=revision+1,action=NEW.reason,
+                            actor_id=NULL,client_id=NULL,request_hash=NULL WHERE release_id=OLD.release_id;
+                    END;
+                    CREATE TRIGGER knowledge_publication_delete BEFORE DELETE ON knowledge_publications
+                    BEGIN
+                        UPDATE knowledge_live SET release_id=NULL,revision=revision+1,action='publication_deleted',
+                            actor_id=NULL,client_id=NULL,request_hash=NULL WHERE release_id=OLD.release_id;
+                    END;
+                    CREATE TRIGGER knowledge_publication_reviewer_update AFTER UPDATE ON knowledge_reviewers
+                        WHEN NEW.revision!=OLD.revision OR NEW.enabled=0
+                    BEGIN
+                        UPDATE knowledge_releases SET status='invalidated',reason='approver_changed',report='{}',actor_id=NULL,
+                            version=version+1,updated_at=CURRENT_TIMESTAMP WHERE status IN ('registered','blocked') AND id IN (
+                                SELECT release_id FROM knowledge_publications WHERE approver_id=OLD.user_id AND state='approved');
+                    END;
+                    CREATE TRIGGER knowledge_publication_reviewer_delete BEFORE DELETE ON knowledge_reviewers
+                    BEGIN
+                        UPDATE knowledge_releases SET status='invalidated',reason='approver_changed',report='{}',actor_id=NULL,
+                            version=version+1,updated_at=CURRENT_TIMESTAMP WHERE status IN ('registered','blocked') AND id IN (
+                                SELECT release_id FROM knowledge_publications WHERE approver_id=OLD.user_id AND state='approved');
+                    END;
+                    CREATE TRIGGER knowledge_publication_account_delete BEFORE DELETE ON users
+                    BEGIN
+                        UPDATE knowledge_releases SET status='invalidated',reason='approver_changed',report='{}',actor_id=NULL,
+                            version=version+1,updated_at=CURRENT_TIMESTAMP WHERE status IN ('registered','blocked') AND id IN (
+                                SELECT release_id FROM knowledge_publications WHERE approver_id=OLD.id AND state='approved');
+                    END;
+                    PRAGMA user_version = 22;
                     COMMIT;
                 """)

@@ -216,7 +216,7 @@ def test_restart_uses_persisted_document_vectors_and_authenticated_quota(hybrid_
     restarted_provider = FakeEmbedding(provider.identity)
     monkeypatch.setattr(embedding_module, "QwenEmbeddingProvider", lambda _: restarted_provider)
     restarted_app = create_app(app.state.settings)
-    assert isinstance(restarted_app.state.knowledge, HybridKnowledgeRetriever)
+    assert isinstance(restarted_app.state.knowledge.governance_base, HybridKnowledgeRetriever)
     with TestClient(restarted_app) as restarted:
         restarted.cookies.update(client.cookies)
         assert restarted.get("/api/knowledge").json()["vector_status"] == "ready"

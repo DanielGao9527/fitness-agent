@@ -1,0 +1,109 @@
+{
+  "date": "2026-10-15",
+  "scope": "E4b.2b.2 manual quality-bound approval, atomic activation/rollback and read-time evidence revocation",
+  "initial_broad_suite": {
+    "tests": 2005,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "initial_failure": "Old test introspected index_path directly on a new adapter; test updated to inspect the governance base, privacy assertions retained.",
+  "knowledge_followup": {
+    "tests": 38,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "final_targeted_suite": {
+    "tests": 304,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "final_publication_suite_with_coverage_floor": {
+    "tests": 24,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "additional_gate_cases": {
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "query_budget_failure_receipt_case": {
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "batches_overlap_not_summed": true,
+  "final_full_single_run_passed": false,
+  "frontend_unit_suites_passed": 13,
+  "final_browser_flows": [
+    "knowledge-builds --publication",
+    "knowledge-review",
+    "knowledge-workbench"
+  ],
+  "browser_widths": [
+    1440,
+    390,
+    320
+  ],
+  "visual_390_inspection_completed": true,
+  "browser_quality_inputs": "explicitly synthetic protocol and vectors in standalone fixture; not real semantic review",
+  "real_provider_calls": 0,
+  "existing_public_query_vectors_reused": 87,
+  "public_query_identity_dimensions_and_question_hash_verified": true,
+  "production_label_review_status": "pending_review",
+  "independent_semantic_quality_acceptance_completed": false,
+  "generated_answer_accuracy_evaluated": false,
+  "quality_floor": {
+    "mean_recall6": 0.8,
+    "status": "predeclared acceptance threshold, not measured result"
+  },
+  "engineering_pipeline_implemented": true,
+  "actual_candidate_publications_created": 0,
+  "actual_accounts_granted_reviewer_role": 0,
+  "local_activation": {
+    "schema_before": 21,
+    "schema_after": 22,
+    "tables_after": 38,
+    "original_tables_all_fields_preserved_after_startup": 35,
+    "backup_upgrade_and_recovery_rehearsal_passed": true,
+    "pointer_release_id": null,
+    "pointer_revision": 0,
+    "stage": "e4b2b2-knowledge-publication-v22",
+    "all_38_tables_preserved_after_final_reload": true
+  },
+  "public_deployment_performed": false,
+  "source_hashes": {
+    "app.py": "671d1687bb40aa750dbfee859902e3cde8ba6feaec9b6a5c55664d4a09b8fbc1",
+    "database.py": "11cb782b09f54b314c3d42ba7dab14fa2693bf60d1a059a33a6386c45e32d896",
+    "api/knowledge_workbench.py": "7f97e49264bc9441d1d03a1f86225f0b3258f996d6fd1e27526e181781af8174",
+    "api/knowledge.py": "c2e0411368d7dcc9efdfadacf1d04fd97e7b160ff84f919071565a7a610f9170",
+    "api/routes.py": "53fd06b66d0fb94251939e09793b344817672b9027d56c3227388755ada75cc2",
+    "schemas.py": "b6404d616d2d19231da952121206e4c51f82451edc1626f9e2d6278d3501c7f3",
+    "services/knowledge_publications.py": "c97279022ac7578f4bca769c14b3214aad0b9d94d0437bcc9b1da7d1d80d81a6",
+    "services/knowledge_releases.py": "1dfb8ac62e440d7a78ec90ef0c69149620e21b13d3cf5b80b834bc5571b8254e",
+    "services/knowledge_quality.py": "ca7032179afa05e4745672dec9a430baf650c52c2a04f177420276911199b932",
+    "services/knowledge_runtime.py": "7d110139a2fed015cf9e8364cc919cf91eab60fc58a60f97e7b1bfb78b509c4c",
+    "services/knowledge_answers.py": "4097e6fef3b08a303cde54f39f19050d95cd7925edd6852c0145290e46b087ae",
+    "services/coach_knowledge.py": "959a5a35a5fdcfe709a8e5c9e2a259e9f77133243986ce359464e5429d7f7092",
+    "services/backups.py": "994fe6c5e16aff29e7c8abe08625ac9c489cd098b1f0e8b5cbb75c318581592a",
+    "scripts/prepare_release_queries.py": "516dee2bb0b26dfae696de678421ccee0fc5f7e3430d8f65459f5e6eafa0f5f0",
+    "static/knowledge-review.js": "0060abadae9bd13031d3ad5c21854866946bfdb23b89524df5ce68b6c5e9a0ad",
+    "static/index.html": "eef626ecea5a1724423e36ea183fe858fa1942d1de931d7b939b879fe7961dd2",
+    "evals/release_quality/v1/manifest.json": "540a57cf8ba1c61b140a71b34a8ee638373566a1824d395fce05e4186ddfea7b"
+  },
+  "public_version_validity": "Source review windows and live bindings, not an arbitrary same-day build lease; cross-day check passed.",
+  "existing_public_document_vectors_verified": 133,
+  "final_lifecycle_suite": {
+    "tests": 83,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "final_publication_cases_in_lifecycle_suite": 28
+}

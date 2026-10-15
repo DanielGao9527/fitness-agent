@@ -40,6 +40,7 @@ class FrozenKnowledge(LocalKnowledgeRetriever):
 
 class KnowledgeBuilds:
     def __init__(self, database, user_id, retriever, settings, lock):
+        retriever = getattr(retriever, "governance_base", retriever)
         self.database, self.user_id, self.retriever = database, user_id, retriever
         self.settings, self.lock = settings, lock
         self.review = KnowledgeReview(database, user_id, retriever)
@@ -216,7 +217,7 @@ class KnowledgeBuilds:
                 try:
                     _, base_hash, corpus_hash, _, _ = self._snapshot(requested)
                     stale = (base_hash != manifest["base_source_hash"] or corpus_hash != manifest["review_corpus_hash"]
-                             or business_today().isoformat() != manifest["date"])
+                             or business_today().isoformat() < manifest["date"])
                 except KnowledgeUnavailable:
                     stale, unavailable = True, True
                 except HTTPException as error:
@@ -239,7 +240,7 @@ class KnowledgeBuilds:
                 manifest, report = self._verify(destination)
                 if manifest["request_hash"] != request_hash:
                     raise HTTPException(409, "构建标识已用于其他内容，请重新核对。")
-                stale = manifest["base_source_hash"] != base_hash or manifest["review_corpus_hash"] != corpus_hash or manifest["date"] != business_today().isoformat()
+                stale = manifest["base_source_hash"] != base_hash or manifest["review_corpus_hash"] != corpus_hash or manifest["date"] > business_today().isoformat()
                 return self._view(manifest, report, stale=stale)
             self.root.mkdir(parents=True, exist_ok=True)
             if sum(path.is_dir() and not path.name.startswith("staging-") for path in self.root.iterdir()) >= 20:

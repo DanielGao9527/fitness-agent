@@ -91,6 +91,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         provider = QwenEmbeddingProvider(settings) if settings.qwen_api_key else None
         application.state.knowledge = HybridKnowledgeRetriever(lexical, provider, VectorStore(vector_path))
 
+    from services.knowledge_runtime import PublishedKnowledge
+    application.state.knowledge = PublishedKnowledge(database, application.state.knowledge, settings,
+                                                   application.state.knowledge_build_lock)
+
     @application.exception_handler(RequestValidationError)
     async def validation_error(request: Request, error: RequestValidationError):
         # Omit submitted values: validation responses must not echo passwords.

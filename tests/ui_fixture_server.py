@@ -241,12 +241,37 @@ if "--knowledge-build" in sys.argv:
             return [[1.0, 0.0] for _ in texts]
     provider = FixtureEmbedding()
     store = VectorStore(fixture_path.parent / "ui-build-vectors.sqlite3")
-    store.build(app.state.knowledge, provider)
+    base = getattr(app.state.knowledge, "governance_base", app.state.knowledge)
+    store.build(base, provider)
     # Existing chat stays lexical; these vectors only exercise local build mechanics.
     class FixtureCachedRetriever(HybridKnowledgeRetriever):
         def search_snapshot(self, *args, **kwargs):
             return self.lexical.search_snapshot(*args, **kwargs)
-    app.state.knowledge = FixtureCachedRetriever(app.state.knowledge, provider, store)
+    app.state.knowledge = FixtureCachedRetriever(base, provider, store)
+
+if "--knowledge-publish" in sys.argv:
+    # Standalone test server only: explicitly synthetic labels/vectors, never a production setting.
+    import hashlib
+    from services import knowledge_quality
+    from services.knowledge_runtime import PublishedKnowledge
+    from services.knowledge_feedback import encode
+    fixture_quality = ROOT / "artifacts/ui-publication-quality"
+    fixture_quality.mkdir(exist_ok=True)
+    case = {"id":"ui-synthetic-case","group_id":"ui-synthetic","split":"test","answerable":True,
+            "question":"营养标签 两份","relevant_chunk_ids":["fda-label:servings"]}
+    raw = (encode(case)+"\n").encode()
+    (fixture_quality/"cases.jsonl").write_bytes(raw)
+    (fixture_quality/"manifest.json").write_text(encode({"policy":knowledge_quality.POLICY,"dataset":"cases.jsonl",
+        "dataset_sha256":hashlib.sha256(raw).hexdigest(),"split":"test","review_status":"reviewed",
+        "label_review_sha256":"1"*64,"candidate_limit":20,"rrf_k":60,"limit":10,"min_mean_recall6":0.8}),encoding="utf-8")
+    knowledge_quality.ROOT = fixture_quality
+    knowledge_quality.PROTOCOL_PATH = fixture_quality/"manifest.json"
+    cache_dir = fixture_path.parent/"release-evaluation";cache_dir.mkdir(exist_ok=True)
+    cache = knowledge_quality.cache_path(cache_dir,provider,[case])
+    cache.write_text(json.dumps({"manifest":{"identity":provider.identity,"dimensions":provider.dimensions,
+        "questions":hashlib.sha256(json.dumps([case["question"]],ensure_ascii=False).encode()).hexdigest()},
+        "vectors":[[1.0,0.0]]}),encoding="utf-8")
+    app.state.knowledge = PublishedKnowledge(app.state.database,app.state.knowledge,app.state.settings,app.state.knowledge_build_lock)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8772 if facts_mode else 8771 if memory_mode else 8767, access_log=False)

@@ -7,11 +7,13 @@ from api.routes import User
 from rag.rag_service import KnowledgeUnavailable
 from schemas import (KnowledgeFeedbackCreate, KnowledgeCandidateCreate, KnowledgeCandidateUpdate,
                      KnowledgeCandidateReject, KnowledgeWorkbenchVersion, KnowledgeReviewSubmit,
-                     KnowledgeReviewApprove, KnowledgeReviewReject, KnowledgeBuildCreate, KnowledgeReleaseRegister)
+                     KnowledgeReviewApprove, KnowledgeReviewReject, KnowledgeBuildCreate, KnowledgeReleaseRegister,
+                     KnowledgePublicationApprove, KnowledgeLiveSwitch)
 from services.knowledge_feedback import KnowledgeWorkbench
 from services.knowledge_review import KnowledgeReview
 from services.knowledge_builds import KnowledgeBuilds
 from services.knowledge_releases import KnowledgeReleases
+from services.knowledge_publications import KnowledgePublications
 from rag.vector_store import VectorCacheUnavailable
 
 router = APIRouter(prefix="/api/knowledge-workbench")
@@ -44,7 +46,7 @@ def run_build(operation):
 
 
 def release_service(request, user):
-    return KnowledgeReleases(request.app.state.database, user["id"], request.app.state.knowledge,
+    return KnowledgePublications(request.app.state.database, user["id"], request.app.state.knowledge,
                              request.app.state.settings, request.app.state.knowledge_build_lock)
 
 
@@ -171,3 +173,18 @@ def check_release(identifier: UUID, body: KnowledgeWorkbenchVersion, request: Re
 @router.post("/releases/{identifier}/withdraw")
 def withdraw_release(identifier: UUID, body: KnowledgeWorkbenchVersion, request: Request, user: User):
     return release_service(request, user).withdraw(identifier, body)
+
+
+@router.post("/releases/{identifier}/approve")
+def approve_release(identifier: UUID, body: KnowledgePublicationApprove, request: Request, user: User):
+    return run_build(lambda: release_service(request, user).approve(identifier, body))
+
+
+@router.get("/live")
+def live_release(request: Request, user: User):
+    return run_build(lambda: release_service(request, user).live())
+
+
+@router.post("/live/switch")
+def switch_release(body: KnowledgeLiveSwitch, request: Request, user: User):
+    return run_build(lambda: release_service(request, user).switch(body))

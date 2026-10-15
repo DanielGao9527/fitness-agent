@@ -129,4 +129,8 @@ python scripts/evaluate_t2_pilot.py --live --max-calls 120 --max-input-chars 150
 
 ## 公共摘录审核角色
 
-scripts/knowledge_reviewer.py 只在本机私密终端显式 grant/revoke 已有正式账号的公共摘录预审权限，要求已有 v20/v21 私人库的绝对路径。没有网页自授角色，不创建新账号，不发布知识；撤销会失效该审核人旧预审。命令与原库迁移见 [OPERATIONS](../docs/OPERATIONS.md#公共摘录审核权限)。本轮未自动选择或提权实际账号。
+scripts/knowledge_reviewer.py 只在本机私密终端显式 grant/revoke 已有正式账号的公共摘录预审权限，要求已有 v20/v21/v22 私人库的绝对路径。没有网页自授角色，不创建新账号，不发布知识；撤销会失效该审核人旧预审。命令与原库迁移见 [OPERATIONS](../docs/OPERATIONS.md#公共摘录审核权限)。本轮未自动选择或提权实际账号。
+
+## 发布问题编码准备
+
+scripts/prepare_release_queries.py --database <已有私人库绝对路径> 默认只显示计划，provider_calls=0。独立标签复核完成后才允许 --live，且必须明确 --max-calls 和 --max-input-chars；只编码固定公开问题，绝不编码私人记录或自动建文档库。失败保存无正文尝试凭据，不自动续跑；新预算重试需显式确认旧尝试。详见 [发布质量协议](../evals/release_quality/v1/README.md)。

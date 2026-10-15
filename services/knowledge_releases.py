@@ -14,10 +14,11 @@ from services.knowledge_build_gate import PROTOCOL_PATH
 from services.knowledge_builds import KnowledgeBuilds, digest
 from services.knowledge_feedback import encode, signature
 from services.knowledge_review import reviewer
+from services import knowledge_quality
 
 POLICY = "knowledge-release-readiness-v1"
 ACTIVE = ("registered", "blocked")
-PENDING = ("independent_semantic_quality", "hybrid_ranking_quality", "activation_and_rollback")
+PENDING = ("independent_semantic_quality", "hybrid_ranking_quality")
 
 
 class StalePackage(ValueError):
@@ -26,9 +27,11 @@ class StalePackage(ValueError):
 
 class KnowledgeReleases:
     def __init__(self, database, user_id, retriever, settings, lock):
+        retriever = getattr(retriever, "governance_base", retriever)
         self.database, self.user_id, self.lock = database, user_id, lock
         self.builds = KnowledgeBuilds(database, user_id, retriever, settings, lock)
         self.review = self.builds.review
+        self.cache_directory = database.path.resolve().parent / "release-evaluation"
 
     @staticmethod
     def _row(connection, identifier):
@@ -60,7 +63,7 @@ class KnowledgeReleases:
             manifest, report = self.builds._verify(directory)
         except sqlite3.Error:
             raise StalePackage("package_changed") from None
-        if manifest["date"] != business_today().isoformat() or report["protocol_sha256"] != digest(PROTOCOL_PATH):
+        if manifest["date"] > business_today().isoformat() or report["protocol_sha256"] != digest(PROTOCOL_PATH):
             raise StalePackage("protocol_or_date_changed")
         try:
             raw = self.builds.lexical.source_path.read_bytes()
@@ -83,7 +86,7 @@ class KnowledgeReleases:
             raise StalePackage("package_changed")
         # Recheck after reading all artifacts; the shared lock also serializes local build operations.
         if (digest(directory / "manifest.json") != expected_hash or raw != self.builds.lexical.source_path.read_bytes()
-                or self.review._catalog()[1] != corpus_hash or manifest["date"] != business_today().isoformat()):
+                or self.review._catalog()[1] != corpus_hash or manifest["date"] > business_today().isoformat()):
             raise StalePackage("sources_changed")
         return manifest, report
 
@@ -103,6 +106,9 @@ class KnowledgeReleases:
             return row, False
         try:
             self._current(connection, row)
+            report = json.loads(row["report"])
+            if report.get("passed") is True and not knowledge_quality.current(report, self.cache_directory, self.builds.retriever):
+                raise StalePackage("quality_or_approval_changed")
             return row, False
         except KnowledgeUnavailable:
             return row, True  # Temporary outage is not evidence that consent was revoked.
@@ -118,8 +124,14 @@ class KnowledgeReleases:
     def _view(connection, row, *, unavailable=False):
         # No actor, owner, feedback, conversation, private notes, or caller-supplied text.
         result = {key: row[key] for key in ("id", "manifest_hash", "status", "version", "reason", "created_at", "updated_at")}
-        result.update(published=False, publication_allowed=False, source_unavailable=unavailable,
-                      pending_checks=list(PENDING), report=json.loads(row["report"]))
+        report = json.loads(row["report"])
+        approval = connection.execute("SELECT state,version,created_at FROM knowledge_publications WHERE release_id=?", (row["id"],)).fetchone()
+        live = connection.execute("SELECT release_id FROM knowledge_live WHERE id=1").fetchone()
+        result.update(published=bool(live and live[0] == row["id"] and approval and approval["state"] == "approved"),
+                      publication_allowed=False, source_unavailable=unavailable,
+                      can_approve=not approval and row["status"] in ACTIVE and report.get("passed") is True and not unavailable,
+                      approval=dict(approval) if approval else None,
+                      pending_checks=report.get("blockers", list(PENDING)), report=report)
         result["events"] = [dict(event) for event in connection.execute(
             "SELECT version,action,created_at FROM knowledge_release_events WHERE release_id=? ORDER BY version", (row["id"],))]
         return result
@@ -168,24 +180,40 @@ class KnowledgeReleases:
             return self._view(connection, self._row(connection, identifier))
 
     def check(self, identifier, body):
-        with self.lock, self.database.connect() as connection:
-            connection.execute("BEGIN IMMEDIATE")
-            self.review._require_reviewer(connection)
-            row = self._row(connection, identifier)
-            self.review.workbench._version(row, body.version)
-            row, unavailable = self._refresh(connection, row)
-            if unavailable:
-                raise KnowledgeUnavailable("Public sources temporarily unavailable")
-            if row["status"] not in ACTIVE:
-                raise HTTPException(409, "该登记已撤回或失效，不能继续检查或发布。")
-            report = {"policy": POLICY, "manifest_sha256": row["manifest_hash"], "build_protocol_sha256": digest(PROTOCOL_PATH),
-                "engineering_checks": {"package_integrity": True, "source_composition": True, "live_pre_reviews": True,
-                                       "cache_coverage": True, "development_lexical_regression": True},
-                "independent_semantic_quality": "not_evaluated", "hybrid_ranking_quality": "not_evaluated",
-                "blockers": list(PENDING), "publication_allowed": False, "real_provider_calls": 0}
+        with self.lock:
+            with self.database.connect() as connection:
+                connection.execute("BEGIN IMMEDIATE")
+                role_revision = self.review._require_reviewer(connection)
+                row = self._row(connection, identifier)
+                self.review.workbench._version(row, body.version)
+                row, unavailable = self._refresh(connection, row)
+                if unavailable:
+                    raise KnowledgeUnavailable("Public sources temporarily unavailable")
+                if row["status"] not in ACTIVE or connection.execute("SELECT 1 FROM knowledge_publications WHERE release_id=?", (row["id"],)).fetchone():
+                    raise HTTPException(409, "该登记已结束或已批准；请使用新构建重新评测。")
+                manifest, _ = self._current(connection, row)
+            # Rankings never hold the private record database's write transaction.
+            from services.knowledge_builds import FrozenKnowledge
+            report = knowledge_quality.evaluate(self.builds.retriever,
+                FrozenKnowledge(self.builds._child(row["id"]), manifest["tokenizer"]), manifest, self.cache_directory, business_today())
+            report.update(manifest_sha256=row["manifest_hash"], build_protocol_sha256=digest(PROTOCOL_PATH),
+                engineering_checks={"package_integrity": True, "source_composition": True, "live_pre_reviews": True,
+                                    "cache_coverage": True, "development_lexical_regression": True}, publication_allowed=False)
             report["binding_hash"] = signature({"release_id": row["id"], "release_version": row["version"] + 1, "report": report})
-            row = self._set(connection, row, "blocked", "quality_acceptance_missing", report, actor=self.user_id)
-            return self._view(connection, row)
+            with self.database.connect() as connection:
+                connection.execute("BEGIN IMMEDIATE")
+                if self.review._require_reviewer(connection) != role_revision:
+                    raise HTTPException(409, "检查期间审核权限变化，未保留报告。")
+                current = self._row(connection, identifier)
+                self.review.workbench._version(current, row["version"])
+                current, unavailable = self._refresh(connection, current)
+                if unavailable or current["status"] not in ACTIVE:
+                    raise HTTPException(409, "评测期间来源或登记变化，未批准。")
+                if report["protocol_sha256"] != knowledge_quality.protocol()[1]:
+                    raise HTTPException(409, "评测协议变化，请重新检查。")
+                row = self._set(connection, current, "registered" if report["passed"] else "blocked",
+                    "quality_passed" if report["passed"] else "quality_acceptance_missing", report, actor=self.user_id)
+                return self._view(connection, row)
 
     def withdraw(self, identifier, body):
         with self.lock, self.database.connect() as connection:

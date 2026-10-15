@@ -52,7 +52,8 @@ def retrieve_candidates(question, retriever):
 def public_retrieval_metadata(metadata):
     """Only operational metadata belongs in an answer, never raw queries or vectors."""
     keys = {"mode", "requested_mode", "tokenizer", "corpus_version", "corpus_hash", "text_template",
-            "embedding_identity", "embedding_called", "dimensions", "degraded", "reason", "candidate_limit", "rrf_k"}
+            "embedding_identity", "embedding_called", "dimensions", "degraded", "reason", "candidate_limit", "rrf_k",
+            "release_revision", "release_id"}
     public = {key: value for key, value in metadata.items()
               if key in keys and isinstance(value, (str, int, float, bool))}
     rank_keys = {"chunk_id", "lexical_rank", "dense_rank", "rrf_score", "content_hash"}
@@ -184,6 +185,8 @@ def _answer_question(question, retriever, records, model_factory, model_name, ca
             raise ModelError("MODEL_INVALID_OUTPUT", "回答引用了本次检索之外的资料，已停止展示。")
         deadline.remaining()
         started = deadline.clock()
+        if hasattr(retriever, "valid_snapshot") and not retriever.valid_snapshot(retrieval):
+            raise ModelError("KNOWLEDGE_CHANGED", "回答期间知识版本已切换，请重新提问。", 409)
         current = {hit.chunk_id: hit for hit in retriever.get_chunks(selected.chunk_ids)}
         attempt["source_check_ms"] = round(max(0, deadline.clock() - started) * 1000, 3)
         deadline.remaining()
