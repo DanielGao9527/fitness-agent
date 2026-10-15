@@ -8,6 +8,8 @@
 
 Linux 服务、日志和自动更新命令见 [deploy/README.md](../deploy/README.md)。修改环境变量后重新启动服务；不要仅因页面可打开就宣布模型网络连通。
 
+2026-10-15 原 qwen3.7-plus 的极小请求返回 403 / AllocationQuota.FreeTierOnly。该码表示受“免费额度用完即停”限制，不代表账户余额为零，也不能归成密钥错误。用户提供其他型号额度后，本机 FITNESS_QWEN_MODEL 与 FITNESS_QWEN_VISION_MODEL 已配置为 qwen3.6-plus，文字调用已验证；照片/语音未做本轮真实验收。文字、视觉和向量型号的免费额度不能视为通用余额。若日后决定对原型号转按量付费，需本人核对账户计费状态及该开关，单独充值未必解除限制，见 [阿里云模型用量文档](https://help.aliyun.com/zh/model-studio/model-usage-statistics)。没有替用户充值、购买或变更云端计费开关。
+
 ## 私密创建账号
 
 共享服务保持 `FITNESS_REGISTRATION_ENABLED=false`。首次正常启动服务生成空数据库后，在自己的 SSH 或云控制台交互终端执行：

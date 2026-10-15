@@ -2,6 +2,8 @@
 
 应用从进程环境变量读取配置，**不会自动加载 `.env`**。[.env.example](../.env.example) 仅列出配置示例，不包含真实密钥。修改服务环境后需要重新启动对应服务。
 
+本机 2026-10-15 使用用户专用环境配置：`FITNESS_QWEN_MODEL=qwen3.6-plus`、`FITNESS_QWEN_VISION_MODEL=qwen3.6-plus`；源码默认型号没有因此改名。文字模型与 `text-embedding-v4` 查询编码已真实联调；照片/语音仍待本轮真实验收。原 `qwen3.7-plus` 遇到 FreeTierOnly 限制，各模型免费额度不能互用，见 [实际记录](../evals/results/real-acceptance-qwen36-2026-10-15.json)。
+
 ## 无密钥运行
 
 默认 `FITNESS_MODEL_PROVIDER=disabled`、`FITNESS_RETRIEVAL_MODE=hybrid`、`FITNESS_RETRIEVAL_TOKENIZER=jieba`。没有 Key 时，知识查询明确退到 jieba 词法；账号、档案和手动饮食/训练/体测记录仍可使用。依赖 AI 的功能返回未配置状态。启动、健康检查不会调用付费向量服务。不要为自动测试配置真实模型 Key。
@@ -25,7 +27,7 @@
 | `FITNESS_AI_USER_DAILY_LIMIT` | 每个账号每日尝试次数上限 |
 | `FITNESS_AI_GLOBAL_DAILY_LIMIT` | 全服务每日尝试次数上限 |
 
-共享模式缺少 HTTPS、匹配主机或安全 Cookie 时拒绝启动。注册与游客可独立开关；关闭注册不影响已有账号登录。公网注册沿用持久化频率限制，游客另有创建频率限制和模型额度，不替代网关层防滥用。当前代码运行时要求私人库 v17；发布器对旧 v14/v15/v16 库会先拒绝切换，须按[运行与恢复](OPERATIONS.md)完成离线维护迁移，v13 库另参考[账号与游客](ACCOUNTS.md)，不能只修改环境变量。
+共享模式缺少 HTTPS、匹配主机或安全 Cookie 时拒绝启动。注册与游客可独立开关；关闭注册不影响已有账号登录。公网注册沿用持久化频率限制，游客另有创建频率限制和模型额度，不替代网关层防滥用。当前代码运行时要求私人库 v22；发布器对旧 v14–v21 库会先拒绝切换，须按[运行与恢复](OPERATIONS.md)完成离线维护迁移，v13 库另参考[账号与游客](ACCOUNTS.md)，不能只修改环境变量。
 
 ## 独立能力开关
 

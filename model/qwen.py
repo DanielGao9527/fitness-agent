@@ -21,6 +21,7 @@ def provider_error(response):
         "Arrearage": "billing", "AllocationQuota.FreeTierOnly": "billing",
     }
     category = "unknown"
+    code = None
     try:
         body = response.json()
         error = body.get("error", body) if isinstance(body, dict) else {}
@@ -31,14 +32,17 @@ def provider_error(response):
     status = response.status_code
     incident = uuid4().hex[:12]
     logger.warning("qwen_failure incident=%s http=%s category=%s", incident, status, category)
-    if status in (401, 403):
+    if category == "billing" or status == 402:
+        message = ("千问免费额度已用完或到期，且限制为仅使用免费额度；请在百炼核对该模型额度与‘免费额度用完即停’设置。"
+                   if code == "AllocationQuota.FreeTierOnly" else
+                   "千问账户额度或计费状态限制了调用，请检查百炼账户。")
+        code, public_status = "MODEL_BILLING_ERROR", 503
+    elif status in (401, 403):
         code, message, public_status = "MODEL_AUTH_ERROR", "千问鉴权失败，请检查密钥、地域和模型权限。", 503
     elif status == 429:
         code, message, public_status = "MODEL_RATE_LIMITED", "千问调用受限，请检查额度或稍后重试。", 429
     elif status >= 500 or status in (408, 504):
         code, message, public_status = "MODEL_UPSTREAM_ERROR", "千问服务暂时异常，请稍后重试；本次未获得估算结果，输入已保留。", 502
-    elif category == "billing" or status == 402:
-        code, message, public_status = "MODEL_BILLING_ERROR", "千问账户额度或计费状态限制了调用，请检查百炼账户。", 503
     elif category == "content":
         code, message, public_status = "MODEL_CONTENT_REJECTED", "千问未接受本次内容，请核对描述；输入已保留。", 502
     elif category == "model" or status == 404:

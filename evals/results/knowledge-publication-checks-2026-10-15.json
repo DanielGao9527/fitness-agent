@@ -95,7 +95,8 @@
     "scripts/prepare_release_queries.py": "516dee2bb0b26dfae696de678421ccee0fc5f7e3430d8f65459f5e6eafa0f5f0",
     "static/knowledge-review.js": "0060abadae9bd13031d3ad5c21854866946bfdb23b89524df5ce68b6c5e9a0ad",
     "static/index.html": "eef626ecea5a1724423e36ea183fe858fa1942d1de931d7b939b879fe7961dd2",
-    "evals/release_quality/v1/manifest.json": "540a57cf8ba1c61b140a71b34a8ee638373566a1824d395fce05e4186ddfea7b"
+    "evals/release_quality/v1/manifest.json": "540a57cf8ba1c61b140a71b34a8ee638373566a1824d395fce05e4186ddfea7b",
+    "model/qwen.py": "03824ad2be5e06a882dbb1964b6ed7045bcb43eb7a2d608f4ef8d9ea2b13ebd4"
   },
   "public_version_validity": "Source review windows and live bindings, not an arbitrary same-day build lease; cross-day check passed.",
   "existing_public_document_vectors_verified": 133,
@@ -105,5 +106,28 @@
     "errors": 0,
     "skipped": 0
   },
-  "final_publication_cases_in_lifecycle_suite": 28
+  "final_publication_cases_in_lifecycle_suite": 28,
+  "final_default_application_single_run_passed": true,
+  "final_application_suite": {
+    "tests": 1984,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "duration_seconds": 1602.216,
+    "command": "python -m pytest tests -q --junitxml=artifacts/final-full-suite-20261015.xml",
+    "checked_at": "2026-10-15T11:13:01.097073+00:00",
+    "provider_requests": 0,
+    "tests_use_isolated_data_and_provider_doubles": true
+  },
+  "real_provider_calls_scope": "publication engineering only; separate availability and Qwen3.6 smoke acceptance counted 9 attempts",
+  "final_publisher_suite": {
+    "tests": 36,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "command": "python -m pytest deploy/tests -q",
+    "provider_requests": 0
+  },
+  "final_execution_scope": "Configured default application suite and publisher suite each passed on the same code; separate invocations, never summed into one whole-repository run.",
+  "billing_offline_error_cases_passed": 5
 }

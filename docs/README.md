@@ -37,4 +37,4 @@
 
 最新接续点为固定第 2 步：已有记忆/检索真实验收，之后只做最终交付；E2/E3 真实质量验收仍按前置条件推进，结果以 STATUS 为准。
 
-10 月 15 日已恢复推送 E4a 至 1282cab；E4b.1 功能提交 7472beb 和本轮 E4b.2a 功能提交 6bf6bc8 均已推送；本轮 E4b.2b.1 功能提交 [321092b](https://github.com/DanielGao9527/fitness-agent/commit/321092b) 已推送；本机 v21 激活及验证见 EXECUTION。
+质量门禁、批准、切换和回滚工程已推送 [23eecf3](https://github.com/DanielGao9527/fitness-agent/commit/23eecf3)，本机已运行 v22。原型号 FreeTierOnly 已定位，现使用用户有额度的 qwen3.6-plus；文字/向量与记忆小场景已联调，总计 9/20 次尝试，见 [真实结果](../evals/results/real-acceptance-qwen36-2026-10-15.json)。

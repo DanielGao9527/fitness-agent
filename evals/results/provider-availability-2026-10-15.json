@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-15",
+  "scope": "bounded real-provider availability check before memory and knowledge acceptance",
+  "model": "qwen3.7-plus",
+  "authorized_max_request_attempts": 20,
+  "request_attempts_counted": 2,
+  "first_application_attempt": "inconclusive; old helper did not retain the failure category",
+  "second_minimal_diagnostic": {
+    "supplier_http": 403,
+    "supplier_code": "AllocationQuota.FreeTierOnly",
+    "application_code_at_probe": "MODEL_AUTH_ERROR",
+    "result": "provider refused the call under free-tier-only billing restriction"
+  },
+  "remaining_checks": {
+    "three_original_knowledge_questions": "not_run",
+    "complete_memory_chain": "not_completed",
+    "embedding_service": "not_tested",
+    "answer_quality_or_improvement": "not_evaluated"
+  },
+  "further_provider_requests_stopped": true,
+  "automatic_retry_loop": false,
+  "exact_account_balance_read": false,
+  "actual_record_database_modified": false,
+  "official_explanation": "https://help.aliyun.com/zh/model-studio/model-usage-statistics",
+  "followup_fix": "Recognized billing errors, including HTTP 403 FreeTierOnly/Arrearage, map to MODEL_BILLING_ERROR before generic authentication handling. No cloud call is needed to verify the classification.",
+  "followup": {
+    "user_supplied_available_model": "qwen3.6-plus",
+    "text_and_embedding_reachable": true,
+    "total_counted_attempts": 9,
+    "report": "real-acceptance-qwen36-2026-10-15.json"
+  }
+}

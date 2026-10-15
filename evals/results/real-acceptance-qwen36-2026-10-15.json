@@ -1,0 +1,104 @@
+{
+  "date": "2026-10-15",
+  "scope": "small isolated real-provider acceptance after user supplied available model quota",
+  "source_commit_base": "23eecf3",
+  "text_model": "qwen3.6-plus",
+  "embedding_model": "text-embedding-v4",
+  "provider_responses": {
+    "text": 4,
+    "embedding": 3,
+    "failures": 0
+  },
+  "budget": {
+    "authorized_total_attempts": 20,
+    "previous_attempts": 2,
+    "this_run_attempts": 7,
+    "total_counted_attempts": 9,
+    "additional_calls_planned_now": 0
+  },
+  "real_memory_chain": {
+    "case": "cross_session_equipment",
+    "review_status": "ready",
+    "memory_scope": "long_term",
+    "passed": true,
+    "first_status": "ready",
+    "first_exercises": [
+      "floor-press",
+      "lateral-raise",
+      "triceps-extension"
+    ],
+    "corrected_status": "ready",
+    "corrected_exercises": [
+      "pushup"
+    ],
+    "stale_old_recommendation": true,
+    "stale_history_hits": 0
+  },
+  "memory_values": "synthetic confirmed dumbbells -> new-session recommendation -> profile corrected to bodyweight -> old recommendation stale and zero old-history hits -> bodyweight-only recommendation",
+  "training_generation": "existing constrained local rules; real model only parsed the equipment claim",
+  "knowledge_cases": [
+    {
+      "question": "力量训练一般一周做几次",
+      "route": "knowledge",
+      "status": "answered",
+      "source_ids": [
+        "cdc-adults:strength",
+        "acsm-2026:programming"
+      ],
+      "hybrid_degraded": false,
+      "rounds": 1,
+      "elapsed_ms": 5328.0,
+      "stop_reason": "answered",
+      "review": "coding agent inspected returned public extracts; not independent blinded evaluation",
+      "result": "extract_directly_answers_question"
+    },
+    {
+      "question": "哪些食物含蛋白质",
+      "route": "knowledge",
+      "status": "answered",
+      "source_ids": [
+        "phe-eatwell:protein"
+      ],
+      "hybrid_degraded": false,
+      "rounds": 1,
+      "elapsed_ms": 6000.0,
+      "stop_reason": "answered",
+      "review": "coding agent inspected returned public extracts; not independent blinded evaluation",
+      "result": "extract_directly_answers_question"
+    },
+    {
+      "question": "蛋白质一天吃多少",
+      "route": "knowledge",
+      "status": "insufficient",
+      "source_ids": [],
+      "hybrid_degraded": false,
+      "rounds": 1,
+      "elapsed_ms": 5281.0,
+      "stop_reason": "rewrite_rejected",
+      "review": "coding agent inspected returned public extracts; not independent blinded evaluation",
+      "result": "safe_insufficient_no_numeric_answer"
+    }
+  ],
+  "numeric_protein_question_answered": false,
+  "independent_labels_reviewed": false,
+  "benchmark_improvement_evaluated": false,
+  "publication_quality_protocol_still_pending_review": true,
+  "exact_account_balance_read": false,
+  "actual_user_database_tables_preserved": 38,
+  "local_runtime_text_model": "qwen3.6-plus",
+  "local_runtime_vision_model": "qwen3.6-plus",
+  "vision_and_asr_real_acceptance": "not_run",
+  "cloud_billing_settings_changed": false,
+  "public_deployment_performed": false,
+  "cleanup": {
+    "initial_temporary_directory_cleanup_error": "PermissionError after all application checks completed; public vector file remained open",
+    "private_synthetic_db_removed": true,
+    "remaining_public_vector_file_removed_after_process_exit": true
+  },
+  "source_hashes": {
+    "model/qwen.py": "03824ad2be5e06a882dbb1964b6ed7045bcb43eb7a2d608f4ef8d9ea2b13ebd4",
+    "services/coach_reviews.py": "abd569beda9991cd3081bc9685a31903aca08982232a68658f7b575ac5e2bffd",
+    "services/knowledge_answers.py": "4097e6fef3b08a303cde54f39f19050d95cd7925edd6852c0145290e46b087ae",
+    "services/knowledge_runtime.py": "7d110139a2fed015cf9e8364cc919cf91eab60fc58a60f97e7b1bfb78b509c4c"
+  }
+}

@@ -137,7 +137,8 @@ def test_batch_single_weight_one_target_update_and_conflict_rolls_back(client):
     (400, 'InvalidParameter', '请求参数'), (400, 'model_not_found', '型号或接口'),
     (404, None, '型号或接口'), (403, None, '鉴权'), (429, None, '调用受限'),
     (400, 'data_inspection_failed', '未接受本次内容'), (402, None, '计费'),
-    (400, 'Arrearage', '计费'), (302, None, '异常响应')])
+    (400, 'Arrearage', '计费'), (403, 'Arrearage', '计费'),
+    (403, 'AllocationQuota.FreeTierOnly', '免费额度用完即停'), (302, None, '异常响应')])
 def test_failure_categories_never_log_private_body(status, code, word, caplog):
     private = 'PRIVATE-KEY-AND-FOOD'
     response = httpx.Response(status, json={'error': {'code': code, 'message': private}, 'request_id': private})

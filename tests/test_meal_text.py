@@ -137,7 +137,7 @@ def test_incomplete_provider_envelope(monkeypatch, client, response):
 
 
 @pytest.mark.parametrize("upstream,status,code", [
-    (401, 503, "MODEL_AUTH_ERROR"), (403, 503, "MODEL_AUTH_ERROR"),
+    (401, 503, "MODEL_AUTH_ERROR"), (403, 503, "MODEL_AUTH_ERROR"), (402, 503, "MODEL_BILLING_ERROR"),
     (429, 429, "MODEL_RATE_LIMITED"), (500, 502, "MODEL_UPSTREAM_ERROR"),
     (400, 502, "MODEL_UPSTREAM_ERROR"), (302, 502, "MODEL_UPSTREAM_ERROR"),
 ])
@@ -152,6 +152,26 @@ def test_provider_errors_are_redacted_without_retries(monkeypatch, client, upstr
     response = client.post("/api/meal-drafts/parse-text", json={"text": TEXT})
     assert response.status_code == status
     assert response.json()["detail"]["code"] == code
+    assert SECRET not in response.text and TEXT not in response.text
+    assert len(calls) == 1
+
+
+@pytest.mark.parametrize("provider_code", ["AllocationQuota.FreeTierOnly", "Arrearage"])
+def test_billing_403_is_not_misreported_as_a_bad_key(monkeypatch, client, provider_code):
+    calls = []
+
+    def handler(request):
+        calls.append(request)
+        return httpx.Response(403, json={"error": {"code": provider_code, "message": SECRET + TEXT}})
+
+    install_transport(monkeypatch, client, handler)
+    response = client.post("/api/meal-drafts/parse-text", json={"text": TEXT})
+    assert response.status_code == 503
+    detail = response.json()["detail"]
+    assert detail["code"] == "MODEL_BILLING_ERROR"
+    assert "鉴权" not in detail["message"]
+    if provider_code == "AllocationQuota.FreeTierOnly":
+        assert "免费额度用完即停" in detail["message"]
     assert SECRET not in response.text and TEXT not in response.text
     assert len(calls) == 1
 
