@@ -29,6 +29,8 @@ Linux／macOS 使用 .venv/bin/python。已有本机工作区可复用外层虚�
 | 器械事实生命周期 | test_profile_fact_versions.py、test_equipment_memory_scopes.py、test_equipment_clarification.py；本次/今天/长期、显式确认、到期、A→B→A、并发、未知条件和 v17 迁移 |
 | 评测完整性 | test_memory_evaluation.py、test_memory_suite_versions.py、test_memory_response_replay.py；冻结哈希、场景族划分、标准答案隔离、预算、失败保留和重复分片拒绝 |
 | 历史基线兼容性工具 | test_memory_baseline.py；归档越界/链接拒绝、环境密钥清除、外网阻止、输出保护、失败留证及源码改写检测；缺协议不计成质量零分 |
+| 同题版本对照 | test_memory_pair.py；共同分母、增益/退步、缺字段排除、未运行/失效/异常不出提升率、复核与预算前置、原标签不外发、首个供应商错误停止及离线密钥清除 |
+| 断点与有限补跑 | test_memory_pair_resume.py；保留答错场景、排除基础设施中断、初始缓存不混入失败题、全局尝试预算、默认停错及超时/连接各自授权 |
 | 本机启动兼容 | test_workspace_startup.py；原入口转增强源码、保留原库、无密钥/手动模式及端口占用。仅对应 Windows 工作区执行，独立克隆和其他平台跳过 |
 | 分享与恢复 | test_public_release.py、备份/迁移相关测试；访问边界、库结构、原表指纹和恢复持久化 |
 

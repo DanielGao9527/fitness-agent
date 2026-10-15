@@ -1,0 +1,1712 @@
+{
+  "evaluated_on": "2026-10-16",
+  "protocol": "equipment-memory-paired-v1",
+  "status": "completed",
+  "dataset": {
+    "version": "fitness-equipment-expressions-v2",
+    "sha256": "6d8636509a8c0f96923a429ba6a77eb8ef5e1e6a8c2c2d694ada6739a5fde869",
+    "cases": 24,
+    "families": 8,
+    "split_counts": {
+      "dev": 12,
+      "holdout": 12
+    },
+    "provenance": "self_authored_synthetic",
+    "review": "project-owner explicit chat confirmation",
+    "review_sha256": "07e651b79fa44d0bed95741d5c66992ab3075e7366dd2590bdbcb3bbcaa15d7c",
+    "blind_review": false,
+    "external_expert_review": false
+  },
+  "baseline_commit": "07b6ec2ea0f6ce8b5605700b7a32cb8d170fd00d",
+  "candidate_commit": "de321544903ecaf65620f00d9b25f92efb703a00",
+  "model": "qwen3.6-plus",
+  "business_day": "2026-09-29",
+  "python": "3.12.14",
+  "evaluator_hashes": {
+    "scripts/evaluate_memory_pair.py": "411602b09394c883c6a7cd73e040c3e2f935ad657606547674e3ac5a100b2b14",
+    "scripts/evaluate_memory.py": "59de2e408391483f363842ee3481702078964a999383b8a41867950cf0249a4c",
+    "scripts/check_memory_baseline.py": "762bb230d3a9c81bcbd31af7882a21f766f1fc1c9cdba7cc5d05eb6fa7c08c51",
+    "evals/memory/paired.py": "8399248396542e077b647d82b070a98963189c34fb64ed2e0c81943603faf7d1",
+    "evals/memory/protocol.py": "4aa9831bc8b29e3e76fc9638884f004f7588d706ebf9cb6df6a574390d78a7d8"
+  },
+  "controlled_assets_canonical_sha256": {
+    "data/knowledge/sources.json": "2db05bdef1ecf83f02f68a49bfc627e47a9e0d1cb23f25dd62003baf87f84061",
+    "data/training/exercises.json": "a7c25615eae7918d9e11fa9bd9b4c66b9e944b6a62def64c34236f59c330bde2",
+    "data/training/systems.json": "5f3e10839db9715343e3957d9606ef686ccf29585c8c3fab86aea6682674a259"
+  },
+  "common_confirmation": "auto_apply=false; each version's original confirmation API",
+  "overall": {
+    "quality_evaluated": true,
+    "complete": true,
+    "planned_cases": 24,
+    "paired_case_ids": [
+      "expressions-unspecified_context-01",
+      "expressions-unspecified_context-02",
+      "expressions-unspecified_context-03",
+      "expressions-day_with_noise-01",
+      "expressions-day_with_noise-02",
+      "expressions-day_with_noise-03",
+      "expressions-spoken_retraction-01",
+      "expressions-spoken_retraction-02",
+      "expressions-spoken_retraction-03",
+      "expressions-uncertainty_explanation-01",
+      "expressions-uncertainty_explanation-02",
+      "expressions-uncertainty_explanation-03",
+      "expressions-future_schedule-01",
+      "expressions-future_schedule-02",
+      "expressions-future_schedule-03",
+      "expressions-mixed_time_scope-01",
+      "expressions-mixed_time_scope-02",
+      "expressions-mixed_time_scope-03",
+      "expressions-explicit_denials-01",
+      "expressions-explicit_denials-02",
+      "expressions-explicit_denials-03",
+      "expressions-cross_day_context-01",
+      "expressions-cross_day_context-02",
+      "expressions-cross_day_context-03"
+    ],
+    "not_run": {
+      "baseline": [],
+      "candidate": []
+    },
+    "invalid_cases": {
+      "baseline": [],
+      "candidate": []
+    },
+    "metrics": {
+      "accepted_equipment_value": {
+        "baseline_passed": 17,
+        "candidate_passed": 17,
+        "total": 18,
+        "gains": 1,
+        "regressions": 1,
+        "baseline_rate": 0.9444444444444444,
+        "candidate_rate": 0.9444444444444444,
+        "delta_percentage_points": 0.0
+      },
+      "confirmation_applied": {
+        "baseline_passed": 17,
+        "candidate_passed": 13,
+        "total": 18,
+        "gains": 1,
+        "regressions": 5,
+        "baseline_rate": 0.9444444444444444,
+        "candidate_rate": 0.7222222222222222,
+        "delta_percentage_points": -22.22222222222222
+      },
+      "manual_confirmation_required": {
+        "baseline_passed": 17,
+        "candidate_passed": 13,
+        "total": 18,
+        "gains": 1,
+        "regressions": 5,
+        "baseline_rate": 0.9444444444444444,
+        "candidate_rate": 0.7222222222222222,
+        "delta_percentage_points": -22.22222222222222
+      },
+      "no_unconfirmed_profile_write": {
+        "baseline_passed": 27,
+        "candidate_passed": 27,
+        "total": 27,
+        "gains": 0,
+        "regressions": 0,
+        "baseline_rate": 1.0,
+        "candidate_rate": 1.0,
+        "delta_percentage_points": 0.0
+      },
+      "raw_equipment_value": {
+        "baseline_passed": 18,
+        "candidate_passed": 18,
+        "total": 18,
+        "gains": 0,
+        "regressions": 0,
+        "baseline_rate": 1.0,
+        "candidate_rate": 1.0,
+        "delta_percentage_points": 0.0
+      },
+      "advice_api_success": {
+        "baseline_passed": 33,
+        "candidate_passed": 30,
+        "total": 33,
+        "gains": 0,
+        "regressions": 3,
+        "baseline_rate": 1.0,
+        "candidate_rate": 0.9090909090909091,
+        "delta_percentage_points": -9.090909090909092
+      },
+      "advice_status": {
+        "baseline_passed": 32,
+        "candidate_passed": 30,
+        "total": 33,
+        "gains": 0,
+        "regressions": 2,
+        "baseline_rate": 0.9696969696969697,
+        "candidate_rate": 0.9090909090909091,
+        "delta_percentage_points": -6.0606060606060606
+      },
+      "condition_adoption": {
+        "baseline_passed": 17,
+        "candidate_passed": 28,
+        "total": 33,
+        "gains": 13,
+        "regressions": 2,
+        "baseline_rate": 0.5151515151515151,
+        "candidate_rate": 0.8484848484848485,
+        "delta_percentage_points": 33.333333333333336
+      },
+      "equipment_value": {
+        "baseline_passed": 17,
+        "candidate_passed": 28,
+        "total": 33,
+        "gains": 13,
+        "regressions": 2,
+        "baseline_rate": 0.5151515151515151,
+        "candidate_rate": 0.8484848484848485,
+        "delta_percentage_points": 33.333333333333336
+      },
+      "exercise_resources": {
+        "baseline_passed": 32,
+        "candidate_passed": 30,
+        "total": 33,
+        "gains": 0,
+        "regressions": 2,
+        "baseline_rate": 0.9696969696969697,
+        "candidate_rate": 0.9090909090909091,
+        "delta_percentage_points": -6.0606060606060606
+      },
+      "no_actual_record_writes": {
+        "baseline_passed": 24,
+        "candidate_passed": 24,
+        "total": 24,
+        "gains": 0,
+        "regressions": 0,
+        "baseline_rate": 1.0,
+        "candidate_rate": 1.0,
+        "delta_percentage_points": 0.0
+      },
+      "clarification": {
+        "baseline_passed": 3,
+        "candidate_passed": 9,
+        "total": 9,
+        "gains": 6,
+        "regressions": 0,
+        "baseline_rate": 0.3333333333333333,
+        "candidate_rate": 1.0,
+        "delta_percentage_points": 66.66666666666667
+      },
+      "no_false_equipment": {
+        "baseline_passed": 5,
+        "candidate_passed": 8,
+        "total": 9,
+        "gains": 3,
+        "regressions": 0,
+        "baseline_rate": 0.5555555555555556,
+        "candidate_rate": 0.8888888888888888,
+        "delta_percentage_points": 33.333333333333336
+      }
+    },
+    "excluded_checks": [],
+    "claim": "reviewed_authored_suite_only"
+  },
+  "splits": {
+    "dev": {
+      "quality_evaluated": true,
+      "complete": true,
+      "planned_cases": 12,
+      "paired_case_ids": [
+        "expressions-unspecified_context-01",
+        "expressions-unspecified_context-02",
+        "expressions-unspecified_context-03",
+        "expressions-day_with_noise-01",
+        "expressions-day_with_noise-02",
+        "expressions-day_with_noise-03",
+        "expressions-spoken_retraction-01",
+        "expressions-spoken_retraction-02",
+        "expressions-spoken_retraction-03",
+        "expressions-uncertainty_explanation-01",
+        "expressions-uncertainty_explanation-02",
+        "expressions-uncertainty_explanation-03"
+      ],
+      "not_run": {
+        "baseline": [],
+        "candidate": []
+      },
+      "invalid_cases": {
+        "baseline": [],
+        "candidate": []
+      },
+      "metrics": {
+        "accepted_equipment_value": {
+          "baseline_passed": 11,
+          "candidate_passed": 12,
+          "total": 12,
+          "gains": 1,
+          "regressions": 0,
+          "baseline_rate": 0.9166666666666666,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 8.333333333333334
+        },
+        "confirmation_applied": {
+          "baseline_passed": 11,
+          "candidate_passed": 9,
+          "total": 12,
+          "gains": 1,
+          "regressions": 3,
+          "baseline_rate": 0.9166666666666666,
+          "candidate_rate": 0.75,
+          "delta_percentage_points": -16.666666666666668
+        },
+        "manual_confirmation_required": {
+          "baseline_passed": 11,
+          "candidate_passed": 9,
+          "total": 12,
+          "gains": 1,
+          "regressions": 3,
+          "baseline_rate": 0.9166666666666666,
+          "candidate_rate": 0.75,
+          "delta_percentage_points": -16.666666666666668
+        },
+        "no_unconfirmed_profile_write": {
+          "baseline_passed": 15,
+          "candidate_passed": 15,
+          "total": 15,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "raw_equipment_value": {
+          "baseline_passed": 12,
+          "candidate_passed": 12,
+          "total": 12,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "advice_api_success": {
+          "baseline_passed": 18,
+          "candidate_passed": 15,
+          "total": 18,
+          "gains": 0,
+          "regressions": 3,
+          "baseline_rate": 1.0,
+          "candidate_rate": 0.8333333333333334,
+          "delta_percentage_points": -16.666666666666668
+        },
+        "advice_status": {
+          "baseline_passed": 17,
+          "candidate_passed": 15,
+          "total": 18,
+          "gains": 0,
+          "regressions": 2,
+          "baseline_rate": 0.9444444444444444,
+          "candidate_rate": 0.8333333333333334,
+          "delta_percentage_points": -11.11111111111111
+        },
+        "condition_adoption": {
+          "baseline_passed": 8,
+          "candidate_passed": 15,
+          "total": 18,
+          "gains": 9,
+          "regressions": 2,
+          "baseline_rate": 0.4444444444444444,
+          "candidate_rate": 0.8333333333333334,
+          "delta_percentage_points": 38.888888888888886
+        },
+        "equipment_value": {
+          "baseline_passed": 8,
+          "candidate_passed": 15,
+          "total": 18,
+          "gains": 9,
+          "regressions": 2,
+          "baseline_rate": 0.4444444444444444,
+          "candidate_rate": 0.8333333333333334,
+          "delta_percentage_points": 38.888888888888886
+        },
+        "exercise_resources": {
+          "baseline_passed": 17,
+          "candidate_passed": 15,
+          "total": 18,
+          "gains": 0,
+          "regressions": 2,
+          "baseline_rate": 0.9444444444444444,
+          "candidate_rate": 0.8333333333333334,
+          "delta_percentage_points": -11.11111111111111
+        },
+        "no_actual_record_writes": {
+          "baseline_passed": 12,
+          "candidate_passed": 12,
+          "total": 12,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "clarification": {
+          "baseline_passed": 2,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 1,
+          "regressions": 0,
+          "baseline_rate": 0.6666666666666666,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 33.333333333333336
+        },
+        "no_false_equipment": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        }
+      },
+      "excluded_checks": [],
+      "claim": "reviewed_authored_suite_only"
+    },
+    "holdout": {
+      "quality_evaluated": true,
+      "complete": true,
+      "planned_cases": 12,
+      "paired_case_ids": [
+        "expressions-future_schedule-01",
+        "expressions-future_schedule-02",
+        "expressions-future_schedule-03",
+        "expressions-mixed_time_scope-01",
+        "expressions-mixed_time_scope-02",
+        "expressions-mixed_time_scope-03",
+        "expressions-explicit_denials-01",
+        "expressions-explicit_denials-02",
+        "expressions-explicit_denials-03",
+        "expressions-cross_day_context-01",
+        "expressions-cross_day_context-02",
+        "expressions-cross_day_context-03"
+      ],
+      "not_run": {
+        "baseline": [],
+        "candidate": []
+      },
+      "invalid_cases": {
+        "baseline": [],
+        "candidate": []
+      },
+      "metrics": {
+        "clarification": {
+          "baseline_passed": 1,
+          "candidate_passed": 6,
+          "total": 6,
+          "gains": 5,
+          "regressions": 0,
+          "baseline_rate": 0.16666666666666666,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 83.33333333333333
+        },
+        "no_false_equipment": {
+          "baseline_passed": 2,
+          "candidate_passed": 5,
+          "total": 6,
+          "gains": 3,
+          "regressions": 0,
+          "baseline_rate": 0.3333333333333333,
+          "candidate_rate": 0.8333333333333334,
+          "delta_percentage_points": 50.0
+        },
+        "no_unconfirmed_profile_write": {
+          "baseline_passed": 12,
+          "candidate_passed": 12,
+          "total": 12,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "advice_api_success": {
+          "baseline_passed": 15,
+          "candidate_passed": 15,
+          "total": 15,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "advice_status": {
+          "baseline_passed": 15,
+          "candidate_passed": 15,
+          "total": 15,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "condition_adoption": {
+          "baseline_passed": 9,
+          "candidate_passed": 13,
+          "total": 15,
+          "gains": 4,
+          "regressions": 0,
+          "baseline_rate": 0.6,
+          "candidate_rate": 0.8666666666666667,
+          "delta_percentage_points": 26.666666666666668
+        },
+        "equipment_value": {
+          "baseline_passed": 9,
+          "candidate_passed": 13,
+          "total": 15,
+          "gains": 4,
+          "regressions": 0,
+          "baseline_rate": 0.6,
+          "candidate_rate": 0.8666666666666667,
+          "delta_percentage_points": 26.666666666666668
+        },
+        "exercise_resources": {
+          "baseline_passed": 15,
+          "candidate_passed": 15,
+          "total": 15,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "no_actual_record_writes": {
+          "baseline_passed": 12,
+          "candidate_passed": 12,
+          "total": 12,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "accepted_equipment_value": {
+          "baseline_passed": 6,
+          "candidate_passed": 5,
+          "total": 6,
+          "gains": 0,
+          "regressions": 1,
+          "baseline_rate": 1.0,
+          "candidate_rate": 0.8333333333333334,
+          "delta_percentage_points": -16.666666666666668
+        },
+        "confirmation_applied": {
+          "baseline_passed": 6,
+          "candidate_passed": 4,
+          "total": 6,
+          "gains": 0,
+          "regressions": 2,
+          "baseline_rate": 1.0,
+          "candidate_rate": 0.6666666666666666,
+          "delta_percentage_points": -33.333333333333336
+        },
+        "manual_confirmation_required": {
+          "baseline_passed": 6,
+          "candidate_passed": 4,
+          "total": 6,
+          "gains": 0,
+          "regressions": 2,
+          "baseline_rate": 1.0,
+          "candidate_rate": 0.6666666666666666,
+          "delta_percentage_points": -33.333333333333336
+        },
+        "raw_equipment_value": {
+          "baseline_passed": 6,
+          "candidate_passed": 6,
+          "total": 6,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        }
+      },
+      "excluded_checks": [],
+      "claim": "reviewed_authored_suite_only"
+    }
+  },
+  "families": {
+    "cross_day_context": {
+      "quality_evaluated": true,
+      "complete": true,
+      "planned_cases": 3,
+      "paired_case_ids": [
+        "expressions-cross_day_context-01",
+        "expressions-cross_day_context-02",
+        "expressions-cross_day_context-03"
+      ],
+      "not_run": {
+        "baseline": [],
+        "candidate": []
+      },
+      "invalid_cases": {
+        "baseline": [],
+        "candidate": []
+      },
+      "metrics": {
+        "accepted_equipment_value": {
+          "baseline_passed": 3,
+          "candidate_passed": 2,
+          "total": 3,
+          "gains": 0,
+          "regressions": 1,
+          "baseline_rate": 1.0,
+          "candidate_rate": 0.6666666666666666,
+          "delta_percentage_points": -33.333333333333336
+        },
+        "confirmation_applied": {
+          "baseline_passed": 3,
+          "candidate_passed": 2,
+          "total": 3,
+          "gains": 0,
+          "regressions": 1,
+          "baseline_rate": 1.0,
+          "candidate_rate": 0.6666666666666666,
+          "delta_percentage_points": -33.333333333333336
+        },
+        "manual_confirmation_required": {
+          "baseline_passed": 3,
+          "candidate_passed": 2,
+          "total": 3,
+          "gains": 0,
+          "regressions": 1,
+          "baseline_rate": 1.0,
+          "candidate_rate": 0.6666666666666666,
+          "delta_percentage_points": -33.333333333333336
+        },
+        "no_unconfirmed_profile_write": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "raw_equipment_value": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "advice_api_success": {
+          "baseline_passed": 6,
+          "candidate_passed": 6,
+          "total": 6,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "advice_status": {
+          "baseline_passed": 6,
+          "candidate_passed": 6,
+          "total": 6,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "condition_adoption": {
+          "baseline_passed": 3,
+          "candidate_passed": 5,
+          "total": 6,
+          "gains": 2,
+          "regressions": 0,
+          "baseline_rate": 0.5,
+          "candidate_rate": 0.8333333333333334,
+          "delta_percentage_points": 33.333333333333336
+        },
+        "equipment_value": {
+          "baseline_passed": 3,
+          "candidate_passed": 5,
+          "total": 6,
+          "gains": 2,
+          "regressions": 0,
+          "baseline_rate": 0.5,
+          "candidate_rate": 0.8333333333333334,
+          "delta_percentage_points": 33.333333333333336
+        },
+        "exercise_resources": {
+          "baseline_passed": 6,
+          "candidate_passed": 6,
+          "total": 6,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "no_actual_record_writes": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        }
+      },
+      "excluded_checks": [],
+      "claim": "reviewed_authored_suite_only"
+    },
+    "day_with_noise": {
+      "quality_evaluated": true,
+      "complete": true,
+      "planned_cases": 3,
+      "paired_case_ids": [
+        "expressions-day_with_noise-01",
+        "expressions-day_with_noise-02",
+        "expressions-day_with_noise-03"
+      ],
+      "not_run": {
+        "baseline": [],
+        "candidate": []
+      },
+      "invalid_cases": {
+        "baseline": [],
+        "candidate": []
+      },
+      "metrics": {
+        "accepted_equipment_value": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "confirmation_applied": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "manual_confirmation_required": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "no_unconfirmed_profile_write": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "raw_equipment_value": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "advice_api_success": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "advice_status": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "condition_adoption": {
+          "baseline_passed": 0,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 3,
+          "regressions": 0,
+          "baseline_rate": 0.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 100.0
+        },
+        "equipment_value": {
+          "baseline_passed": 0,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 3,
+          "regressions": 0,
+          "baseline_rate": 0.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 100.0
+        },
+        "exercise_resources": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "no_actual_record_writes": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        }
+      },
+      "excluded_checks": [],
+      "claim": "reviewed_authored_suite_only"
+    },
+    "explicit_denials": {
+      "quality_evaluated": true,
+      "complete": true,
+      "planned_cases": 3,
+      "paired_case_ids": [
+        "expressions-explicit_denials-01",
+        "expressions-explicit_denials-02",
+        "expressions-explicit_denials-03"
+      ],
+      "not_run": {
+        "baseline": [],
+        "candidate": []
+      },
+      "invalid_cases": {
+        "baseline": [],
+        "candidate": []
+      },
+      "metrics": {
+        "accepted_equipment_value": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "confirmation_applied": {
+          "baseline_passed": 3,
+          "candidate_passed": 2,
+          "total": 3,
+          "gains": 0,
+          "regressions": 1,
+          "baseline_rate": 1.0,
+          "candidate_rate": 0.6666666666666666,
+          "delta_percentage_points": -33.333333333333336
+        },
+        "manual_confirmation_required": {
+          "baseline_passed": 3,
+          "candidate_passed": 2,
+          "total": 3,
+          "gains": 0,
+          "regressions": 1,
+          "baseline_rate": 1.0,
+          "candidate_rate": 0.6666666666666666,
+          "delta_percentage_points": -33.333333333333336
+        },
+        "no_unconfirmed_profile_write": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "raw_equipment_value": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "advice_api_success": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "advice_status": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "condition_adoption": {
+          "baseline_passed": 0,
+          "candidate_passed": 2,
+          "total": 3,
+          "gains": 2,
+          "regressions": 0,
+          "baseline_rate": 0.0,
+          "candidate_rate": 0.6666666666666666,
+          "delta_percentage_points": 66.66666666666667
+        },
+        "equipment_value": {
+          "baseline_passed": 0,
+          "candidate_passed": 2,
+          "total": 3,
+          "gains": 2,
+          "regressions": 0,
+          "baseline_rate": 0.0,
+          "candidate_rate": 0.6666666666666666,
+          "delta_percentage_points": 66.66666666666667
+        },
+        "exercise_resources": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "no_actual_record_writes": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        }
+      },
+      "excluded_checks": [],
+      "claim": "reviewed_authored_suite_only"
+    },
+    "future_schedule": {
+      "quality_evaluated": true,
+      "complete": true,
+      "planned_cases": 3,
+      "paired_case_ids": [
+        "expressions-future_schedule-01",
+        "expressions-future_schedule-02",
+        "expressions-future_schedule-03"
+      ],
+      "not_run": {
+        "baseline": [],
+        "candidate": []
+      },
+      "invalid_cases": {
+        "baseline": [],
+        "candidate": []
+      },
+      "metrics": {
+        "clarification": {
+          "baseline_passed": 1,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 2,
+          "regressions": 0,
+          "baseline_rate": 0.3333333333333333,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 66.66666666666667
+        },
+        "no_false_equipment": {
+          "baseline_passed": 2,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 1,
+          "regressions": 0,
+          "baseline_rate": 0.6666666666666666,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 33.333333333333336
+        },
+        "no_unconfirmed_profile_write": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "advice_api_success": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "advice_status": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "condition_adoption": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "equipment_value": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "exercise_resources": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "no_actual_record_writes": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        }
+      },
+      "excluded_checks": [],
+      "claim": "reviewed_authored_suite_only"
+    },
+    "mixed_time_scope": {
+      "quality_evaluated": true,
+      "complete": true,
+      "planned_cases": 3,
+      "paired_case_ids": [
+        "expressions-mixed_time_scope-01",
+        "expressions-mixed_time_scope-02",
+        "expressions-mixed_time_scope-03"
+      ],
+      "not_run": {
+        "baseline": [],
+        "candidate": []
+      },
+      "invalid_cases": {
+        "baseline": [],
+        "candidate": []
+      },
+      "metrics": {
+        "clarification": {
+          "baseline_passed": 0,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 3,
+          "regressions": 0,
+          "baseline_rate": 0.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 100.0
+        },
+        "no_false_equipment": {
+          "baseline_passed": 0,
+          "candidate_passed": 2,
+          "total": 3,
+          "gains": 2,
+          "regressions": 0,
+          "baseline_rate": 0.0,
+          "candidate_rate": 0.6666666666666666,
+          "delta_percentage_points": 66.66666666666667
+        },
+        "no_unconfirmed_profile_write": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "advice_api_success": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "advice_status": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "condition_adoption": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "equipment_value": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "exercise_resources": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "no_actual_record_writes": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        }
+      },
+      "excluded_checks": [],
+      "claim": "reviewed_authored_suite_only"
+    },
+    "spoken_retraction": {
+      "quality_evaluated": true,
+      "complete": true,
+      "planned_cases": 3,
+      "paired_case_ids": [
+        "expressions-spoken_retraction-01",
+        "expressions-spoken_retraction-02",
+        "expressions-spoken_retraction-03"
+      ],
+      "not_run": {
+        "baseline": [],
+        "candidate": []
+      },
+      "invalid_cases": {
+        "baseline": [],
+        "candidate": []
+      },
+      "metrics": {
+        "accepted_equipment_value": {
+          "baseline_passed": 5,
+          "candidate_passed": 6,
+          "total": 6,
+          "gains": 1,
+          "regressions": 0,
+          "baseline_rate": 0.8333333333333334,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 16.666666666666668
+        },
+        "confirmation_applied": {
+          "baseline_passed": 5,
+          "candidate_passed": 6,
+          "total": 6,
+          "gains": 1,
+          "regressions": 0,
+          "baseline_rate": 0.8333333333333334,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 16.666666666666668
+        },
+        "manual_confirmation_required": {
+          "baseline_passed": 5,
+          "candidate_passed": 6,
+          "total": 6,
+          "gains": 1,
+          "regressions": 0,
+          "baseline_rate": 0.8333333333333334,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 16.666666666666668
+        },
+        "no_unconfirmed_profile_write": {
+          "baseline_passed": 6,
+          "candidate_passed": 6,
+          "total": 6,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "raw_equipment_value": {
+          "baseline_passed": 6,
+          "candidate_passed": 6,
+          "total": 6,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "advice_api_success": {
+          "baseline_passed": 6,
+          "candidate_passed": 6,
+          "total": 6,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "advice_status": {
+          "baseline_passed": 6,
+          "candidate_passed": 6,
+          "total": 6,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "condition_adoption": {
+          "baseline_passed": 0,
+          "candidate_passed": 6,
+          "total": 6,
+          "gains": 6,
+          "regressions": 0,
+          "baseline_rate": 0.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 100.0
+        },
+        "equipment_value": {
+          "baseline_passed": 0,
+          "candidate_passed": 6,
+          "total": 6,
+          "gains": 6,
+          "regressions": 0,
+          "baseline_rate": 0.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 100.0
+        },
+        "exercise_resources": {
+          "baseline_passed": 6,
+          "candidate_passed": 6,
+          "total": 6,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "no_actual_record_writes": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        }
+      },
+      "excluded_checks": [],
+      "claim": "reviewed_authored_suite_only"
+    },
+    "uncertainty_explanation": {
+      "quality_evaluated": true,
+      "complete": true,
+      "planned_cases": 3,
+      "paired_case_ids": [
+        "expressions-uncertainty_explanation-01",
+        "expressions-uncertainty_explanation-02",
+        "expressions-uncertainty_explanation-03"
+      ],
+      "not_run": {
+        "baseline": [],
+        "candidate": []
+      },
+      "invalid_cases": {
+        "baseline": [],
+        "candidate": []
+      },
+      "metrics": {
+        "clarification": {
+          "baseline_passed": 2,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 1,
+          "regressions": 0,
+          "baseline_rate": 0.6666666666666666,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 33.333333333333336
+        },
+        "no_false_equipment": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "no_unconfirmed_profile_write": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "advice_api_success": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "advice_status": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "condition_adoption": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "equipment_value": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "exercise_resources": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "no_actual_record_writes": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        }
+      },
+      "excluded_checks": [],
+      "claim": "reviewed_authored_suite_only"
+    },
+    "unspecified_context": {
+      "quality_evaluated": true,
+      "complete": true,
+      "planned_cases": 3,
+      "paired_case_ids": [
+        "expressions-unspecified_context-01",
+        "expressions-unspecified_context-02",
+        "expressions-unspecified_context-03"
+      ],
+      "not_run": {
+        "baseline": [],
+        "candidate": []
+      },
+      "invalid_cases": {
+        "baseline": [],
+        "candidate": []
+      },
+      "metrics": {
+        "accepted_equipment_value": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "confirmation_applied": {
+          "baseline_passed": 3,
+          "candidate_passed": 0,
+          "total": 3,
+          "gains": 0,
+          "regressions": 3,
+          "baseline_rate": 1.0,
+          "candidate_rate": 0.0,
+          "delta_percentage_points": -100.0
+        },
+        "manual_confirmation_required": {
+          "baseline_passed": 3,
+          "candidate_passed": 0,
+          "total": 3,
+          "gains": 0,
+          "regressions": 3,
+          "baseline_rate": 1.0,
+          "candidate_rate": 0.0,
+          "delta_percentage_points": -100.0
+        },
+        "no_unconfirmed_profile_write": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "raw_equipment_value": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        },
+        "advice_api_success": {
+          "baseline_passed": 6,
+          "candidate_passed": 3,
+          "total": 6,
+          "gains": 0,
+          "regressions": 3,
+          "baseline_rate": 1.0,
+          "candidate_rate": 0.5,
+          "delta_percentage_points": -50.0
+        },
+        "advice_status": {
+          "baseline_passed": 5,
+          "candidate_passed": 3,
+          "total": 6,
+          "gains": 0,
+          "regressions": 2,
+          "baseline_rate": 0.8333333333333334,
+          "candidate_rate": 0.5,
+          "delta_percentage_points": -33.333333333333336
+        },
+        "condition_adoption": {
+          "baseline_passed": 5,
+          "candidate_passed": 3,
+          "total": 6,
+          "gains": 0,
+          "regressions": 2,
+          "baseline_rate": 0.8333333333333334,
+          "candidate_rate": 0.5,
+          "delta_percentage_points": -33.333333333333336
+        },
+        "equipment_value": {
+          "baseline_passed": 5,
+          "candidate_passed": 3,
+          "total": 6,
+          "gains": 0,
+          "regressions": 2,
+          "baseline_rate": 0.8333333333333334,
+          "candidate_rate": 0.5,
+          "delta_percentage_points": -33.333333333333336
+        },
+        "exercise_resources": {
+          "baseline_passed": 5,
+          "candidate_passed": 3,
+          "total": 6,
+          "gains": 0,
+          "regressions": 2,
+          "baseline_rate": 0.8333333333333334,
+          "candidate_rate": 0.5,
+          "delta_percentage_points": -33.333333333333336
+        },
+        "no_actual_record_writes": {
+          "baseline_passed": 3,
+          "candidate_passed": 3,
+          "total": 3,
+          "gains": 0,
+          "regressions": 0,
+          "baseline_rate": 1.0,
+          "candidate_rate": 1.0,
+          "delta_percentage_points": 0.0
+        }
+      },
+      "excluded_checks": [],
+      "claim": "reviewed_authored_suite_only"
+    }
+  },
+  "attempts": {
+    "total": 60,
+    "complete_responses": 54,
+    "failed": 6,
+    "failure_codes": {
+      "MODEL_UNAVAILABLE": 4,
+      "MODEL_TIMEOUT": 2
+    },
+    "known_local_permission_blocks_included": 1,
+    "active_ceiling": 60,
+    "future_64_limit_activated": false,
+    "embedding_calls": 0,
+    "tokens_and_cost": "not_collected"
+  },
+  "candidate_failed_checks": [
+    {
+      "id": "expressions-unspecified_context-01",
+      "split": "dev",
+      "step": 0,
+      "op": "message",
+      "failed_checks": [
+        "manual_confirmation_required",
+        "confirmation_applied"
+      ]
+    },
+    {
+      "id": "expressions-unspecified_context-01",
+      "split": "dev",
+      "step": 1,
+      "op": "advice",
+      "failed_checks": [
+        "advice_status",
+        "exercise_resources",
+        "advice_api_success",
+        "equipment_value",
+        "condition_adoption"
+      ]
+    },
+    {
+      "id": "expressions-unspecified_context-02",
+      "split": "dev",
+      "step": 0,
+      "op": "message",
+      "failed_checks": [
+        "manual_confirmation_required",
+        "confirmation_applied"
+      ]
+    },
+    {
+      "id": "expressions-unspecified_context-02",
+      "split": "dev",
+      "step": 1,
+      "op": "advice",
+      "failed_checks": [
+        "advice_status",
+        "exercise_resources",
+        "advice_api_success",
+        "equipment_value",
+        "condition_adoption"
+      ]
+    },
+    {
+      "id": "expressions-unspecified_context-03",
+      "split": "dev",
+      "step": 0,
+      "op": "message",
+      "failed_checks": [
+        "manual_confirmation_required",
+        "confirmation_applied"
+      ]
+    },
+    {
+      "id": "expressions-unspecified_context-03",
+      "split": "dev",
+      "step": 1,
+      "op": "advice",
+      "failed_checks": [
+        "advice_status",
+        "exercise_resources",
+        "advice_api_success",
+        "equipment_value",
+        "condition_adoption"
+      ]
+    },
+    {
+      "id": "expressions-mixed_time_scope-03",
+      "split": "holdout",
+      "step": 0,
+      "op": "message",
+      "failed_checks": [
+        "no_false_equipment"
+      ]
+    },
+    {
+      "id": "expressions-explicit_denials-02",
+      "split": "holdout",
+      "step": 0,
+      "op": "message",
+      "failed_checks": [
+        "manual_confirmation_required",
+        "confirmation_applied"
+      ]
+    },
+    {
+      "id": "expressions-explicit_denials-02",
+      "split": "holdout",
+      "step": 1,
+      "op": "advice",
+      "failed_checks": [
+        "equipment_value",
+        "condition_adoption"
+      ]
+    },
+    {
+      "id": "expressions-cross_day_context-02",
+      "split": "holdout",
+      "step": 0,
+      "op": "message",
+      "failed_checks": [
+        "accepted_equipment_value",
+        "manual_confirmation_required",
+        "confirmation_applied"
+      ]
+    },
+    {
+      "id": "expressions-cross_day_context-02",
+      "split": "holdout",
+      "step": 1,
+      "op": "advice",
+      "failed_checks": [
+        "equipment_value",
+        "condition_adoption"
+      ]
+    }
+  ],
+  "condition_adoption_regressions": [
+    {
+      "id": "expressions-unspecified_context-01",
+      "step": 1
+    },
+    {
+      "id": "expressions-unspecified_context-03",
+      "step": 1
+    }
+  ],
+  "receipt_sha256": {
+    "memory-pair-live-20261016": "e849dcea23216a448e8c1b5a8a25170e156b8fb7eff41f2f9858a5b7d803cd49",
+    "memory-pair-live-connected-20261016": "9a8331f4d475a4df32bf9bc0441a1c4cb44e2d3573fae99e077d907fe2e77ba2",
+    "memory-pair-live-resumed-20261016": "b79ac6b7c1379ae85a042697db6b1e9ffd9f89dde3b00220aeeeff409a8ecd43",
+    "memory-pair-live-final-20261016": "198410e2967bc3975082551079af1afca0e5189cbeb6c858d461882fc1426457",
+    "memory-pair-live-complete-20261016": "993e2fe4af7b443701cb88b0f59ff947e5a9ec3ca76fdd77cc04c3745a373614"
+  },
+  "ledger_sha256": {
+    "memory-pair-live-20261016/baseline-calls.jsonl": "8e945cfb57456e80fea3e6247611ed5822e99ee0e92fef120df265b6ac89c7e6",
+    "memory-pair-live-connected-20261016/baseline-calls.jsonl": "c8c012c301ccfa7b01d1d3b9740c112c3d1579a8d85fcc82a54bfcf0514b3cf8",
+    "memory-pair-live-resumed-20261016/phase-1/baseline-calls.jsonl": "df09c9d0d13374255b76f573d383529252ac0dbb90569c560791de250117bfa5",
+    "memory-pair-live-resumed-20261016/phase-1/candidate-calls.jsonl": "4cec195ad13f417e48af499499d1dcdd7b5695ff2fb3574e1c1be1a8d5653e85",
+    "memory-pair-live-final-20261016/phase-1/candidate-calls.jsonl": "0d843f84978ea26cfeab728949e0beb4964b7181b197d54acafd7f20380056d9",
+    "memory-pair-live-final-20261016/phase-2/candidate-calls.jsonl": "c9c3dd6d97ddda92f545ae6f1a49100858eaf5c21d7c93c16223eb9092cc74f0",
+    "memory-pair-live-final-20261016/phase-3/candidate-calls.jsonl": "e7a1897e09c4bbe161e407e50aa0ba4690949c7125c89f8f77f4e3b7a57c451e",
+    "memory-pair-live-complete-20261016/phase-1/candidate-calls.jsonl": "ec077600b4f0d6c9837c367cf9e3b558588ffcb5de4b618b8722507ddf6e4761"
+  },
+  "validation": {
+    "related_pytest_passed": 69,
+    "warnings": 2,
+    "application_regression_rerun": false,
+    "case_and_source_integrity_verified": true,
+    "private_service_changed": false
+  },
+  "limitations": [
+    "Strict text-span and resource matching, not full training quality or generic memory accuracy",
+    "24 authored cases, 8 families and 33 advice decisions per version; small dependent sample",
+    "Owner review is not an external blind benchmark; dev and holdout reported separately",
+    "Raw extraction value is unchanged; gains concern the downstream memory workflow",
+    "Two recommendation regressions and reduced confirmation readiness are retained",
+    "Fixed version order, shared dependencies and checkpointed stages; no latency improvement claim",
+    "Complete semantic misses reused; only infrastructure-interrupted cases repeated",
+    "Public release-quality labels and E3 answer-quality evaluation remain pending"
+  ]
+}

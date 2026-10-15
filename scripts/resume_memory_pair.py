@@ -66,7 +66,7 @@ def checkpoint(source, manifest, cases, extras=()):
     return data, cache, pending, prior, needed
 
 
-def resume(source, manifest, cases, output, review_file, *, total_limit, extras=(), timeout_restarts=0):
+def resume(source, manifest, cases, output, review_file, *, total_limit, extras=(), timeout_restarts=0, retry_connections=False):
     data, cache, pending, prior, needed = checkpoint(source, manifest, cases, extras)
     review_raw = Path(review_file).read_bytes()
     validate_review(json.loads(review_raw), manifest, cases)
@@ -84,7 +84,11 @@ def resume(source, manifest, cases, output, review_file, *, total_limit, extras=
                   total_limit=total_limit, provider_calls=0, timeout_restarts_allowed=timeout_restarts,
                   checkpoint_sha256=hashlib.sha256((Path(source) / "report.json").read_bytes()).hexdigest(),
                   continuation_tool_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(), stages=[],
-                  latency_comparable=False, previous_latency={label: value.get("provider_latency") for label, value in data["versions"].items()})
+                  latency_comparable=False, retry_connections=retry_connections,
+                  previous_latency={label: value.get("provider_latency") for label, value in data["versions"].items()})
+    for label, rows in cache.items():
+        report["versions"].setdefault(label, {"source_unchanged": True}).update(
+            cases=deepcopy(rows), status="completed" if len(rows) == len(cases) else "incomplete")
     report.pop("comparison", None)
     new_calls = 0
     pair.save(output / "report.json", report)
@@ -146,7 +150,8 @@ def resume(source, manifest, cases, output, review_file, *, total_limit, extras=
                 if not all(hashlib.sha256((evaluator / name).read_bytes()).hexdigest() == digest for name, digest in data["evaluator_hashes"].items()):
                     raise ValueError("Evaluator snapshot changed")
             # Only transport timeouts may enter an explicitly authorized new round.
-            if not failure_codes or set(failure_codes) != {"MODEL_TIMEOUT"}:
+            allowed_failures = {"MODEL_TIMEOUT", "MODEL_UNAVAILABLE"} if retry_connections else {"MODEL_TIMEOUT"}
+            if not failure_codes or not set(failure_codes) <= allowed_failures:
                 break
         for label in cache:
             report["versions"].setdefault(label, {"status": "incomplete", "source_unchanged": True})["cases"] = cache[label]
@@ -170,6 +175,7 @@ def main():
     parser.add_argument("--review-file", type=Path)
     parser.add_argument("--total-limit", type=int, default=0)
     parser.add_argument("--timeout-restarts", type=int, default=0)
+    parser.add_argument("--retry-connections", action="store_true", help="Requires separate explicit authorization; default stops on connection errors")
     parser.add_argument("--plan", action="store_true")
     args = parser.parse_args()
     manifest, cases = load_suite(pair.ROOT / "evals/memory/expressions_v2")
@@ -182,7 +188,7 @@ def main():
         parser.error("Explicit output, review and total attempt ceiling are required")
     try:
         report = resume(args.checkpoint, manifest, cases, args.output, args.review_file, total_limit=args.total_limit,
-                        extras=args.budget_extra, timeout_restarts=args.timeout_restarts)
+                        extras=args.budget_extra, timeout_restarts=args.timeout_restarts, retry_connections=args.retry_connections)
     except (ValueError, OSError, RuntimeError, subprocess.SubprocessError):
         print("Continuation stopped; inspect the local receipt. No unbounded retry.", file=sys.stderr)
         return 2

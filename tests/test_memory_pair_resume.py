@@ -32,7 +32,8 @@ def setup_fake(tmp_path, monkeypatch, failures):
     review = tmp_path / "synthetic-review.json"
     review.write_text("{}", encoding="utf-8")
     case = {"id": "case", "steps": [{"op": "message"}]}
-    data = {"protocol": resume.pair.PROTOCOL, "mode": "live", "versions": {}, "model": "synthetic",
+    data = {"protocol": resume.pair.PROTOCOL, "mode": "live", "versions": {"baseline": {
+        "source_unchanged": True, "status": "provider_failure", "cases": [{"id": "case", "old_failed": True}]}}, "model": "synthetic",
         "baseline_commit": "a" * 40, "candidate_commit": "b" * 40, "provider_calls": 0,
         "evaluator_hashes": hashes, "review_sha256": hashlib.sha256(review.read_bytes()).hexdigest()}
     monkeypatch.setattr(resume, "checkpoint", lambda *args: (data, {"baseline": [], "candidate": []}, {}, 0, 2))
@@ -52,6 +53,9 @@ def setup_fake(tmp_path, monkeypatch, failures):
         payload = json.loads(Path(arguments[arguments.index('--_worker') + 1]).read_text(encoding='utf-8'))
         label, output = payload["label"], Path(payload["output"])
         dispatched.append(label)
+        if len(dispatched) == 1:
+            initial = json.loads((output.parent / 'report.json').read_text(encoding='utf-8'))
+            assert initial['healthy_cases_only'] and initial['versions']['baseline']['cases'] == []
         failure = failures[len(dispatched) - 1] if len(dispatched) <= len(failures) else None
         ledger = [{"event": "attempt", "call": 1, "case": "case"}]
         ledger += [{"event": "failure", "call": 1, "code": failure}] if failure else [{"event": "response", "call": 1}]
@@ -87,3 +91,12 @@ def test_insufficient_total_budget_stops_before_output_or_dispatch(tmp_path, mon
     with pytest.raises(ValueError, match="budget"):
         resume.resume(prior, {"base_day": "2026-09-29"}, cases, tmp_path / "artifacts/out", review, total_limit=1)
     assert not dispatched and not (tmp_path / "artifacts/out").exists()
+
+
+@pytest.mark.parametrize("allowed,expected", [(False, 1), (True, 3)])
+def test_connection_restart_requires_a_separate_explicit_flag(tmp_path, monkeypatch, allowed, expected):
+    prior, review, cases, dispatched = setup_fake(tmp_path, monkeypatch, ["MODEL_UNAVAILABLE", None, None])
+    result = resume.resume(prior, {"base_day": "2026-09-29"}, cases, tmp_path / "artifacts/out", review,
+                           total_limit=3, timeout_restarts=1, retry_connections=allowed)
+    assert len(dispatched) == result['total_attempts'] == expected
+    assert result['comparison']['quality_evaluated'] is allowed

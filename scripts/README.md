@@ -14,6 +14,8 @@
 | [report_memory_evaluation.py](report_memory_evaluation.py) | 支持 --suite，按所选版本的实际题量合并互不重叠且语料/源码/型号一致的评测分片；拒绝重复题目和模拟/真实混用，生成逐指标与场景族报告 |
 | [replay_memory_responses.py](replay_memory_responses.py) | 仅重放旧真实运行中的开发集结构化输出，对比当前后端处理；新增云调用0次，缺失响应单列，不评估新提示词效果或覆盖旧报告 |
 | [check_memory_baseline.py](check_memory_baseline.py) | 从已提交 Git 快照离线核对历史版与当前版的记忆评测协议；临时账号/数据库，禁用模型与外网，不产生质量分数 |
+| [evaluate_memory_pair.py](evaluate_memory_pair.py) | 用各版原有 API 对齐同题器械工作流，冻结共享评测器，逐指标配对；默认只测接线，真实运行要求匹配的人工复核和调用预算，见[对照协议](../evals/memory/PAIRED.md) |
+| [resume_memory_pair.py](resume_memory_pair.py) | 在新明确预算内复用完整响应场景、补齐中断；答错也缓存，默认遇错停，超时/连接补跑需单独授权且有限轮数，不扩大总上限 |
 | [rehearse_recovery.py](rehearse_recovery.py) | 在独立新目录演练恢复并核对数据库 |
 | [build_knowledge_vectors.py](build_knowledge_vectors.py) | 默认只盘点审核公开块；显式 `--live` 才按预算调用云端构建文档向量 |
 | [evaluate_retrieval.py](evaluate_retrieval.py) | 用项目 QA 对比词法、jieba、向量与 RRF；不调用答案模型 |
@@ -68,7 +70,7 @@ python scripts/check_memory_baseline.py --baseline 07b6ec2 --output artifacts/me
 
 输出必须是 artifacts 下的新目录。子进程清除模型与数据库环境覆盖，显式禁用模型；外部连接和 DNS 被阻止，只允许事件循环需要的回环连接。检查手动档案→新会话建议→更正后建议、本人隔离和重启保留，并检测新增器械记忆字段/确认范围/当天上下文。每版记录源码哈希和未改写核验；失败阶段保留，不自动重试或覆盖旧报告。
 
-这不是理解模型评测。旧版和当前版均支持手动填写/更正档案，但旧版缺少新评测所需的范围协议；不能把“接口不兼容”算作准确率 0%。下一步须使用各版原有接口适配相同语义场景，再按独立复核标签比较对话确认、事实更正和最终建议。未完成适配、标签复核与匹配真实调用前，不报告记忆提升率。
+这不是理解模型评测。旧版和当前版均支持手动填写/更正档案，但旧版缺少新评测所需的范围协议；不能把“接口不兼容”算作准确率 0%。现已用 evaluate_memory_pair.py 接通两版原有接口，比较相同语义场景的提取、确认和最终建议；旧版缺少的范围/来源字段单列。只有匹配复核和完整真实批次才给出质量差值，方法及限制见[同题协议](../evals/memory/PAIRED.md)。
 
 ## 外部中文检索对照
 
