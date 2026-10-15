@@ -13,6 +13,7 @@
 | [evaluate_memory.py](evaluate_memory.py) | 默认固定 v1 的 100 组器械记忆场景；`--suite` 可选择独立冻结的 v2 新表达 24 条。标注接线与有预算真实评测分离，临时库、逐次记录、失败不重试；先使用 `--plan`，参见 [评测说明](../evals/memory/README.md) |
 | [report_memory_evaluation.py](report_memory_evaluation.py) | 支持 --suite，按所选版本的实际题量合并互不重叠且语料/源码/型号一致的评测分片；拒绝重复题目和模拟/真实混用，生成逐指标与场景族报告 |
 | [replay_memory_responses.py](replay_memory_responses.py) | 仅重放旧真实运行中的开发集结构化输出，对比当前后端处理；新增云调用0次，缺失响应单列，不评估新提示词效果或覆盖旧报告 |
+| [check_memory_baseline.py](check_memory_baseline.py) | 从已提交 Git 快照离线核对历史版与当前版的记忆评测协议；临时账号/数据库，禁用模型与外网，不产生质量分数 |
 | [rehearse_recovery.py](rehearse_recovery.py) | 在独立新目录演练恢复并核对数据库 |
 | [build_knowledge_vectors.py](build_knowledge_vectors.py) | 默认只盘点审核公开块；显式 `--live` 才按预算调用云端构建文档向量 |
 | [evaluate_retrieval.py](evaluate_retrieval.py) | 用项目 QA 对比词法、jieba、向量与 RRF；不调用答案模型 |
@@ -56,6 +57,18 @@ sudo -u fitness /opt/fitness-agent/current/.venv/bin/python /opt/fitness-agent/c
 `check_*.py` 不属于自动发布时可随意全部运行的无费用测试集合。其中部分工具会连接真实模型服务，需要单独满足参数、凭据和调用次数约束。优先使用 [tests/](../tests) 中的合成测试定位问题，再按需要执行具体检查。
 
 常规本地检查不能代替服务器上的依赖安装、HTTPS、代理、账号、重启持久化与恢复验证。服务器发布流程见[部署说明](../docs/DEPLOYMENT.md)。
+
+## 历史记忆基线兼容性
+
+```powershell
+python scripts/check_memory_baseline.py --baseline 07b6ec2 --output artifacts/memory-baseline-new-run
+```
+
+使用包含 FastAPI/TestClient 等项目依赖的 Python；指定的旧提交必须存在于本地 Git 历史，浅克隆可能需要先补齐历史。基线只接受 7–40 位十六进制提交 ID，候选固定为 HEAD；应用目录存在已跟踪或未跟踪改动时停止。它导出两版源码及所需评测依赖，不切换工作目录，不使用私人库，也不重启 localhost:8765。
+
+输出必须是 artifacts 下的新目录。子进程清除模型与数据库环境覆盖，显式禁用模型；外部连接和 DNS 被阻止，只允许事件循环需要的回环连接。检查手动档案→新会话建议→更正后建议、本人隔离和重启保留，并检测新增器械记忆字段/确认范围/当天上下文。每版记录源码哈希和未改写核验；失败阶段保留，不自动重试或覆盖旧报告。
+
+这不是理解模型评测。旧版和当前版均支持手动填写/更正档案，但旧版缺少新评测所需的范围协议；不能把“接口不兼容”算作准确率 0%。下一步须使用各版原有接口适配相同语义场景，再按独立复核标签比较对话确认、事实更正和最终建议。未完成适配、标签复核与匹配真实调用前，不报告记忆提升率。
 
 ## 外部中文检索对照
 

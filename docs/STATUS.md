@@ -54,4 +54,6 @@
 
 ## 接续点
 
-第一步工程已推送 [23eecf3](https://github.com/DanielGao9527/fitness-agent/commit/23eecf3)。当前型号访问已恢复，小场景联调通过；下一步仍是 N1 独立标签复核及 E2/E3 质量对照，再完成五个演示和对外说明，不自动重跑旧失败请求。具体边界见 [EXECUTION](EXECUTION.md)、[ROADMAP](ROADMAP.md)、[DELIVERY](DELIVERY.md)；不追加自动知识提取、更多记忆层或其他业务。历史过程留在归档和旧结果中，不覆盖失败或不利结论。
+第一步工程已推送 [23eecf3](https://github.com/DanielGao9527/fitness-agent/commit/23eecf3)。当前型号访问已恢复，小场景联调通过。历史基线 07b6ec2 的离线兼容检查已完成：两版手动档案建议、更正、账号隔离和重启保存均通过；旧版缺新范围协议，新版具备。新增工具及相关评测回归共 38 项通过，未新增云调用，不能由此给出模型提升率。个人材料仅留本地，当前公开分支已移除，旧提交历史保留。
+
+下一步从 [基线工具](../scripts/check_memory_baseline.py) 的发现继续，适配各版原有接口的相同语义场景，与 N1 独立标签复核一起准备 E2/E3 真实对照，再完成五个演示和对外说明，不自动重跑旧失败请求。具体边界见 [EXECUTION](EXECUTION.md)、[ROADMAP](ROADMAP.md)、[DELIVERY](DELIVERY.md)；不追加自动知识提取、更多记忆层或其他业务。历史过程留在归档和旧结果中，不覆盖失败或不利结论。
