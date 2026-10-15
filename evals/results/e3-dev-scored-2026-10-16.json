@@ -1,0 +1,139 @@
+{
+  "date": "2026-10-16",
+  "kind": "owner_reviewed_dev_semantic_score",
+  "code_commit_tested": "01a3d859bad4a3e3ee09bbbc831f73e2b5cea5d0",
+  "protocol": "knowledge-loop-semantic-v1",
+  "split": "dev",
+  "paired_cases": 12,
+  "review_method": "Project owner reviewed the assistant-proposed actual-answer judgments and accepted them in conversation; no independent blind or expert assessment.",
+  "review_coverage": {
+    "answers": 24,
+    "dev_cases": 12,
+    "holdout_cases": 0
+  },
+  "score": {
+    "quality_evaluated": true,
+    "metrics": {
+      "single": {
+        "correct_answer": [
+          7,
+          8
+        ],
+        "correct_insufficient": [
+          4,
+          4
+        ],
+        "overall": [
+          11,
+          12
+        ],
+        "unsupported_answer": 0
+      },
+      "bounded": {
+        "correct_answer": [
+          7,
+          8
+        ],
+        "correct_insufficient": [
+          4,
+          4
+        ],
+        "overall": [
+          11,
+          12
+        ],
+        "unsupported_answer": 0
+      }
+    },
+    "gains": 0,
+    "regressions": 0,
+    "paired_cases": 12,
+    "net_delta_percentage_points": 0.0,
+    "claim": "human_reviewed_authored_suite_only_not_external_benchmark",
+    "splits": {
+      "dev": {
+        "quality_evaluated": true,
+        "metrics": {
+          "single": {
+            "correct_answer": [
+              7,
+              8
+            ],
+            "correct_insufficient": [
+              4,
+              4
+            ],
+            "overall": [
+              11,
+              12
+            ],
+            "unsupported_answer": 0
+          },
+          "bounded": {
+            "correct_answer": [
+              7,
+              8
+            ],
+            "correct_insufficient": [
+              4,
+              4
+            ],
+            "overall": [
+              11,
+              12
+            ],
+            "unsupported_answer": 0
+          }
+        },
+        "gains": 0,
+        "regressions": 0,
+        "paired_cases": 12,
+        "net_delta_percentage_points": 0.0,
+        "claim": "human_reviewed_authored_suite_only_not_external_benchmark"
+      }
+    },
+    "report_sha256": "c77376b8c60d9d475d4759fcb269049d17ae0f4b107851e47de7d6368159b4ac",
+    "answer_review_sha256": "0fb97f1db691eaa86c25f237c591d236669f6b6a9cca1d034fc63fa5d9eec885"
+  },
+  "provider_budget": {
+    "authorized_new_limit": 72,
+    "used_attempts": 46,
+    "unused": 26,
+    "responses": 46,
+    "failed_attempts": 0,
+    "by_kind": {
+      "embedding": 23,
+      "judgment": 23
+    },
+    "by_arm": {
+      "bounded": 24,
+      "single": 22
+    },
+    "retries": 0,
+    "document_encodings": 0,
+    "holdout_cases_run": 0,
+    "separate_from_previous_memory_budget": true
+  },
+  "new_provider_calls_for_scoring": 0,
+  "observation_report": "e3-dev-live-2026-10-16.json",
+  "original_report_preserved": true,
+  "known_failure": {
+    "case_id": "loop-semantic-draft-01",
+    "both_arms": "personal_scope instead of general answer",
+    "excluded_from_score": false,
+    "fixed": false
+  },
+  "interpretation": "No quality gain in this authored dev subset; two-round policy added two calls. This does not establish a general effect or a corpus-size cause.",
+  "remaining": [
+    "holdout not reviewed or authorized",
+    "general-question scope false positive remains",
+    "knowledge publication labels and final unified demos remain"
+  ],
+  "limits": [
+    "12 authored dev cases and owner acceptance of assistant-proposed judgments only",
+    "overall includes answerable and insufficient cases: answerable 7/8, insufficient 4/4 in each arm",
+    "current round-count ablation, not historical version gain",
+    "no evidence that growing the corpus alone would improve this result",
+    "not evidence of private memory or planning quality"
+  ]
+}
