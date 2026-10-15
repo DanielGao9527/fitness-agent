@@ -153,4 +153,8 @@ def test_build_uses_release_directory_when_called_from_private_root(tmp_path, mo
     uv_calls = [command for command, _ in calls if deploy.UV in command]
     assert len(uv_calls) == 2
     assert all("--no-config" in command for command in uv_calls)
+    install = next(command for command, _ in calls if "install" in command and "pip" in command)
+    assert "--only-binary=:all:" in install
+    assert "--no-binary=jieba" in install
+    assert install[-2:] == ("-r", str(release / "requirements.lock.txt"))
     assert (release / "requirements.lock.txt").exists()

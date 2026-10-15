@@ -83,7 +83,7 @@ def build(release, sha, source):
         run(*builder, UV, "--no-config", "venv", "--seed", "--python", python,
             str(release / ".venv"), timeout=300, cwd=release)
         run(*builder, str(release / ".venv/bin/python"), "-m", "pip", "install", "--only-binary=:all:",
-            "-r", str(release / "requirements.lock.txt"), timeout=900, cwd=release)
+            "--no-binary=jieba", "-r", str(release / "requirements.lock.txt"), timeout=900, cwd=release)
         run(*builder, str(release / ".venv/bin/python"), "-m", "pip", "check", cwd=release)
     finally:
         run("chown", "-R", "root:root", str(release), cwd=release)
