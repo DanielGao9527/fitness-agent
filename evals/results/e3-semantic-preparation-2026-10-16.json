@@ -1,0 +1,177 @@
+{
+  "date": "2026-10-16",
+  "kind": "offline_semantic_evaluation_readiness",
+  "base_commit": "bd75a872005fa53b5edfcc5937aeb11cc31a8b60",
+  "protocol": "knowledge-loop-semantic-v1",
+  "dataset": {
+    "cases": 24,
+    "families": 12,
+    "split_counts": {
+      "dev": 12,
+      "holdout": 12
+    },
+    "answerable_counts": {
+      "true": 16,
+      "false": 8
+    },
+    "cases_sha256": "f4e915e2511fa261c09cda0cbec5b9c373dd2b9a3437ef89e888515bac8bd005",
+    "corpus_sha256": "547e5f5b4d8cde212dfe448139ad0628dd9fd91c62d39175f5eab541ba7ff962",
+    "source_date": "2026-10-15",
+    "review_status": "pending",
+    "provenance": "self_authored_from_reviewed_public_summaries"
+  },
+  "plan_all": {
+    "protocol": "knowledge-loop-semantic-v1",
+    "dataset_sha256": "f4e915e2511fa261c09cda0cbec5b9c373dd2b9a3437ef89e888515bac8bd005",
+    "cases": 24,
+    "split_counts": {
+      "dev": 12,
+      "holdout": 12
+    },
+    "retrieval": "hybrid",
+    "maximum_judgment_attempts": 72,
+    "maximum_query_embedding_attempts": 72,
+    "maximum_provider_attempts": 144,
+    "document_embedding_attempts": 0,
+    "document_vectors_must_already_exist": true,
+    "model": "qwen3.6-plus",
+    "label_review_required": true,
+    "answer_review_required_for_quality": true,
+    "provider_calls": 0,
+    "corpus_sha256": "547e5f5b4d8cde212dfe448139ad0628dd9fd91c62d39175f5eab541ba7ff962",
+    "document_vectors_ready": true,
+    "static_scope_flags": [
+      "loop-semantic-draft-01"
+    ],
+    "preflight_is_not_retrieval_or_model_quality": true
+  },
+  "plan_dev": {
+    "protocol": "knowledge-loop-semantic-v1",
+    "dataset_sha256": "f4e915e2511fa261c09cda0cbec5b9c373dd2b9a3437ef89e888515bac8bd005",
+    "cases": 12,
+    "split_counts": {
+      "dev": 12
+    },
+    "retrieval": "hybrid",
+    "maximum_judgment_attempts": 36,
+    "maximum_query_embedding_attempts": 36,
+    "maximum_provider_attempts": 72,
+    "document_embedding_attempts": 0,
+    "document_vectors_must_already_exist": true,
+    "model": "qwen3.6-plus",
+    "label_review_required": true,
+    "answer_review_required_for_quality": true,
+    "provider_calls": 0,
+    "corpus_sha256": "547e5f5b4d8cde212dfe448139ad0628dd9fd91c62d39175f5eab541ba7ff962",
+    "document_vectors_ready": true,
+    "static_scope_flags": [
+      "loop-semantic-draft-01"
+    ],
+    "preflight_is_not_retrieval_or_model_quality": true
+  },
+  "document_cache": {
+    "ready": true,
+    "sha256": "6d6b5b88e9e24f5ced90edd0a93d54b6dde7ac16a92c7aa25d3c49679b793130",
+    "readonly_check_unchanged": true,
+    "new_document_encodings": 0
+  },
+  "provider_calls": 0,
+  "private_database_accessed": false,
+  "runtime_code_changed": false,
+  "runtime_restarted": false,
+  "quality_evaluated": false,
+  "new_live_budget_authorized": false,
+  "previous_memory_budget": {
+    "used": 64,
+    "limit": 64,
+    "cannot_reuse": true
+  },
+  "checks": [
+    {
+      "files": [
+        "tests/test_knowledge_loop_evaluation.py",
+        "tests/test_knowledge_loop.py",
+        "tests/test_knowledge_answers.py",
+        "tests/test_embeddings.py",
+        "tests/test_hybrid_retrieval.py"
+      ],
+      "tests": 114,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "seconds": 27.188,
+      "junit_sha256": "f46865b36a5d6b66e8c35f90dca0f4f54648ce97528809639e463b0af1ef78e8",
+      "scope": "engineering_only_mock_providers_not_model_quality"
+    },
+    {
+      "files": [
+        "tests/test_knowledge_recovery.py",
+        "tests/test_knowledge_replay.py"
+      ],
+      "tests": 28,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "seconds": 8.198,
+      "junit_sha256": "6b9e1644a6f4fc5a6223db2ee2b9e0b110aaf8345d8af02da098c7e9d7e54027",
+      "scope": "engineering_only_mock_providers_not_model_quality"
+    }
+  ],
+  "source_hashes": {
+    "model/deadlines.py": "dbf45c0010e6f285a770d20be3bbb237654c7f9a314d1e0d1a66a69bc503c858",
+    "model/embeddings.py": "6017df808126adf22ba63d313c99c6a8826d5c8fac3265c37076a1f280ce89bd",
+    "model/factory.py": "08e5e3391b298ecc16fbd2f37cfe5af961b0bdefe32248d616a69117aac4b546",
+    "model/qwen.py": "03824ad2be5e06a882dbb1964b6ed7045bcb43eb7a2d608f4ef8d9ea2b13ebd4",
+    "model/speech.py": "62082e609ba0fd74351d53eeed8e65ee13af9b8241252f9b276032af708edc8a",
+    "model/vision.py": "bf7e0b9ceae87b46ac3a08ea54c7963974642ed8bcbc4cef0d18b9b0cd5a7de6",
+    "model/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "rag/catalog.py": "10c1cbe70b7ab50cedb88fc44b863d3f9e24d383ce2efedb13ad92d7826e0424",
+    "rag/hybrid.py": "3d6aebb55599333c5d93cadcdbd69e43553a2afa87397ab097cd8496bbc4ad83",
+    "rag/rag_service.py": "867b3607385a1199e2b9fede34766c487a2bc2c5dc692f52ff14333b2f6581d7",
+    "rag/vector_store.py": "088b0fb692beaf3e1686d3adea7deaef4627e09b785f5c9b3c4ec7b2ac4bc280",
+    "rag/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "services/knowledge_answers.py": "4097e6fef3b08a303cde54f39f19050d95cd7925edd6852c0145290e46b087ae",
+    "services/knowledge_builds.py": "35b3eb27f54ab770de7eec6b4e4fee154e119fd5b9a7f20986e44e0aa6aa85dd",
+    "services/knowledge_build_gate.py": "558fd970376346b67cf59dd8fb38dc5bd5a23d680374b51c95a532ff7352bbd0",
+    "services/knowledge_feedback.py": "cd2cfec88e861819a00830284406072843dda14b3a9882c79b3970d6439cb322",
+    "services/knowledge_policy.py": "1a5022180e5ccf2b3a9ceb4f1472f75e9e5e0b53a6109198f9b58eac880d664a",
+    "services/knowledge_publications.py": "c97279022ac7578f4bca769c14b3214aad0b9d94d0437bcc9b1da7d1d80d81a6",
+    "services/knowledge_quality.py": "ca7032179afa05e4745672dec9a430baf650c52c2a04f177420276911199b932",
+    "services/knowledge_releases.py": "1dfb8ac62e440d7a78ec90ef0c69149620e21b13d3cf5b80b834bc5571b8254e",
+    "services/knowledge_review.py": "d4dbc09483791cc7e43cf0e13cb17bd934e00c22d389f51830fcaccf1cc368c5",
+    "services/knowledge_runtime.py": "7d110139a2fed015cf9e8364cc919cf91eab60fc58a60f97e7b1bfb78b509c4c",
+    "config.py": "f3a37821bd0bfe3619acd43560707c2f67e2a4fa1c87444cf481f8ff21fb7278",
+    "schemas.py": "b6404d616d2d19231da952121206e4c51f82451edc1626f9e2d6278d3501c7f3",
+    "prompts/knowledge_answer.md": "dbbcbd7369c7b06b96324b1fca5aeef6b4ec665106d48360820f8dc220f1ac16",
+    "data/knowledge/sources.json": "547e5f5b4d8cde212dfe448139ad0628dd9fd91c62d39175f5eab541ba7ff962",
+    "scripts/evaluate_knowledge_loop.py": "fcead5e687a26dc7fcd06f9ccc4731896ff3763a3ab2e2e3cef9a739ebf9efe6",
+    "evals/retrieval_quality/protocol.py": "fef9203402eb50619a89c84033b216fb5890a425f0266e847009e08c8f4fc661",
+    "evals/retrieval_quality/v1/cases.jsonl": "f4e915e2511fa261c09cda0cbec5b9c373dd2b9a3437ef89e888515bac8bd005",
+    "evals/retrieval_quality/v1/manifest.json": "8b22d7a3434c04a1f4e62b80208792f333ba51ac47a8b996a2778f54ca30d924"
+  },
+  "development_failure_retained": {
+    "kind": "Settings missing database_path in initial read-only preflight",
+    "fixed": true,
+    "provider_calls": 0
+  },
+  "known_counterexample": {
+    "id": "loop-semantic-draft-01",
+    "observed": "static scope filter matches general wording containing 安排",
+    "runtime_modified": false,
+    "quality_result": false
+  },
+  "required_next": [
+    "human label review",
+    "new explicit paid request budget",
+    "paired real execution",
+    "human semantic answer review",
+    "publish aggregate gains and regressions"
+  ],
+  "limits": [
+    "self-authored small suite; author saw corpus and implementation",
+    "same current engine round ablation; not historical E3a to E3b gain",
+    "not main chat routing, identity quota or private memory evaluation",
+    "matching document cache is not evidence of answer quality",
+    "no current improvement numbers; token amounts and money unknown"
+  ]
+}

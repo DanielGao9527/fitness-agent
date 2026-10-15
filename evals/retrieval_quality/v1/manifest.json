@@ -1,0 +1,36 @@
+{
+  "version": "knowledge-loop-semantic-v1",
+  "provenance": "self_authored_from_reviewed_public_summaries",
+  "author_saw_corpus_and_implementation": true,
+  "model_outputs_used_to_select_cases": false,
+  "review_status": "pending",
+  "cases": 24,
+  "families": 12,
+  "split_counts": {
+    "dev": 12,
+    "holdout": 12
+  },
+  "answerable_counts": {
+    "true": 16,
+    "false": 8
+  },
+  "cases_sha256": "f4e915e2511fa261c09cda0cbec5b9c373dd2b9a3437ef89e888515bac8bd005",
+  "corpus_sha256": "547e5f5b4d8cde212dfe448139ad0628dd9fd91c62d39175f5eab541ba7ff962",
+  "source_date": "2026-10-15",
+  "controls": {
+    "text_model": "qwen3.6-plus",
+    "embedding_model": "text-embedding-v4",
+    "dimensions": 1024,
+    "tokenizer": "jieba",
+    "candidate_limit": 20,
+    "rrf_k": 60,
+    "per_arm_time_budget_seconds": 45
+  },
+  "prior_draft_sha256": "297b2b8ffcf0fe9c74a183ed6cdcfc5ae87951c38cb86153163b8a1d657b7d7b",
+  "reference_sets_exhaustive": false,
+  "known_preflight_counterexamples": [
+    "loop-semantic-draft-01"
+  ],
+  "scope": "same current knowledge engine, max_rounds=1 versus 2; not main chat routing or historical E3a/E3b delta",
+  "notice": "Candidate meanings may cover more than one question in a family; human review must check each question, alternative evidence and evidence gaps. Pending review is not quality evidence."
+}

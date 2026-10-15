@@ -36,7 +36,7 @@
 - 验证：[测试说明](../tests/README.md)、[评测数据](../evals/README.md)、[脚本说明](../scripts/README.md)。
 - 历史：[归档索引](archive/README.md)。旧方案和日期记录用于追溯，当前结论以 STATUS 为准。
 
-最新接续点为固定第 2 步：24 组记忆对照、范围修复/开发回放及 4 题真实回归已完成；下一步准备 E3 和正式知识质量验收，结果以 STATUS 为准。
+最新接续点为固定第 2 步：24 组记忆对照、范围修复/开发回放及 4 题真实回归已完成；E3 的 24 题、受预算执行/人工判分工具与缓存预检已完成，下一步复核标签并明确新预算；正式知识发布质量另行验收，结果以 STATUS 为准。
 
 质量门禁、批准、切换和回滚工程已推送 [23eecf3](https://github.com/DanielGao9527/fitness-agent/commit/23eecf3)，本机已运行 v22。原型号 FreeTierOnly 已定位，现使用用户有额度的 qwen3.6-plus；文字/向量与记忆小场景已联调，总计 9/20 次尝试，见 [真实结果](../evals/results/real-acceptance-qwen36-2026-10-15.json)。
 

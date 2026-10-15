@@ -143,6 +143,12 @@ python scripts/evaluate_t2_pilot.py --live --max-calls 120 --max-input-chars 150
 
 报告只保留 ID、停止原因、策略版本、模拟调用次数与虚拟阶段时间，不复制问题或原始模型输出。当前 24 个场景验证流程契约；不用于报告真实模型准确率、召回率、端到端延迟或费用改善。完整真实对照仍按 ROADMAP 单独验收。
 
+## 有界检索语义同题评测
+
+`python scripts/evaluate_knowledge_loop.py --split all` 默认只检查冻结输入、出处和调用计划，零供应商调用；加 `--prepare-review --output artifacts/e3-review-new` 导出全 pending 标签表。`--vectors` 只读检查既有公共文档缓存，不自动编码。
+
+24 题开发/留出各 12，与固定响应流程集分开。真实执行必须先人工复核标签、落实新预算，再显式 `--live`；输出新本地目录，失败计次且首个供应商错误停止。运行后另行复核匿名回答才可 `--score-report`，不能用来源命中代替答案正确。命令、预算与局限见[语义协议](../evals/retrieval_quality/v1/README.md)。
+
 ## 公共摘录审核角色
 
 scripts/knowledge_reviewer.py 只在本机私密终端显式 grant/revoke 已有正式账号的公共摘录预审权限，要求已有 v20/v21/v22 私人库的绝对路径。没有网页自授角色，不创建新账号，不发布知识；撤销会失效该审核人旧预审。命令与原库迁移见 [OPERATIONS](../docs/OPERATIONS.md#公共摘录审核权限)。本轮未自动选择或提权实际账号。

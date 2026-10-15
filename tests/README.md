@@ -19,6 +19,7 @@ Linux／macOS 使用 .venv/bin/python。已有本机工作区可复用外层虚�
 | 中文混合检索 | test_embeddings.py、test_hybrid_retrieval.py、test_hybrid_api.py；接口角色/顺序、RRF、缓存版本、额度、来源变化与词法降级 |
 | 知识分流与有限重试 | test_coach_knowledge.py、test_knowledge_answers.py、test_knowledge_loop.py；一次候选快照、原问题复核、引用失效、停止条件 |
 | 零命中恢复与策略回放 | test_knowledge_recovery.py、test_knowledge_replay.py；数字/单位、时间/否定、重复候选重排、额度、截止时间、迟到输出、冻结输入和无原文报告 |
+| 单/两轮语义评测工具 | test_knowledge_loop_evaluation.py；冻结数据/划分、默认零调用与私人库隔离、人工复核绑定、预算/失败停止、降级中止、增益/退步判分；模拟供应商不提供真实质量 |
 | 私人反馈与摘录候选 | test_knowledge_workbench.py；回答绑定、幂等、并发、内容/来源去重、显式核对、来源失效、隔离、修订、删除、重启与旧库迁移 |
 | 公共摘录预审 | test_knowledge_review.py；分享同意、服务端权限/游客隔离、字段白名单、版本与语料指纹、离线检查、人工预审、修订/来源/权限撤销失效、并发、删除、重启及 v19→v20 迁移 |
 | 候选知识版本 | test_knowledge_builds.py、test_knowledge_build_gate.py；完整包/内容去重/缓存身份、缺短摘录编码停止、实际 Top 6 不刷分、只评 dev、变更/故障/并发、损坏文件、失败诊断及线上库保持 |
