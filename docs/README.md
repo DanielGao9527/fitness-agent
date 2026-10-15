@@ -37,4 +37,4 @@
 
 最新接续点为 E4b.2b.2 正式质量门禁、批准、原子激活及回滚；E2/E3 真实质量验收仍按前置条件推进，结果以 STATUS 为准。
 
-10 月 15 日已恢复推送 E4a 至 1282cab；E4b.1 功能提交 7472beb 和本轮 E4b.2a 功能提交 6bf6bc8 均已推送；本机激活及验证见 EXECUTION。
+10 月 15 日已恢复推送 E4a 至 1282cab；E4b.1 功能提交 7472beb 和本轮 E4b.2a 功能提交 6bf6bc8 均已推送；本轮 E4b.2b.1 功能提交 [321092b](https://github.com/DanielGao9527/fitness-agent/commit/321092b) 已推送；本机 v21 激活及验证见 EXECUTION。

@@ -1,6 +1,6 @@
 # 开发接续点
 
-更新：2026-10-15。事实见 [STATUS](STATUS.md)，路线见 [ROADMAP](ROADMAP.md)，最终标准见 [DELIVERY](DELIVERY.md)。开发分支 codex/fitness-hybrid-retrieval；上批已推送至 9773a68，本批提交状态待最后核对。Git 同步不代表公网部署。
+更新：2026-10-15。事实见 [STATUS](STATUS.md)，路线见 [ROADMAP](ROADMAP.md)，最终标准见 [DELIVERY](DELIVERY.md)。开发分支 codex/fitness-hybrid-retrieval；上批已推送至 9773a68，本批 E4b.2b.1 功能提交 [321092b](https://github.com/DanielGao9527/fitness-agent/commit/321092b) 已推送。Git 同步不代表公网部署。
 
 ## 本批：E4b.2b.1 版本登记与发布准备
 
