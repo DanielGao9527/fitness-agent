@@ -2,6 +2,8 @@
 
 核对：2026-10-16。代码、工程流程与真实效果分开记录；不把模拟检查当作模型提升。
 
+GitHub 自动检查修复：此前卡在 jieba 源码包被安装规则排除，后续测试未执行；7171dda 仅为 jieba 增加源码安装例外，CI 与发布器保持一致。[远端 Ubuntu/Python 3.12 检查已成功](https://github.com/DanielGao9527/fitness-agent/actions/runs/38776836797)：2135 项 Python 测试通过、4 项 Windows 工作区专用测试按既有条件跳过，13 套前端逻辑检查通过，依赖检查通过。保留旧失败记录；没有部署公网、重启本机或调用模型。
+
 ## 当前运行
 
 - 仓库：[DanielGao9527/fitness-agent](https://github.com/DanielGao9527/fitness-agent/tree/codex/fitness-hybrid-retrieval)，分支 codex/fitness-hybrid-retrieval；源码在 fitness-agent/data/runtime/remote-auth。
