@@ -1,0 +1,146 @@
+{
+  "date": "2026-10-16",
+  "kind": "memory_actual_training_closeout_acceptance",
+  "runtime_source_commit": "629aece54f1c96a73456b7357c3ea0f578960eeb",
+  "source_hashes": {
+    "database.py": "f4b6e391bef77239512be948cd0443ae35e1d8b5d09704bdce147fea14cdb67b",
+    "schemas.py": "b6404d616d2d19231da952121206e4c51f82451edc1626f9e2d6278d3501c7f3",
+    "services/coach_reviews.py": "953b2546980919189e08516e5afdc5e658a1f3a0457e8e810104b4c0361f65ef",
+    "services/training_context.py": "a87ef79233e9c6f5d74d8cadf58d6598d5d6c7482dcabf936313262c130701ea",
+    "services/training_recommendations.py": "4993f16ef1fcc7b163d1947b218b0162b96f87d5fc694d1bdf5915d21db0061d",
+    "services/equipment_memory.py": "26ecbeb04d6dde91a262f23a3e86bbcb22986662eae56cd84ba0558f5acd4699",
+    "services/profile_facts.py": "e8dde9067a0006b8abe69fe104a827e790202c1cfce374d1459f8e9a3c64d8ef",
+    "services/coach_memory.py": "18435add120a4f520780daa4295f3ad4f07caf07f20637949896cf23d8d434a7",
+    "prompts/coach_understanding.md": "d3d96bf012fc9f975b1e8a4f39482113ff5de05c41115f41c0c5a3083ecd8c78",
+    "data/knowledge/sources.json": "547e5f5b4d8cde212dfe448139ad0628dd9fd91c62d39175f5eab541ba7ff962"
+  },
+  "application_logic_changed": false,
+  "schema_changed": false,
+  "knowledge_corpus_expanded": false,
+  "actual_user_database_used": false,
+  "local_service_restarted": false,
+  "public_deployment_performed": false,
+  "api_regression": {
+    "tests": 13,
+    "passed": 13,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 31.78,
+    "report_sha256": "89f03baca10a7e93c1b1ab753a5dd289cde6f5f094dbda7697c8686e15cf6a65",
+    "new_case": "confirmed long-term correction in another conversation invalidates old local condition and cold history/digest; restart preserves current advice",
+    "provider_calls": 0
+  },
+  "browser": {
+    "suite": "tests/browser-memory-training-chain.cjs",
+    "fixture_flags": [
+      "--fact-versions"
+    ],
+    "port": 8772,
+    "passed": true,
+    "provider_calls": 0,
+    "widths": [
+      1280,
+      390,
+      320
+    ],
+    "390_screenshot_visually_reviewed": true,
+    "checks": [
+      "explicit confirmation of long-term equipment",
+      "new conversation adopts confirmed profile",
+      "actual record form review leaves records unchanged",
+      "explicit form save changes final exercises",
+      "planned records excluded",
+      "record edit/restore cannot revive old suggestion",
+      "profile form correction invalidates previous suggestion",
+      "superseded cold evidence absent",
+      "record deletion invalidates and reselects",
+      "reload does not generate",
+      "no implicit actual record writes"
+    ],
+    "screenshot_sha256": "d9e2e0c63756f6fb501c2a26ef46ef8d1ac7ffaf5e03b34df51c62e69813d71a"
+  },
+  "real_provider_smoke": {
+    "model": "qwen3.6-plus",
+    "authorized_new_max_attempts": 2,
+    "attempts": 2,
+    "responses": 2,
+    "failures": 0,
+    "embedding_calls": 0,
+    "automatic_retries": 0,
+    "previous_memory_budget": {
+      "used": 64,
+      "limit": 64,
+      "not_reused": true
+    },
+    "E3_budget_unchanged": {
+      "used": 46,
+      "limit": 72,
+      "not_reused": true
+    },
+    "scenario_count": 1,
+    "workflow_checks": 22,
+    "checks": {
+      "unconfirmed_只有哑铃": true,
+      "candidate_只有哑铃": true,
+      "confirmed_只有哑铃": true,
+      "cross_session_equipment": true,
+      "advice_writes_no_actual_records": true,
+      "actual_record_invalidates": true,
+      "actual_record_changes_final_actions": true,
+      "planned_record_excluded": true,
+      "record_aba_stays_stale": true,
+      "record_delete_stays_stale": true,
+      "unconfirmed_只能徒手": true,
+      "candidate_只能徒手": true,
+      "confirmed_只能徒手": true,
+      "corrected_old_advice_stale": true,
+      "old_request_cannot_reuse_result": true,
+      "corrected_original_session": true,
+      "old_session_equipment_removed": true,
+      "old_cold_evidence_excluded": true,
+      "restart_and_new_session": true,
+      "only_explicit_workouts_saved": true,
+      "explicit_logout": true,
+      "other_user_isolation": true
+    },
+    "temporary_data_removed": true,
+    "source_unchanged": true,
+    "model_role": "Only parses the two equipment statements; final exercises use existing constrained local rules.",
+    "review": "coding agent inspected synthetic model results and final API output; not independent or blinded",
+    "raw_response_hashes": [
+      "552c2c45ccc8554089a461e99888eab5db8ce068207f1372232ccbf711d4cafe",
+      "0909f995e665b9541e2bd462208ae2fc083f45f5c211509d3e9b1cf0ea57e4de"
+    ]
+  },
+  "earlier_execution_issues": [
+    {
+      "stage": "first local API test setup",
+      "errors": 13,
+      "business_tests_executed": false,
+      "reason": "sandbox temporary directory permissions",
+      "resolution": "work-area temporary directory and suitable execution permissions; final 13 passed"
+    },
+    {
+      "stage": "first offline acceptance harness",
+      "status": "stopped",
+      "provider_attempts": 0,
+      "reason": "harness logout request lacked JSON content type and expected wrong response status",
+      "resolution": "use JSON logout request and assert 204; second offline rehearsal passed 22 checks without network"
+    }
+  ],
+  "interpretation": {
+    "chain_acceptance": "passed for this bounded scenario",
+    "new_quality_improvement_score": false,
+    "independent_blind_review": false,
+    "old_semantic_scores_overwritten": false,
+    "remaining": [
+      "original semantic holdout failures retained",
+      "general memory quality not certified by one smoke case",
+      "no weekly or monthly autonomous planning",
+      "public knowledge quality work outside this closeout"
+    ]
+  },
+  "prior_engineering_report": "memory-training-chain-2026-10-16.json",
+  "privacy": "Private raw model outputs, approval record, screenshots and working material stay under ignored artifacts."
+}

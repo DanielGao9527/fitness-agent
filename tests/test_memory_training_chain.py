@@ -123,6 +123,38 @@ def test_irrelevant_changes_and_duplicate_submissions_do_not_invalidate(scoped):
     assert result(recommend(client, data, client_id=first['client_id'])) == first
 
 
+def test_confirmed_conversation_correction_replaces_old_context_and_cold_evidence(scoped):
+    client, app, _, _ = scoped
+    durable = accept_equipment(scoped)
+    digest_url = f'{BASE}/memory/digests'
+    digest = client.post(f"{digest_url}/from-conversation/{durable['id']}", json={}).json()
+    assert client.post(f"{digest_url}/{digest['id']}/approve", json={'version': digest['version']}).status_code == 200
+    local = accept_equipment(scoped, scope='session', message='这次我训练的地方只有哑铃')
+    assert client.post('/api/workouts', json=workout(name='胸背肩手臂', day='2026-09-14', status='completed')).status_code == 201
+    old = result(recommend(client, local))
+    assert old['focus'] == 'lower' and old['equipment_source'] == 'current_conversation'
+    corrected = accept_equipment(scoped, scope='long_term',
+        message='以后我训练的地方只能徒手', value='只能徒手')
+    assert client.get('/api/profile').json()['equipment'] == '只能徒手'
+    assert result(client.get(f"{BASE}/{local['id']}"))['stale']
+    assert recommend(client, local, client_id=old['client_id']).status_code == 409
+    current = result(recommend(client, local))
+    assert current['equipment'] == '只能徒手' and current['equipment_source'] == 'profile'
+    assert current['focus'] == 'lower' and current['exercises']
+    assert all(item['equipment'] == ['floor'] for item in current['exercises'])
+    assert client.post(f'{BASE}/memory/search', json={'query': '哑铃'}).json()['items'] == []
+    assert client.get(digest_url).json()['items'][0]['stale']
+    assert client.post(f'{BASE}/memory/search', json={'query': '徒手'}).json()['items'][0]['conversation_id'] == corrected['id']
+    with TestClient(create_app(app.state.settings)) as restarted:
+        restarted.app.state.knowledge = app.state.knowledge
+        assert restarted.post('/api/auth/login', json={'username': 'alice', 'password': PASSWORD}).status_code == 200
+        _, final = request_advice(restarted)
+        assert final['equipment'] == '只能徒手' and final['focus'] == 'lower'
+        assert all(item['equipment'] == ['floor'] for item in final['exercises'])
+        assert restarted.post(f'{BASE}/memory/search', json={'query': '哑铃'}).json()['items'] == []
+        assert restarted.get(digest_url).json()['items'][0]['stale']
+
+
 @pytest.mark.parametrize('when', ['during_understanding', 'before_confirmation'])
 def test_record_aba_blocks_old_model_review_without_confirming(scoped, when):
     client, _, model, _ = scoped

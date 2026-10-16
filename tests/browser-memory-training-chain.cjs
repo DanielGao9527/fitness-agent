@@ -46,12 +46,25 @@ async function main() {
     await latest().getByText('本次建议：推：', {exact: false}).waitFor();
     assert.match(await latest().textContent(), /个人档案.*只有哑铃/);
     assert.deepEqual(await (await context.request.get(base + `/api/workouts?day=${day}`)).json(), []);
+    // Exercise the actual record form, including explicit review and save.
+    await page.locator('[data-view="workouts"]').first().click();
+    await page.getByRole('button', {name: '记录训练', exact: true}).click();
+    await page.getByLabel('训练项目或部位', {exact: true}).fill('胸背肩手臂');
+    await page.getByLabel('总时长（分钟）', {exact: true}).fill('30');
+    await page.getByRole('button', {name: '核对训练', exact: true}).click();
+    await page.getByRole('button', {name: '保存训练', exact: true}).waitFor();
+    assert.deepEqual(await (await context.request.get(base + `/api/workouts?day=${day}`)).json(), []);
+    const saved = page.waitForResponse(r => r.url().endsWith('/workouts/batch') && r.request().method() === 'POST');
+    await page.getByRole('button', {name: '保存训练', exact: true}).click();
+    assert.equal((await saved).status(), 201);
+    await page.locator('#record-dialog').waitFor({state: 'hidden'});
+    const [record] = await (await context.request.get(base + `/api/workouts?day=${day}`)).json();
+    assert.equal(record.name, '胸背肩手臂'); assert.equal(record.status, 'completed');
     const recordBody = {client_id: crypto.randomUUID(), day, name: '胸背肩手臂', minutes: 30, status: 'completed'};
-    const record = await (await context.request.post(base + '/api/workouts', {data: recordBody})).json();
     const legacy = await (await context.request.post(base + '/api/workouts', {
       data: {...recordBody, client_id: crypto.randomUUID(), name: '腿臀', status: 'planned'},
     })).json();
-    await refresh();
+    await page.locator('[data-view="assistant"]').first().click(); await ready();
     await latest().locator('.training-stale').waitFor();
     await page.getByRole('button', {name: '按最新记录重新建议', exact: true}).click();
     await latest().getByText('本次建议：下肢与核心', {exact: false}).waitFor();
@@ -67,10 +80,17 @@ async function main() {
     await latest().locator('.training-stale').waitFor();
     await page.getByRole('button', {name: '按最新记录重新建议', exact: true}).click();
     await latest().getByText('本次建议：下肢与核心', {exact: false}).waitFor();
-    assert.equal((await context.request.put(base + '/api/profile', {
-      data: {equipment: '在家，徒手', minutes_per_session: 40, experience: 'experienced'},
-    })).status(), 200);
-    await refresh();
+    // Correct through the user's profile form rather than an API-only mutation.
+    await page.locator('[data-view="profile"]').first().click();
+    await page.getByLabel('器械与场地', {exact: true}).fill('在家，徒手');
+    const corrected = page.waitForResponse(r => r.url().endsWith('/api/profile') && r.request().method() === 'PUT');
+    await page.getByRole('button', {name: '保存档案', exact: true}).click();
+    assert.equal((await corrected).status(), 200);
+    await page.waitForFunction(() => document.querySelector('#profile-form')?.dataset.dirty === 'false');
+    assert.deepEqual((await (await context.request.post(base + '/api/coach/conversations/memory/search', {
+      data: {query: '哑铃'},
+    })).json()).items, []);
+    await page.locator('[data-view="assistant"]').first().click(); await ready();
     await latest().locator('.training-stale').waitFor();
     await page.getByRole('button', {name: '按最新记录重新建议', exact: true}).click();
     await latest().getByText('本次按个人档案的器械：在家，徒手', {exact: false}).waitFor();
@@ -95,9 +115,11 @@ async function main() {
     }
     assert.deepEqual(errors, []);
     console.log(JSON.stringify({passed: true, real_provider_calls: 0,
-      checks: ['explicit long term confirmation', 'new conversation uses profile', 'completed history changes final actions',
+      checks: ['explicit long term confirmation', 'new conversation uses profile', 'actual record form review does not save',
+        'explicit record form save changes final actions', 'completed history changes final actions',
         'planned excluded from actual history', 'record ABA stays stale', 'profile correction invalidates and removes dumbbell actions',
-        'deletion invalidates and reselects', 'reload does not regenerate', 'no implicit workout writes', '1280/390/320']}));
+        'profile form correction', 'superseded cold evidence excluded', 'deletion invalidates and reselects',
+        'reload does not regenerate', 'no implicit workout writes', '1280/390/320']}));
   } catch (error) {
     console.error(JSON.stringify({synthetic_latest_turn: await latest().textContent().catch(() => '')}));
     await page.screenshot({path: path.resolve(__dirname, '../artifacts/memory-training-chain-failure.png'), fullPage: true});

@@ -96,3 +96,5 @@ node tests/browser-memory-provenance.cjs
 发布浏览器使用独立合成服务：tests/ui_fixture_server.py --coach --knowledge-build --knowledge-publish，再运行 node tests/browser-knowledge-builds.cjs --publication。包含批准/切换/回滚各自确认；没有生产配置绕过开关，不连接正常账号库。
 
 统一记忆链路浏览器复现：先在项目虚拟环境运行 `python tests/ui_fixture_server.py --fact-versions`（仅临时8772服务、合成模型及数据库），在已有Playwright环境执行 `node tests/browser-memory-training-chain.cjs`；结束关闭测试服务。不可改成日常8765或实际数据库。该流程验证真实UI/API，不验证供应商语义质量。
+
+最终链路还覆盖实际表单：确认长期哑铃→新会话建议→“记录训练”填写并核对（此时未入库）→明确保存完成记录后改变动作→计划记录不算完成→记录往返修改仍失效→“个人档案”表单更正徒手→旧建议和旧哑铃历史失效→删除实际记录后重新选择→刷新不自动生成。`test_memory_training_chain.py` 另核对从另一段对话确认长期更正后的旧会话、旧冷证据/摘要和重启结果。真实供应商小验收另行记录，不与页面替身测试混算。

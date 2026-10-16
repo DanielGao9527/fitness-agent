@@ -22,6 +22,12 @@
     "drafts"
   ],
   "additional_suites": {
+    "memory-training-chain": {
+      "fixture_flags": ["--fact-versions"],
+      "port": 8772,
+      "command": "node tests/browser-memory-training-chain.cjs",
+      "notice": "Disposable DB/model only: real record/profile forms, cross-session facts, actual history, correction, stale cold evidence, reload and 1280/390/320 layout. No provider calls."
+    },
     "knowledge-builds": {
       "fixture_flags": [
         "--coach",
