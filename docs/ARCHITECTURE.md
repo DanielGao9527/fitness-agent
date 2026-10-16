@@ -1,181 +1,98 @@
 # 当前架构与数据流
 
-核对：2026-10-16。本文描述已接通的实现；未完成设计统一见 [ROADMAP](ROADMAP.md)。
+核对：2026-10-16。本文只描述当前实现，计划/质量缺口见[ROADMAP](ROADMAP.md)，验证见[STATUS](STATUS.md)。
 
-Fitness Agent 是 FastAPI 单体应用，原生网页与 API 同源，私人数据保存在 SQLite。后端按需调用千问与阿里云向量服务，浏览器不持有供应商密钥。
+Fitness Agent是FastAPI单体应用，原生网页与API同源。私人SQLite为v23/39表；公开知识、FTS索引及向量缓存独立保存。模型Key只在后端。
 
 ~~~text
 浏览器 static/ → 认证会话 → api/ + schemas.py
                               ↓
                          services/ 业务编排
-       ┌──────────────────────┼─────────────────────┐
-       ↓                      ↓                     ↓
-私人 SQLite v23         公共资料与检索           model/ + prompts/
-档案/记录/记忆/反馈候选   FTS5 + 向量缓存          理解/估算/证据判断
+       ┌──────────────────────┼──────────────────────┐
+       ↓                      ↓                      ↓
+私人SQLite v23          公共知识/版本包          model/ + prompts/
+档案/记录/记忆/反馈      FTS5、向量、RRF           理解/识别/证据判断
 ~~~
 
 ## 模块职责
 
-| 入口 | 职责 |
+| 模块 | 当前职责 |
 | --- | --- |
-| [app.py](../app.py)、[config.py](../config.py) | 生命周期、模型开关、访问模式和配置 |
-| [api/](../api)、[schemas.py](../schemas.py)、[security.py](../security.py) | 路由、结构校验、会话认证；不信任正文 user_id |
-| [database.py](../database.py) | 私人表、事务和迁移；当前源码 v23、39 表 |
-| [services/](../services) | 对话、确认、事实有效性、记录、配餐和训练规则 |
-| [model/](../model)、[prompts/](../prompts) | 供应商调用、结构化输出、错误分类和应用提示词 |
-| [rag/](../rag) | 审核公共资料、词法/向量召回、来源校验 |
-| [static/](../static) | 页面、核对卡、草稿保护、来源与失败状态 |
-| [agent/](../agent) | 早期通用工具接口；当前助手编排主要在 services |
-| [evals/](../evals)、[tests/](../tests) | 质量对照与工程回归，使用隔离数据 |
+| [app.py](../app.py)、[config.py](../config.py) | 生命周期、配置、模型/业务开关和访问模式 |
+| [api/](../api)、[schemas.py](../schemas.py)、[security.py](../security.py) | 认证身份、HTTP接口、输入/输出契约；不信任正文user_id |
+| [database.py](../database.py) | 私人表、事务和版本迁移 |
+| [services/](../services) | 草稿/明确确认、幂等、档案事实、记忆、配餐、训练与知识治理 |
+| [model/](../model)、[prompts/](../prompts) | 千问/阿里云网关、JSON任务、错误分类、额度和截止边界 |
+| [rag/](../rag) | 审核资料读取、词法/向量召回、融合、来源和缓存校验 |
+| [static/](../static) | 页面、核对卡、草稿保护、来源和失败状态 |
+| [agent/](../agent) | 早期通用工具入口；当前主助手编排主要在services中 |
+| [tests/](../tests)、[evals/](../evals/README.md)、[scripts/](../scripts/README.md) | 工程回归、质量协议/证据、离线/维护工具 |
 
-## 业务主流程
+没有将Hermes或LangGraph接成运行框架，没有多个自治Agent或任意系统命令执行。工作流由现有业务服务控制。
 
-**输入与保存：** 文本、主动录音或饮食照片形成待核对草稿，模型估算保留范围和假设。用户明确操作后保存实际记录；幂等键防重复，版本及上下文指纹拦截旧结果。模型返回后再次核验身份、输入版本和相关事实。
+## 输入、规划与写入
 
-**餐次规划：** 模型从审核目录选候选，services/meal_balance.py 用 SciPy MILP/HiGHS 联合求解剩余餐次，发布前独立复算营养区间、禁忌、份量和修改范围。无解明确失败，未知营养不当作零，不更改目标来凑结果。饮食建议不自动入账。
+文本、主动语音和饮食照片形成可核对草稿。营养估算保留范围、假设和来源，用户确认后才入账；幂等键、版本及上下文指纹阻止重复提交和迟到结果。
 
-**训练建议：** services/training_recommendations.py 与训练目录/编排服务结合三/四/五分化、器械、经验、时间及本人近七天实际训练，只生成当天动作。实际记录和建议分开，不猜首次重量、不将建议当完成。
+[meal_balance.py](../services/meal_balance.py)使用SciPy MILP/HiGHS，在审核候选、既有摄入、营养区间、禁忌、保留项和份量限制下联合配量。发布前独立复算；无解明确失败，不改目标凑结果，不把未知营养算零。只给食材和份量，不给做法。
 
-## E1：公共知识双路检索
+[training_recommendations.py](../services/training_recommendations.py)结合三/四/五分化、已确认器械、经验、时间和近七天实际完成，由审核目录/规则编排今天动作。建议不推进实际轮转，也不自动写workouts或计划。可比较的实际组次由[training_progression.py](../services/training_progression.py)提供受限负重提示；没有足够历史不猜首次重量。
 
-1. 原知识条目仍是人工审核的摘要块；jieba/FTS5 负责词项匹配，不负责文档分块。
-2. [rag/rag_service.py](../rag/rag_service.py) 提供 jieba 搜索分词＋FTS5/BM25。旧双字处理只保留作可配置基线。
-3. [model/embeddings.py](../model/embeddings.py) 区分 document/query 编码。[rag/vector_store.py](../rag/vector_store.py) 缓存绑定模型、维度、模板与内容哈希，只有显式构建才写文档向量。
-4. [rag/hybrid.py](../rag/hybrid.py) 做精确余弦检索及等权 RRF。向量缺失、损坏或不匹配时明确降级；来源撤回/过期不能靠旧缓存继续命中。
-5. [services/knowledge_runtime.py](../services/knowledge_runtime.py) 绑定认证用户额度；一次 RetrievalSnapshot 固定候选，回答前按 ID 和内容重新验源，不重复检索替代验源。
+## E1：中文混合检索
 
-默认 hybrid＋jieba；启动不自动付费建库。脚本与配置见 [CONFIGURATION](CONFIGURATION.md) 和 [scripts](../scripts/README.md)。公共文档向量缓存不保存私人记忆或查询向量。
+1. 知识条目是审核摘要块；jieba/FTS5负责词项匹配，不负责自动文档分块。
+2. [rag_service.py](../rag/rag_service.py)支持jieba搜索分词＋FTS5/BM25；旧双字处理保留作显式基线。
+3. [embeddings.py](../model/embeddings.py)区分document/query编码。[vector_store.py](../rag/vector_store.py)按模型身份、维度、模板和完整文本哈希匹配缓存；文档编码只由显式构建发起。
+4. [hybrid.py](../rag/hybrid.py)进行精确余弦检索、双路候选及等权RRF；缺失/损坏/不匹配时明确降级，来源过期或撤回不能靠旧缓存命中。
+5. [knowledge_runtime.py](../services/knowledge_runtime.py)绑定认证账号调用额度。一次RetrievalSnapshot固定候选；回答前按ID和内容重新验源，不能用另搜一遍替代原来源校验。
 
-本机日常数据路径旁的公共缓存已于 10 月 14 日接通：复用源码运行目录中已有的 133 块缓存，离线复核模型身份、当前内容和向量一致性，没有新增编码调用。独立克隆不分发运行缓存，需要按脚本显式构建；缓存未准备时走已标明的词法降级。
+默认hybrid＋jieba，启动不自动付费建库。本机复用133块已匹配缓存；独立克隆不分发运行缓存，缺缓存时账号和手动记录仍可用。公共文档缓存不存私人记忆或查询向量。
 
-## E2：个人记忆和事实生命周期
+## E2：个人记忆与事实生命周期
 
-| 层 | 当前内容和入口 | 使用方式 |
+| 层 | 当前来源 | 用途 |
 | --- | --- | --- |
-| 热层 | 当前会话、待核对项、已确认条件，coach/coach_reviews | 对当前任务提供上下文；受版本和有效期约束 |
-| 温层 | 档案与 coach_memory_entries | 档案是硬条件的权威来源；用户笔记限每账号 20 条、合计 1,200 字，理解调用前读取 |
-| 冷层 | coach_memory、coach_memory_digests | 本人已核对旧原话、经确认的原文摘录按需词项找回，携带日期/来源 |
+| 会话热状态 | coach_conversations/coach_turns、待核对项、已确认本次条件 | 当前任务上下文和连续修改 |
+| 长期档案/温记忆 | profiles、coach_memory_entries | 档案提供权威硬条件；受限用户笔记辅助交流，不覆盖器械、过敏等硬事实 |
+| 历史证据 | coach_memory、coach_memory_digests | 本人核对旧原话/摘录按词项找回，携带来源/日期；主要由明确回忆触发 |
 
-冷证据主要由“上次”等明确回忆触发；不是任意问题自动搜索全部历史。摘要候选最多拼接三条已核对原话，没有模型自由总结。普通公共知识摘答不读取私人温记忆。
+温记忆限每账号20条、合计1,200字，理解前读取；不是模型自主维护的Hermes文件。来源对话摘录只接受连续用户原话、本人身份和明确reviewed确认；助手答案不能成为私人事实。原话更正/删除使引用条目停用，手工更正作为新确认内容并清除旧绑定，账号删除级联清理。
 
-器械是当前实现最完整的事实链路：
+器械由[equipment_memory.py](../services/equipment_memory.py)与[coach_reviews.py](../services/coach_reviews.py)校验来源、否定及范围；当前策略v17。范围不明由用户选择，不确定/未来/混合范围保留补问。有限表达修复不能吞掉未知要求或伪造来源，不能称为完整语义安全系统。
 
-- 一次理解可返回带原话和版本的候选。[equipment_memory.py](../services/equipment_memory.py) 校验来源、否定与时间范围；没有范围依据为 unspecified，须用户选择。
-- 不确定、未来或混合范围通过 EquipmentNeedsInput 进入补问；[coach_reviews.py](../services/coach_reviews.py) 的当前策略 v17 保留原话/来源与人工范围校验。器械解析允许“其他器械都没有”等完整的末尾否定子句，不增加任何器械，也不吞掉后续未知限制。伪造来源仍拒绝，不把有限规则称为完整语义安全。
-- 已校验器械候选仅缺范围时沿用范围选择器；提示词不再要求训练结构/动作。兼容旧响应的修复仅接受单条原话、unspecified、which_training、无其他操作/安全缺项，且器械片段之外全文符合有限声明/核对表达；未知文字保留阻断。不是新的意图分类器，也不声称完整语义识别。payload 的 clarification_resolution 标记该修复，候选仍须人工选范围并确认，不能自动应用；此类纯器械核对在页面确认后不自动请求训练安排。
-- 用户确认后，本次保存在会话、今天保存在 coach_day_equipment、长期写入既有 profiles.equipment。有效本次条件优先于当天，再使用长期档案；本次/当天最晚北京时间当日结束。
-- [profile_facts.py](../services/profile_facts.py) 统一长期事实事务与递增版本，profile_fact_events 保存来源元数据；当天条件有独立版本。A→B→A 不使旧结果复活。
-- [training_context.py](../services/training_context.py) 与建议/理解指纹核对版本，档案更正、到期或撤销会使相关旧理解、建议和动作替换失效。
-- 删除当天来源对话撤销当天值并保留版本计数；单独确认的长期档案需另行撤销。临时器械不进入跨会话冷证据或摘要。
+- 本次条件保存在当前会话，今天条件在coach_day_equipment，长期条件确认后写profiles.equipment。有效本次优先于今天，再用长期档案；临时条件在北京时间跨日后过期。
+- [profile_facts.py](../services/profile_facts.py)用事务、递增器械版本及无私人口述的来源事件管理长期更正。更正、撤销或到期使旧理解、建议、替换和绑定计划失效；旧原话不能覆盖新档案。
+- coach_memory_revisions保留空集合版本；原话/条目新增、更正、删除后递增。A→B→A或删空再添加都不能复活旧核对结果。
+- v23的training_record_revisions仅保存认证用户、日期和递增次数。workouts触发器在实际完成记录新增/删除/相关字段变更时同事务增加版本；日期移走再移回、完成改计划再改回仍保留计数。无变化、幂等重复、纯计划和无关热量字段不增加计数；事务回滚与账号删除同步处理。
+- [training_context.py](../services/training_context.py)将近七日实际记录及计数纳入上下文指纹，供理解/建议/绑定计划复用；独立有氧计划绑定当天计数。最后一条记录删除后仍保留日期计数，不复制第二套实际训练事实，也不把计数发给模型作内容。
 
-私人记忆、更正、删除均按认证用户隔离。策略版本进入理解指纹，升级后旧待确认草稿须重新核对；本机 health 返回 coach_review_policy 以核对加载版本，共享模式不暴露该字段。自动模型写记忆、私人向量回忆、自动晋升/降级和普遍偏好语义提取尚未实现。
+测试入口为[test_memory_training_chain.py](../tests/test_memory_training_chain.py)，完整UI操作见[DEMOS](DEMOS.md)。私人数据按认证用户隔离，不进入公共知识库。
 
-v23 的 training_record_revisions 只保留认证用户、日期和递增次数。workouts 触发器在实际完成记录新增、删除或影响训练的字段变化时，在同一事务内增加相应日期计数；改回原文、完成改计划再改回、日期移出后移回都不会撤销计数。无变化的保存、幂等重复及纯计划记录不增加计数，热量估算等无关字段也不影响它；账号删除级联清理，事务回滚同时撤销计数。
+## E3：有界纠正与离线回放
 
-training_context.recent_training 将近七日计数纳入上下文指纹，复用于建议、待确认理解和绑定计划；独立有氧计划绑定当天计数。删除最后一条完成记录后仍保留日期计数，旧结果不能因内容恢复而重新有效。计数不作为训练事实或模型提示内容，不复制第二份实际记录；旧版本缺少这项绑定的结果需重新生成。跨会话最终动作、记录影响与更正失效的隔离验收入口为 tests/test_memory_training_chain.py 和 tests/browser-memory-training-chain.cjs。
+[knowledge_answers.py](../services/knowledge_answers.py)复用同一混合检索器；[knowledge_policy.py](../services/knowledge_policy.py)限制最多两轮检索、一次受控改写，始终用原问题判断证据和引用。
 
-### N3：偏好记忆的来源与撤销
+零候选或证据不足时允许有限恢复；相同证据、越界/不完整改写、额度不足、来源撤回或到达预算后停止。数字/单位、时间、否定词只是有限规则校验，不是普遍语义等价证明。
 
-- 沿用 coach_memory_entries；v18 增加用途和原话来源，旧笔记保留为 general_note，不自动推断类型。明确分类的交流偏好限一个，个人术语可多条，共享 20 条/1,200 字上限。
-- from-turn 接口只接受本人对话中的连续用户原话，核对对话、消息及记忆集合版本和 reviewed=true。不接受助手回答、改写或正文 user_id，不调用模型。
-- coach_memory_revisions 在新增、更正、删除后递增，空列表也保留计数；理解指纹包含该版本，防止空集 A→B→A 后旧核对或生成结果复活。
-- SQLite 触发器在原话更正或对话删除时撤销引用条目，并递增条目及集合版本；原话改回去也不自动恢复。warm_memory 只发送有效条目，失效条目留在本人列表供核对或删除。
-- 修改来源条目是用户手工确认的新内容，清除原话绑定。删除原对话会停用独立保存的记忆，清除摘录需删除记忆条目；数据库删除账号时，条目和计数按外键级联清理。
+[deadlines.py](../model/deadlines.py)提供45秒协作式截止，网络按剩余时间收紧、读取分块检查并拒绝迟到结果；同步调用不能被描述为可强制抢占。每次供应商调用仍按认证账号记账。
 
-记忆只辅助理解交流和术语，不作为硬条件来源，也不保证固定摘答或规则训练建议会改变文字风格。独立标注复核及新真实模型质量仍待验收。
+[replay_knowledge_loop.py](../scripts/replay_knowledge_loop.py)回放冻结候选、响应和虚拟时钟；[evaluate_knowledge_loop.py](../scripts/evaluate_knowledge_loop.py)区分准备、标签复核、显式预算真实执行和实际回答复核。单请求重检索不等于跨请求自学习。
 
-## E3：有限检索纠正与回放
+## E4：受控知识更新
 
-[services/knowledge_answers.py](../services/knowledge_answers.py) 先检索，再让模型从候选中受约束选证据。首轮零命中或证据不足且给出合法改写时，最多追加一轮；第二轮仍判断原问题。已知空资料库直接停止，末轮零候选也不再判断；相同证据仅重排不算新证据。
+[knowledge_feedback.py](../services/knowledge_feedback.py)把本人已完成回答/证据不足结果关联到私有反馈。候选第一版只接受当前有效public_web摘要的连续摘录，内容去重、版本绑定；不把私人口述、模型答案、任意网址或自由改写导入公共库。
 
-[services/knowledge_policy.py](../services/knowledge_policy.py) 固定线上两轮上限；改写保留阿拉伯数字与常见单位、时间和否定词的有限词面约束，拒绝重复、越界或改变上述条件的改写。它不证明完整语义等价，仍须用原问题核验引用。不放宽过敏/伤病等原有范围边界。
+1. 本人明确共享公共摘录及出处；审核角色由本机管理命令授予既有正式账号，每次接口重查。审核队列按白名单返回公共字段，不包含私人问题、回答或意见。
+2. [knowledge_review.py](../services/knowledge_review.py)绑定来源、语料、候选版本和角色作工程检查与人工预审，预审通过仍不参与召回。
+3. [knowledge_builds.py](../services/knowledge_builds.py)构建独立公共来源、FTS、精确内容匹配的向量和冻结dev回归。重复完整摘要去重；短摘录缺编码停止，不套用长摘要向量；失败保留诊断和既有版本。
+4. [knowledge_releases.py](../services/knowledge_releases.py)登记不可变包哈希、提交/角色版本；[knowledge_quality.py](../services/knowledge_quality.py)依据固定协议和公开问题缓存生成服务端报告，不接收客户端上传的“通过”。
+5. 正式质量要求标签独立复核、匹配缓存、两侧混合无降级、逐题Recall@6/MRR@10不退化及候选平均Recall@6≥0.80。这是门槛，不是已测成绩；当前正常协议仍pending_review。
+6. [knowledge_publications.py](../services/knowledge_publications.py)绑定有效报告/批准，明确原子切换并递增序号；回滚仅选曾上线且仍有效版本或原审核库。来源、权限、协议、关联私人资料删除或包变化会失效受影响登记/批准/引用；同版本再启用不能复活旧答案。
 
-[model/deadlines.py](../model/deadlines.py) 将 45 秒协作式截止时间绑定当前调用上下文：每阶段前后检查，千问/向量接口按剩余时间缩短 I/O 超时、逐块读取时检查截止，迟到结果不展示。同步网络读不能被该机制强制抢占，不能宣称严格墙钟 45 秒返回；其他功能未处于此上下文时保留原接口超时。
+在线检索、生成结束、保存和历史展示重查发布状态；固定配餐/训练依据仍用原审核目录。个人内容不进入公共版本，不自动提取Q&A或发布；当前实际在线指针是原审核库。合成演示协议只存在于独立测试进程，不是正常运行配置中的质量绕过开关。
 
-正常最多两次检索、两次证据判断；各次远程编码和判断仍按认证账号预留额度，失败不自动重试，不是金额预算。首轮零命中可能新增一次判断成本。返回/私人对话保存候选 ID、策略版本、停止原因、阶段耗时及检索/编码/判断次数，不保存改写原文到公共日志。主聊天在同一流程内取得候选，整个检索阶段计入时间预算，HTTP 重试仍复用原状态。
+## 运行和交付
 
-[scripts/replay_knowledge_loop.py](../scripts/replay_knowledge_loop.py) 可独立运行同一引擎的单轮/两轮策略。当前 [v1 流程集](../evals/retrieval_loop/v1/README.md) 固定 24 个合成候选/输出脚本，绑定语料哈希与有效日期，报告不含问题/模型原文，时间为虚拟注入；它只检查工程契约。真实题集的答案与引用、拒答、负收益和成本/延迟对照仍待验收。
+[backups.py](../services/backups.py)负责一致性备份、清单与恢复校验；显式迁移入口为[migrate_memory.py](../scripts/migrate_memory.py)。本机工作区从外层原入口启动同一源码/数据库，不要求用户选旧版或增强版。
 
-## 主聊天分流与一致性
-
-api/coach.py → services/coach_knowledge.py → services/knowledge_answers.py 复用公共摘答。request_kind/action 表示当前消息动作，intent 保留原会话任务；一般知识与配餐/训练分流，混合或不明确请求先澄清。
-
-知识结果保存在 coach_turns.response；version 检查所有消息并发变化，workflow_version 排除只读知识轮次，避免无故修改原计划。未核对条件仍保留，知识轮次不能作为新计划请求。
-
-
-重复 HTTP 请求复用生成中、成功或失败状态，进程中断不假定外部调用未发生。返回和历史展示均重新检查条件与引用；知识摘答上传问题和公共摘要，不上传完整私人档案。超范围、配置缺失、限额、证据不足、服务异常和来源变化有明确状态。
-
-## E4a：本人反馈与摘录候选
-
-[api/knowledge_workbench.py](../api/knowledge_workbench.py) 和 [services/knowledge_feedback.py](../services/knowledge_feedback.py) 复用认证会话与私人数据库，v19 增加 knowledge_feedback、knowledge_candidates、knowledge_candidate_events 三表。私人反馈和候选没有进入公共来源清单、FTS 或向量缓存的读取路径。
-
-- 主聊天只为已完成知识回答/证据不足轮次提供反馈指纹；服务端重新核对本人对话、轮次、原问题和实际保存的回答。来源快照保存 ID、版本和哈希，反馈类型由用户选择。相同请求内容和标识可重试，不同内容复用标识拒绝。
-- 个人纠正不自动改档案，也不能创建公共候选。第一版候选正文只接受当前有效 public_web 公共摘要中的连续摘录；无核实原文链接的训练笔记、任意网址、私人原话和自由改写均不接受。标题/范围/出处由服务端取回，不信任正文传入的 user_id、状态或审批字段。
-- 候选按本人、规范化内容哈希及完整来源哈希去重；本人成为不同候选来源的反馈不能绕过去重。原始公共资料及反馈回答变化时标记待重新核对，修订重新校验来源；这些检查不证明完整语义或事实正确性。
-- 事务及递增版本保护修订、搁置和删除；事件保存动作、版本、哈希和本人审阅意见。每账号上限 100 条反馈、50 条候选。原对话/反馈删除、既有账号清理级联删除候选和事件。
-- [static/knowledge-workbench.js](../static/knowledge-workbench.js) 位于助手的“反馈与知识候选”折叠面板，显式核对后保存；账号/视图变化丢弃迟到回包。公共来源暂不可用时已有私人条目仍可查看、搁置或删除，新增/修订正文要求有效来源。页面及保存不调用云模型。
-
-私人草稿与搁置意见只有本人可见。E4b.1 在用户明确同意后提交公共摘录，预审队列只导出固定公共字段；下述预审不等于发布。
-
-## 公共摘录预审 E4b.1
-
-[services/knowledge_review.py](../services/knowledge_review.py) 复用认证会话与来源目录；v20 新增 knowledge_reviewers、knowledge_submissions、knowledge_review_gates、knowledge_review_events 四表。提交表仍在私人库，未接入 RAG。
-
-- 本人通过 candidates/{id}/submit 显式提交内容/版本及分享同意，服务端从候选取公共正文和出处。本人只能查看/撤回自己的提交；审核人只能通过 review-queue 查看公共字段，不能反查本人反馈、问题、模型答案或私人意见。
-- 审核权限只由本机 scripts/knowledge_reviewer.py grant/revoke 配置既有正式账号。没有 HTTP 提权接口或首账号默认管理员；审核写请求在事务内重查权限，角色版本用于撤销旧预审，游客不具有审核资格。
-- check 只走本地目录和词法检索，不绑定付费编码器。记录 policy、候选内容/来源、有效语料和分词器指纹，以及出处/连续摘录/来源读取/词法冒烟检查。报告明确 semantic_quality=not_evaluated、release_regression=not_run、publication_allowed=false。
-- 人工预审绑定当前 gate_id、binding_hash 和提交版本，明确核对完整来源与范围后才通过。候选修订/搁置、原回答更新与角色撤销由触发器永久失效旧提交；观察到来源/语料变化时持久标记失效，拒绝过期请求不会回滚该失效。恢复同样正文或重新授予角色不能复活旧提交。
-- 目录故障不冒充来源撤回，暂时阻止检查和预审；仍可查看、撤回、驳回或删除。原候选/反馈/对话/账号清理级联删除提交、检查及事件。
-- static/knowledge-review.js 接在原工作台中，分别显示本人提交和有权限的审核队列；含显式同意、版本冲突、重复提交、迟到回包、撤回和窄屏布局。预审通过仍未发布，正式质量门禁、不可变版本构建及回滚按 ROADMAP 继续。
-
-
-## 候选知识版本构建 E4b.2a
-
-[services/knowledge_builds.py](../services/knowledge_builds.py) 复用现有审核权限和 v20 库，不新增表。POST /knowledge-workbench/builds 要求明确选择已预审的提交与版本；GET /builds 仅向审核人返回构建摘要和失败记录。构建接口本身不发布；在线指针与发布由 E4b.2b.2 管理。
-
-- 先核对审核角色、提交版本、原回答、出处、检查通过标志与绑定哈希；结束前在事务内再次核对，拒绝期间发生的权限、来源、语料及日期变化。重复请求绑定完整输入，并发共用应用构建锁。
-- 在私人库旁 knowledge-builds/staging-随机编号 内生成公共来源快照、FTS、向量和回归报告；全套校验后才重命名为客户端 UUID 目录。目录校验限制在指定私密父目录，失败只清理本次暂存目录，既有包及在线库保留。
-- 相同完整摘要不增加检索块，同来源/内容摘录合并。缩短摘录沿用原出处、范围和关键词，使用独立块 ID。rag/vector_store.py 的 copy_cached 只复用同模型、维度、模板和完整编码文本哈希匹配的缓存；缺失时停止，没有云编码或查询编码。
-- [开发协议](../evals/release_gate/v1/README.md) 绑定既有自建 QA 哈希、dev、实际 Top 6 与逐题不退化条件。别名映射到原证据，重复块不能刷高召回或补回被挤出的名次；过期标签显式记为不可比较。不等于独立语义或混合排名验收。
-- manifest.json 绑定来源、分词器、模型、选择版本、检查 ID 及四份文件哈希；读取用 FrozenKnowledge，不重建索引。损坏包标为不可用，不修复或激活。来源/预审/有效期或开发协议变化后标为待重建。
-- 暂存阶段失败留在 failed-UUID.json，回归失败保留案例 ID、候选 ID 和判定，不保留问题、参考答案、模型原文或用户身份。成功包最多 20 个，失败记录最多 50 个，达到上限后由本机管理员归档，不自动删除历史。
-- 删除私人反馈、对话或账号使相关包失效；构建文件只含公共摘要与随机提交编号，不自动删除历史文件。正式发布前必须重新核对授权和出处。
-
-页面提供构建确认、待发布状态和失败摘要。所有包 publication_allowed=false；登记与撤回见下节，正式质量验收、批准、激活及回滚属于 E4b.2b.2，不能写成完整自动学习闭环。
-
-## 版本登记与发布准备 E4b.2b.1
-
-[services/knowledge_releases.py](../services/knowledge_releases.py) 复用构建锁、当前预审与认证审核角色。v21 增加 knowledge_releases、knowledge_release_members、knowledge_release_events 三表；发布登记不包含公共摘录正文、原问题、回答或私人意见，账号身份只在私人库内部用于角色撤销，不通过接口返回。
-
-- POST /knowledge-workbench/releases 需要构建 UUID、完整清单哈希和显式确认。服务端校验各文件、FTS/向量、当前模型/分词器身份，重新从有效公共语料和预审提交重建期望来源快照并逐字节比较，不能由客户端上传“通过”报告。
-- 登记与原提交版本绑定；同构建同哈希重试返回当前登记，不复活撤回/失效状态。相同 ID 的不同哈希拒绝，最多保留 20 个登记，由本机管理员备份后归档。
-- check 在事务内重查角色、具体文件、原批准、来源/协议/日期与登记成员，报告已核实工程项以及缺少的独立语义、混合排名和在线切换/回滚接线，固定 publication_allowed=false。报告绑定当前登记版本，所有检查保留无私人正文的事件；旧版本请求拒绝。
-- 候选/原回答/预审变化、关联资料删除与登记人权限撤销通过数据库触发器永久失效旧登记；观察到外部文件、来源有效期或协议变化也持久失效。恢复相同内容/重新授予角色不能复活。临时来源故障只暂停检查，仍可撤回登记。
-- GET /releases 和 check/withdraw 仅向有权限审核人开放。static/knowledge-review.js 接在原工作台中，明确登记/撤回确认及缺失项。登记批次不提供发布能力；当前发布接线见下节，不将工程准备检查称为正式质量验收。
-
-## 知识版本批准与在线读取 E4b.2b.2
-
-- services/knowledge_quality.py 从固定 release_quality/v1 协议读取标签，复用公开问题编码比较基线和候选 RRF；逐题不退化且候选平均 Recall@6≥0.80。别名保留实际排名位置。当前标签未独立复核，报告阻止批准；没有云调用或客户端报告导入。报告绑定包、登记、协议和缓存哈希，不把检索相关性叫回答准确率。
-- services/knowledge_publications.py 复用现有登记/事件，v22 新增 knowledge_publications（批准）、knowledge_live（单行指针）、knowledge_live_events（切换历史）三表。人工批准引用当前报告与登记版本；POST /knowledge-workbench/live/switch 明确确认，按递增序号原子切换/回滚，请求指纹幂等。失败保留原指针，失效目标不能回滚启用。
-- 角色撤销、登记/来源失效及删除的触发器使批准失效，并在同一事务内将在线指针切回原审核库。读取发现包/质量凭据变动也永久失效；外部文件变化只在读取边界核对，不承诺持续监听或抹除已显示的浏览器内容。
-- services/knowledge_runtime.py 的 PublishedKnowledge 读取有效完整包，服务治理始终查原始审核来源，避免把已发布摘录当作新的来源权威。每请求保留原混合编码器与账号额度；检索后、生成后、保存前及历史展示核对切换序号，A→B→A 不能恢复旧答案。云请求期间不持有私人写事务。
-- 固定配餐/训练的食材、动作与硬约束来源仍使用原审核目录，版本化摘录仅增强一般知识问答，不自动改写个人档案或规划依据。当前没有实际账号授予角色、实际批准或切换；正常协议未验收时始终读取原库。
-- static/knowledge-review.js 沿用原工作台，提供质量缺口、批准确认、切换确认、回滚目标/确认和历史。tests 的 --knowledge-publish 是独立合成服务代码，不是生产配置开关。
-
-公共版本的构建日期只作审计；有效性依照当前出处/复核期限与协议/角色等绑定，不因单纯跨日而强制失效。构建过程中跨日仍会停止，避免混合两个时间点的快照。
-
-## 检索语义评测边界
-
-scripts/evaluate_knowledge_loop.py 直接复用知识引擎，使用空档案和临时公共索引；不导入应用、连接私人业务库、发布知识或模拟认证额度。evals/retrieval_quality/protocol.py 固定题目/语料哈希、分组划分及条件，只比较当前引擎 max_rounds=1/2。默认仅计划，可只读检查既有公共文档向量；不自动建缓存。
-
-显式真实执行要求人工标签复核和预算，逐次派发前持久记账；供应商失败或混合降级停止。原始回答仅写入忽略的 artifacts 新目录。回答复核隐藏方案名并绑定完整报告哈希，人工判断问题覆盖、引用与不足是否正确后才能汇总；不是独立外部盲测，也不是历史版本增益。协议与局限见[评测说明](../evals/retrieval_quality/v1/README.md)。
-
-## 部署与数据边界
-
-当前代码与本机库均为 v23（39 表），运行 e2-training-record-invalidation-v23；原38表所有原字段在迁移和重启后指纹一致。工作区启动脚本转接到增强仓库，显式绑定原虚拟环境和原数据库；外层 app.py 也转接到同一实现。端口占用时失败，不悄悄另开一个服务。已有模型密钥时本机启动入口默认启用 AI，ManualOnly 会从子进程环境移除模型密钥并关闭模型能力，正常环境在启动结束后恢复。
-
-9 月 29 日，本机原库在独立备份及副本演练后从 v13 升到 v17；18 张原有表在迁移和启动后指纹不变。10 月 14 日升级至 v18 后，E3b 无需再次改表；启动前独立备份、重启后原 25 表指纹一致。10 月 15 日 E4a 已在副本演练和备份后升级为 v19，原 25 表的所有原字段在升级和启动后指纹一致；E4b.1 继而从 v19 升级到 v20，原 28 表原字段在迁移和启动后指纹一致，新增四表为空；E4b.2a 无需迁移，备份和启动后原 32 表指纹一致；本轮 E4b.2b.1 再由 v20 升至 v21，备份/升级与恢复副本先演练，原 32 表所有原字段在迁移和启动后指纹一致，三张新表为空；本轮再升级到 v22 并保留原 35 表全部原字段，当时标记 e4b2b2-knowledge-publication-v22；10月16日再以独立备份与副本演练升级至v23，原38表保留。deploy/check_release.py 比较实际库和候选代码结构，不匹配时阻止自动升级；Git 同步不代表公网部署，详见 [OPERATIONS](OPERATIONS.md)。
-
-共享模式要求 HTTPS、Host 白名单、安全 Cookie、单 worker 和私密数据/密钥目录。账号/游客隔离与清理详见 [ACCOUNTS](ACCOUNTS.md)，来源和隐私分别见 [KNOWLEDGE_SOURCES](KNOWLEDGE_SOURCES.md)、[PRIVACY](PRIVACY.md)。
-
-E4b.2b.1 已接通版本登记、发布准备检查、撤回和失效审计；批准、原子切换、回滚与验源已接通；正式独立质量及真实模型效果仍待验收。
+应用开发规则在docs，运行时模型约定在prompts，凭据/记录/上传图片不入Git或常规日志。访问、备份/迁移与部署见[OPERATIONS](OPERATIONS.md)、[ACCOUNTS](ACCOUNTS.md)、[DEPLOYMENT](DEPLOYMENT.md)；本轮演示文件不属于运行服务功能。

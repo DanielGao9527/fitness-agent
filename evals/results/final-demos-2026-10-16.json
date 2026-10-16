@@ -1,0 +1,321 @@
+{
+  "version": "fitness-final-demos-v1",
+  "date": "2026-10-16",
+  "kind": "existing_capability_demo_and_documentation_closeout",
+  "application_source_commit": "1354d2a919b88b520f9fcf8cf980cebd6f215b3e",
+  "completed_demo_categories": 5,
+  "browser_workflows": 5,
+  "offline_walkthroughs": 2,
+  "video_count": 9,
+  "passed": true,
+  "new_provider_calls": 0,
+  "new_embedding_calls": 0,
+  "production_database_used": false,
+  "application_feature_changes": false,
+  "knowledge_corpus_expanded": false,
+  "unchanged_application_files": 128,
+  "application_snapshot_sha256": "d69b5d08b42e2d2388f0ca7d6812447ef50bdf0d7c21172811927510593a2aef",
+  "official_knowledge_sha256": "547e5f5b4d8cde212dfe448139ad0628dd9fd91c62d39175f5eab541ba7ff962",
+  "retrieval": {
+    "evidence": "current_engine_with_previously_recorded_real_embeddings",
+    "public_documents": 133,
+    "selection": "First three lexicographically sorted dev IDs; selected before reading ranks. No holdout selection.",
+    "query_ids": [
+      "fitness-qa-001",
+      "fitness-qa-002",
+      "fitness-qa-003"
+    ],
+    "embedding_identity": "5f5cb56df9b3851718ff98c14d20ebb132af78cdebc767f3fcc97d2d63268ffe",
+    "query_cache_sha256": "7f86448ee67484987543dc4edd0819009ae94f4712d8ca35e0e4a8c6705c49fb",
+    "query_dataset_sha256": "ec6f7446a9560654a1056f8cdda9e1bbef22041c3c4fa043169f965795e75cec",
+    "report_sha256": "08ddc689fcd07ecf498362090cde96b197dbf56b272e18351d673004f0e62b5f",
+    "hybrid_and_lexical_fallback_verified": true,
+    "source_withdrawal": {
+      "source_id": "training-notes-five-split",
+      "passed": true,
+      "remaining_mode": "hybrid"
+    },
+    "source_withdrawal_applied_to_disposable_copy_only": true,
+    "new_quality_score": false
+  },
+  "loop": {
+    "evidence": "frozen_synthetic_responses_candidates_and_virtual_clock",
+    "contracts": {
+      "single": {
+        "passed": 24,
+        "total": 24
+      },
+      "bounded": {
+        "passed": 24,
+        "total": 24
+      }
+    },
+    "cases_sha256": "23c340d39b583d64966dd60ff541d5e2c734609629e03ab1b4ae49feef87adc4",
+    "report_sha256": "0af1b0683f2ce330eec29faa7696e9957dece0554447b3117d1e5e5507e36ea2",
+    "walkthrough_cases": [
+      "zero_recovery",
+      "both_empty",
+      "same_evidence",
+      "negation_rejected"
+    ],
+    "not_model_quality_or_live_latency": true
+  },
+  "memory_and_scopes": {
+    "evidence": "isolated_browser_forms_and_api_with_model_stubs",
+    "prior_separate_live_closeout": "memory-training-closeout-2026-10-16.json",
+    "completed_records_change_final_actions": true,
+    "profile_and_record_corrections_invalidate_old_advice": true,
+    "no_implicit_workout_writes": true
+  },
+  "knowledge_governance": {
+    "evidence": "isolated_synthetic_labels_and_vectors_for_engineering_demonstration",
+    "dedup_approval_switch_rollback_and_failure_preservation": true,
+    "production_roles_or_candidates_changed": false,
+    "normal_publication_quality_review": "pending_review"
+  },
+  "runs": [
+    {
+      "name": "retrieval",
+      "passed": true,
+      "receipt_sha256": "0557a84175ac11a6908c6eddf1ec50ea6b72b222d597ef4a790526f8a1325fd9",
+      "video_count": 1,
+      "checks": [
+        "retrieval",
+        "actual saved reports",
+        "explicit evidence labels",
+        "1280/390 layout"
+      ]
+    },
+    {
+      "name": "memory",
+      "passed": true,
+      "receipt_sha256": "fd6dae5f7205bb74254449a65195e34d294e628e6a84aef02e7e1c835c90e83e",
+      "video_count": 1,
+      "checks": [
+        "explicit long term confirmation",
+        "new conversation uses profile",
+        "actual record form review does not save",
+        "explicit record form save changes final actions",
+        "completed history changes final actions",
+        "planned excluded from actual history",
+        "record ABA stays stale",
+        "profile correction invalidates and removes dumbbell actions",
+        "profile form correction",
+        "superseded cold evidence excluded",
+        "deletion invalidates and reselects",
+        "reload does not regenerate",
+        "no implicit workout writes",
+        "1280/390/320"
+      ]
+    },
+    {
+      "name": "scopes",
+      "passed": true,
+      "receipt_sha256": "700b3b9aa64fc428598fa8d7b21eed8242807111e7f656861c51f563728eca28",
+      "video_count": 1,
+      "checks": [
+        "redundant model question uses explicit scope picker",
+        "scope repair does not auto-apply",
+        "fact confirmation does not automatically request a training plan",
+        "uncertain input asks a question without confirm button",
+        "question survives refresh",
+        "followup continues the same conversation",
+        "unknown scope blocks save",
+        "explicit scope confirmation",
+        "long-term profile write",
+        "day override preserves profile",
+        "final advice shows day source",
+        "session override",
+        "390/320 layout"
+      ]
+    },
+    {
+      "name": "loop",
+      "passed": true,
+      "receipt_sha256": "fdf51d692c838012d4d8532383be23f4ca022316f6e39d5b0f2454ca3c8bb285",
+      "video_count": 1,
+      "checks": [
+        "loop",
+        "actual saved reports",
+        "explicit evidence labels",
+        "1280/390 layout"
+      ]
+    },
+    {
+      "name": "workbench",
+      "passed": true,
+      "receipt_sha256": "55c40cb9beaa89d23c61eab8fc00d97fbf1c8eed518027786875eb9c8944fd93",
+      "video_count": 2,
+      "checks": [
+        "feedback origin",
+        "explicit quote review",
+        "private/public separation",
+        "revision and rejection",
+        "XSS escaping",
+        "account isolation",
+        "reload persistence",
+        "cascade deletion",
+        "1440/390/320"
+      ]
+    },
+    {
+      "name": "pre-review",
+      "passed": true,
+      "receipt_sha256": "81ccbae62875488a8f5479281dbaccc6d44e8ec5d12f6a65a2ece11df58ca8bb",
+      "video_count": 2,
+      "checks": [
+        "explicit public sharing",
+        "private field isolation",
+        "server reviewer role",
+        "local check",
+        "manual pre-review",
+        "edit invalidation",
+        "withdraw",
+        "permission revocation",
+        "1440/390/320"
+      ]
+    },
+    {
+      "name": "publication",
+      "passed": true,
+      "receipt_sha256": "1af69a278df95a53ef3960034577a94dd17307d4d4d7032245521c14f37117a9",
+      "video_count": 1,
+      "checks": [
+        "explicit selection and confirmation",
+        "private field separation",
+        "isolated complete package",
+        "identical-text dedup",
+        "confirmed version registration",
+        "manual approval and atomic switch/rollback",
+        "confirmed withdrawal",
+        "back to original corpus after rollback",
+        "shorter excerpt blocks missing encoding",
+        "prior package preserved",
+        "1440/390/320"
+      ]
+    }
+  ],
+  "viewer": {
+    "metadata_decoding_and_actual_playback": true,
+    "no_horizontal_overflow_at_widths": [
+      1280,
+      390,
+      320
+    ],
+    "visually_reviewed_viewer_widths": [
+      1280,
+      390
+    ],
+    "direct_video_frame_visual_review": true,
+    "videos": [
+      {
+        "file": "retrieval/page@4a0fad55d46d15b601bc4c6b6088e423.webm",
+        "duration": 13.44,
+        "width": 1280,
+        "height": 900,
+        "played": true,
+        "error": null,
+        "bytes": 1328560,
+        "sha256": "b0c7fa994e32fa7695a444ba13437fff8e4e4bc5e51b32e4ac735bb4eb7760e6"
+      },
+      {
+        "file": "memory/page@54d75ee6956e21ef7079138508b5a4e6.webm",
+        "duration": 14.68,
+        "width": 1280,
+        "height": 900,
+        "played": true,
+        "error": null,
+        "bytes": 1425916,
+        "sha256": "936942beb735786651d505f8459eccef4fa6d601573b3e0106973e55c4deb1ed"
+      },
+      {
+        "file": "scopes/page@db3659a2e7f520d95e15a925b2796af8.webm",
+        "duration": 13.48,
+        "width": 1280,
+        "height": 900,
+        "played": true,
+        "error": null,
+        "bytes": 1443113,
+        "sha256": "51e41f1a5daf17c9875a0dbef01eac2aafca1838674475a09f432587f6471802"
+      },
+      {
+        "file": "loop/page@c460ff7cff64aec2dc510f5e1f7d8b3e.webm",
+        "duration": 13.04,
+        "width": 1280,
+        "height": 900,
+        "played": true,
+        "error": null,
+        "bytes": 881832,
+        "sha256": "b420d844e214b68d02d90902f6527142dd0a604d2edfdc056cc969c1ef2bfd56"
+      },
+      {
+        "file": "workbench/page@2d4ee09c6542a9741e90b48600c6bda0.webm",
+        "duration": 11.08,
+        "width": 1280,
+        "height": 900,
+        "played": true,
+        "error": null,
+        "bytes": 1067798,
+        "sha256": "5b5aa4ef743aaa6ffd7fa7bf5bb856b8d4ba190d8f6f59c8bfdb797023694d36"
+      },
+      {
+        "file": "workbench/page@9e852efe12517e44228c7bb585067f2b.webm",
+        "duration": 2.92,
+        "width": 1280,
+        "height": 900,
+        "played": true,
+        "error": null,
+        "bytes": 218377,
+        "sha256": "673bf982eeef262df3c462c6165dc981ba8943a6a78b120a2ccf1b561c864cfc"
+      },
+      {
+        "file": "pre-review/page@a5fd40d822416a06db33a3f97834e308.webm",
+        "duration": 16.08,
+        "width": 1280,
+        "height": 900,
+        "played": true,
+        "error": null,
+        "bytes": 1426757,
+        "sha256": "01e9f149c8f28660bdfa63de68730302ef2c2106e5d78b4b5f68e064c3fd91d8"
+      },
+      {
+        "file": "pre-review/page@07e35763319ddae6fc5e2d3863800cef.webm",
+        "duration": 17.04,
+        "width": 1280,
+        "height": 900,
+        "played": true,
+        "error": null,
+        "bytes": 894306,
+        "sha256": "f08d7c8aee5bf69e5d92efa99b10f80262a4098212143586df6f4cf501ff4d51"
+      },
+      {
+        "file": "publication/page@627399e00803449d0d61d7a0a28f043a.webm",
+        "duration": 28.24,
+        "width": 1280,
+        "height": 900,
+        "played": true,
+        "error": null,
+        "bytes": 2210054,
+        "sha256": "95c122c1eb6ebc0f9a9edbfce43683c8b3e9667e607cacc9bc6e563c765ed364"
+      }
+    ]
+  },
+  "local_bundle_only": [
+    "videos",
+    "screenshots",
+    "raw_demo_receipts",
+    "working_scripts"
+  ],
+  "git_delivery": [
+    "reproduction_instructions",
+    "current_documentation",
+    "anonymous_summary"
+  ],
+  "limitations": [
+    "No new live-model quality percentage is claimed by these demonstrations.",
+    "Original E2 semantic failures and confirmation regressions remain in their unchanged reports.",
+    "E3 live dev comparison remains 11/12 on both sides; holdout and general-query scope false positive remain open.",
+    "Synthetic publication success does not satisfy the normal independent quality protocol.",
+    "Public hosting, HTTPS and physical-phone validation remain separate."
+  ]
+}
