@@ -10,7 +10,7 @@ from model.factory import ModelError
 from schemas import CoachUnderstanding, CoachEquipmentMemory
 from services.coach import CoachService, apply_meal_command, apply_meal_commands, apply_meal_changes, validate_meal_changes, batch_meal_adjustments, conversation_constraints, meal_adjustment, meal_context, route
 from services.meal_plans import digest, encode
-from services.plan_foods import ALIASES, CATALOG_VERSION, FOODS, MEDICAL, SOFT
+from services.plan_foods import ALIASES, CATALOG_VERSION, FOODS, MEDICAL, SOFT, normalize_preference, positive_alias
 from services.training_plans import HEALTH
 from services.training_context import training_context, recent_training, merge_training, training_question, SPLIT_ALIASES
 from services.meal_schedule import MEAL_ALIASES, selection, targeted, question as meal_question
@@ -21,7 +21,7 @@ from services.coach_memory_digests import recall_digests
 from services.profile_facts import fact_revisions, write_profile
 from services.equipment_memory import candidate_from_model, check_equipment_context, equipment_only_statement, EquipmentNeedsInput, day_snapshot, save_day, revoke_day, today
 
-POLICY = "coach-understanding-v17-equipment-scope-review"
+POLICY = "coach-understanding-v18-positive-food-preferences"
 QUESTIONS = {
     "none": "",
     "which_food": "你想调整哪一种食材？请写出餐单里的名称。",
@@ -178,8 +178,11 @@ class CoachReviewService:
         notes = []
         for note in result.notes:
             original = originals[note.version]
-            if any(alias not in ALIASES or alias not in original for alias in note.avoid) or any(value not in SOFT for value in note.preferences):
-                raise ModelError("COACH_INVALID_OUTPUT", "理解结果含有无法对应原话的食材或未支持的偏好，未应用。")
+            if any(alias not in ALIASES or alias not in original for alias in note.avoid):
+                raise ModelError("COACH_INVALID_OUTPUT", "理解结果含有无法对应原话的避开食材，未应用。")
+            normalized = [normalize_preference(value, original) for value in note.preferences]
+            if None in normalized:
+                raise ModelError("COACH_INVALID_OUTPUT", "理解结果含有未支持或无法对应原话的偏好，未应用。")
             blocked = set().union(*(ALIASES[alias] for alias in note.avoid)) if note.avoid else set()
             unresolved = note.unresolved
             # Conservative keyword floors supplement, not replace, semantic review.
@@ -192,7 +195,7 @@ class CoachReviewService:
                         unresolved = True
             notes.append({"version": note.version, "message": original, "food_avoid": sorted(blocked),
                           "avoid_names": [FOODS[key][0] for key in sorted(blocked)],
-                          "preferences": sorted(set(note.preferences)),
+                          "preferences": sorted(set(normalized)),
                           "training_caution": note.training_caution or bool(HEALTH.search(original)),
                           "diet_caution": note.diet_caution or bool(MEDICAL.search(original)), "unresolved": unresolved})
         clarification = result.clarification
@@ -365,7 +368,13 @@ class CoachReviewService:
         try:
             prompt = (ROOT / "prompts/coach_understanding.md").read_text(encoding="utf-8")
             prompt += "\nJSON Schema:\n" + json.dumps(CoachUnderstanding.model_json_schema(), ensure_ascii=False)
-            message = {key: facts[key] for key in ("messages", "profile", "constraints", "current_meal")}
+            message = {key: facts[key] for key in ("messages", "constraints", "current_meal")}
+            # This model extracts NEW notes, not the effective safety profile.
+            # Sending dietary profile facts here encourages models to copy them
+            # into this turn's notes, which correctly fails source grounding.
+            # The full profile remains in the fingerprint and is independently
+            # enforced by the meal/training generators before publication.
+            message["profile"] = {}
             if (not knowledge_only(facts["messages"][-1]["message"])
                     and (facts["warm_memory"]["user_preferences"] or facts["warm_memory"]["assistant_notes"])):
                 message["warm_memory"] = facts["warm_memory"]
@@ -374,10 +383,6 @@ class CoachReviewService:
             if facts.get("historical_digests"):
                 message["historical_digests"] = facts["historical_digests"]
             message["current_message_version"] = facts["version"]
-            # A training-only request does not need dietary preferences or allergies for intent extraction.
-            # The complete profile still participates in the fingerprint and recommendation safety checks.
-            if "training_facts" in facts and not any(re.search(r"吃|餐|饭|食|过敏|忌口|营养", item["message"]) for item in facts["messages"]):
-                message["profile"] = {}
             message["meal_context"] = {key: facts["meal_context"][key] for key in ("meal_types", "selection_required", "target_required") if key in facts["meal_context"]}
             if "current_meals" in facts:
                 message["current_meals"] = {key: value["items"] for key, value in facts["current_meals"].items()}
@@ -390,7 +395,10 @@ class CoachReviewService:
                 message["current_training"] = facts["current_training"]
                 message["training_splits"] = SPLIT_ALIASES
             message["food_aliases"] = {key: sorted(value) for key, value in ALIASES.items()}
-            message["soft_preferences"] = sorted(SOFT)
+            positive_clauses = {part.strip() for turn in facts["messages"]
+                for part in re.split(r"[，,；;、。.!！?？\n]+|和|以及", turn["message"])
+                if positive_alias(part.strip())}
+            message["soft_preferences"] = sorted(SOFT | positive_clauses)
             raw = factory().generate(system_prompt=prompt, message=encode(message))
             try:
                 result = CoachUnderstanding.model_validate_json(raw)

@@ -152,8 +152,23 @@ def today(facts, catalog, resources, evidence, history, selected=None, minutes=N
                    for index, key in enumerate(rotation)]
         score, previous = max(matches, key=lambda item: (item[0], -item[1]))
         if score:
-            start = (previous + 1) % len(rotation)
-            result["reason"] = f"近七天最近一次力量记录在{last_day[5:]}，本次从{SESSIONS[rotation[start]][0]}方向继续核对。"
+            # A composite session may cover several directions. Do not resolve
+            # a tied push/pull match arbitrarily and immediately repeat the other.
+            primary = {"push": {"chest"}, "pull": {"back"}, "lower": {"legs"}}
+            covered = [index for index, key in enumerate(rotation)
+                       if primary.get(key, focus[key]) <= set(actual)]
+            if len(covered) > 1:
+                remaining = [index for index in range(len(rotation)) if index not in covered]
+                if remaining:
+                    start = min(remaining, key=lambda index: (sum(history.get("scores", {}).get(group, 0)
+                        for group in focus[rotation[index]]) / len(focus[rotation[index]]), index))
+                    result["reason"] = f"近七天最近一次力量记录在{last_day[5:]}，涉及多个训练方向，优先核对该次未覆盖的{SESSIONS[rotation[start]][0]}方向；不据此判定已恢复。"
+                else:
+                    start = (previous + 1) % len(rotation)
+                    result["reason"] = f"近七天最近一次力量记录在{last_day[5:]}，已覆盖全部轮转方向，结合近期负荷继续核对；不据此判定已恢复。"
+            else:
+                start = (previous + 1) % len(rotation)
+                result["reason"] = f"近七天最近一次力量记录在{last_day[5:]}，本次从{SESSIONS[rotation[start]][0]}方向继续核对。"
     if not result["reason"]:
         result["reason"] = "近七天没有可用于轮转的力量记录，从所选结构起点安排。" if not sessions else "按近七天实际训练和本次条件安排。"
     if selected is None:

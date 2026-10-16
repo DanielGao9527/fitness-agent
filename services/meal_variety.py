@@ -6,7 +6,7 @@ import json
 
 from services.plan_foods import ALIASES, FOODS
 
-POLICY = "meal-quality-v1"
+POLICY = "meal-quality-v2-soft-food-preferences"
 STAPLE_PORTIONS = {key: (60 if key in {"oats", "buckwheat", "quinoa", "wholemeal-bread"} else
                         250 if key in {"potato", "sweet-potato"} else 200)
                    for key, food in FOODS.items() if food[1] == "starch"}
@@ -44,6 +44,10 @@ def quality(plans, info, data):
     for plan in plans:
         starch = 0.
         rice_count = 0
+        preferred = set(plan.get("preferred_foods", [])) - set(plan.get("excluded_foods", []))
+        wanted_groups = {FOODS[key][1] for key in preferred if key in FOODS}
+        present_groups = {item["group"] for item in plan["items"] if item["food_id"] in preferred}
+        cost += 2 * len(wanted_groups - present_groups)
         for item in plan["items"]:
             key = item["food_id"]
             amount = (item["lower"] + item["upper"]) / 2

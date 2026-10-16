@@ -42,6 +42,30 @@ def assert_within(plans, info, data):
         assert check["projected"][key]["upper"] <= info["macro"]["ranges"][key]["upper"]
 
 
+def test_soft_rice_preference_influences_solver_and_final_selection():
+    plans, info, data = sample()
+    for plan in plans:
+        plan["items"][0] = item("potato", 300)
+        plan["preferred_foods"] = ["rice", "brown-rice"]
+    output, _ = balance.balance(plans, {"lunch", "dinner"}, info, data)
+    assert_within(output, info, data)
+    assert all({"rice", "brown-rice"} & {it["food_id"] for it in plan["items"]} for plan in output)
+
+
+def test_soft_preference_does_not_override_exclusions_or_fixed_meal():
+    plans, info, data = sample()
+    for plan in plans:
+        plan["preferred_foods"] = ["rice", "brown-rice"]
+        plan["excluded_foods"] = ["rice", "brown-rice"]
+        plan["items"][0] = item("potato", 300)
+    output, _ = balance.balance(plans, {"lunch", "dinner"}, info, data)
+    assert_within(output, info, data)
+    assert all(not {"rice", "brown-rice"} & {it["food_id"] for it in plan["items"]} for plan in output)
+    lunch = deepcopy(output[0])
+    adjusted, _ = balance.balance(output, {"dinner"}, info, data)
+    assert adjusted[0] == lunch
+
+
 def test_high_carbs_deficit_is_corrected_not_just_reported():
     plans, info, data = sample()
     original = deepcopy(plans)

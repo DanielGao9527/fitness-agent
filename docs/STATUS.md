@@ -1,14 +1,16 @@
 # 当前进度与验证
 
-核对：2026-10-16。当前授权的五类演示与文档整理已收尾；工程、真实模型效果和未验收边界分别记录。
+核对：2026-10-17。已修普通正向食材偏好拦截及混合训练记录轮转；原五类演示已收尾。工程、真实模型效果和未验收边界分别记录。
 
 ## 当前交付
 
 - 仓库：[DanielGao9527/fitness-agent](https://github.com/DanielGao9527/fitness-agent/tree/codex/fitness-hybrid-retrieval)，分支 `codex/fitness-hybrid-retrieval`。源码在 `fitness-agent/data/runtime/remote-auth`。
-- 日常入口 `http://localhost:8765`，运行 `e2-training-record-invalidation-v23`，私人库v23/39表，理解策略v17。原账号和记录保留；上次恢复启动前已独立备份，启动后39表指纹一致，没有新迁移或供应商调用。
+- 日常入口 `http://localhost:8765`，运行 `e2-training-record-invalidation-v23`，私人库v23/39表，理解策略v18。此次修复已备份并重启，无迁移；初次重启业务表不变，会话/游客到期时间随浏览器访问正常刷新。
 - 本机文字/照片配置为 `qwen3.6-plus`；源码默认型号由config.py管理。模型和向量配置在后端，浏览器不持有Key。
 - [五类演示与复现](DEMOS.md)已完成：9段本地录像全部检查播放，桌面/390/320宽度通过，本轮供应商请求0次、业务源码128文件及正式知识语料未变。视频/截图只留本地，Git保留[匿名汇总](../evals/results/final-demos-2026-10-16.json)。
-- 最近已核对的代码提交 `1354d2a` [GitHub检查通过](https://github.com/DanielGao9527/fitness-agent/actions/runs/38852081929)：2136项Python测试通过，4项Windows工作区专用测试正常跳过，13套前端逻辑通过。文档推送也须核对对应提交，不能用上传成功代替检查通过。
+- 上次交付 `741f436` [GitHub检查通过](https://github.com/DanielGao9527/fitness-agent/actions/runs/38856082623)：2136项Python测试通过，4项Windows工作区专用测试正常跳过，13套前端逻辑通过。本次修复的对应提交检查在交付回复单独确认，不能复用上次检查代替。
+
+本次[小林修复重演](../evals/results/preference-training-fix-2026-10-17.json)：档案“清淡口味，喜欢米饭”生成两餐、禁忌和宏量核对通过；前天胸背肩臂记录使今天优先下肢，更正徒手后新会话使用自重动作。对话“主食优先米饭”已成功理解并确认，但后续配餐供应商连接失败，最终餐单未验完。累计6/8次调用，含两次过程应用校验拒绝；首个供应商错误即停。此前失败和原评测分数不改写，不从单例推算提升百分比。原始截图/账本只留本地。
 
 ## 能力与边界
 

@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-17",
+  "scope": "Existing positive food preferences and actual-workout rotation only; no corpus expansion",
+  "data": "One fictional guest persona; original private accounts untouched",
+  "provider": "qwen3.6-plus",
+  "requests": {
+    "authorized_maximum": 8,
+    "used": 6,
+    "initial_profile_meals_successful": 2,
+    "intermediate_application_validation_rejections": 2,
+    "final_understanding_successful": 1,
+    "meal_connection_failure": 1,
+    "retried_after_supplier_error": 0
+  },
+  "observations": {
+    "profile_positive_rice": "Two meals published with rice, excluding both declared meat restrictions; independent macro check within bounds",
+    "session_staple_priority_rice": "Original phrase accepted, normalized and explicitly confirmed; meal generation interrupted by supplier connection failure",
+    "mixed_upper_body_record_two_days_ago": "Lower/core recommended instead of arbitrary push-to-pull rotation",
+    "equipment_correction_new_session": "Bodyweight profile used; dumbbell suggestions no longer current",
+    "actual_records": "Suggestions not saved as completed workouts or meals"
+  },
+  "limitations": [
+    "Small debugging demo, not a quality benchmark or an improvement percentage",
+    "Session-preference-to-final-meal live chain remains unverified after the final fix",
+    "Intermediate rejected outputs and supplier failure preserved in ignored local artifacts",
+    "Recorded breakfast was synthetic; completeness was not confirmed, so totals are provisional",
+    "Calendar-day load rules do not establish individual recovery"
+  ]
+}

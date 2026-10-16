@@ -13,7 +13,7 @@ from services.training_catalog import read_catalog, read_systems
 from services.training_program import session, today
 from services.training_progression import SOURCE as PROGRESSION_SOURCE, performance_history, attach_guidance
 
-POLICY = "training-today-2026-09-29.1-equipment-exhaustive-list"
+POLICY = "training-today-2026-10-17.1-mixed-session-rotation"
 GROUPS = {"chest": "胸部", "back": "背部", "legs": "腿臀", "core": "核心", "shoulders": "肩部", "arms": "手臂"}
 PATTERNS = {
     "chest": r"胸|卧推|推胸|俯卧撑|chest|bench.?press|push.?up",
@@ -196,6 +196,7 @@ def build(facts, evidence):
     result["time_basis"] = basis
     result["available_minutes"] = minutes
     result["warnings"] = ["只依据已保存的完成记录；未记录不等于没练，间隔不等于已经恢复。",
+        "近七天实际力量记录用于方向轮转；今天和昨天的已识别负荷用于动作排除。前天记录参与轮转，不自动作为恢复证明。",
         "一般健康成人训练起点，不是个体处方。若疼痛、明显疲劳或动作失控应停止，不要求每组力竭。",
         "使用稳定地面和可控制的轻负重，不预设公斤数；动作/组次按当前能力下调，组间充分休息。"]
     if basis == "profile_session":

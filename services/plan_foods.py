@@ -3,7 +3,7 @@ import re
 
 from model.factory import ModelError
 
-CATALOG_VERSION = "2026-09-23.6-cn"
+CATALOG_VERSION = "2026-10-17.1-positive-preferences"
 FOODS = {
     "rice": ("米饭", "starch", "g", "熟重，不含额外配料", 80, 250),
     "brown-rice": ("糙米饭", "starch", "g", "熟重，不含额外配料", 80, 250),
@@ -152,11 +152,50 @@ ALLERGEN_LINKS = {"egg": {"wholewheat-pasta", "egg-noodles", "wholemeal-bread"},
                   "sesame-oil": {"wholemeal-bread"}, "milk": {"yogurt", "wholemeal-bread"}, "yogurt": {"milk", "wholemeal-bread"},
                   "rice": {"rice-noodles"}, "brown-rice": {"rice-noodles"}}
 NONE = {"", "无", "没有", "暂无", "无过敏", "没有过敏", "无特殊限制", "none", "n/a"}
-SOFT = {"清淡", "口味清淡", "少油", "少盐", "喜欢辣", "常在食堂吃饭", "食堂", "自己做饭",
+SOFT = {"清淡", "口味清淡", "清淡口味", "少油", "少盐", "喜欢辣", "常在食堂吃饭", "食堂", "自己做饭",
         "在外饮食", "经常在外吃饭", "外食", "经常外食", "外卖", "味甜系", "口味偏甜", "偏甜", "喜欢甜食", "喜欢甜", "爱吃甜食"}
 MEDICAL = re.compile(r"孕|哺乳|儿童|未成年|青少年|(?<!\d)(?:1[0-8]|[0-9])\s*岁|糖尿|肾|肝病|高血压|心脏|疾病|服药|用药|处方|暴食|厌食|催吐|低体重|吞咽|乳糜泻|pregnan|diabet|child|medical|kidney", re.I)
 RULE = re.compile(r"(?:我)?(?:对|不吃|不喝|不爱吃|不喜欢吃|不喜欢|避免|忌口[:：]?|过敏[:：]?|禁忌[:：]?)?(" +
                   "|".join(sorted(ALIASES, key=len, reverse=True)) + r")(?:过敏|不耐受|不能吃|禁食)?")
+POSITIVE = re.compile(r"(?:我)?(?:主食)?(?:喜欢吃|喜欢|爱吃|偏爱|优先选择|优先)(" +
+                      "|".join(sorted(ALIASES, key=len, reverse=True)) + r")")
+POSITIVE_SUFFIX = re.compile(r"(?:主食)?(?:以)?(" + "|".join(sorted(ALIASES, key=len, reverse=True)) + r")(?:优先|为主)")
+
+
+def positive_alias(value):
+    match = POSITIVE.fullmatch(value) or POSITIVE_SUFFIX.fullmatch(value)
+    return match[1] if match else None
+
+
+def positive_foods(text):
+    """Only complete positive clauses; never strip negations or unknown tails."""
+    found = set()
+    for part in re.split(r"[，,；;、。.!！?？\n]+|和|以及", text):
+        alias = positive_alias(part.strip())
+        if alias:
+            found.update(ALIASES[alias])
+    return found
+
+
+def preferred_foods(profile, session=()):
+    return sorted(positive_foods(profile.get("preferences", "")) |
+                  set().union(*(positive_foods(value) for value in session)))
+
+
+def normalize_preference(value, original):
+    if value in SOFT:
+        return value  # Existing normalized taste vocabulary is preserved.
+    # Models may name the food rather than repeat the positive predicate.
+    # The original still needs a complete positive clause, so a bare rice
+    # output cannot turn '不喜欢米饭' or unrelated profile data into a preference.
+    alias = positive_alias(value) or value
+    if alias in ALIASES and ALIASES[alias] <= positive_foods(original):
+        return "优先" + alias
+    return None
+
+
+def grounded_preference(value, original):
+    return normalize_preference(value, original) is not None
 
 
 def catalog(*, quick=False):
@@ -181,7 +220,7 @@ def exclusions(profile, temporary=(), plant_only=False):
             part = part.strip().rstrip("。.")
             if not part:
                 continue
-            if field == "preferences" and part in SOFT:
+            if field == "preferences" and (part in SOFT or positive_alias(part)):
                 continue
             if part in {"纯素", "素食", "吃素", "全素"}:
                 blocked.update(ANIMAL_FOODS)

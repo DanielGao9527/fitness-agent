@@ -13,7 +13,7 @@ from services.meal_nutrient_reference import NAMES, amount_nutrients, nutrition_
 from services.plan_foods import FOODS, QUICK_MAX
 from services.meal_variety import STAPLE_PORTIONS, RICE_FAMILY, quality
 
-POLICY = "joint-macros-2026-09-23.3-centered"
+POLICY = "joint-macros-2026-10-17.1-soft-food-preferences"
 MACROS = ("protein", "carbs", "fat")
 LABELS = {"protein": "蛋白质", "carbs": "碳水", "fat": "脂肪"}
 ENERGY_TOLERANCE = .05
@@ -93,6 +93,9 @@ def _solve(plans, mutable, info, data, expand):
         candidates = [key for key in FOODS if key not in blocked and key not in fixed and (expand or key in original)]
         groups = {group: {} for group in ("starch", "protein", "vegetable", "fat", "fruit", "dairy")}
         counts = Counter(item["group"] for item in fixed.values())
+        preferred = set(plan.get("preferred_foods", [])) - blocked
+        preferred_groups = {FOODS[key][1] for key in preferred if key in FOODS}
+        preference_terms = {group: {} for group in preferred_groups}
         all_selected, vegetables, meal_energy, starch, rice = {}, {}, {}, {}, {}
         for food_id in candidates:
             name, group, unit, basis, minimum, maximum = FOODS[food_id]
@@ -112,6 +115,8 @@ def _solve(plans, mutable, info, data, expand):
             constrain({quantity: 1, selected: -math.floor(maximum / step)}, hi=0)
             all_selected[selected] = 1
             groups[group][selected] = 1
+            if food_id in preferred:
+                preference_terms[group][selected] = -1
             if group in {"protein", "vegetable"}:
                 repeated.setdefault(food_id, {})[selected] = 1
             if food_id in STAPLE_PORTIONS:
@@ -128,6 +133,10 @@ def _solve(plans, mutable, info, data, expand):
                 deviation({quantity: step}, (original[food_id]["lower"] + original[food_id]["upper"]) / 2, .1)
             variables.append((meal_index, food_id, quantity, selected, step))
         required_groups = plan.get("required_groups")
+        for group, terms in preference_terms.items():
+            # Absence costs two points per preferred category, never a constraint.
+            already = any(key in preferred and FOODS[key][1] == group for key in fixed)
+            excess(terms, 0 if already else -1, 2)
         for group, terms in groups.items():
             if required_groups:
                 lo = hi = required_groups.get(group, 0)

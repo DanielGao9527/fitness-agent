@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 from uuid import uuid4
 
 import pytest
@@ -31,6 +31,32 @@ def evidence():
     return {key: {'chunk_id': key, 'url': 'https://www.cdc.gov/', 'title': key, 'publisher': 'Fixture'}
             for key in {*REQUIRED, *[item['source'] for item in actions],
                         *[key for system in systems.values() for key in system['source_ids']]}}
+
+
+@pytest.mark.parametrize('age', [0, 1, 2, 6])
+@pytest.mark.parametrize('name', ['胸背肩手臂', '胸背'])
+def test_composite_upper_body_record_rotates_to_lower_without_inventing_recovery(age, name):
+    f = facts(training_split='ppl')
+    f['profile']['equipment'] = '在家，只有哑铃'
+    recorded = (date.fromisoformat(DAY) - timedelta(days=age)).isoformat()
+    f['history']['completed'] = [{'day': recorded, 'name': name, 'minutes': 40}]
+    before = build(f, evidence())
+    assert before['focus'] == 'lower'
+    assert '多个训练方向' in before['structure']['reason']
+    assert '不据此判定已恢复' in before['structure']['reason']
+    loads = history_summary(f['history'])['recent_loads']
+    assert bool(loads) == (age <= 1)
+    assert build(f, evidence()) == before
+
+
+def test_training_window_future_and_single_direction_rotation():
+    f = facts(training_split='ppl')
+    for offset in (-1, 7):
+        recorded = (date.fromisoformat(DAY) - timedelta(days=offset)).isoformat()
+        f['history']['completed'] = [{'day': recorded, 'name': '胸背肩手臂', 'minutes': 40}]
+        assert build(f, evidence())['focus'] == 'push'
+    f['history']['completed'] = [{'day': DAY, 'name': '背部', 'minutes': 40}]
+    assert build(f, evidence())['focus'] == 'lower'
 
 
 @pytest.mark.parametrize('split,days', [('ppl', 3), ('four', 4), ('five', 5)])

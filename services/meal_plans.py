@@ -11,7 +11,7 @@ from model.factory import ModelError
 from rag.rag_service import KnowledgeUnavailable
 from schemas import MealPlanSelection
 from services.profile_context import read_profile
-from services.plan_foods import ANIMAL_FOODS, CATALOG_VERSION, FOODS, QUICK_MAX, ON_REQUEST_FOODS, catalog, exclusions
+from services.plan_foods import ANIMAL_FOODS, CATALOG_VERSION, FOODS, QUICK_MAX, ON_REQUEST_FOODS, catalog, exclusions, preferred_foods
 from services.coach import plan_binding, require_plan_binding, meal_context
 from services.meal_intake import planning_context, require_planning_context, model_reference
 from services import meal_nutrient_reference as nutrient_reference
@@ -233,6 +233,9 @@ class MealPlanService:
                        "food_style": "以中国日常饮食中易购买的食材搭配，优先米饭、面、薯类、常见肉蛋豆菜。只用allowed_foods，明确点名的食材优先。",
                        "evidence": [{key: hit[key] for key in ("chunk_id", "title", "excerpt", "scope")} for hit in sources]}
             preferences = facts.get("coach", {}).get("constraints", {}).get("preferences", [])
+            preferred = sorted(set(preferred_foods(facts["profile"], preferences)) - set(blocked))
+            message["preferred_foods"] = preferred
+            message["preference_rule"] = "preferred_foods仅为可让步的食材偏好；禁忌、指定修改、保留项及营养范围优先，不要求所有偏好食材同时出现。"
             if body.intake_context_hash:
                 message["intake_reference"] = model_reference(facts["intake_context"], facts["intake_meals"])
             if preferences:
@@ -293,7 +296,7 @@ class MealPlanService:
                 meal_restrictions(current, body.model_dump(mode="json"))
                 payload = {"items": items, "sources": sources, "base_version": version,
                            "requested_changes": context.get("batch_commands", []),
-                           "excluded_foods": blocked, "plant_only": plant_only,
+                           "excluded_foods": blocked, "plant_only": plant_only, "preferred_foods": preferred,
                            "kept_items": kept, "required_groups": groups, "portion_limits": portion_limits, "replaces_plan_id": context.get("base_plan_id"),
                            "meal_count": len(facts["meals"]), "completed_minutes": message["completed_activity_minutes"],
                            "model": model_name, "generated_at": datetime.now(timezone.utc).isoformat(),
