@@ -6,7 +6,7 @@
   "ranking_evaluation_run": false,
   "previous_corpus_version": "reviewed-training-notes-2026-09-23.2",
   "corpus_version": "reviewed-training-notes-2026-10-17.1-attribution",
-  "corpus_sha256": "44934e6ca63f1438de267fe4ee11bc88836a1b7af7eeb39752ec0a916e72d639",
+  "corpus_sha256": "7551a7acbf8cfd83ebf16b858b27ca75c433128e8d7084cdc227f22657c895da",
   "issues": {
     "audited": 16,
     "runtime_attribution_resolved": 16,
@@ -52,6 +52,12 @@
         "failures": 0,
         "errors": 0,
         "skipped": 0
+      },
+      "targeted-final": {
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
       }
     },
     "frontend_syntax": true,
@@ -60,7 +66,8 @@
       "knowledge-ask-unit.cjs"
     ],
     "runtime_http_health": "ok",
-    "served_coach_js_matches_workspace": true
+    "served_coach_js_matches_workspace": true,
+    "final_scope_bounds": "All corrected scopes retain the general healthy adult limit; provider and business guards unchanged."
   },
   "vector_cache": {
     "provider_identity": "5f5cb56df9b3851718ff98c14d20ebb132af78cdebc767f3fcc97d2d63268ffe",
