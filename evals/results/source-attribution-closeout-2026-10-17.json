@@ -58,6 +58,12 @@
         "failures": 0,
         "errors": 0,
         "skipped": 0
+      },
+      "frozen-corpus-fix": {
+        "tests": 36,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
       }
     },
     "frontend_syntax": true,
@@ -101,5 +107,21 @@
     "Two corrected chunks require fresh exact-content encoding under explicit authorization before complete hybrid retrieval can resume.",
     "No historical page snapshot proves whether the old attribution came from webpage drift or an initial summary error.",
     "Formal independent labels and quality report remain pending; no new rankings, approval or online candidate publication."
-  ]
+  ],
+  "ci_first_complete_failure": {
+    "sha": "54b22a47e6c20b94fe2c26a28b8b68622c574486",
+    "url": "https://github.com/DanielGao9527/fitness-agent/actions/runs/39020043180",
+    "failed_tests": 17,
+    "reason": "Frozen E3 v1 corpus hash correctly rejected the edited runtime corpus; historical tool defaults were incorrectly coupled to it."
+  },
+  "historical_evaluation_fix": {
+    "snapshot": "evals/corpora/reviewed-training-notes-2026-09-23.2.json",
+    "sha256": "547e5f5b4d8cde212dfe448139ad0628dd9fd91c62d39175f5eab541ba7ff962",
+    "frozen_cases_and_manifests_unchanged": true,
+    "strict_current_corpus_mismatch_rejection_retained": true,
+    "historical_scope_explicit_in_outputs": true,
+    "production_loads_snapshot": false,
+    "formal_quality_gate_changed": false,
+    "new_current_corpus_quality_score": false
+  }
 }
