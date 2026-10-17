@@ -10,8 +10,14 @@ from model.deadlines import Deadline, use_deadline
 from services.knowledge_policy import KnowledgePolicy, POLICY_VERSION, normalized_query_key, rewrite_change
 from rag.rag_service import RetrievalSnapshot
 from schemas import KnowledgeSelection
+from services.knowledge_scope import general_training_frequency, has_personal_request
 
-SENSITIVE = re.compile(r"过敏|不耐受|忌口|受伤|伤病|疼|痛|手术|康复|孕|哺乳|儿童|未成年|青少年|(?<!\d)(?:1[0-7]|[0-9])\s*岁|糖尿病|高血压|肾病|疾病|服药|用药|胰岛素|处方|暴食|厌食|催吐|allerg|injur|pregnan|diabet|pain|teen|child", re.I)
+# Keep the original medical floor and recognize bounded recent injury reports.
+# A lone "伤" would also block general questions about injury-risk prevention.
+SENSITIVE = re.compile(
+    r"过敏|不耐受|忌口|受伤|伤病|疼|痛|手术|康复|孕|哺乳|儿童|未成年|青少年|(?<!\d)(?:1[0-7]|[0-9])\s*岁"
+    r"|(?:近期|最近|目前|刚(?:刚)?)(?:有(?:点)?|出现(?:了)?|发生(?:了)?|遭遇(?:了)?|的)?(?:肩|膝|腰|背|肘|腕|踝|颈|腿|手|脚|肌肉|韧带)(?:部)?(?:损|拉|扭)?伤"
+    r"|糖尿病|高血压|肾病|疾病|服药|用药|胰岛素|处方|暴食|厌食|催吐|allerg|injur|pregnan|diabet|pain|teen|child", re.I)
 PERSONAL = re.compile(r"计划|安排|推荐|菜单|食谱|替换|换一个|分化|怎么练|怎么吃|能吃|能练|适合我|减几|瘦几|meal.plan|workout.plan|recommend", re.I)
 PERSONAL_TIME = re.compile(r"(我|今晚|今天|明天|接下来|剩下).*(吃|练|跑|适合|多少卡|多少千卡|多少克)")
 NO_CONSTRAINT = {"", "无", "没有", "暂无", "无过敏", "无伤病", "没有过敏", "没有伤病", "无特殊限制", "none", "n/a"}
@@ -24,7 +30,8 @@ MESSAGES = {
 
 def outside_scope(question, profile, topics=()):
     # Conservative first-version boundary, not a medical or ingredient classifier.
-    if SENSITIVE.search(question) or PERSONAL.search(question) or PERSONAL_TIME.search(question):
+    if (SENSITIVE.search(question) or has_personal_request(question, PERSONAL)
+            or PERSONAL_TIME.search(question) and not general_training_frequency(question)):
         return True
     if SENSITIVE.search(profile.get("preferences", "")):
         return True

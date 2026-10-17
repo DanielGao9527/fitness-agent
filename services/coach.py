@@ -12,6 +12,7 @@ from services.meal_intake import MealIntakeService, planning_context
 from services.plan_foods import ALIASES, FOODS
 from services.training_context import training_context, training_command, merge_training, training_question
 from services.meal_schedule import MEAL_NAMES, selection, targeted, question as meal_question, scoped
+from services.knowledge_scope import general_training_frequency, has_personal_request
 
 QUICK_QUESTIONS = ("今天剩下怎么吃？", "结合前几天的训练，今天练什么？", "怎么练？")
 MEAL_REQUESTS = {"今天剩下怎么吃", "下一餐吃什么", "晚上吃什么", "晚饭吃什么", "今天晚上怎么吃", "今天晚上吃什么", "今晚怎么吃", "今天吃什么", "下一餐", "饮食建议"}
@@ -24,19 +25,23 @@ PERSONAL_REQUEST = re.compile(r"安排|推荐|帮我|给我|替换|换成|换掉
 
 
 def general_question(message):
-    return bool(KNOWLEDGE_TOPIC.search(message) and KNOWLEDGE_QUESTION.search(message))
+    return bool(KNOWLEDGE_TOPIC.search(message) and KNOWLEDGE_QUESTION.search(message)) or general_training_frequency(message)
+
+
+def personal_request(message):
+    return has_personal_request(message, PERSONAL_REQUEST)
 
 
 def knowledge_only(message):
     from services.knowledge_answers import SENSITIVE
-    return general_question(message) and not PERSONAL_REQUEST.search(message) and not SENSITIVE.search(message)
+    return general_question(message) and not personal_request(message) and not SENSITIVE.search(message)
 
 
 def mixed_question(message):
     from services.knowledge_answers import SENSITIVE
     parts = [part for part in re.split(r"[，,；;。！？!?\n]", message) if part.strip()]
     return (len(parts) > 1 and any(knowledge_only(part) for part in parts)
-            and any(PERSONAL_REQUEST.search(part) or SENSITIVE.search(part) for part in parts))
+            and any(personal_request(part) or SENSITIVE.search(part) for part in parts))
 
 
 def pending_turns(connection, conversation_id):

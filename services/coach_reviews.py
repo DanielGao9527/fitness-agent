@@ -14,14 +14,14 @@ from services.plan_foods import ALIASES, CATALOG_VERSION, FOODS, MEDICAL, SOFT, 
 from services.training_plans import HEALTH
 from services.training_context import training_context, recent_training, merge_training, training_question, SPLIT_ALIASES
 from services.meal_schedule import MEAL_ALIASES, selection, targeted, question as meal_question
-from services.coach import pending_turns, knowledge_response, PERSONAL_REQUEST, mixed_question, knowledge_only
+from services.coach import pending_turns, knowledge_response, personal_request, mixed_question, knowledge_only
 from services.coach_memory import PAST_REFERENCE, recall_confirmed_history, confirmed_equipment
 from services.coach_memory_entries import warm_memory
 from services.coach_memory_digests import recall_digests
 from services.profile_facts import fact_revisions, write_profile
 from services.equipment_memory import candidate_from_model, check_equipment_context, equipment_only_statement, EquipmentNeedsInput, day_snapshot, save_day, revoke_day, today
 
-POLICY = "coach-understanding-v18-positive-food-preferences"
+POLICY = "coach-understanding-v19-general-frequency-scope"
 QUESTIONS = {
     "none": "",
     "which_food": "你想调整哪一种食材？请写出餐单里的名称。",
@@ -167,7 +167,7 @@ class CoachReviewService:
             if (not latest or not note or result.command or result.commands or result.meal_changes or result.meal_types
                     or result.training is not None):
                 raise ModelError("COACH_INVALID_OUTPUT", "知识提问不能夹带计划操作，原消息已保留。")
-            mixed = (PERSONAL_REQUEST.search(latest) or SENSITIVE.search(latest) or note.avoid or note.preferences
+            mixed = (personal_request(latest) or SENSITIVE.search(latest) or note.avoid or note.preferences
                      or note.training_caution or note.diet_caution)
             clarification = "multiple_requests" if mixed else "which_request" if note.unresolved else result.clarification
             return {"scope": "knowledge", "command": "", "commands": [], "meal_changes": [], "meal_types": [],

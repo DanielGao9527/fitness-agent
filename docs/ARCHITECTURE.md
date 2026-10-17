@@ -64,7 +64,7 @@ Fitness Agent是FastAPI单体应用，原生网页与API同源。私人SQLite为
 
 温记忆限每账号20条、合计1,200字，理解前读取；不是模型自主维护的Hermes文件。来源对话摘录只接受连续用户原话、本人身份和明确reviewed确认；助手答案不能成为私人事实。原话更正/删除使引用条目停用，手工更正作为新确认内容并清除旧绑定，账号删除级联清理。
 
-器械由[equipment_memory.py](../services/equipment_memory.py)与[coach_reviews.py](../services/coach_reviews.py)校验来源、否定及范围；当前策略v17。范围不明由用户选择，不确定/未来/混合范围保留补问。有限表达修复不能吞掉未知要求或伪造来源，不能称为完整语义安全系统。
+器械由[equipment_memory.py](../services/equipment_memory.py)与[coach_reviews.py](../services/coach_reviews.py)校验来源、否定及范围；当前理解策略v19。范围不明由用户选择，不确定/未来/混合范围保留补问。有限表达修复不能吞掉未知要求或伪造来源，不能称为完整语义安全系统。
 
 - 本次条件保存在当前会话，今天条件在coach_day_equipment，长期条件确认后写profiles.equipment。有效本次优先于今天，再用长期档案；临时条件在北京时间跨日后过期。
 - [profile_facts.py](../services/profile_facts.py)用事务、递增器械版本及无私人口述的来源事件管理长期更正。更正、撤销或到期使旧理解、建议、替换和绑定计划失效；旧原话不能覆盖新档案。
@@ -77,6 +77,8 @@ Fitness Agent是FastAPI单体应用，原生网页与API同源。私人SQLite为
 ## E3：有界纠正与离线回放
 
 [knowledge_answers.py](../services/knowledge_answers.py)复用同一混合检索器；[knowledge_policy.py](../services/knowledge_policy.py)限制最多两轮检索、一次受控改写，始终用原问题判断证据和引用。
+
+主聊天、理解核对与知识入口共用[knowledge_scope.py](../services/knowledge_scope.py)的有限频率问句检查，“安排/推荐”不单独决定个人意图。询问前缀只用于分类，原问题和个人条件不改写；一般损伤预防不凭单字“伤”拒绝，有限近期伤情及原医疗边界继续生效。
 
 零候选或证据不足时允许有限恢复；相同证据、越界/不完整改写、额度不足、来源撤回或到达预算后停止。数字/单位、时间、否定词只是有限规则校验，不是普遍语义等价证明。
 

@@ -17,7 +17,7 @@ def test_shared_mode_hides_debug_docs_and_keeps_login_capabilities(tmp_path):
         assert client.get("/openapi.json").status_code == 200
         health = client.get("/api/health").json()
         assert "stage" in health
-        assert health["coach_review_policy"] == "coach-understanding-v18-positive-food-preferences"
+        assert health["coach_review_policy"] == "coach-understanding-v19-general-frequency-scope"
     shared = replace(local, access_mode="shared", cookie_secure=True,
                      registration_enabled=False, allowed_hosts=("fitness.example.com",),
                      public_origin="https://fitness.example.com")
