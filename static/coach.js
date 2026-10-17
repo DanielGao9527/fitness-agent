@@ -38,7 +38,7 @@ window.CoachView = (() => {
       ${cardio?`<p class="small muted">本周已记录有氧${cardio.cardio_days}天、${cardio.cardio_minutes}分钟；强度和记录完整性未确认，不据此判定每周达标。</p>`:''}
       <p class="small muted">仅为今天的建议，未写入训练记录；不要求力竭，有不适时停止。</p>
       ${(value.warnings || []).length?`<details class="training-notes"><summary>安排说明</summary>${value.warnings.map(text=>`<p class="small muted">${escapeHtml(text)}</p>`).join('')}</details>`:''}
-      ${value.sources.length?`<details class="training-sources"><summary>参考依据</summary><ul>${value.sources.map(source=>`<li>${source.origin==='curated_text'||!source.url?`${escapeHtml(source.title)} · 训练参考笔记，作者归属未核实`:`<a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.publisher)} · ${escapeHtml(source.title)}</a>`}</li>`).join('')}</ul><p class="small muted">动作依据下列资料整理；组次与时间为一般健身建议，可按实际能力调整，不是恢复判断或个体处方。</p></details>`:''}</section>`;
+      ${value.sources.length?`<details class="training-sources"><summary>参考依据</summary><ul>${value.sources.map(source=>`<li>${source.origin==='curated_text'||!source.url?`${escapeHtml(source.title)} · 训练参考笔记，作者归属未核实`:`<a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.publisher)} · ${escapeHtml(source.title)}</a>`}${source.scope?`<p class="small muted">${escapeHtml(source.scope)}</p>`:''}</li>`).join('')}</ul><p class="small muted">动作步骤参考所列资料；器械附加保护、负重、组次与时间按各条适用范围区分项目规则，不是恢复判断或个体处方。</p></details>`:''}</section>`;
     return latest?content:`<details class="training-history"><summary>当时的训练建议（不代表实际完成）</summary>${content}</details>`;
   }
   function dispose() {const s=active;cancel();if(s)closePlan(s);window.KnowledgeWorkbenchView?.dispose();active=null;}

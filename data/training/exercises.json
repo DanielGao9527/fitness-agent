@@ -1,5 +1,5 @@
 {
-  "version": "reviewed-actions-2026-09-21.1",
+  "version": "reviewed-actions-2026-09-21.1-attribution-20261017",
   "notice": "一般健康成人基础动作；组次、选择与时间预算为项目保守规则，不是来源为本人制定的处方。实际器械需核对，不覆盖康复或完整分化周期。",
   "exercises": [
     {
@@ -219,7 +219,7 @@
       "pattern": "vertical-pull",
       "target": "背部垂直拉",
       "source": "r118-pullup:basics",
-      "cue": "仅在能控制全程时采用；确认单杠固定，避免摆荡，无法完成就选下拉备选。",
+      "cue": "仅在能控制全程时采用；确认单杠固定，避免摆荡。无法控制时停止本动作，先核对器械和能力再选其他动作。",
       "level": "experienced",
       "unit": "可控的3–8次"
     },
@@ -711,7 +711,7 @@
         "shoulders"
       ],
       "source": "mayo-cable-triceps:basics",
-      "cue": "使用适配直杆的滑轮器械，肘部贴近躯干，缓慢下压和回程，不前后摇摆。",
+      "cue": "本项目选择直杆变式，须先确认适配直杆的滑轮器械；原资料文字未指定附件。肘部贴近躯干，缓慢下压和回程，不前后摇摆。",
       "pattern": "triceps",
       "unit": "12次"
     },

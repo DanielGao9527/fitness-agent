@@ -1,0 +1,98 @@
+{
+  "date": "2026-10-17",
+  "kind": "source_attribution_correction",
+  "reviewer_type": "ai",
+  "independent_human_quality_review": false,
+  "ranking_evaluation_run": false,
+  "previous_corpus_version": "reviewed-training-notes-2026-09-23.2",
+  "corpus_version": "reviewed-training-notes-2026-10-17.1-attribution",
+  "corpus_sha256": "44934e6ca63f1438de267fe4ee11bc88836a1b7af7eeb39752ec0a916e72d639",
+  "issues": {
+    "audited": 16,
+    "runtime_attribution_resolved": 16,
+    "formal_labels_approved": 0
+  },
+  "changes": {
+    "clarified_source_scopes": [
+      "r118-barbell-row",
+      "r118-pullup",
+      "r118-goblet-squat",
+      "r118-barbell-squat",
+      "mayo-cable-triceps",
+      "mayo-band-row",
+      "mayo-calf",
+      "r123-db-front-squat",
+      "r123-band-pullup",
+      "r123-leg-press-calf",
+      "r123-db-fly",
+      "r123-pec-deck"
+    ],
+    "corrected_encoded_chunks": [
+      "r118-pullup:basics",
+      "mayo-cable-triceps:basics"
+    ],
+    "corrected_action_cues": [
+      "pullup",
+      "cable-triceps"
+    ],
+    "exercise_ids_requirements_levels_and_other_fields_unchanged": true,
+    "sources_or_chunks_added": 0,
+    "runtime_web_fallback_added": false
+  },
+  "verification": {
+    "pytest_batches": {
+      "targeted-first": {
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "related": {
+        "tests": 156,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "frontend_syntax": true,
+    "frontend_suites": [
+      "knowledge-flow-unit.cjs",
+      "knowledge-ask-unit.cjs"
+    ],
+    "runtime_http_health": "ok",
+    "served_coach_js_matches_workspace": true
+  },
+  "vector_cache": {
+    "provider_identity": "5f5cb56df9b3851718ff98c14d20ebb132af78cdebc767f3fcc97d2d63268ffe",
+    "dimensions": 1024,
+    "text_template": "title-excerpt-keywords-v1",
+    "documents": 133,
+    "exact_matching": 131,
+    "missing_exact_content": [
+      "r118-pullup:basics",
+      "mayo-cable-triceps:basics"
+    ],
+    "existing_caches_modified": false,
+    "online_mode": "lexical",
+    "degraded_reason": "vector_cache_incomplete",
+    "query_embedding_called": false
+  },
+  "boundaries": {
+    "frozen_qa_sha256": "ec6f7446a9560654a1056f8cdda9e1bbef22041c3c4fa043169f965795e75cec",
+    "formal_manifest_sha256": "540a57cf8ba1c61b140a71b34a8ee638373566a1824d395fce05e4186ddfea7b",
+    "frozen_qa_changed": false,
+    "formal_protocol_changed": false,
+    "human_review_materials_changed": false,
+    "formal_publication": false,
+    "actual_reviewer_grants": false,
+    "private_database_opened": false,
+    "service_restarted": false,
+    "real_provider_requests": 0
+  },
+  "limitations": [
+    "This is AI source-attribution audit and software verification, not 87 independent human qrels or a new quality score.",
+    "Two corrected chunks require fresh exact-content encoding under explicit authorization before complete hybrid retrieval can resume.",
+    "No historical page snapshot proves whether the old attribution came from webpage drift or an initial summary error.",
+    "Formal independent labels and quality report remain pending; no new rankings, approval or online candidate publication."
+  ]
+}
