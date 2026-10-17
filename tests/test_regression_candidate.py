@@ -254,6 +254,19 @@ def test_empty_qrels_do_not_become_refusal_success(package):
         run(package)
 
 
+def test_structural_validity_does_not_hide_unresolved_label_scope(package):
+    bundle, _ = package
+    path = asset(bundle, "recheck")
+    data = checker.read_json(path)
+    next(row for row in data["items"] if row["id"] == "fitness-qa-037")["dispute_requiring_new_owner_decision"] = True
+    save(path, data)
+    seal(bundle)
+    result = run(package)
+    assert result["validation_status"] == "valid_inputs_not_evaluated"
+    assert result["unresolved_label_disputes"] == ["fitness-qa-037"]
+    assert result["production_eligible"] is False and result["rankings_run"] is False
+
+
 @pytest.mark.parametrize("fault", ["identity", "dimensions", "order"])
 def test_wrong_query_cache_binding_is_not_accepted(package, fault):
     bundle, _ = package

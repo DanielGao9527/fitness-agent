@@ -2,7 +2,7 @@
   "date": "2026-10-18",
   "scope": "inactive_ai_assisted_current_corpus_regression_package",
   "candidate_policy": "fitness-current-corpus-regression-candidate-v1",
-  "candidate_manifest_sha256": "053fb6177f59e69e02a665ad00b58a7d4b28dcc1d24ea2c59c4f99f8958e449d",
+  "candidate_manifest_sha256": "204cc6a029c737de9cc9e86dd250254c0bcd5bfd2cc71f20a8065ab118a09817",
   "counts": {
     "original": 260,
     "active": 248,
@@ -35,7 +35,7 @@
   "document_cache_matches": 133,
   "query_cache_matches": 87,
   "new_contract_tests": {
-    "tests": 19,
+    "tests": 20,
     "failures": 0,
     "errors": 0,
     "purpose": "synthetic package and misuse contracts, not semantic quality"
@@ -51,5 +51,9 @@
   "private_records_or_roles_modified": false,
   "service_restarted": false,
   "actual_publication": false,
-  "notice": "Structural checks do not establish independent human labels, retrieval or generated-answer quality. Detailed judgments, owner originals, package snapshots and public caches remain in local ignored artifacts."
+  "notice": "Structural checks do not establish independent human labels, retrieval or generated-answer quality. Detailed judgments, owner originals, package snapshots and public caches remain in local ignored artifacts.",
+  "unresolved_label_disputes": [
+    "fitness-qa-037"
+  ],
+  "label_dispute_notice": "Original question does not specify which source; the base pull-up excerpt lacks a fallback, but a separate band-assisted pull-up block can provide limited full-corpus support. Provisional false is not adopted gold."
 }

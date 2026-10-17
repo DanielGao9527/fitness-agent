@@ -60,6 +60,8 @@ Fitness Agent是FastAPI单体应用，原生网页与API同源。私人SQLite为
 
 [check_regression_candidate.py](../scripts/check_regression_candidate.py)是独立离线输入诊断入口，未接入应用/API。默认仅报告原v1状态；显式包目录与清单SHA-256同时提供后，复用load_cases、VectorStore.load与live=False查询缓存检查，验证248活动/12隔离输入、260映射、29项差异、审阅角色和当前来源/运行文件绑定。只在独立临时目录生成FTS，输出valid_inputs_not_evaluated，不计算排名/质量分数，不读Key或私人库，不改变production quality gate。原Recall@6/MRR@10实现和0.80等门槛未改；16道不足题单列未验收，包本体及审阅原材料只留本地。
 
+离线报告另外输出unresolved_label_disputes：第037题单篇/全库解释仍待决定。输入结构合格不会清空语义争议，不推定候选标签正确或把证据不足题计为拒答成功。
+
 ## E2：个人记忆与事实生命周期
 
 | 层 | 当前来源 | 用途 |

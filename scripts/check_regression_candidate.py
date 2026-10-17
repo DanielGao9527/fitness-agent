@@ -190,6 +190,7 @@ def check_package(directory, expected_sha256, *, reference_root=ROOT, today=None
             "dev_cases": 161, "test_cases": 87, "quarantined_dev_cases": 12,
             "answerable_test_cases": 71, "insufficient_test_cases": 16,
             "public_document_vectors": 133, "public_query_vectors": 87,
+            "unresolved_label_disputes": [row["id"] for row in recheck if row.get("dispute_requiring_new_owner_decision")],
             "rankings_run": False, "answer_or_refusal_quality": "not_evaluated",
             "provider_requests": 0, "production_eligible": False, "activated": False,
             "notice": "Structural and identity checks only; not independent human review, a fresh holdout, quality scores or release approval."}
