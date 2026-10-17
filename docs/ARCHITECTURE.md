@@ -1,6 +1,6 @@
 # 当前架构与数据流
 
-核对：2026-10-17。本文只描述当前实现，计划/质量缺口见[ROADMAP](ROADMAP.md)，验证见[STATUS](STATUS.md)。
+核对：2026-10-18。本文只描述当前实现，计划/质量缺口见[ROADMAP](ROADMAP.md)，验证见[STATUS](STATUS.md)。
 
 Fitness Agent是FastAPI单体应用，原生网页与API同源。私人SQLite为v23/39表；公开知识、FTS索引及向量缓存独立保存。模型Key只在后端。
 
@@ -57,6 +57,8 @@ Fitness Agent是FastAPI单体应用，原生网页与API同源。私人SQLite为
 来源`scope`逐项区分原网页动作事实与项目先决条件、器械变式和保守执行规则，知识摘答及训练参考依据均展示适用范围。引体向上不再提示未经核对的下拉备选；直杆仍是项目目录选择，设备门槛不变，Mayo公共摘要不再声称转录指定直杆。语料/动作版本及来源版本已更新，原审核有效期不延长。
 
 当前语料的87题AI审计及29题具体修改建议只保存在本地忽略目录，没有替换冻结QA或v1协议。另备的AI辅助验收版本仍是未激活输入建议，应用和质量服务不读取它；角色、原标签暴露、已有用户决定与本次AI判断分别记录，不能仅靠填reviewed/hash绕过现行前置。公开仓库只保存[匿名事实汇总](../evals/results/current-corpus-closeout-2026-10-17.json)。
+
+[check_regression_candidate.py](../scripts/check_regression_candidate.py)是独立离线输入诊断入口，未接入应用/API。默认仅报告原v1状态；显式包目录与清单SHA-256同时提供后，复用load_cases、VectorStore.load与live=False查询缓存检查，验证248活动/12隔离输入、260映射、29项差异、审阅角色和当前来源/运行文件绑定。只在独立临时目录生成FTS，输出valid_inputs_not_evaluated，不计算排名/质量分数，不读Key或私人库，不改变production quality gate。原Recall@6/MRR@10实现和0.80等门槛未改；16道不足题单列未验收，包本体及审阅原材料只留本地。
 
 ## E2：个人记忆与事实生命周期
 

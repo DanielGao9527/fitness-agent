@@ -20,9 +20,12 @@
 | [rehearse_recovery.py](rehearse_recovery.py) | 在独立新目录演练恢复并核对数据库 |
 | [build_knowledge_vectors.py](build_knowledge_vectors.py) | 默认只盘点审核公开块；显式 `--live` 才按预算调用云端构建文档向量 |
 | [evaluate_retrieval.py](evaluate_retrieval.py) | 用项目 QA 对比词法、jieba、向量与 RRF；不调用答案模型 |
+| [check_regression_candidate.py](check_regression_candidate.py) | 显式清单哈希校验未激活回归包的248/12分组、版本、角色及公共缓存；默认只报告原v1状态，无模型/排名开关、不改变正式门禁 |
 | `check_*.py` | 特定功能或真实供应商的手动检查工具，运行前阅读文件参数与适用范围 |
 
 ## 本地使用
+
+`python scripts/check_regression_candidate.py`不选择候选包，只报告原v1状态。检查本地候选须同时提供`--package`和经核对的`--expected-sha256`，具体命令留在本地包的REVIEW.md；`--help`可看参数。它复用原加载器与只读缓存检查，不读Key、私人库或调用供应商，没有`--live`/`--rank`。输出valid_inputs_not_evaluated只说明结构与绑定成立，不代表独立人工金标、未见留出、生成/拒答质量或正式发布。
 
 ```powershell
 .\scripts\setup.ps1
