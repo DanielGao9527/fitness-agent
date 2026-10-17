@@ -3,7 +3,7 @@ import shutil
 
 import pytest
 
-from scripts.replay_knowledge_loop import DEFAULT_SUITE, ROOT, load_suite, main, replay_suite
+from scripts.replay_knowledge_loop import DEFAULT_SUITE, DEFAULT_SOURCE, ROOT, load_suite, main, replay_suite
 
 
 def test_frozen_single_and_bounded_contracts_and_privacy():
@@ -25,7 +25,7 @@ def test_frozen_single_and_bounded_contracts_and_privacy():
 def test_replay_refuses_mixed_or_modified_inputs(tmp_path, change):
     suite = tmp_path / "suite"
     shutil.copytree(DEFAULT_SUITE, suite)
-    source = ROOT / "data/knowledge/sources.json"
+    source = DEFAULT_SOURCE
     if change == "cases":
         with (suite / "cases.jsonl").open("ab") as stream:
             stream.write(b'\n')
@@ -49,3 +49,10 @@ def test_cli_writes_aggregate_and_refuses_overwriting_prior_report(tmp_path):
     with pytest.raises(FileExistsError):
         main(["--output", str(output)])
     assert (output / "report.json").read_bytes() == before
+
+
+def test_frozen_replay_keeps_old_corpus_and_refuses_corrected_runtime_catalog():
+    assert DEFAULT_SOURCE != ROOT / "data/knowledge/sources.json"
+    load_suite(DEFAULT_SUITE, DEFAULT_SOURCE)
+    with pytest.raises(ValueError, match="corpus mismatch"):
+        load_suite(DEFAULT_SUITE, ROOT / "data/knowledge/sources.json")

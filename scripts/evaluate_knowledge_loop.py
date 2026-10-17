@@ -26,7 +26,8 @@ from services.knowledge_answers import answer_question, outside_scope
 from services.knowledge_policy import KnowledgePolicy
 
 SUITE = ROOT / 'evals/retrieval_quality/v1'
-SOURCE = ROOT / 'data/knowledge/sources.json'
+# v1 compares the frozen historical corpus, never a silently edited live catalog.
+SOURCE = ROOT / 'evals/corpora/reviewed-training-notes-2026-09-23.2.json'
 
 
 def save(path, value):
@@ -51,7 +52,8 @@ def new_output(path):
 def source_hashes():
     paths = [path for pattern in ('model/*.py', 'rag/*.py', 'services/knowledge*.py') for path in ROOT.glob(pattern)]
     paths += [ROOT / name for name in ('config.py', 'schemas.py', 'prompts/knowledge_answer.md',
-        'data/knowledge/sources.json', 'scripts/evaluate_knowledge_loop.py', 'evals/retrieval_quality/protocol.py',
+        'data/knowledge/sources.json', 'evals/corpora/reviewed-training-notes-2026-09-23.2.json',
+        'scripts/evaluate_knowledge_loop.py', 'evals/retrieval_quality/protocol.py',
         'evals/retrieval_quality/v1/cases.jsonl', 'evals/retrieval_quality/v1/manifest.json')]
     return {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}
 
@@ -146,6 +148,7 @@ def preflight(manifest, cases, retrieval, vectors=None):
             VectorStore(vectors).load(lexical.export_documents(today=day), provider)
             ready = True
     return {**plan(manifest, cases, retrieval), 'corpus_sha256': manifest['corpus_sha256'],
+        'evaluation_corpus': 'frozen_historical_v1_not_current_runtime_quality',
         'document_vectors_ready': ready, 'static_scope_flags': [c['id'] for c in cases if outside_scope(c['question'], {})],
         'preflight_is_not_retrieval_or_model_quality': True}
 

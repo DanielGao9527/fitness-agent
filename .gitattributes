@@ -13,5 +13,6 @@ evals/memory/cases.jsonl -text
 evals/memory/expressions_v2/cases.jsonl -text
 evals/retrieval_loop/v1/cases.jsonl -text
 evals/retrieval_quality/v1/cases.jsonl -text
+evals/corpora/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 evals/release_gate/v1/manifest.json -text
 evals/release_quality/v1/manifest.json -text

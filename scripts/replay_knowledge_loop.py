@@ -20,6 +20,7 @@ from services.knowledge_answers import answer_question
 from services.knowledge_policy import KnowledgePolicy, POLICY_VERSION
 
 DEFAULT_SUITE = ROOT / "evals/retrieval_loop/v1"
+DEFAULT_SOURCE = ROOT / "evals/corpora/reviewed-training-notes-2026-09-23.2.json"
 
 
 class StrictInput(BaseModel):
@@ -128,7 +129,7 @@ def replay_case(case, base, today, rounds):
             "simulated_calls": trace["calls"], "trace": trace}
 
 
-def replay_suite(directory=DEFAULT_SUITE, *, source=ROOT / "data/knowledge/sources.json"):
+def replay_suite(directory=DEFAULT_SUITE, *, source=DEFAULT_SOURCE):
     directory, source = Path(directory), Path(source)
     manifest, cases = load_suite(directory, source)
     today = date.fromisoformat(manifest["source_date"])
@@ -139,6 +140,7 @@ def replay_suite(directory=DEFAULT_SUITE, *, source=ROOT / "data/knowledge/sourc
     files = ("services/knowledge_answers.py", "services/knowledge_policy.py", "model/deadlines.py",
              "prompts/knowledge_answer.md", "scripts/replay_knowledge_loop.py")
     return {"suite": manifest, "policy_version": POLICY_VERSION,
+        "evaluation_corpus": "frozen_historical_v1_not_current_runtime_quality",
         "source_hashes": {name: hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in files},
         "real_provider_calls": 0, "uses_private_database": False, "not_model_quality": True,
         "phase_timings_are_virtual": True,

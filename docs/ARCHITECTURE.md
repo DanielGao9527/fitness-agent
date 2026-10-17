@@ -88,6 +88,8 @@ Fitness Agent是FastAPI单体应用，原生网页与API同源。私人SQLite为
 
 [replay_knowledge_loop.py](../scripts/replay_knowledge_loop.py)回放冻结候选、响应和虚拟时钟；[evaluate_knowledge_loop.py](../scripts/evaluate_knowledge_loop.py)区分准备、标签复核、显式预算真实执行和实际回答复核。单请求重检索不等于跨请求自学习。
 
+两套既有E3 v1工具读取`evals/corpora/`内原字节语料快照，并在输出中明确标记历史语料。清单哈希、题目与标签保持冻结；当前更正语料不能冒用旧清单。应用与正式发布质量服务继续读取当前运行目录，不读取历史快照。
+
 ## E4：受控知识更新
 
 [knowledge_feedback.py](../services/knowledge_feedback.py)把本人已完成回答/证据不足结果关联到私有反馈。候选第一版只接受当前有效public_web摘要的连续摘录，内容去重、版本绑定；不把私人口述、模型答案、任意网址或自由改写导入公共库。

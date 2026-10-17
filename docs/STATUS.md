@@ -4,6 +4,8 @@
 
 本批16项来源归因已逐项处置：12条scope区分原文事实与项目规则，037去掉未核实的下拉替代，164不再把直杆归为Mayo转录要求；对应训练提示修正、器械门槛保留，训练参考依据显示各条scope。两块新文本缺精确编码，两个公共缓存均保持原样，当前131/133匹配，混合器在查询编码前明确降级词法。没有新增真实请求、独立人工标签或正式发布，原库/服务进程未操作；定向证据和确切新CI按本批交付核对。
 
+首个完整CI因旧E3 v1工具仍读取更正后的运行语料而有17项哈希拒绝，原失败保留。现为两套历史工具提供原字节快照并明确标记历史范围，原清单/题目/标签及严格校验不改；36项工具回归通过。应用不读取该快照，本批当前语料没有由此获得新的质量分数；最新补修提交须另核对完整CI。
+
 ## 当前交付
 
 - 仓库：[DanielGao9527/fitness-agent](https://github.com/DanielGao9527/fitness-agent/tree/codex/fitness-hybrid-retrieval)，分支 `codex/fitness-hybrid-retrieval`。源码在 `fitness-agent/data/runtime/remote-auth`。

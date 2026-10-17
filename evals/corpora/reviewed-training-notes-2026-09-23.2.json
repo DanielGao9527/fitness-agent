@@ -1,0 +1,3162 @@
+{
+  "version": "reviewed-training-notes-2026-09-23.2",
+  "sources": [
+    {
+      "id": "training-notes-five-split",
+      "title": "五分化训练参考笔记",
+      "original_title": "五分化动作编排参考",
+      "publisher": "训练资料文字整理；原始发布者与作者归属未核实",
+      "origin": "curated_text",
+      "url": "",
+      "topic": "training",
+      "source_version": "2026-09-23核对的训练表文字资料",
+      "reviewed_on": "2026-09-23",
+      "review_due": "2027-03-22",
+      "status": "approved",
+      "scope": "五分化动作编排的参考资料转录参考，不是核实过的作者课程、动作教学或个人训练处方。参考资料没有组数、次数、负重和进阶周期。",
+      "license": "训练资料的事实摘要与项目改编；不声称原作者授权或开放许可",
+      "license_url": "",
+      "notice": "approved仅表示文字整理与使用边界已核对；原始发布者、作者身份、动作技术及完整课程均未核实，不提供未经核实的原文链接。",
+      "sections": [
+        {
+          "id": "adaptation",
+          "title": "五分化参考资料的使用边界与组数",
+          "locator": "原始资料标题、五个部位行；参考资料未列组次",
+          "summary": "参考资料按胸、背、肩、手臂、腿分日，各行四个动作；没有标注组数或次数。应用保留已有三/四/五分化入口与近七天实际训练轮转，不强制照搬周一到周五。五分化正式组目标是应用按动作模式设置的3至4组，不来自本资料；入门上限3组，时间不足缩减并说明。参考资料中的陌生动作须有独立器械和动作依据才可执行，不把整理资料直接当教学依据。",
+          "keywords": [
+            "五分化",
+            "组数",
+            "正式组",
+            "训练资料"
+          ]
+        },
+        {
+          "id": "chest",
+          "title": "五分化参考资料：胸部四个动作",
+          "locator": "五分化训练表周一胸行，按原顺序",
+          "summary": "资料中动作顺序为双杠臂屈伸、坐姿推胸、上斜推胸、索绳向上夹胸。未标组次。这里只转录动作名称，不凭资料推断负重、器械附件或适用人群。",
+          "keywords": [
+            "五分化",
+            "胸部",
+            "双杠臂屈伸",
+            "坐姿推胸",
+            "上斜推胸",
+            "索绳夹胸"
+          ]
+        },
+        {
+          "id": "back",
+          "title": "五分化参考资料：背部四个动作",
+          "locator": "五分化训练表周二背行，按原顺序",
+          "summary": "资料中动作顺序为对握宽距下拉、窄距划船、宽距划船、直臂下压。未标组次。握距、器械与动作范围需要独立资料核对，不能凭标题补出具体技术。",
+          "keywords": [
+            "五分化",
+            "背部",
+            "对握下拉",
+            "窄距划船",
+            "宽距划船",
+            "直臂下压"
+          ]
+        },
+        {
+          "id": "shoulders",
+          "title": "五分化参考资料：肩部四个动作",
+          "locator": "五分化训练表周三肩行，按原顺序",
+          "summary": "资料中动作顺序为反向夹胸、哑铃推肩、哑铃飞鸟、哑铃前平举。未标组次；哑铃飞鸟的动作名称依原始资料保留，不单靠此名称判断具体肩部动作形式。",
+          "keywords": [
+            "五分化",
+            "肩部",
+            "反向夹胸",
+            "哑铃推肩",
+            "哑铃飞鸟",
+            "前平举"
+          ]
+        },
+        {
+          "id": "arms",
+          "title": "五分化参考资料：手臂四个动作",
+          "locator": "五分化训练表周四手臂行，按原顺序",
+          "summary": "资料中动作顺序为索绳臂屈伸、俯身臂屈伸、索绳托臂弯举、锤式弯举。未标组次，不从整理资料猜测负重或器械设置。",
+          "keywords": [
+            "五分化",
+            "手臂",
+            "三头",
+            "二头",
+            "臂屈伸",
+            "托臂弯举",
+            "锤式弯举"
+          ]
+        },
+        {
+          "id": "legs",
+          "title": "五分化参考资料：腿部四个动作",
+          "locator": "五分化训练表下肢部分；原始资料部分内容不完整",
+          "summary": "下肢部分可辨认的动作标签为站姿提踵、坐姿内收、弓步蹲、直腿硬拉。部分内容不完整，未补充无法核实的细节；原始资料未提供组数和次数。",
+          "keywords": [
+            "五分化",
+            "腿部",
+            "提踵",
+            "内收",
+            "弓步蹲",
+            "直腿硬拉"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "training-notes-four-split",
+      "title": "四分化训练参考笔记",
+      "original_title": "资料标题：四分化训练计划",
+      "publisher": "训练资料文字整理；原始发布者与作者归属未核实",
+      "origin": "curated_text",
+      "url": "",
+      "topic": "training",
+      "source_version": "2026-09-23核对的训练表文字资料",
+      "reviewed_on": "2026-09-23",
+      "review_due": "2027-03-22",
+      "status": "approved",
+      "scope": "参考资料列出胸肩三头、背二头、下肢、肩手臂四日结构；仅供动作和组次转录参考，不是适用于所有人的处方。",
+      "license": "训练资料的事实摘要与项目改编；不声称原作者授权或开放许可",
+      "license_url": "",
+      "notice": "原始发布者、作者身份及资料科学性未核实；少量动作名称前缀不清，明确保留不确定性。原资料的肌群标注、连续四日安排、超级组和加重建议不直接执行。",
+      "sections": [
+        {
+          "id": "adaptation",
+          "title": "四分化参考资料的原组次与应用改编",
+          "locator": "四列动作表及底部周期说明",
+          "summary": "资料中既有3组、4组，也有5组，部分动作另列1组热身，不能统一读成四组。应用四分化仍用胸、背、腿、肩臂方向，动作由已核对目录按器械和实际记录筛选，不宣称复现原表。对应模式的正式组参考来自可读条目；5组不自动照搬，有经验者目标3至4组、入门者上限3组，时间不足时减少并说明。底部连续四日、超级组、递增重量与60至90分钟均是资料中原描述，不是应用自动执行规则。",
+          "keywords": [
+            "四分化",
+            "正式组",
+            "热身组",
+            "组数",
+            "训练资料",
+            "训练量"
+          ]
+        },
+        {
+          "id": "push",
+          "title": "四分化参考资料：第1天胸肩三头",
+          "locator": "四分化训练表第1列动作1至5",
+          "summary": "资料文字：龙门架绳索夹胸1组热身加3组正式组，每组12次；杠铃卧推1组热身加5组正式组，每组10次；上斜器械卧推1组热身加3组正式组，每组10至12次；杠铃实力推1组热身加3组正式组，每组10至12次；龙门架颈后绳索臂屈伸1组热身加3组正式组，每组10至12次。热身与正式组分开转录，不把原表高训练量直接发给入门者。",
+          "keywords": [
+            "四分化",
+            "胸肩三头",
+            "绳索夹胸",
+            "杠铃卧推",
+            "上斜推胸",
+            "实力推",
+            "颈后臂屈伸"
+          ]
+        },
+        {
+          "id": "pull",
+          "title": "四分化参考资料：第2天背二头",
+          "locator": "四分化训练表第2列动作1至6",
+          "summary": "资料文字：直臂下压4组、每组12至15次；坐姿绳索划船4组、每组12次；引体向上4组、每组10至12次；窄握坐姿划船4组、每组12至15次；高位下拉4组、每组15次；杠铃弯举4组、每组10次。资料中的多种下拉与划船属于原表，应用不为了凑动作而重复叠加相同模式。",
+          "keywords": [
+            "四分化",
+            "背二头",
+            "直臂下压",
+            "绳索划船",
+            "引体向上",
+            "高位下拉",
+            "杠铃弯举"
+          ]
+        },
+        {
+          "id": "lower",
+          "title": "四分化参考资料：第3天下肢",
+          "locator": "四分化训练表第3列动作1至5",
+          "summary": "第1项可辨认“大腿内收机”，名称前缀不清，4组每组15次；单腿哑铃硬拉3组每组12次；后撤式弓步蹲3组每组10次；单腿持重转体3组每组10次，括号含“等侧”字样但含义未核实，不据此补出执行方法；站姿提踵3组每组15次。所有组次只是原始资料文字，转体等未覆盖动作不自动加入建议。",
+          "keywords": [
+            "四分化",
+            "下肢",
+            "内收机",
+            "单腿硬拉",
+            "后撤弓步",
+            "提踵",
+            "待核对"
+          ]
+        },
+        {
+          "id": "shoulder-arms",
+          "title": "四分化参考资料：第4天肩与手臂",
+          "locator": "四分化训练表第4列动作1至5",
+          "summary": "坐姿反飞鸟名称前缀辨认不清，资料标注4组每组12次；实力推5组每组10次；绳索面拉4组每组12次；哑铃对握前平举4组每组12次；最后列出颈后臂屈伸与坐姿二头弯举的超级组，并标4组每组12次。参考资料对某些肌群的标注不能据此作为动作解剖依据；应用不自动安排超级组或5组实力推。",
+          "keywords": [
+            "四分化",
+            "肩手臂",
+            "反飞鸟",
+            "实力推",
+            "面拉",
+            "前平举",
+            "超级组"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "training-notes-ppl",
+      "title": "三分化训练参考笔记",
+      "original_title": "三分化训练编排参考",
+      "publisher": "训练资料文字整理；原始发布者与作者归属未核实",
+      "origin": "curated_text",
+      "url": "",
+      "topic": "training",
+      "source_version": "2026-09-23核对的训练表文字资料",
+      "reviewed_on": "2026-09-23",
+      "review_due": "2027-03-22",
+      "status": "approved",
+      "scope": "推、拉、腿参考资料训练表的文字参考；标有姓名不等于作者已核实或完整课程，不照搬力竭与自动加重周期。",
+      "license": "训练资料的事实摘要与项目改编；不声称原作者授权或开放许可",
+      "license_url": "",
+      "notice": "仅核对可辨认的文字；原资料中“新手也能练”、肌群标注及周期科学性未独立验证。力竭行保留为原资料描述，不用于应用默认处方。",
+      "sections": [
+        {
+          "id": "adaptation",
+          "title": "三分化参考资料的组数及应用边界",
+          "locator": "三分化训练表推、拉、腿三段与底部注意事项",
+          "summary": "参考资料多数动作4组，侧平举、弯举、颈前深蹲、山羊挺身等为3组，另有递减次数和力竭描述。应用仅把可映射到已核对动作模式的正式组数作为参考：有经验者目标3至4组，入门者上限3组，按时间缩减；不自动追求力竭、每周加重或高难度动作。动作技术、器械条件和近期负荷仍由原有资料与实际记录约束。未声称完整导入任何作者课程。",
+          "keywords": [
+            "三分化",
+            "推拉腿",
+            "组数",
+            "正式组",
+            "训练资料"
+          ]
+        },
+        {
+          "id": "push",
+          "title": "三分化参考资料：推训练原始组次",
+          "locator": "三分化训练表 Day1推训练表",
+          "summary": "杠铃卧推：第一周4组，次数15、12、10、8；第二周4组，12、10、8、6；第三周4组，10、8、6及力竭。哑铃上斜卧推4组每组12次；双杠臂屈伸或退阶动作4组每组12次或力竭；资料文字为俯卧臂屈伸4组每组5次，动作形式未仅凭文字判定；Y字侧平举3组每组10次，并标力竭。资料中60至90秒休息与力竭只是原表转录，应用不直接执行这些周期和力竭规则。",
+          "keywords": [
+            "三分化",
+            "推训练",
+            "杠铃卧推",
+            "哑铃上斜卧推",
+            "双杠臂屈伸",
+            "侧平举",
+            "原始组次"
+          ]
+        },
+        {
+          "id": "pull",
+          "title": "三分化参考资料：拉训练原始组次",
+          "locator": "三分化训练表 Day2拉训练表",
+          "summary": "单侧钢线下拉：第一周4组，12、12、10、10；第二周4组，每组10次；第三周4组，10、10、10及力竭。对握下拉、单手器械划船、坐姿划船均为4组每组12次；钢线弯举3组每组10次。资料中将力竭写入末期，应用不自动照搬；单侧动作的计数与器械条件须另行明确。",
+          "keywords": [
+            "三分化",
+            "拉训练",
+            "单侧下拉",
+            "对握下拉",
+            "器械划船",
+            "坐姿划船",
+            "钢线弯举"
+          ]
+        },
+        {
+          "id": "legs",
+          "title": "三分化参考资料：腿训练原始组次",
+          "locator": "三分化训练表 Day3腿训练表",
+          "summary": "单腿硬拉4组每组12次；保加利亚深蹲4组每组12次；颈前深蹲3组每组15次；罗马尼亚硬拉4组每组12次；山羊挺身3组每组8次，并标力竭。参考资料中的多个髋铰链动作和下背训练不等于都应同次完成；不从文字和示意图猜测负重、架位、保护条件或动作技术，未核对动作不进入可执行目录。",
+          "keywords": [
+            "三分化",
+            "腿训练",
+            "单腿硬拉",
+            "保加利亚深蹲",
+            "颈前深蹲",
+            "罗马尼亚硬拉",
+            "山羊挺身"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lf-axiom",
+      "title": "Life Fitness Axiom 专用器械操作参考",
+      "original_title": "Axiom Series Single and Dual Stations Owner's Manual",
+      "publisher": "Life Fitness",
+      "url": "https://kb.cybexintl.com/Owners_Manuals/Strength/OM-OP_Life_Fitness_Axiom_Single_Station_Series_1014208-0001.pdf",
+      "topic": "training",
+      "source_version": "1014208-0001 Rev AD；支持页2021-02-08更新；2026-09-21核对",
+      "reviewed_on": "2026-09-21",
+      "review_due": "2027-03-20",
+      "status": "approved",
+      "scope": "对应结构的专用器械操作事实；其他机型应核对本机说明，不保证跨机型设置相同。",
+      "license": "Copyright retained; brief original factual summary only",
+      "license_url": "https://support.lifefitness.com/hc/en-us/articles/360053163033-Life-Fitness-Axiom-Series-Single-and-Dual-Stations-Owner-s-Manual",
+      "notice": "不复制手册插图或完整课程；组次为产品起点，不是厂家个体处方。",
+      "sections": [
+        {
+          "id": "adduction",
+          "title": "坐姿髋内收",
+          "locator": "印刷页56 / PDF页58，OP-HAA",
+          "summary": "内收模式使用向内膝垫；从舒适起点缓慢合拢及回程，结束后按机器释放机构退出。",
+          "keywords": [
+            "内收机",
+            "内收肌",
+            "大腿"
+          ]
+        },
+        {
+          "id": "abduction",
+          "title": "坐姿髋外展",
+          "locator": "印刷页56 / PDF页58，OP-HAA",
+          "summary": "外展模式使用向外膝垫，脚置平台，握把稳定，缓慢向外推开再控制回程。",
+          "keywords": [
+            "外展机",
+            "臀外侧",
+            "臀部"
+          ]
+        },
+        {
+          "id": "rear-delt",
+          "title": "反向飞鸟机",
+          "locator": "印刷页59 / PDF页61，OP-FLY Rear Deltoid",
+          "summary": "反向模式胸贴垫，把手从身体前方起始，双手略低于肩；屈肘受控打开和返回。",
+          "keywords": [
+            "反向蝴蝶机",
+            "肩后束",
+            "后侧"
+          ]
+        },
+        {
+          "id": "triceps",
+          "title": "三头伸展机",
+          "locator": "印刷页53 / PDF页55，OP-TE",
+          "summary": "座位使上臂由垫支撑，肘对准机器转轴；按该机型把手设置做受控伸肘和回程。",
+          "keywords": [
+            "三头",
+            "伸肘",
+            "固定器械"
+          ]
+        },
+        {
+          "id": "abdominal",
+          "title": "坐姿卷腹机",
+          "locator": "印刷页44 / PDF页46，OP-AB",
+          "summary": "腰部和双脚由本机支撑，把手置肩上；通过腹部收缩缩短肋骨与髋距离，控制回程。",
+          "keywords": [
+            "卷腹机",
+            "腹部",
+            "核心"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "acsm-2009",
+      "title": "ACSM 负重进阶原则参考",
+      "original_title": "Progression models in resistance training for healthy adults",
+      "publisher": "American College of Sports Medicine / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/19204579/",
+      "topic": "training",
+      "source_version": "2009;41(3):687–708; DOI 10.1249/MSS.0b013e3181915670；2026-09-21核对摘要",
+      "reviewed_on": "2026-09-21",
+      "review_due": "2027-03-20",
+      "status": "approved",
+      "scope": "一般健康成人负重进阶的历史原则；结合2026原则使用，不冒称最新完整个体训练处方。",
+      "license": "Copyright retained; brief original factual abstract summary only",
+      "license_url": "https://pubmed.ncbi.nlm.nih.gov/19204579/",
+      "notice": "不复制全文。两次实际记录、余力与时间窗口为产品保守筛选，不归为原文结论。",
+      "sections": [
+        {
+          "id": "progression",
+          "title": "负重进阶与个体条件",
+          "locator": "Abstract: progression in a specific exercise",
+          "summary": "该立场文件提出：某动作可在当前负重下超过目标次数1至2次时，可考虑约2%至10%的负重增加；仍应结合训练目的、能力和经验。产品只提示可考虑的最小增量，不替用户确认恢复或自动改记录。",
+          "keywords": [
+            "加重",
+            "进阶",
+            "负重",
+            "次数",
+            "ACSM"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-db-bench",
+      "title": "哑铃平板卧推",
+      "original_title": "Chest Press",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/19/chest-press/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "哑铃平板卧推",
+          "locator": "Exercise description / steps",
+          "summary": "头背臀稳定贴凳，手腕中立，控制下放，不弹起哑铃。",
+          "keywords": [
+            "哑铃平板卧推",
+            "胸部水平推",
+            "chest"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-barbell-bench",
+      "title": "杠铃平板卧推",
+      "original_title": "Chest Press",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/5/chest-press/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "杠铃平板卧推",
+          "locator": "Exercise description / steps",
+          "summary": "使用卧推架和正确设置的保护杠；肩背稳定，控制下放，不做极限重量。",
+          "keywords": [
+            "杠铃平板卧推",
+            "胸部水平推",
+            "chest"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-incline-db",
+      "title": "上斜哑铃卧推",
+      "original_title": "Incline Chest Press",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/25/incline-chest-press/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "上斜哑铃卧推",
+          "locator": "Exercise description / steps",
+          "summary": "确认上斜凳锁定，背臀贴凳，手腕中立，向上胸方向缓慢下放。",
+          "keywords": [
+            "上斜哑铃卧推",
+            "胸部上斜推",
+            "chest"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-cable-press",
+      "title": "坐姿绳索平推胸",
+      "original_title": "Seated Cable Press",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/165/seated-cable-press/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "坐姿绳索平推胸",
+          "locator": "Exercise description / steps",
+          "summary": "使用稳固靠背座位，滑轮对齐胸肩高度；沿胸前方向推，保持躯干稳定。",
+          "keywords": [
+            "坐姿绳索平推胸",
+            "胸部水平推",
+            "chest"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-cable-incline",
+      "title": "坐姿绳索上斜推胸",
+      "original_title": "Seated Incline Cable Press",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/167/seated-incline-cable-press/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "坐姿绳索上斜推胸",
+          "locator": "Exercise description / steps",
+          "summary": "靠背支撑身体，肩高滑轮，向额头方向斜上推，不拱腰。",
+          "keywords": [
+            "坐姿绳索上斜推胸",
+            "胸部上斜推",
+            "chest"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-cable-decline",
+      "title": "坐姿绳索下斜推胸",
+      "original_title": "Seated Decline Cable Press",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/166/seated-decline-cable-press/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "坐姿绳索下斜推胸",
+          "locator": "Exercise description / steps",
+          "summary": "靠背稳固，滑轮肩高或略高，向大腿方向斜下推，回程受控。",
+          "keywords": [
+            "坐姿绳索下斜推胸",
+            "胸部下斜推",
+            "chest"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-cable-fly",
+      "title": "站姿绳索夹胸",
+      "original_title": "Cable Crossover",
+      "publisher": "NASM",
+      "url": "https://www.nasm.org/resource-center/exercise-library/cable-crossover",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.nasm.org/resource-center/exercise-library/cable-crossover",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "站姿绳索夹胸",
+          "locator": "Exercise description / steps",
+          "summary": "双侧滑轮在肩高，身体站稳，双手沿弧线向胸前合拢，慢速回程。",
+          "keywords": [
+            "站姿绳索夹胸",
+            "胸部水平内收",
+            "chest"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-barbell-row",
+      "title": "杠铃俯身划船",
+      "original_title": "Bent-over Row",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/12/bent-over-row/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "杠铃俯身划船",
+          "locator": "Exercise description / steps",
+          "summary": "先掌握髋折叠和躯干稳定；由架上取杠，向腹部拉，不甩动腰背。",
+          "keywords": [
+            "杠铃俯身划船",
+            "背部水平拉",
+            "back"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-cable-row",
+      "title": "绳索坐姿划船",
+      "original_title": "Seated Row",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/48/seated-row/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "绳索坐姿划船",
+          "locator": "Exercise description / steps",
+          "summary": "坐姿划船站配窄握把，胸廓稳定，肘向后拉至腹前，控制放回。",
+          "keywords": [
+            "绳索坐姿划船",
+            "背部水平拉",
+            "back"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-pullup",
+      "title": "引体向上",
+      "original_title": "Pull-Up",
+      "publisher": "NASM",
+      "url": "https://www.nasm.org/resource-center/exercise-library/pull-up",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.nasm.org/resource-center/exercise-library/pull-up",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "引体向上",
+          "locator": "Exercise description / steps",
+          "summary": "仅在能控制全程时采用；确认单杠固定，避免摆荡，无法完成就选下拉备选。",
+          "keywords": [
+            "引体向上",
+            "背部垂直拉",
+            "back"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-goblet-squat",
+      "title": "哑铃高脚杯深蹲",
+      "original_title": "Goblet Squat",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/362/goblet-squat/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "哑铃高脚杯深蹲",
+          "locator": "Exercise description / steps",
+          "summary": "哑铃靠近胸前，脚掌稳定，蹲到自身可控制范围，不强求深度。",
+          "keywords": [
+            "哑铃高脚杯深蹲",
+            "股四头肌与臀部",
+            "legs"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-barbell-squat",
+      "title": "杠铃背蹲",
+      "original_title": "Back Squat",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/11/back-squat/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "杠铃背蹲",
+          "locator": "Exercise description / steps",
+          "summary": "需掌握背蹲技术；架上取杠并设置保护杠，保持躯干稳定，不追求极限重量。",
+          "keywords": [
+            "杠铃背蹲",
+            "股四头肌与臀部",
+            "legs"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-db-rdl",
+      "title": "哑铃罗马尼亚硬拉",
+      "original_title": "Dumbbell Romanian Deadlift",
+      "publisher": "NASM",
+      "url": "https://www.nasm.org/resource-center/exercise-library/dumbbell-romanian-deadlift",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.nasm.org/resource-center/exercise-library/dumbbell-romanian-deadlift",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "哑铃罗马尼亚硬拉",
+          "locator": "Exercise description / steps",
+          "summary": "微屈膝、向后移髋，保持脊柱中立；到可控的后侧牵拉范围，不弯腰追求触地。",
+          "keywords": [
+            "哑铃罗马尼亚硬拉",
+            "腘绳肌与臀部",
+            "legs"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-barbell-rdl",
+      "title": "杠铃罗马尼亚硬拉",
+      "original_title": "Romanian Deadlift Barbell",
+      "publisher": "NASM",
+      "url": "https://www.nasm.org/resource-center/exercise-library/romanian-deadlift-barbell",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.nasm.org/resource-center/exercise-library/romanian-deadlift-barbell",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "杠铃罗马尼亚硬拉",
+          "locator": "Exercise description / steps",
+          "summary": "先掌握取杠与髋折叠；杠靠近腿，微屈膝后移髋，不拱背猛拉。",
+          "keywords": [
+            "杠铃罗马尼亚硬拉",
+            "腘绳肌与臀部",
+            "legs"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-barbell-bridge",
+      "title": "杠铃地面臀桥",
+      "original_title": "Hip Bridge",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/318/hip-bridge/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "杠铃地面臀桥",
+          "locator": "Exercise description / steps",
+          "summary": "躺在地面，杠放髋部并稳定握住，脚掌着地推髋上抬，缓慢回落。",
+          "keywords": [
+            "杠铃地面臀桥",
+            "臀部伸髋",
+            "legs"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-lateral-lunge",
+      "title": "哑铃侧弓步",
+      "original_title": "Lateral Lunge",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/364/lateral-lunge/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "哑铃侧弓步",
+          "locator": "Exercise description / steps",
+          "summary": "侧向迈步后向后坐髋，脚掌稳定，控制返回中间，两侧分别完成。",
+          "keywords": [
+            "哑铃侧弓步",
+            "腿臀侧向支撑（非孤立内收）",
+            "legs"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-side-adduction",
+      "title": "侧卧髋内收",
+      "original_title": "Side Lying Hip Adduction",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/39/side-lying-hip-adduction/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "侧卧髋内收",
+          "locator": "Exercise description / steps",
+          "summary": "侧卧保持骨盆稳定，下侧腿稍前伸后小幅抬起，控制落下，两侧分别做。",
+          "keywords": [
+            "侧卧髋内收",
+            "大腿内侧",
+            "legs"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-machine-shoulder",
+      "title": "器械坐姿推肩",
+      "original_title": "Seated Shoulder Press",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/186/seated-shoulder-press/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "器械坐姿推肩",
+          "locator": "Exercise description / steps",
+          "summary": "调整座椅使手柄在肩高附近，背靠稳定，慢推慢回，不拱腰或锁死肘部。",
+          "keywords": [
+            "器械坐姿推肩",
+            "肩部上推",
+            "shoulders"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-db-shoulder",
+      "title": "站姿哑铃推肩",
+      "original_title": "Shoulders Above the Rest",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/certifiednews/images/article/pdfs/ACEShoulderStudy.pdf",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "站姿哑铃推肩",
+          "locator": "PDF page 3: How to Perform the Top Shoulder Exercises",
+          "summary": "站稳微屈膝，收紧躯干，从肩旁向上推哑铃并缓慢回落，不后仰借力。",
+          "keywords": [
+            "站姿哑铃推肩",
+            "肩部上推",
+            "shoulders"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-cable-reverse",
+      "title": "绳索反向飞鸟",
+      "original_title": "Reverse Fly",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/353/reverse-fly/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "绳索反向飞鸟",
+          "locator": "Exercise description / steps",
+          "summary": "滑轮约肩高，交叉握对侧把手，躯干稳定向两侧展开，慢速返回。",
+          "keywords": [
+            "绳索反向飞鸟",
+            "肩后侧",
+            "shoulders"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-face-pull",
+      "title": "绳索面拉",
+      "original_title": "Face Pull",
+      "publisher": "NASM",
+      "url": "https://www.nasm.org/resource-center/exercise-library/face-pull",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.nasm.org/resource-center/exercise-library/face-pull",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "绳索面拉",
+          "locator": "Exercise description / steps",
+          "summary": "绳索设在眼睛高度，稳定站姿向脸部拉绳，慢速回程，不借身体后仰。",
+          "keywords": [
+            "绳索面拉",
+            "肩后侧与上背",
+            "shoulders"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-barbell-curl",
+      "title": "杠铃二头弯举",
+      "original_title": "Bicep Curl",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/70/bicep-curl/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "杠铃二头弯举",
+          "locator": "Exercise description / steps",
+          "summary": "掌心向上，肘留在身体两侧，屈肘抬杠，躯干不摆动。",
+          "keywords": [
+            "杠铃二头弯举",
+            "肘屈曲（二头）",
+            "arms"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-hammer-curl",
+      "title": "哑铃锤式弯举",
+      "original_title": "Hammer Curl",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/10/hammer-curl/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "哑铃锤式弯举",
+          "locator": "Exercise description / steps",
+          "summary": "掌心相对，手腕中立，肘贴身缓慢屈伸，不耸肩或甩动。",
+          "keywords": [
+            "哑铃锤式弯举",
+            "肘屈曲（中立握）",
+            "arms"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-machine-curl",
+      "title": "器械二头弯举",
+      "original_title": "Seated Biceps Curl",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/184/seated-biceps-curl/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "器械二头弯举",
+          "locator": "Exercise description / steps",
+          "summary": "调整座位使肘与机器转轴匹配，上臂贴垫，手腕中立，控制伸屈。",
+          "keywords": [
+            "器械二头弯举",
+            "肘屈曲（二头）",
+            "arms"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-plank",
+      "title": "前臂平板支撑",
+      "original_title": "Front Plank",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/32/front-plank/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "前臂平板支撑",
+          "locator": "Exercise description / steps",
+          "summary": "肘在肩下，躯干保持稳定并正常呼吸；腰痛或失控立即停止。",
+          "keywords": [
+            "前臂平板支撑",
+            "核心抗伸展",
+            "core"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-side-plank",
+      "title": "改良侧平板支撑",
+      "original_title": "Side Plank (Modified)",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/99/side-plank-modified/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "改良侧平板支撑",
+          "locator": "Exercise description / steps",
+          "summary": "按来源的屈膝支撑位抬髋，肘在肩下；足内侧或膝有异常压力即停止。",
+          "keywords": [
+            "改良侧平板支撑",
+            "核心侧向稳定",
+            "core"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r118-band-chest",
+      "title": "弹力带站姿推胸",
+      "original_title": "Chest Day Champion",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/pros/expert-articles/8972/be-a-chest-day-champion-an-evidence-based-approach-to-training-the-chest/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作说明；不推断网页发布日期",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实短摘要；器械附加保护条件、组次/休息/组合是本项目保守编排，不是来源提供的个人处方。不将EMG研究当作长期增肌排名。",
+      "license": "Copyright retained; short original factual summary, no open license or commercial permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "仅自行撰写事实摘要与链接，不复制媒体、整课或正文；商业公开发布前复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "弹力带站姿推胸",
+          "locator": "Recommended exercises / standing band press",
+          "summary": "弹力带在身后胸高的牢固锚点固定，稳定站姿向前推，检查带体和固定点。",
+          "keywords": [
+            "弹力带站姿推胸",
+            "胸部水平推",
+            "chest"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "acsm-2026",
+      "title": "抗阻训练的一般编排原则",
+      "original_title": "ACSM Unveils Landmark 2026 Resistance Training Guidelines",
+      "publisher": "ACSM",
+      "url": "https://acsm.org/resistance-training-guidelines-update-2026/",
+      "topic": "training",
+      "source_version": "2026-03-17发布",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人；概述不规定某一分化或四周周期。项目结构、时间预算和条件进阶属于产品规则，非竞技或康复处方。",
+      "license": "Copyright ACSM; brief original summary; no open license asserted",
+      "license_url": "https://acsm.org/resistance-training-guidelines-update-2026/",
+      "notice": "不复制图表或完整立场文件，不冒称官方背书。",
+      "sections": [
+        {
+          "id": "programming",
+          "title": "坚持、频率与个体化",
+          "locator": "Clear Message; Further Takeaways",
+          "summary": "一般成人应重视规律参与和主要肌群每周至少两次的训练机会。器械、自重和弹力带都可用于训练；计划应适应目标和可坚持程度，不要求每组力竭。增肌可关注较高周训练量，但不能把群体参考直接当个人处方。",
+          "keywords": [
+            "分化",
+            "全身",
+            "每周",
+            "频率",
+            "组数",
+            "进阶"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cdc-adults",
+      "title": "成人身体活动基础",
+      "original_title": "Adult Activity: An Overview",
+      "publisher": "CDC",
+      "url": "https://www.cdc.gov/physical-activity-basics/guidelines/adults.html",
+      "topic": "training",
+      "source_version": "网页日期 2023-12-20",
+      "reviewed_on": "2026-09-17",
+      "review_due": "2027-03-16",
+      "status": "approved",
+      "scope": "美国一般成人公共健康建议；不是个人训练量、伤病康复或竞技训练处方。",
+      "license": "CDC agency-materials policy",
+      "license_url": "https://www.cdc.gov/other/agencymaterials.html",
+      "notice": "来源：CDC。项目中文摘要，非官方译文；原资料在CDC网站免费提供。引用不表示CDC、HHS或美国政府认可本应用。",
+      "sections": [
+        {
+          "id": "aerobic",
+          "title": "每周有氧活动量",
+          "locator": "Recommendations for adults",
+          "summary": "CDC的一般成人建议为每周至少150分钟中等强度有氧活动，或75分钟高强度有氧活动，也可进行等效组合。",
+          "keywords": [
+            "有氧",
+            "运动",
+            "一周",
+            "每周",
+            "多久",
+            "频率",
+            "aerobic",
+            "weekly"
+          ]
+        },
+        {
+          "id": "strength",
+          "title": "肌肉强化活动频率",
+          "locator": "Recommended levels for health benefits",
+          "summary": "一般成人除有氧活动外，每周至少2天进行覆盖主要肌群的肌肉强化活动。该一般建议不说明个人应采用哪种分化或具体动作。",
+          "keywords": [
+            "力量训练",
+            "肌肉",
+            "抗阻",
+            "每周",
+            "几次",
+            "几天",
+            "频率",
+            "strength"
+          ]
+        },
+        {
+          "id": "accumulate",
+          "title": "分段活动与减少久坐",
+          "locator": "Recommendations for adults; Move more, sit less",
+          "summary": "身体活动可以分散到一周内，也可以拆成较短时段积累；做一些活动比完全不活动好，减少久坐也有价值。",
+          "keywords": [
+            "久坐",
+            "分段",
+            "时间不够",
+            "积累",
+            "活动",
+            "短时"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cdc-intensity",
+      "title": "判断运动强度",
+      "original_title": "How to Measure Physical Activity Intensity",
+      "publisher": "CDC",
+      "url": "https://www.cdc.gov/physical-activity-basics/measuring/index.html",
+      "topic": "training",
+      "source_version": "网页日期 2025-12-04",
+      "reviewed_on": "2026-09-17",
+      "review_due": "2027-03-16",
+      "status": "approved",
+      "scope": "一般有氧活动强度解释；不能据此诊断心肺情况或判断受伤后能否运动。",
+      "license": "CDC agency-materials policy",
+      "license_url": "https://www.cdc.gov/other/agencymaterials.html",
+      "notice": "来源：CDC。项目中文摘要，非官方译文；原资料在CDC网站免费提供。引用不表示CDC、HHS或美国政府认可本应用。",
+      "sections": [
+        {
+          "id": "talk-test",
+          "title": "谈话测试",
+          "locator": "Tip: Talk Test",
+          "summary": "谈话测试是一种粗略判断方式：中等强度有氧活动时通常还能交谈但不能唱歌；高强度时往往说不了几个词就需要停下来换气。",
+          "keywords": [
+            "运动强度",
+            "中等强度",
+            "高强度",
+            "谈话测试",
+            "说话",
+            "喘气",
+            "talk",
+            "intensity"
+          ]
+        },
+        {
+          "id": "relative",
+          "title": "相对强度与体能差异",
+          "locator": "Relative intensity",
+          "summary": "同一种活动对不同体能的人可能有不同强度。以0至10表示主观用力程度时，中等相对强度约为5或6，高相对强度从7或8开始。",
+          "keywords": [
+            "相对强度",
+            "体能",
+            "用力",
+            "主观",
+            "intensity"
+          ]
+        },
+        {
+          "id": "met",
+          "title": "MET与活动能量",
+          "locator": "Absolute intensity",
+          "summary": "MET用于描述活动的绝对强度，1 MET对应安静坐着时的能量或氧耗水平。它描述活动强度，不考虑个人心肺适能差异。",
+          "keywords": [
+            "MET",
+            "代谢当量",
+            "能量",
+            "静息",
+            "消耗",
+            "绝对强度"
+          ]
+        },
+        {
+          "id": "activities",
+          "title": "不同有氧形式",
+          "locator": "Examples of moderate-intensity activities; Examples of vigorous-intensity activities",
+          "summary": "休闲游泳可属于中等强度活动；慢跑及连续游泳可属于高强度活动。同一项目的相对强度因体能不同，不能根据名称直接计算每周中高强度达标情况。",
+          "keywords": [
+            "游泳",
+            "慢跑",
+            "活动"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "phe-eatwell",
+      "title": "均衡饮食与食物搭配",
+      "original_title": "A Quick Guide to the Government's Healthy Eating Recommendations",
+      "publisher": "Public Health England / GOV.UK",
+      "url": "https://assets.publishing.service.gov.uk/media/5ba8a087e5274a55c3407c38/A_quick_guide_to_govt_healthy_eating_update.pdf",
+      "topic": "nutrition",
+      "source_version": "2018-09版；发布页2024-01-02更新归属信息，非正文新版",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-16",
+      "status": "approved",
+      "scope": "英国一般健康饮食原则，首批仅选一般成人相关内容；不是中国膳食标准、过敏替代清单或个人热量处方。",
+      "license": "Open Government Licence v3.0",
+      "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "notice": "Contains public sector information licensed under the Open Government Licence v3.0. 项目中文摘要，非官方译文，不表示原机构认可；仅使用文字，不含标识及第三方图片。",
+      "sections": [
+        {
+          "id": "balance",
+          "title": "按全天或一周看饮食平衡",
+          "locator": "第5页，2. The Eatwell Guide",
+          "summary": "Eatwell Guide描述不同食物类别在均衡饮食中的比例，侧重一天甚至一周的整体摄入，不要求每一餐都单独达到同样比例。",
+          "keywords": [
+            "饮食搭配",
+            "均衡饮食",
+            "一餐",
+            "全天",
+            "一周",
+            "平衡",
+            "diet",
+            "balance"
+          ]
+        },
+        {
+          "id": "vegetables",
+          "title": "蔬果种类与整体搭配",
+          "locator": "第6页，Fruit and vegetables",
+          "summary": "指南将蔬果作为日常饮食的重要组成部分，强调选择多种蔬果。其全天一般原则不能证明某个人每餐应吃的具体克数。",
+          "keywords": [
+            "蔬菜",
+            "水果",
+            "多样性",
+            "搭配",
+            "vegetables"
+          ]
+        },
+        {
+          "id": "starch",
+          "title": "主食与全谷物",
+          "locator": "第6页，Potatoes, bread, rice, pasta and other starchy carbohydrates",
+          "summary": "指南将米饭、面包、土豆和面食等淀粉类食物作为餐食组成部分，并提出可选择全谷物版本。全谷物通常比精制淀粉类食物含更多膳食纤维。",
+          "keywords": [
+            "主食",
+            "米饭",
+            "全谷物",
+            "碳水",
+            "膳食纤维",
+            "搭配",
+            "carbohydrate"
+          ]
+        },
+        {
+          "id": "protein",
+          "title": "蛋白质食物的多样性",
+          "locator": "第7页，Beans, pulses, fish, eggs, meat and other proteins",
+          "summary": "蛋白质食物类别包括豆类、鱼、蛋、肉等。指南列出豆类作为肉类的替代选择之一，并指出豆类也提供膳食纤维。",
+          "keywords": [
+            "蛋白质",
+            "豆类",
+            "肉类",
+            "替换",
+            "食物搭配",
+            "protein"
+          ]
+        },
+        {
+          "id": "oils",
+          "title": "油脂与食用量",
+          "locator": "第8页，Oil and spreads",
+          "summary": "指南提出选用不饱和油脂并少量食用；不同类型的脂肪都具有较高能量，选择油脂类型不能替代对用量的考虑。",
+          "keywords": [
+            "油脂",
+            "用油",
+            "脂肪",
+            "不饱和",
+            "能量",
+            "用量",
+            "fat"
+          ]
+        },
+        {
+          "id": "fruit",
+          "title": "水果与蔬菜的多样性",
+          "locator": "PDF page 6, Fruit and vegetables",
+          "summary": "指南鼓励选择多样水果蔬菜，并区别完整水果与果汁。本项目将水果单列计入摄入、不用水果替代本餐全部蔬菜，这是产品规则，不是指南的逐餐处方。",
+          "keywords": [
+            "水果",
+            "苹果",
+            "香蕉",
+            "橙子",
+            "蔬菜"
+          ]
+        },
+        {
+          "id": "dairy",
+          "title": "奶类和替代品",
+          "locator": "PDF page 7, Dairy and alternatives",
+          "summary": "指南提出奶类选较低脂、较低糖品种并核对标签；植物替代品需关注无糖和强化钙。本项目另行执行个人过敏/不耐受限制，不把推荐类别当作安全保证。",
+          "keywords": [
+            "牛奶",
+            "酸奶",
+            "低脂",
+            "奶制品"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fda-label",
+      "title": "阅读营养标签与份量",
+      "original_title": "How to Understand and Use the Nutrition Facts Label",
+      "publisher": "U.S. FDA",
+      "url": "https://www.fda.gov/food/nutrition-facts-label/how-understand-and-use-nutrition-facts-label",
+      "topic": "nutrition",
+      "source_version": "官网在线文本；页面日期未作为本文版本依据",
+      "reviewed_on": "2026-09-17",
+      "review_due": "2027-03-16",
+      "status": "approved",
+      "scope": "美国Nutrition Facts标签的阅读原则；国内包装须核对实际单位，不能直接套用美国标签法规或个人目标。",
+      "license": "FDA website public-domain policy (unless otherwise noted)",
+      "license_url": "https://www.fda.gov/about-fda/about-website/website-policies#linking",
+      "notice": "来源：U.S. FDA。项目中文摘要，非官方译文，不表示FDA认可本应用；原网页免费可读。",
+      "sections": [
+        {
+          "id": "servings",
+          "title": "每份营养与实际吃下的份数",
+          "locator": "1. Serving Information",
+          "summary": "阅读标签先核对每份大小和包装内份数。示例标签的热量与营养对应一份，吃两份需要按两倍计算；标签份量反映通常食用量，不等于建议你吃多少。",
+          "keywords": [
+            "营养标签",
+            "每份",
+            "份量",
+            "份数",
+            "热量",
+            "计算",
+            "serving",
+            "label"
+          ]
+        },
+        {
+          "id": "energy",
+          "title": "标签参考热量不是个人目标",
+          "locator": "2. Calories",
+          "summary": "标签中的每日2000千卡是一般参考值，不是所有人的需要。个人能量需求会随年龄、性别、身高、体重和活动水平等因素变化。",
+          "keywords": [
+            "热量目标",
+            "卡路里",
+            "需求",
+            "能量",
+            "体重",
+            "2000",
+            "calorie"
+          ]
+        }
+      ]
+    },
+    {
+      "publisher": "CDC",
+      "topic": "training",
+      "reviewed_on": "2026-09-19",
+      "review_due": "2027-03-16",
+      "status": "approved",
+      "license": "CDC agency-materials policy",
+      "license_url": "https://www.cdc.gov/other/agencymaterials.html",
+      "notice": "来源：CDC。项目中文摘要，非官方译文；原资料免费可读。引用不表示CDC、HHS或美国政府认可本应用。",
+      "id": "cdc-activities",
+      "title": "一般有氧与肌肉强化活动类型",
+      "original_title": "What Counts as Physical Activity for Adults",
+      "url": "https://www.cdc.gov/physical-activity-basics/adding-adults/what-counts.html",
+      "source_version": "网页日期 2023-12-06",
+      "scope": "一般成人活动举例；不是具体个人时长、康复或速度处方。",
+      "sections": [
+        {
+          "id": "moderate",
+          "title": "步行与平地骑行",
+          "locator": "Aerobic activity - what counts?; How do you know what is right for you?",
+          "summary": "快走和平地或少坡骑行是中等强度活动的例子。同一活动的相对强度因人而异，应匹配自身能力和健康状况，不能仅凭活动名称或固定速度认定强度。",
+          "keywords": [
+            "有氧",
+            "步行",
+            "快走",
+            "骑行",
+            "自行车",
+            "平地",
+            "活动类型"
+          ]
+        },
+        {
+          "id": "strength-options",
+          "title": "肌肉强化的常见形式",
+          "locator": "Muscle strengthening - what counts?",
+          "summary": "肌肉强化活动可使用负重、弹力带或自身体重，覆盖腿、臀、背、胸、腹、肩和手臂等主要肌群。这些是一般活动形式，不构成个人动作、分化或伤病训练方案。",
+          "keywords": [
+            "力量训练",
+            "肌肉强化",
+            "弹力带",
+            "负重",
+            "自重",
+            "俯卧撑",
+            "活动形式"
+          ]
+        },
+        {
+          "id": "sets",
+          "title": "一般肌肉强化组次",
+          "locator": "Muscle strengthening - what counts?",
+          "summary": "CDC将8至12次视作一组，至少一组，增加到两三组可能有更多收益。这是一般肌肉强化参考，不说明每个人需要相同重量或做到动作失控。",
+          "keywords": [
+            "组数",
+            "次数",
+            "抗阻"
+          ]
+        }
+      ]
+    },
+    {
+      "publisher": "CDC",
+      "topic": "training",
+      "reviewed_on": "2026-09-18",
+      "review_due": "2027-03-16",
+      "status": "approved",
+      "license": "CDC agency-materials policy",
+      "license_url": "https://www.cdc.gov/other/agencymaterials.html",
+      "notice": "来源：CDC。项目中文摘要，非官方译文；原资料免费可读。引用不表示CDC、HHS或美国政府认可本应用。",
+      "id": "cdc-start",
+      "title": "开始活动与逐步增加",
+      "original_title": "Steps for Getting Started With Physical Activity",
+      "url": "https://www.cdc.gov/healthy-weight-growth/physical-activity/getting-started.html",
+      "source_version": "网页日期 2025-12-04",
+      "scope": "一般成人开始身体活动的原则；有慢性健康问题需确认适合的活动类型与量。",
+      "sections": [
+        {
+          "id": "gradual",
+          "title": "从可承受的活动开始",
+          "locator": "Getting started",
+          "summary": "从喜欢的活动、地点和时间开始，缓慢起步，再逐步增加时间或挑战。公共每周活动量不等于个人必须一次完成的训练任务；慢性健康问题应先与医疗人员讨论适合的类型和量。",
+          "keywords": [
+            "新手",
+            "循序渐进",
+            "初学",
+            "开始",
+            "时间",
+            "安排"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nia-activity",
+      "title": "有氧活动前后与安全",
+      "original_title": "Three Types of Exercise Can Improve Your Health and Physical Ability",
+      "publisher": "NIH / National Institute on Aging",
+      "url": "https://www.nia.nih.gov/health/four-types-exercise-can-improve-your-health-and-physical-ability",
+      "topic": "training",
+      "source_version": "页面标记 Content reviewed: 2025-01-14；本次核对官方页面的搜索索引摘要",
+      "reviewed_on": "2026-09-18",
+      "review_due": "2027-03-16",
+      "status": "approved",
+      "scope": "NIA面向健康老龄化的通用活动安全原则；本项目仅引用热身收尾与安全提醒，不据此开放老年个体训练或康复处方。",
+      "license": "NIA Policies: Reuse of text, public domain unless otherwise indicated",
+      "license_url": "https://www.nia.nih.gov/about/policies",
+      "notice": "来源：NIH / NIA。仅项目文字摘要，非官方译文；原资料免费可读，不含图片或标识，不表示NIH、NIA或美国政府认可本应用。",
+      "sections": [
+        {
+          "id": "preparation",
+          "title": "热身、收尾与身体信号",
+          "locator": "Aerobic activity: Safety tips",
+          "summary": "有氧活动前后安排少量轻活动，例如轻松步行，作为热身与收尾。活动不应引起头晕、胸部疼痛或压迫感、恶心；户外注意环境，骑行使用头盔等安全装备。不确定活动是否适合自己时先咨询专业人员。",
+          "keywords": [
+            "热身",
+            "收尾",
+            "放松",
+            "安全",
+            "骑行",
+            "步行"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fda-allergy-label",
+      "title": "食物过敏与包装配料核对",
+      "original_title": "Have Food Allergies? Read the Label",
+      "publisher": "U.S. FDA",
+      "url": "https://www.fda.gov/consumers/consumer-updates/have-food-allergies-read-label",
+      "topic": "nutrition",
+      "source_version": "官网在线文本；未确认具体正文修订日期",
+      "reviewed_on": "2026-09-19",
+      "review_due": "2027-03-16",
+      "status": "approved",
+      "scope": "美国消费者标签核对与交叉接触的一般说明；不是中国标签法规、个人过敏诊断或安全替代食材清单，不限于常见过敏原才需避开。",
+      "license": "FDA website public-domain policy (unless otherwise noted)",
+      "license_url": "https://www.fda.gov/about-fda/about-website/website-policies#linking",
+      "notice": "来源：U.S. FDA。项目中文摘要，非官方译文，不表示FDA认可本应用；原网页免费可读。",
+      "sections": [
+        {
+          "id": "ingredients",
+          "title": "每次核对完整配料",
+          "locator": "Read the Label; When in Doubt, Leave It Out",
+          "summary": "配料可能改变，即使过去吃过，每次购买仍应核对完整配料表，而不只看醒目的过敏提示。不能确定是否含本人需要避开的成分时，不应据此认定可食用；可联系生产者核实。",
+          "keywords": [
+            "配料表",
+            "过敏",
+            "食材核对",
+            "包装",
+            "成分改变",
+            "标签",
+            "ingredients"
+          ]
+        },
+        {
+          "id": "cross-contact",
+          "title": "交叉接触与可能含有提示",
+          "locator": "Contains and May Contain Have Different Meanings",
+          "summary": "共用生产设备可能带来过敏原交叉接触。FDA说明，美国标签上的“可能含有”提示是自愿性的；没有该提示不能证明没有交叉接触。该说明不保证某个替代食材或成品对个人安全。",
+          "keywords": [
+            "交叉接触",
+            "过敏原",
+            "可能含有",
+            "共用设备",
+            "没有提示",
+            "包装",
+            "may contain"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mayo-strength",
+      "title": "力量练习的准备与间隔",
+      "original_title": "Strength training: Get stronger, leaner, healthier",
+      "publisher": "Mayo Clinic",
+      "url": "https://www.mayoclinic.org/healthy-lifestyle/fitness/in-depth/strength-training/art-20046670",
+      "topic": "training",
+      "source_version": "网页日期 2026-06-05",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-16",
+      "status": "approved",
+      "scope": "一般成人基础练习的短摘要；不覆盖伤病康复、竞技分化或个人恢复判断。组次组合与时间预算由本项目明确的保守规则选取，不是来源为本用户制定的处方。",
+      "license": "Copyright MFMER; brief original summary and attribution, not an open license",
+      "license_url": "https://www.mayoclinic.org/about-this-site/terms-conditions-use-policy",
+      "notice": "项目自行撰写的简短中文摘要，非官方译文或合作背书；不复制视频、图片或完整正文。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "力量练习的准备与间隔",
+          "locator": "Getting started",
+          "summary": "先做数分钟轻量有氧热身；同一肌群两次训练之间至少留出一个完整休息日。有疼痛应停止，健康问题需先咨询专业人员；记录间隔不能证明本人已恢复。",
+          "keywords": [
+            "力量",
+            "间隔"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mayo-chest",
+      "title": "哑铃地板推胸",
+      "original_title": "Video: Chest press with dumbbell",
+      "publisher": "Mayo Clinic",
+      "url": "https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/chest-press/vid-20084677",
+      "topic": "training",
+      "source_version": "网页日期 2025-11-21",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-16",
+      "status": "approved",
+      "scope": "一般成人基础练习的短摘要；不覆盖伤病康复、竞技分化或个人恢复判断。组次组合与时间预算由本项目明确的保守规则选取，不是来源为本用户制定的处方。",
+      "license": "Copyright MFMER; brief original summary and attribution, not an open license",
+      "license_url": "https://www.mayoclinic.org/about-this-site/terms-conditions-use-policy",
+      "notice": "项目自行撰写的简短中文摘要，非官方译文或合作背书；不复制视频、图片或完整正文。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "哑铃地板推胸",
+          "locator": "Video transcript",
+          "summary": "哑铃推胸练习胸部，可躺在地板上完成，不必假设有训练凳。动作受控，不锁死肘部，肘部不要落到躯干水平线以下。",
+          "keywords": [
+            "胸",
+            "哑铃"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mayo-pushup",
+      "title": "跪姿俯卧撑",
+      "original_title": "Video: Modified pushup",
+      "publisher": "Mayo Clinic",
+      "url": "https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/modified-pushup/vid-20084674",
+      "topic": "training",
+      "source_version": "网页日期 2025-11-21",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-16",
+      "status": "approved",
+      "scope": "一般成人基础练习的短摘要；不覆盖伤病康复、竞技分化或个人恢复判断。组次组合与时间预算由本项目明确的保守规则选取，不是来源为本用户制定的处方。",
+      "license": "Copyright MFMER; brief original summary and attribution, not an open license",
+      "license_url": "https://www.mayoclinic.org/about-this-site/terms-conditions-use-policy",
+      "notice": "项目自行撰写的简短中文摘要，非官方译文或合作背书；不复制视频、图片或完整正文。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "跪姿俯卧撑",
+          "locator": "Video transcript",
+          "summary": "跪姿俯卧撑是一种自重上肢练习，手掌略宽于肩，收紧腹部，缓慢屈肘降低身体后推回，保持身体受控。",
+          "keywords": [
+            "胸",
+            "俯卧撑"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mayo-row",
+      "title": "站姿俯身哑铃划船",
+      "original_title": "Video: Bent-over row with dumbbell",
+      "publisher": "Mayo Clinic",
+      "url": "https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/bent-over-row/vid-20084680",
+      "topic": "training",
+      "source_version": "网页日期 2025-11-21",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-16",
+      "status": "approved",
+      "scope": "一般成人基础练习的短摘要；不覆盖伤病康复、竞技分化或个人恢复判断。组次组合与时间预算由本项目明确的保守规则选取，不是来源为本用户制定的处方。",
+      "license": "Copyright MFMER; brief original summary and attribution, not an open license",
+      "license_url": "https://www.mayoclinic.org/about-this-site/terms-conditions-use-policy",
+      "notice": "项目自行撰写的简短中文摘要，非官方译文或合作背书；不复制视频、图片或完整正文。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "站姿俯身哑铃划船",
+          "locator": "Video transcript",
+          "summary": "站姿俯身哑铃划船涉及肩后侧和上背。屈膝并从髋部前倾，保持脊柱中立，肩膀不向前滚动，缓慢提拉和放下；不需要训练凳。",
+          "keywords": [
+            "背",
+            "划船"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mayo-squat",
+      "title": "自重深蹲",
+      "original_title": "Video: Squat exercise",
+      "publisher": "Mayo Clinic",
+      "url": "https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/squat/vid-20084663",
+      "topic": "training",
+      "source_version": "网页日期 2025-11-21",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-16",
+      "status": "approved",
+      "scope": "一般成人基础练习的短摘要；不覆盖伤病康复、竞技分化或个人恢复判断。组次组合与时间预算由本项目明确的保守规则选取，不是来源为本用户制定的处方。",
+      "license": "Copyright MFMER; brief original summary and attribution, not an open license",
+      "license_url": "https://www.mayoclinic.org/about-this-site/terms-conditions-use-policy",
+      "notice": "项目自行撰写的简短中文摘要，非官方译文或合作背书；不复制视频、图片或完整正文。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "自重深蹲",
+          "locator": "Video transcript",
+          "summary": "自重深蹲训练腿部，髋膝踝共同屈曲，膝盖对齐脚部，保持背部中立。只在可控制的幅度内下蹲，疲劳或动作变形时停止。",
+          "keywords": [
+            "腿",
+            "深蹲"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mayo-lunge",
+      "title": "自重弓步",
+      "original_title": "Video: Lunge exercise",
+      "publisher": "Mayo Clinic",
+      "url": "https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/lunge/vid-20084662",
+      "topic": "training",
+      "source_version": "网页日期 2025-11-21",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-16",
+      "status": "approved",
+      "scope": "一般成人基础练习的短摘要；不覆盖伤病康复、竞技分化或个人恢复判断。组次组合与时间预算由本项目明确的保守规则选取，不是来源为本用户制定的处方。",
+      "license": "Copyright MFMER; brief original summary and attribution, not an open license",
+      "license_url": "https://www.mayoclinic.org/about-this-site/terms-conditions-use-policy",
+      "notice": "项目自行撰写的简短中文摘要，非官方译文或合作背书；不复制视频、图片或完整正文。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "自重弓步",
+          "locator": "Video transcript",
+          "summary": "自重弓步涉及大腿前后侧和臀部。向前迈步下蹲再返回，背部中立，膝与脚对齐；幅度按能力调整，动作变形时停止。",
+          "keywords": [
+            "臀",
+            "弓步"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mayo-bridge",
+      "title": "基础桥式",
+      "original_title": "Core exercises: Why you should strengthen your core muscles",
+      "publisher": "Mayo Clinic",
+      "url": "https://www.mayoclinic.org/healthy-lifestyle/fitness/in-depth/core-exercises/art-20044751",
+      "topic": "training",
+      "source_version": "网页日期 2025-03-25",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-16",
+      "status": "approved",
+      "scope": "一般成人基础练习的短摘要；不覆盖伤病康复、竞技分化或个人恢复判断。组次组合与时间预算由本项目明确的保守规则选取，不是来源为本用户制定的处方。",
+      "license": "Copyright MFMER; brief original summary and attribution, not an open license",
+      "license_url": "https://www.mayoclinic.org/about-this-site/terms-conditions-use-policy",
+      "notice": "项目自行撰写的简短中文摘要，非官方译文或合作背书；不复制视频、图片或完整正文。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "基础桥式",
+          "locator": "Core exercises don't need equipment or a gym membership",
+          "summary": "桥式可不使用器械。仰卧屈膝、收紧腹部，抬髋至膝髋肩大致成线，保持三次深呼吸后放下；保持背部中立，不用于本项目的伤病治疗。",
+          "keywords": [
+            "核心",
+            "桥式"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mayo-crunch",
+      "title": "基础卷腹",
+      "original_title": "Video: Abdominal crunch",
+      "publisher": "Mayo Clinic",
+      "url": "https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/abdominal-crunch/vid-20084664",
+      "topic": "training",
+      "source_version": "网页日期 2025-11-21",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-16",
+      "status": "approved",
+      "scope": "一般成人基础练习的短摘要；不覆盖伤病康复、竞技分化或个人恢复判断。组次组合与时间预算由本项目明确的保守规则选取，不是来源为本用户制定的处方。",
+      "license": "Copyright MFMER; brief original summary and attribution, not an open license",
+      "license_url": "https://www.mayoclinic.org/about-this-site/terms-conditions-use-policy",
+      "notice": "项目自行撰写的简短中文摘要，非官方译文或合作背书；不复制视频、图片或完整正文。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "基础卷腹",
+          "locator": "Video transcript",
+          "summary": "基础卷腹仰卧屈膝、双臂交叉于胸前，收紧腹部后抬起头肩，保持三次深呼吸后回位。不拉扯头颈，动作变形时停止。",
+          "keywords": [
+            "核心",
+            "卷腹"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mayo-biceps",
+      "title": "哑铃二头弯举",
+      "original_title": "Video: Biceps curl with dumbbell",
+      "publisher": "Mayo Clinic",
+      "url": "https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/biceps-curl/vid-20084675",
+      "topic": "training",
+      "source_version": "网页日期 2025-11-21",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般成人基础练习的短摘要；不覆盖伤病康复、竞技分化或个人恢复判断。组次组合与时间预算由本项目明确的保守规则选取，不是来源为本用户制定的处方。",
+      "license": "Copyright MFMER; brief original summary and attribution, not an open license",
+      "license_url": "https://www.mayoclinic.org/about-this-site/terms-conditions-use-policy",
+      "notice": "仅保留项目自行撰写的简短事实摘要和出处，不复制图片、视频或正文，不表示合作或获商业转载授权；公开商业发布前需复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "哑铃二头弯举",
+          "locator": "Video transcript",
+          "summary": "屈肘抬起哑铃后缓慢放下，上臂靠近身体，手腕保持中立，不借摆动完成。",
+          "keywords": [
+            "二头",
+            "手臂",
+            "哑铃",
+            "弯举"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mayo-triceps",
+      "title": "哑铃仰卧臂屈伸",
+      "original_title": "Video: Triceps extension with dumbbell",
+      "publisher": "Mayo Clinic",
+      "url": "https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/triceps-extension/vid-20084676",
+      "topic": "training",
+      "source_version": "网页日期 2025-11-21",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般成人基础练习的短摘要；不覆盖伤病康复、竞技分化或个人恢复判断。组次组合与时间预算由本项目明确的保守规则选取，不是来源为本用户制定的处方。",
+      "license": "Copyright MFMER; brief original summary and attribution, not an open license",
+      "license_url": "https://www.mayoclinic.org/about-this-site/terms-conditions-use-policy",
+      "notice": "仅保留项目自行撰写的简短事实摘要和出处，不复制图片、视频或正文，不表示合作或获商业转载授权；公开商业发布前需复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "哑铃仰卧臂屈伸",
+          "locator": "Video transcript",
+          "summary": "地板仰卧，上臂向上，另一手稳定上臂，缓慢屈伸肘部，头部和躯干保持稳定。",
+          "keywords": [
+            "三头",
+            "手臂",
+            "哑铃",
+            "臂屈伸"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mayo-cable-triceps",
+      "title": "绳索直杆下压",
+      "original_title": "Video: Triceps extension with weight machine",
+      "publisher": "Mayo Clinic",
+      "url": "https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/triceps-extension/vid-20084691",
+      "topic": "training",
+      "source_version": "网页日期 2025-11-21",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般成人基础练习的短摘要；不覆盖伤病康复、竞技分化或个人恢复判断。组次组合与时间预算由本项目明确的保守规则选取，不是来源为本用户制定的处方。",
+      "license": "Copyright MFMER; brief original summary and attribution, not an open license",
+      "license_url": "https://www.mayoclinic.org/about-this-site/terms-conditions-use-policy",
+      "notice": "仅保留项目自行撰写的简短事实摘要和出处，不复制图片、视频或正文，不表示合作或获商业转载授权；公开商业发布前需复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "绳索直杆下压",
+          "locator": "Video transcript",
+          "summary": "使用适配直杆的滑轮器械，肘部贴近躯干，缓慢下压和回程，不前后摇摆。",
+          "keywords": [
+            "三头",
+            "下压",
+            "绳索",
+            "直杆"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mayo-machine-chest",
+      "title": "器械推胸",
+      "original_title": "Video: Chest press with weight machine",
+      "publisher": "Mayo Clinic",
+      "url": "https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/chest-press/vid-20084687",
+      "topic": "training",
+      "source_version": "网页日期 2025-11-21",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般成人基础练习的短摘要；不覆盖伤病康复、竞技分化或个人恢复判断。组次组合与时间预算由本项目明确的保守规则选取，不是来源为本用户制定的处方。",
+      "license": "Copyright MFMER; brief original summary and attribution, not an open license",
+      "license_url": "https://www.mayoclinic.org/about-this-site/terms-conditions-use-policy",
+      "notice": "仅保留项目自行撰写的简短事实摘要和出处，不复制图片、视频或正文，不表示合作或获商业转载授权；公开商业发布前需复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "器械推胸",
+          "locator": "Video transcript",
+          "summary": "调座位使握把在肩部或略低，保持背部稳定，推起不锁肘，回程上臂不退到躯干后。",
+          "keywords": [
+            "胸",
+            "推胸机",
+            "器械"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mayo-lat-pulldown",
+      "title": "器械高位下拉",
+      "original_title": "Video: Lat pull-down with weight machine",
+      "publisher": "Mayo Clinic",
+      "url": "https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/lat-pull-down/vid-20084683",
+      "topic": "training",
+      "source_version": "网页日期 2025-11-21",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般成人基础练习的短摘要；不覆盖伤病康复、竞技分化或个人恢复判断。组次组合与时间预算由本项目明确的保守规则选取，不是来源为本用户制定的处方。",
+      "license": "Copyright MFMER; brief original summary and attribution, not an open license",
+      "license_url": "https://www.mayoclinic.org/about-this-site/terms-conditions-use-policy",
+      "notice": "仅保留项目自行撰写的简短事实摘要和出处，不复制图片、视频或正文，不表示合作或获商业转载授权；公开商业发布前需复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "器械高位下拉",
+          "locator": "Video transcript",
+          "summary": "稍宽握距向胸前下拉，缓慢回程，不拉到颈后，不通过耸肩或摆动借力。",
+          "keywords": [
+            "背",
+            "高位下拉",
+            "器械"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mayo-machine-row",
+      "title": "器械坐姿划船",
+      "original_title": "Video: Seated row with weight machine",
+      "publisher": "Mayo Clinic",
+      "url": "https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/seated-row/vid-20084688",
+      "topic": "training",
+      "source_version": "网页日期 2025-11-21",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般成人基础练习的短摘要；不覆盖伤病康复、竞技分化或个人恢复判断。组次组合与时间预算由本项目明确的保守规则选取，不是来源为本用户制定的处方。",
+      "license": "Copyright MFMER; brief original summary and attribution, not an open license",
+      "license_url": "https://www.mayoclinic.org/about-this-site/terms-conditions-use-policy",
+      "notice": "仅保留项目自行撰写的简短事实摘要和出处，不复制图片、视频或正文，不表示合作或获商业转载授权；公开商业发布前需复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "器械坐姿划船",
+          "locator": "Video transcript",
+          "summary": "膝部微屈，拉向腰部再缓慢回程，脊柱保持中立，不大幅前后倾。",
+          "keywords": [
+            "背",
+            "坐姿划船",
+            "器械"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mayo-band-row",
+      "title": "弹力带坐姿划船",
+      "original_title": "Video: Seated row with resistance tubing",
+      "publisher": "Mayo Clinic",
+      "url": "https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/seated-row/vid-20084669",
+      "topic": "training",
+      "source_version": "网页日期 2025-11-21",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般成人基础练习的短摘要；不覆盖伤病康复、竞技分化或个人恢复判断。组次组合与时间预算由本项目明确的保守规则选取，不是来源为本用户制定的处方。",
+      "license": "Copyright MFMER; brief original summary and attribution, not an open license",
+      "license_url": "https://www.mayoclinic.org/about-this-site/terms-conditions-use-policy",
+      "notice": "仅保留项目自行撰写的简短事实摘要和出处，不复制图片、视频或正文，不表示合作或获商业转载授权；公开商业发布前需复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "弹力带坐姿划船",
+          "locator": "Video transcript",
+          "summary": "检查弹力带完好并稳固绕过脚部，膝微屈、背部中立，肘向后拉，缓慢回程。",
+          "keywords": [
+            "背",
+            "弹力带",
+            "划船"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mayo-leg-press",
+      "title": "器械腿举",
+      "original_title": "Video: Leg press with weight machine",
+      "publisher": "Mayo Clinic",
+      "url": "https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/leg-press/vid-20084684",
+      "topic": "training",
+      "source_version": "网页日期 2025-11-21",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般成人基础练习的短摘要；不覆盖伤病康复、竞技分化或个人恢复判断。组次组合与时间预算由本项目明确的保守规则选取，不是来源为本用户制定的处方。",
+      "license": "Copyright MFMER; brief original summary and attribution, not an open license",
+      "license_url": "https://www.mayoclinic.org/about-this-site/terms-conditions-use-policy",
+      "notice": "仅保留项目自行撰写的简短事实摘要和出处，不复制图片、视频或正文，不表示合作或获商业转载授权；公开商业发布前需复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "器械腿举",
+          "locator": "Video transcript",
+          "summary": "坐稳后双脚约肩宽，膝脚方向一致，推出不锁膝，回程只到可控范围。",
+          "keywords": [
+            "腿",
+            "腿举机",
+            "股四头"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mayo-calf",
+      "title": "哑铃提踵",
+      "original_title": "Video: Calf raise with dumbbell",
+      "publisher": "Mayo Clinic",
+      "url": "https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/calf-raise/vid-20084681",
+      "topic": "training",
+      "source_version": "网页日期 2025-11-21",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般成人基础练习的短摘要；不覆盖伤病康复、竞技分化或个人恢复判断。组次组合与时间预算由本项目明确的保守规则选取，不是来源为本用户制定的处方。",
+      "license": "Copyright MFMER; brief original summary and attribution, not an open license",
+      "license_url": "https://www.mayoclinic.org/about-this-site/terms-conditions-use-policy",
+      "notice": "仅保留项目自行撰写的简短事实摘要和出处，不复制图片、视频或正文，不表示合作或获商业转载授权；公开商业发布前需复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "哑铃提踵",
+          "locator": "Video transcript",
+          "summary": "稳定站立后缓慢提踵和落下，保持躯干稳定；平衡不足时不负重练习。",
+          "keywords": [
+            "小腿",
+            "提踵",
+            "哑铃"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mayo-reverse-fly",
+      "title": "坐姿哑铃反向飞鸟",
+      "original_title": "Video: Reverse fly with dumbbell",
+      "publisher": "Mayo Clinic",
+      "url": "https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/reverse-fly/vid-20084679",
+      "topic": "training",
+      "source_version": "网页日期 2025-11-21",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般成人基础练习的短摘要；不覆盖伤病康复、竞技分化或个人恢复判断。组次组合与时间预算由本项目明确的保守规则选取，不是来源为本用户制定的处方。",
+      "license": "Copyright MFMER; brief original summary and attribution, not an open license",
+      "license_url": "https://www.mayoclinic.org/about-this-site/terms-conditions-use-policy",
+      "notice": "仅保留项目自行撰写的简短事实摘要和出处，不复制图片、视频或正文，不表示合作或获商业转载授权；公开商业发布前需复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "坐姿哑铃反向飞鸟",
+          "locator": "Video transcript",
+          "summary": "坐稳并从髋部前倾，肘部略弯，双臂向两侧抬到肩部高度，避免弓背和甩动。",
+          "keywords": [
+            "肩",
+            "肩后侧",
+            "反向飞鸟",
+            "哑铃"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mayo-knee-extension",
+      "title": "器械腿屈伸",
+      "original_title": "Video: Knee extension with weight machine",
+      "publisher": "Mayo Clinic",
+      "url": "https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/knee-extension/vid-20084686",
+      "topic": "training",
+      "source_version": "网页日期 2025-11-21",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般成人基础练习的短摘要；不覆盖伤病康复、竞技分化或个人恢复判断。组次组合与时间预算由本项目明确的保守规则选取，不是来源为本用户制定的处方。",
+      "license": "Copyright MFMER; brief original summary and attribution, not an open license",
+      "license_url": "https://www.mayoclinic.org/about-this-site/terms-conditions-use-policy",
+      "notice": "仅保留项目自行撰写的简短事实摘要和出处，不复制图片、视频或正文，不表示合作或获商业转载授权；公开商业发布前需复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "器械腿屈伸",
+          "locator": "Video transcript",
+          "summary": "座位和滚垫按器械调整，滚垫靠近踝部，缓慢伸膝至接近直而不锁死，再控制回程。",
+          "keywords": [
+            "腿",
+            "股四头",
+            "腿屈伸机"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mayo-hamstring-curl",
+      "title": "器械俯卧腿弯举",
+      "original_title": "Video: Lying hamstring curl with weight machine",
+      "publisher": "Mayo Clinic",
+      "url": "https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/lying-hamstring-curl/vid-20084689",
+      "topic": "training",
+      "source_version": "网页未确认发布日期；2026-09-20核对动作正文",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般成人基础练习的短摘要；不覆盖伤病康复、竞技分化或个人恢复判断。组次组合与时间预算由本项目明确的保守规则选取，不是来源为本用户制定的处方。",
+      "license": "Copyright MFMER; brief original summary and attribution, not an open license",
+      "license_url": "https://www.mayoclinic.org/about-this-site/terms-conditions-use-policy",
+      "notice": "仅保留项目自行撰写的简短事实摘要和出处，不复制图片、视频或正文，不表示合作或获商业转载授权；公开商业发布前需复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "器械俯卧腿弯举",
+          "locator": "Video transcript",
+          "summary": "俯卧调整滚垫在脚踝上方，屈膝时保持骨盆与脊柱稳定，不拱腰或拉握把借力。",
+          "keywords": [
+            "腿",
+            "腘绳肌",
+            "俯卧腿弯举"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mayo-band-curl",
+      "title": "弹力带二头弯举",
+      "original_title": "Video: Biceps curl with resistance tubing",
+      "publisher": "Mayo Clinic",
+      "url": "https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/biceps-curl/vid-20084666",
+      "topic": "training",
+      "source_version": "网页日期 2025-11-21",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般成人基础练习的短摘要；不覆盖伤病康复、竞技分化或个人恢复判断。组次组合与时间预算由本项目明确的保守规则选取，不是来源为本用户制定的处方。",
+      "license": "Copyright MFMER; brief original summary and attribution, not an open license",
+      "license_url": "https://www.mayoclinic.org/about-this-site/terms-conditions-use-policy",
+      "notice": "仅保留项目自行撰写的简短事实摘要和出处，不复制图片、视频或正文，不表示合作或获商业转载授权；公开商业发布前需复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "弹力带二头弯举",
+          "locator": "Video transcript",
+          "summary": "脚掌稳固踩住完好的弹力带，掌心向上，肘贴身屈伸，手腕中立，不甩动身体。",
+          "keywords": [
+            "二头",
+            "手臂",
+            "弹力带",
+            "弯举"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ace-lateral-raise",
+      "title": "哑铃侧平举",
+      "original_title": "Lateral Raise",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/26/lateral-raise/",
+      "topic": "training",
+      "source_version": "网页未确认发布日期；2026-09-20核对动作正文",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般成人基础练习的短摘要；不覆盖伤病康复、竞技分化或个人恢复判断。组次组合与时间预算由本项目明确的保守规则选取，不是来源为本用户制定的处方。",
+      "license": "Copyright ACE; original short factual summary and source link; no open license or commercial reuse permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "仅保留项目自行撰写的简短事实摘要和出处，不复制图片、视频或正文，不表示合作或获商业转载授权；公开商业发布前需复核内容使用。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "哑铃侧平举",
+          "locator": "Steps 1-4",
+          "summary": "站稳收紧躯干，肘部微屈，哑铃缓慢向侧面抬至肩部高度后控制放下，不拱腰或折腕。",
+          "keywords": [
+            "肩",
+            "侧平举",
+            "哑铃"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-seated-leg-curl",
+      "title": "器械坐姿腿弯举",
+      "original_title": "seated leg curl",
+      "publisher": "NASM",
+      "url": "https://www.nasm.org/resource-center/exercise-library/seated-leg-curl",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作正文；发布日期未确认",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://www.nasm.org/resource-center/exercise-library/seated-leg-curl",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "器械坐姿腿弯举",
+          "locator": "How to Perform / Muscles Worked / Common Mistakes",
+          "summary": "按器械说明调好座位和腿垫，背部贴靠背，控制屈膝与回程。",
+          "keywords": [
+            "器械坐姿腿弯举",
+            "腘绳肌屈膝"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-dead-bug",
+      "title": "仰卧交替伸展",
+      "original_title": "dead bug",
+      "publisher": "NASM",
+      "url": "https://www.nasm.org/resource-center/exercise-library/dead-bug",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作正文；发布日期未确认",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://www.nasm.org/resource-center/exercise-library/dead-bug",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "仰卧交替伸展",
+          "locator": "How to Perform / Muscles Worked / Common Mistakes",
+          "summary": "仰卧交替伸展对侧手脚；腰背稳定，不为伸远而拱腰。",
+          "keywords": [
+            "仰卧交替伸展",
+            "核心抗伸展"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-bird-dog",
+      "title": "四点跪姿对侧伸展",
+      "original_title": "bird dog",
+      "publisher": "NASM",
+      "url": "https://www.nasm.org/resource-center/exercise-library/bird-dog",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作正文；发布日期未确认",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://www.nasm.org/resource-center/exercise-library/bird-dog",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "四点跪姿对侧伸展",
+          "locator": "How to Perform / Muscles Worked / Common Mistakes",
+          "summary": "四点跪撑，交替抬起对侧手脚；保持骨盆水平，不扭转躯干。",
+          "keywords": [
+            "四点跪姿对侧伸展",
+            "核心抗旋转"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-incline-pushup",
+      "title": "上斜俯卧撑",
+      "original_title": "incline push up",
+      "publisher": "NASM",
+      "url": "https://www.nasm.org/resource-center/exercise-library/incline-push-up",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作正文；发布日期未确认",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://www.nasm.org/resource-center/exercise-library/incline-push-up",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "上斜俯卧撑",
+          "locator": "How to Perform / Muscles Worked / Common Mistakes",
+          "summary": "双手放稳固平凳，头至脚跟保持直线，屈肘控制下降再推起。",
+          "keywords": [
+            "上斜俯卧撑",
+            "胸部自重推"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-decline-pushup",
+      "title": "下斜俯卧撑",
+      "original_title": "decline push up",
+      "publisher": "NASM",
+      "url": "https://www.nasm.org/resource-center/exercise-library/decline-push-up",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作正文；发布日期未确认",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://www.nasm.org/resource-center/exercise-library/decline-push-up",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "下斜俯卧撑",
+          "locator": "How to Perform / Muscles Worked / Common Mistakes",
+          "summary": "双脚置稳固低凳、双手撑地，不塌腰；仅在普通俯卧撑稳定后尝试。",
+          "keywords": [
+            "下斜俯卧撑",
+            "上胸方向自重推"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-full-pushup",
+      "title": "标准俯卧撑",
+      "original_title": "push up",
+      "publisher": "NASM",
+      "url": "https://www.nasm.org/resource-center/exercise-library/push-up",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作正文；发布日期未确认",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://www.nasm.org/resource-center/exercise-library/push-up",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "标准俯卧撑",
+          "locator": "How to Perform / Muscles Worked / Common Mistakes",
+          "summary": "保持头至脚跟直线，屈肘控制下降再推起；不塌腰、不弹起。",
+          "keywords": [
+            "标准俯卧撑",
+            "胸部自重推"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-pike-pushup",
+      "title": "折刀俯卧撑",
+      "original_title": "pike push up",
+      "publisher": "NASM",
+      "url": "https://www.nasm.org/resource-center/exercise-library/pike-push-up",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作正文；发布日期未确认",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://www.nasm.org/resource-center/exercise-library/pike-push-up",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "折刀俯卧撑",
+          "locator": "How to Perform / Muscles Worked / Common Mistakes",
+          "summary": "髋部抬高呈倒V形，缓慢屈伸肘；需先具备稳定俯卧撑能力，不以头部支撑。",
+          "keywords": [
+            "折刀俯卧撑",
+            "肩部自重推"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-db-front-squat",
+      "title": "哑铃前蹲",
+      "original_title": "dumbbell front squat",
+      "publisher": "NASM",
+      "url": "https://www.nasm.org/resource-center/exercise-library/dumbbell-front-squat",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作正文；发布日期未确认",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://www.nasm.org/resource-center/exercise-library/dumbbell-front-squat",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "哑铃前蹲",
+          "locator": "How to Perform / Muscles Worked / Common Mistakes",
+          "summary": "双哑铃稳定放肩前，保持躯干与膝盖方向，控制蹲起，不追求强行下蹲深度。",
+          "keywords": [
+            "哑铃前蹲",
+            "腿臀蹲起"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-bulgarian-squat",
+      "title": "哑铃保加利亚分腿蹲",
+      "original_title": "bulgarian split squat",
+      "publisher": "NASM",
+      "url": "https://www.nasm.org/resource-center/exercise-library/bulgarian-split-squat",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作正文；发布日期未确认",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://www.nasm.org/resource-center/exercise-library/bulgarian-split-squat",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "哑铃保加利亚分腿蹲",
+          "locator": "How to Perform / Muscles Worked / Common Mistakes",
+          "summary": "后脚放稳固低凳，重心控制在前腿，先掌握平衡再加轻哑铃。",
+          "keywords": [
+            "哑铃保加利亚分腿蹲",
+            "腿臀单侧蹲起"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-kb-deadlift",
+      "title": "壶铃硬拉",
+      "original_title": "kettlebell deadlift",
+      "publisher": "NASM",
+      "url": "https://www.nasm.org/resource-center/exercise-library/kettlebell-deadlift",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作正文；发布日期未确认",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://www.nasm.org/resource-center/exercise-library/kettlebell-deadlift",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "壶铃硬拉",
+          "locator": "How to Perform / Muscles Worked / Common Mistakes",
+          "summary": "壶铃在两脚之间，髋向后折叠、背部稳定；靠伸髋站起，控制放回。",
+          "keywords": [
+            "壶铃硬拉",
+            "臀腿伸髋"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-kb-goblet",
+      "title": "壶铃高脚杯深蹲",
+      "original_title": "goblet squat",
+      "publisher": "NASM",
+      "url": "https://www.nasm.org/resource-center/exercise-library/goblet-squat",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作正文；发布日期未确认",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://www.nasm.org/resource-center/exercise-library/goblet-squat",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "壶铃高脚杯深蹲",
+          "locator": "How to Perform / Muscles Worked / Common Mistakes",
+          "summary": "壶铃贴近胸前，保持躯干稳定，控制蹲起，不借惯性。",
+          "keywords": [
+            "壶铃高脚杯深蹲",
+            "腿臀蹲起"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-band-pullup",
+      "title": "弹力带辅助引体向上",
+      "original_title": "band assisted pull up",
+      "publisher": "NASM",
+      "url": "https://www.nasm.org/resource-center/exercise-library/band-assisted-pull-up",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作正文；发布日期未确认",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://www.nasm.org/resource-center/exercise-library/band-assisted-pull-up",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "弹力带辅助引体向上",
+          "locator": "How to Perform / Muscles Worked / Common Mistakes",
+          "summary": "仅用完好且适用于引体的长环带与牢固单杠，控制上下，不摆动；先学会安全上下杠。",
+          "keywords": [
+            "弹力带辅助引体向上",
+            "背部垂直拉"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-incline-barbell",
+      "title": "上斜杠铃卧推",
+      "original_title": "incline barbell bench press",
+      "publisher": "NASM",
+      "url": "https://www.nasm.org/resource-center/exercise-library/incline-barbell-bench-press",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作正文；发布日期未确认",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://www.nasm.org/resource-center/exercise-library/incline-barbell-bench-press",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "上斜杠铃卧推",
+          "locator": "How to Perform / Muscles Worked / Common Mistakes",
+          "summary": "锁定上斜凳、架与保护杠，肩背稳定，控制杠铃下放，不弹胸。",
+          "keywords": [
+            "上斜杠铃卧推",
+            "胸部上斜推"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-single-db-bench",
+      "title": "单臂哑铃卧推",
+      "original_title": "single arm dumbbell chest press",
+      "publisher": "NASM",
+      "url": "https://www.nasm.org/resource-center/exercise-library/single-arm-dumbbell-chest-press",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作正文；发布日期未确认",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://www.nasm.org/resource-center/exercise-library/single-arm-dumbbell-chest-press",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "单臂哑铃卧推",
+          "locator": "How to Perform / Muscles Worked / Common Mistakes",
+          "summary": "仰卧稳固平凳，单手控制轻哑铃，躯干不随负重旋转。",
+          "keywords": [
+            "单臂哑铃卧推",
+            "胸部水平推"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-leg-press-calf",
+      "title": "腿举机提踵",
+      "original_title": "leg press calf raise",
+      "publisher": "NASM",
+      "url": "https://www.nasm.org/resource-center/exercise-library/leg-press-calf-raise",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作正文；发布日期未确认",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://www.nasm.org/resource-center/exercise-library/leg-press-calf-raise",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "腿举机提踵",
+          "locator": "How to Perform / Muscles Worked / Common Mistakes",
+          "summary": "仅在厂家允许提踵且踏板防滑的腿举机上做，保持前脚掌接触，缓慢屈伸踝，不锁死膝。",
+          "keywords": [
+            "腿举机提踵",
+            "小腿提踵"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-cable-guide",
+      "title": "绳索附件与动作",
+      "original_title": "Take Advantage of the Versatility and Convenience of the Cable Crossover",
+      "publisher": "ACE / Carrie Myers",
+      "url": "https://www.acefitness.org/cp/pdfs/CertifiedNews/AugSept09Cert.pdf",
+      "topic": "training",
+      "source_version": "2009-08/09，印刷第7–10页；2026-09-20核对。仅动作机械事实，不收旧剂量或效果主张",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "rope-pushdown",
+          "title": "绳索绳把下压",
+          "locator": "第9页 / Triceps Pull-down",
+          "summary": "高位绳把，肘贴体侧伸肘。",
+          "keywords": [
+            "绳索绳把下压"
+          ]
+        },
+        {
+          "id": "cable-overhead",
+          "title": "绳索过顶臂屈伸",
+          "locator": "第9页 / Overhead Cable Press",
+          "summary": "高位绳把，背向器械伸肘。",
+          "keywords": [
+            "绳索过顶臂屈伸"
+          ]
+        },
+        {
+          "id": "cable-lateral",
+          "title": "单臂绳索侧平举",
+          "locator": "第9页 / Lateral Raise",
+          "summary": "低位把手，屈肘微抬至肩高。",
+          "keywords": [
+            "单臂绳索侧平举"
+          ]
+        },
+        {
+          "id": "cable-curl",
+          "title": "绳索直杆弯举",
+          "locator": "第10页 / Biceps Curls",
+          "summary": "低位直杆，肘贴体侧弯举。",
+          "keywords": [
+            "绳索直杆弯举"
+          ]
+        },
+        {
+          "id": "cable-leg-curl",
+          "title": "站姿绳索腿弯举",
+          "locator": "第7–8页 / Leg Curl",
+          "summary": "低位脚踝绑带，扶稳后屈膝。",
+          "keywords": [
+            "站姿绳索腿弯举"
+          ]
+        },
+        {
+          "id": "cable-hip-extension",
+          "title": "绳索髋后伸",
+          "locator": "第7–8页 / Hip Extension",
+          "summary": "低位脚踝绑带，扶稳后伸髋。",
+          "keywords": [
+            "绳索髋后伸"
+          ]
+        },
+        {
+          "id": "cable-abduction",
+          "title": "绳索髋外展",
+          "locator": "第7–8页 / Abduction",
+          "summary": "低位脚踝绑带，稳定侧抬腿。",
+          "keywords": [
+            "绳索髋外展"
+          ]
+        },
+        {
+          "id": "cable-floor-row",
+          "title": "地面坐姿绳索划船",
+          "locator": "第9页 / Seated Row",
+          "summary": "低位直杆，坐稳拉向身体。",
+          "keywords": [
+            "地面坐姿绳索划船"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-band-guide",
+      "title": "弹力带基础动作",
+      "original_title": "Whole-body Exercise Band Workout",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/getfit/rubrbndwkout.pdf",
+      "topic": "training",
+      "source_version": "两页PDF；未确认发布日期，2026-09-20核对",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "band-abduction",
+          "title": "环形弹力带髋外展",
+          "locator": "第1页 / 1. Leg Abduction",
+          "summary": "环带套踝，扶稳后缓慢侧抬腿。",
+          "keywords": [
+            "环形弹力带髋外展"
+          ]
+        },
+        {
+          "id": "band-leg-curl",
+          "title": "环形弹力带腿弯举",
+          "locator": "第1页 / 2. Hamstring Curl",
+          "summary": "环带套踝，扶稳后屈膝。",
+          "keywords": [
+            "环形弹力带腿弯举"
+          ]
+        },
+        {
+          "id": "band-adduction",
+          "title": "环形弹力带髋内收",
+          "locator": "第1页 / 3. Leg Adduction",
+          "summary": "环带套踝，扶稳后向中线收腿。",
+          "keywords": [
+            "环形弹力带髋内收"
+          ]
+        },
+        {
+          "id": "band-squat",
+          "title": "弹力带深蹲",
+          "locator": "第1页 / 4. Squat",
+          "summary": "双脚踩稳长带，握两端控制蹲起。",
+          "keywords": [
+            "弹力带深蹲"
+          ]
+        },
+        {
+          "id": "band-lateral",
+          "title": "弹力带侧平举",
+          "locator": "第1页 / 5. Lateral Raise",
+          "summary": "脚踩长带一端，缓慢侧抬手臂。",
+          "keywords": [
+            "弹力带侧平举"
+          ]
+        },
+        {
+          "id": "band-triceps",
+          "title": "弹力带过顶臂屈伸",
+          "locator": "第2页 / 9. Triceps Extension",
+          "summary": "背后固定长带下端，上手伸肘。",
+          "keywords": [
+            "弹力带过顶臂屈伸"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-db-fly",
+      "title": "哑铃平板飞鸟",
+      "original_title": "20-minute Opposing Super Set Workout",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/pros/expert-articles/5480/20-minute-opposing-super-set-workout/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作正文；发布日期未确认",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "哑铃平板飞鸟",
+          "locator": "Super Set #1 / DB Chest Fly",
+          "summary": "仰卧稳固平凳，肘微屈控制打开和合拢；轻负重，不强求过深下放。",
+          "keywords": [
+            "哑铃平板飞鸟"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-db-kickback",
+      "title": "哑铃俯身臂后伸",
+      "original_title": "ACE-sponsored Research: Best Triceps Exercises",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/certifiednewsarticle/1562/ace-sponsored-research-best-triceps-exercises/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作正文；发布日期未确认",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "哑铃俯身臂后伸",
+          "locator": "Kickback instructions；不收EMG排名",
+          "summary": "分腿站立，一手支撑大腿；上臂贴身，控制肘伸直，不摆动哑铃。",
+          "keywords": [
+            "哑铃俯身臂后伸"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-single-cable-row",
+      "title": "站姿单臂绳索划船",
+      "original_title": "Single Arm Row",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/337/single-arm-row/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作正文；发布日期未确认",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "站姿单臂绳索划船",
+          "locator": "Exercise description",
+          "summary": "身体站稳、膝微屈，单手将把手拉向躯干，控制回程，不转腰。",
+          "keywords": [
+            "站姿单臂绳索划船"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-side-abduction",
+      "title": "侧卧髋外展",
+      "original_title": "Side Lying Hip Abduction",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/38/side-lying-hip-abduction/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作正文；发布日期未确认",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "侧卧髋外展",
+          "locator": "Steps 1–3",
+          "summary": "侧卧保持髋部叠齐，抬上侧腿再缓慢落下；骨盆开始翻转前停止抬高。",
+          "keywords": [
+            "侧卧髋外展"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-pec-deck",
+      "title": "蝴蝶机夹胸",
+      "original_title": "What are the Top 3 Most Effective Chest Exercises?",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/certifiednewsarticle/3003/what-are-the-top-3-most-effective-chest-exercises/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作正文；发布日期未确认",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "蝴蝶机夹胸",
+          "locator": "How to Do / Pec Deck；不收EMG排名，仅无伤病成人",
+          "summary": "背部贴垫，调座位使上臂与垫对齐，轻负重缓慢合拢；不强行拉深，不耸肩或离开靠背。",
+          "keywords": [
+            "蝴蝶机夹胸"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-cable-adduction",
+      "title": "绳索髋内收",
+      "original_title": "Standing Hip Adduction",
+      "publisher": "American Council on Exercise",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/104/standing-hip-adduction/",
+      "topic": "training",
+      "source_version": "2026-09-20核对公开动作正文；发布日期未确认",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://www.acefitness.org/legal/terms-of-use/",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "绳索髋内收",
+          "locator": "Exercise description",
+          "summary": "脚踝绑带连低位滑轮，稳定站立，将近侧腿收向中线再控制回程。",
+          "keywords": [
+            "绳索髋内收"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-smith-squat",
+      "title": "史密斯深蹲",
+      "original_title": "The Smith Machine Squat Guide",
+      "publisher": "REP Fitness / Rosie Borchert",
+      "url": "https://repfitness.com/blogs/guides/smith-machine-squat",
+      "topic": "training",
+      "source_version": "页面2025-07-24，更新2026-08-03；2026-09-20核对。条款页读取失败，不推定转载授权",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人动作事实；只取动作位置和器械条件，不采纳营销、康复或优劣排名。组次与附加保护条件是本项目保守规则，不是个体处方。",
+      "license": "Copyright retained; brief original factual notes only; no open license or commercial republication permission asserted",
+      "license_url": "https://repfitness.com/blogs/guides/smith-machine-squat",
+      "notice": "项目短中文释义，非官方译文或机构背书；不复制图片、视频、课程和全文，公开商业发布前另复核权限。",
+      "sections": [
+        {
+          "id": "basics",
+          "title": "史密斯深蹲",
+          "locator": "How To Squat / safety stops",
+          "summary": "先设专用安全限位并学会挂回；轻负重按机器轨迹控制蹲起，不当自由杠铃使用。",
+          "keywords": [
+            "史密斯深蹲"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-ethier-ppl",
+      "title": "Jeremy Ethier 推拉腿结构参考",
+      "original_title": "The Best Push Pull Legs Routine For Muscle Growth",
+      "publisher": "Built With Science / Jeremy Ethier",
+      "url": "https://builtwithscience.com/fitness-tips/push-pull-legs-routine/",
+      "topic": "training",
+      "source_version": "2020-01-04公开文章；2026-09-20核对",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人的分化结构参考；不照搬原课程的具体动作表、训练量或强度，不代表个体适用性。",
+      "license": "Copyright retained; original factual summary only; no permission to reproduce full course asserted",
+      "license_url": "https://builtwithscience.com/terms-of-use/",
+      "notice": "仅保存简短原创事实摘要和出处，不是授权课程、官方译文或作者背书。公开发布前须另行复核权限。",
+      "sections": [
+        {
+          "id": "structure",
+          "title": "Jeremy Ethier 推拉腿结构参考",
+          "locator": "公开正文中的训练分化结构；不是整套课程",
+          "summary": "将推的肌群、拉的肌群和腿分日组织：胸肩三头、背二头及肩后侧、腿。原文强调循环中的休息；本项目按可用天数重排，不声称复现原课程。",
+          "keywords": [
+            "三分化",
+            "推拉腿",
+            "Jeremy Ethier"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-helms-upper-lower",
+      "title": "Helms / Morgan / Valdez 上下肢结构参考",
+      "original_title": "The Novice Bodybuilding Program",
+      "publisher": "RippedBody / Eric Helms, Andy Morgan, Andrea Valdez",
+      "url": "https://rippedbody.com/novice-bodybuilding-program/",
+      "topic": "training",
+      "source_version": "公开样例页2025-12-28更新；2026-09-20核对",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人的分化结构参考；不照搬原课程的具体动作表、训练量或强度，不代表个体适用性。",
+      "license": "Copyright retained; original factual summary only; no permission to reproduce full course asserted",
+      "license_url": "https://rippedbody.com/terms-and-conditions/",
+      "notice": "仅保存简短原创事实摘要和出处，不是授权课程、官方译文或作者背书。公开发布前须另行复核权限。",
+      "sections": [
+        {
+          "id": "structure",
+          "title": "Helms / Morgan / Valdez 上下肢结构参考",
+          "locator": "公开正文中的训练分化结构；不是整套课程",
+          "summary": "公开入门健美样例为每周四日上下肢安排，并区分强度与训练量侧重，动作选择受器械和熟练程度影响。本项目仅参考分日组织，不复制其组次、百分比及进阶表。",
+          "keywords": [
+            "上下肢",
+            "四日",
+            "Eric Helms",
+            "Andy Morgan"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r123-nasm-splits",
+      "title": "NASM 五分化结构参考",
+      "original_title": "What Are Bro Splits? The Complete Guide",
+      "publisher": "NASM / Heather Cherry",
+      "url": "https://www.nasm.org/resource-center/blog/bro-splits",
+      "topic": "training",
+      "source_version": "2025-04-01发布，2025-10-01更新；2026-09-20核对",
+      "reviewed_on": "2026-09-20",
+      "review_due": "2027-03-19",
+      "status": "approved",
+      "scope": "一般健康成人的分化结构参考；不照搬原课程的具体动作表、训练量或强度，不代表个体适用性。",
+      "license": "Copyright retained; original factual summary only; no permission to reproduce full course asserted",
+      "license_url": "https://www.nasm.org/resource-center/blog/bro-splits",
+      "notice": "仅保存简短原创事实摘要和出处，不是授权课程、官方译文或作者背书。公开发布前须另行复核权限。",
+      "sections": [
+        {
+          "id": "structure",
+          "title": "NASM 五分化结构参考",
+          "locator": "公开正文中的训练分化结构；不是整套课程",
+          "summary": "典型五日部位分化把胸、背、腿、肩、手臂分开。选择要考虑训练经验和可用频率，分化本身并不保证更优；本项目四分化合并肩臂是自行改编。",
+          "keywords": [
+            "四分化",
+            "五分化",
+            "部位分化"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -18,6 +18,15 @@ def suite():
     return protocol.load_suite(tool.SUITE, tool.SOURCE)
 
 
+def test_frozen_semantic_corpus_cannot_silently_be_replaced_by_corrected_runtime_catalog():
+    assert tool.SOURCE != tool.ROOT / 'data/knowledge/sources.json'
+    manifest, cases = suite()
+    assert hashlib.sha256(tool.SOURCE.read_bytes()).hexdigest() == manifest['corpus_sha256']
+    assert len(cases) == 24
+    with pytest.raises(ValueError, match='corpus mismatch'):
+        protocol.load_suite(tool.SUITE, tool.ROOT / 'data/knowledge/sources.json')
+
+
 def approved(manifest, cases):
     review = protocol.review_template(manifest, cases)
     review.update(reviewer='Synthetic test reviewer', reviewed_at='2026-10-16')
