@@ -26,14 +26,34 @@ def approved(manifest, cases):
     return review
 
 
-def test_frozen_semantic_data_has_disjoint_families_and_keeps_scope_counterexample():
+def test_frozen_semantic_data_has_disjoint_families_and_keeps_repaired_scope_case():
     manifest, cases = suite()
     assert len(cases) == 24 and manifest['families'] == 12
     assert sum(c['answerable'] for c in cases) == 16
     assert protocol.plan(manifest, cases)['maximum_provider_attempts'] == 144
     assert protocol.plan(manifest, protocol.select(cases))['maximum_provider_attempts'] == 72
     assert protocol.plan(manifest, cases, 'lexical')['maximum_provider_attempts'] == 72
-    assert tool.preflight(manifest, cases, 'hybrid')['static_scope_flags'] == ['loop-semantic-draft-01']
+    # Keep the original case/labels: fixing routing must not edit the benchmark.
+    repaired = next(case for case in cases if case['id'] == 'loop-semantic-draft-01')
+    assert repaired['question'] == '一般成年人，肌肉强化活动每周最低要安排几天？'
+    assert repaired['answerable'] and repaired['expected_status'] == 'answered'
+    assert tool.preflight(manifest, cases, 'hybrid')['static_scope_flags'] == []
+
+
+@pytest.mark.parametrize('question', [
+    '我今天怎么安排训练',
+    '一般成年人每周安排几天力量训练，帮我结合记录安排今天',
+    '近期肩伤，每周推荐几次力量训练',
+])
+def test_preflight_still_flags_personal_mixed_and_injury_controls(question):
+    manifest, cases = suite()
+    # Synthetic negative controls only; never rewrite frozen questions or labels.
+    control = deepcopy(cases[0])
+    control['question'] = question
+    result = tool.preflight(manifest, [control], 'hybrid')
+    assert result['static_scope_flags'] == [control['id']]
+    assert result['provider_calls'] == 0
+    assert suite()[1] == cases
 
 
 @pytest.mark.parametrize('change', ['bytes', 'family', 'reference', 'duplicate', 'counts', 'answerability', 'controls'])

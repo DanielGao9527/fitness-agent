@@ -3,12 +3,33 @@
   "kind": "bounded_routing_fix_and_existing_workflow_acceptance",
   "policy": "coach-understanding-v19-general-frequency-scope",
   "validation_type": "Isolated databases and fixed model/ASR/vision responses; existing real public vector cache used only for cache and candidate-build integration",
-  "scope_regression": {"tests": 45, "failures": 0, "errors": 0},
-  "meal_constraints_and_training_rotation": {"tests": 43, "failures": 0, "errors": 0},
+  "scope_regression": {
+    "tests": 45,
+    "failures": 0,
+    "errors": 0
+  },
+  "meal_constraints_and_training_rotation": {
+    "tests": 43,
+    "failures": 0,
+    "errors": 0
+  },
   "multimodal_draft_chains": {
     "passed": 3,
-    "inputs": ["text", "fixed_asr_transcript", "fixed_vision_result"],
-    "checks": ["correct_description", "reparse", "final_portion_edit", "reject_stale_confirmation", "account_isolation", "restart_before_confirmation", "explicit_final_write", "idempotent_replay"]
+    "inputs": [
+      "text",
+      "fixed_asr_transcript",
+      "fixed_vision_result"
+    ],
+    "checks": [
+      "correct_description",
+      "reparse",
+      "final_portion_edit",
+      "reject_stale_confirmation",
+      "account_isolation",
+      "restart_before_confirmation",
+      "explicit_final_write",
+      "idempotent_replay"
+    ]
   },
   "public_cache_candidate_chain": {
     "passed": 1,
@@ -23,7 +44,14 @@
     "base_pointer_unchanged": true,
     "normal_ci": "Additional real-cache integration requires explicit local opt-in; original gate tests still run normally"
   },
-  "planner_independent_offline_review": {"tests": 66, "failures": 0, "errors": 0, "skipped": 0, "reviewed_source_hashes_match": true, "blocking_findings": []},
+  "planner_independent_offline_review": {
+    "tests": 66,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "reviewed_source_hashes_match": true,
+    "blocking_findings": []
+  },
   "frontend_unit_suites_passed": 3,
   "batches_overlap_not_summed": true,
   "earlier_failures_preserved": [
@@ -31,7 +59,17 @@
     "Three polite general-inquiry expressions were misrouted; only the inquiry prefix is normalized, personal conditions remain.",
     "Initial public-cache integration expected a nonexistent nested quality field; corrected the test without weakening the service gate."
   ],
-  "local_runtime": {"policy_loaded": "v19", "root_and_health": "200", "static_assets_match_source": 27, "schema": 23, "tables": 39, "backup_verified": true, "formal_account_records_and_quota_preserved": true, "migration_performed": false, "test_records_written": false},
+  "local_runtime": {
+    "policy_loaded": "v19",
+    "root_and_health": "200",
+    "static_assets_match_source": 27,
+    "schema": 23,
+    "tables": 39,
+    "backup_verified": true,
+    "formal_account_records_and_quota_preserved": true,
+    "migration_performed": false,
+    "test_records_written": false
+  },
   "actual_provider_calls": 0,
   "actual_reviewer_roles_changed": false,
   "actual_candidate_publications": 0,
@@ -40,6 +78,19 @@
   "public_corpus_expanded": false,
   "new_real_quality_score_claimed": false,
   "historical_T2_E2_E3_scores_overwritten": false,
-  "remaining": ["Actual relevance review and formal publication quality", "New authorized real ASR/text/vision input acceptance", "Physical device and public HTTPS environment acceptance"],
-  "privacy": "Raw responses, human review material, recordings, private database/backup and runtime process evidence remain ignored local files."
+  "remaining": [
+    "Actual relevance review and formal publication quality",
+    "New authorized real ASR/text/vision input acceptance",
+    "Physical device and public HTTPS environment acceptance"
+  ],
+  "privacy": "Raw responses, human review material, recordings, private database/backup and runtime process evidence remain ignored local files.",
+  "ci_followup": {
+    "first_commit": "300974dab8ad231194c1048ad3a14d8bcd5d5e3e",
+    "failed_run": "https://github.com/DanielGao9527/fitness-agent/actions/runs/39013808315",
+    "failure": "One old semantic-evaluation preflight test expected the repaired general-frequency question to remain blocked.",
+    "change": "Retain frozen question/labels; assert general query is no longer statically blocked; add personal, mixed-request and recent-injury negative controls. No business code, thresholds or workflow changed.",
+    "local_evaluation_tests": 29,
+    "local_failures": 0,
+    "new_real_calls": 0
+  }
 }
