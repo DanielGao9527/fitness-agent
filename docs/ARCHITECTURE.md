@@ -60,7 +60,7 @@ Fitness Agent是FastAPI单体应用，原生网页与API同源。私人SQLite为
 
 [check_regression_candidate.py](../scripts/check_regression_candidate.py)是独立离线输入诊断入口，未接入应用/API。默认仅报告原v1状态；显式包目录与清单SHA-256同时提供后，复用load_cases、VectorStore.load与live=False查询缓存检查，验证248活动/12隔离输入、260映射、29项差异、审阅角色和当前来源/运行文件绑定。只在独立临时目录生成FTS，输出valid_inputs_not_evaluated，不计算排名/质量分数，不读Key或私人库，不改变production quality gate。原Recall@6/MRR@10实现和0.80等门槛未改；16道不足题单列未验收，包本体及审阅原材料只留本地。
 
-旧候选离线报告保留unresolved_label_disputes，不回写历史包。planner随后在新诊断排名前按全库范围将037裁定为有条件可答，另存248输入及72/15标签；独立缓存诊断已完成，未接入应用/正式门禁，非新留出或人审金标。当前真实验收计划直接通过既有answer_question(candidate_snapshot=...)复用首轮RRF候选，明确绕过首轮检索和编码；其后最多一次真实改写检索、两次模型证据判断，最终仍由服务器返回所选审核摘要，不是自由生成新答案。来源和发布revision重查保留。18题最多54次的新预算尚未授权，真实多模态另需3次与实际输入，不使用旧额度。
+旧候选离线报告保留unresolved_label_disputes，不回写历史包。planner随后在新诊断排名前按全库范围将037裁定为有条件可答，另存248输入及72/15标签；独立缓存诊断已完成，未接入应用/正式门禁，非新留出或人审金标。当前真实验收计划直接通过既有answer_question(candidate_snapshot=...)复用首轮RRF候选，明确绕过首轮检索和编码；其后最多一次真实改写检索、两次模型证据判断，最终仍由服务器返回所选审核摘要，不是自由生成新答案。来源和发布revision重查保留。18题54次授权实际用了23次后按请求超时停止，独立AI复核只接受账本/隔离与停止规则；原运行不重启或挪用余量。真实多模态另案未运行，其后的独立单轮固定证据补测也已用7/7次并在输出契约失败后停止，两批结果分别记录。
 
 ## E2：个人记忆与事实生命周期
 
@@ -85,6 +85,8 @@ Fitness Agent是FastAPI单体应用，原生网页与API同源。私人SQLite为
 ## E3：有界纠正与离线回放
 
 [knowledge_answers.py](../services/knowledge_answers.py)复用同一混合检索器；[knowledge_policy.py](../services/knowledge_policy.py)限制最多两轮检索、一次受控改写，始终用原问题判断证据和引用。
+
+当前[prompts/knowledge_answer.md](../prompts/knowledge_answer.md)明确区分证据支持的否定边界答案与实际个人份量要求；缺少信息本身不是否定证据，个人/医疗混合请求不能据此放行。单篇范围按该来源，未限定可以使用给定多来源的一般事实，但不推断未证实替代关系或个人适用。输出Schema/服务器审核摘录模式和程序保护未变；模板接线经固定响应验证；单轮真实补测094定点正确，无关证据控制却返回answered而无引用，被原Schema拒绝。API保留MODEL_INVALID_OUTPUT/502，既有测试已有该完全相同用例，不自动将无引用输出强转为不足。真实补测并未全部通过，详见STATUS。
 
 主聊天、理解核对与知识入口共用[knowledge_scope.py](../services/knowledge_scope.py)的有限频率问句检查，“安排/推荐”不单独决定个人意图。询问前缀只用于分类，原问题和个人条件不改写；一般损伤预防不凭单字“伤”拒绝，有限近期伤情及原医疗边界继续生效。
 

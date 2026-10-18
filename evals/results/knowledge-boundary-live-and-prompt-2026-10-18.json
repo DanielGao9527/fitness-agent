@@ -1,0 +1,116 @@
+{
+  "date": "2026-10-18",
+  "baseline_commit": "f568e81f143b60375d7ba2f12939d0116ea7f7cd",
+  "actual18_run": {
+    "status": "closed_at_first_request_error",
+    "attempts_used_limit": [
+      23,
+      54
+    ],
+    "judgment_attempts": 19,
+    "query_encoding_attempts": 4,
+    "responses": 22,
+    "failed_attempts": 1,
+    "error": "MODEL_TIMEOUT",
+    "timeout_phase_known": false,
+    "completed_cases": 16,
+    "failed_cases": 1,
+    "not_run_cases": 1,
+    "retries": 0,
+    "calls_after_error": 0,
+    "judgment_input_characters": 55486,
+    "query_input_characters": 83,
+    "remaining31_automatically_reusable": false,
+    "reviewer": "planner_ai_independent_review",
+    "human_review_claimed": false,
+    "accepted": [
+      "ledger",
+      "limits",
+      "isolation",
+      "first_error_stop"
+    ],
+    "full18_semantic_pass": false,
+    "completed_strict_status_match": [
+      13,
+      16
+    ],
+    "positive_expected_answer_met": [
+      1,
+      3
+    ],
+    "completed_insufficient_strict_status_match": [
+      12,
+      13
+    ],
+    "scope_ambiguity_retained": true,
+    "safe_scope_status_difference_retained": true,
+    "raw_outputs_and_ai_draft_not_overwritten": true,
+    "not_a_new_old_paired_improvement_result": true
+  },
+  "prompt_revision": {
+    "status": "bounded_real_followup_partial_success_schema_control_failed",
+    "active_rules_changed": 2,
+    "intent_or_retrieval_or_corpus_changed": false,
+    "rules": [
+      "Evidence-supported negative boundary conclusions may answer general knowledge questions; missing information is not negative evidence; preserve personal/medical/mixed guards.",
+      "Question-limited source scope; co-occurring sources do not establish substitution or individual suitability."
+    ],
+    "new_offline_tests": 6,
+    "existing_related_offline_tests": 49,
+    "total_offline_contracts_passed": 55,
+    "fixed_responses_not_semantic_quality": true,
+    "real_provider_requests_this_revision": 7,
+    "before_change_snapshot_files": 43,
+    "planner_independent_contract_tests": 22,
+    "executor_mock_guard_tests": 19,
+    "API_guard_implementation_changed": false,
+    "general_semantic_fix_claimed": false
+  },
+  "private_runtime_roles_and_publications_untouched": true,
+  "formal_v1_and_original_QA_not_modified": true,
+  "raw_materials_or_CV_for_github": false,
+  "followup_run": {
+    "status": "closed_at_first_schema_error",
+    "scenarios": 9,
+    "judgments_max": 7,
+    "model": "qwen3.6-plus",
+    "max_rounds": 1,
+    "first_evidence_replayed": true,
+    "real_query_encoding_max": 0,
+    "understanding_max": 0,
+    "media_max": 0,
+    "input_unicode_character_limit": 21689,
+    "model_output_token_ceiling": 14336,
+    "actual_tokens_or_currency_known": false,
+    "not_resumption_of_old18": true,
+    "new_improvement_claimed": false,
+    "requests_used_limit": [
+      7,
+      7
+    ],
+    "input_unicode_characters_used": 21689,
+    "model_text_responses": 7,
+    "schema_valid_completed_cases": 6,
+    "schema_invalid_case": 1,
+    "not_run_after_stop": 2,
+    "normal_supported_controls_met": 2,
+    "insufficient_refusals_met": 3,
+    "clinical_scope_refusal_met": true,
+    "error_detail": "Valid JSON: answered status with empty chunk_ids violates KnowledgeSelection",
+    "invalid_output_blocked": true,
+    "network_failure_observed": false,
+    "retries": 0,
+    "calls_after_error": 0,
+    "all9_semantic_pass": false,
+    "independent_actual_reviewer": "planner_ai_not_human_gold",
+    "case094_single_case_same_question_evidence_model": "Previously insufficient; now source-backed reviewed extract. One observed case; not a general improvement rate.",
+    "old18_run_not_resumed": true,
+    "scope_or_label_disputes_not_revised": true,
+    "existing_API_error_and_same_offline_case": "MODEL_INVALID_OUTPUT/502; tests/test_knowledge_answers.py existing empty-answered case; no new coercion or abstraction",
+    "isolated_usage_A": 7,
+    "isolated_usage_B": 0,
+    "non_usage_baseline_unchanged": true,
+    "total_tokens": null,
+    "currency_cost": null
+  }
+}
