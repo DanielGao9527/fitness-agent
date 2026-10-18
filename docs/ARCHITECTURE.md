@@ -60,7 +60,7 @@ Fitness Agent是FastAPI单体应用，原生网页与API同源。私人SQLite为
 
 [check_regression_candidate.py](../scripts/check_regression_candidate.py)是独立离线输入诊断入口，未接入应用/API。默认仅报告原v1状态；显式包目录与清单SHA-256同时提供后，复用load_cases、VectorStore.load与live=False查询缓存检查，验证248活动/12隔离输入、260映射、29项差异、审阅角色和当前来源/运行文件绑定。只在独立临时目录生成FTS，输出valid_inputs_not_evaluated，不计算排名/质量分数，不读Key或私人库，不改变production quality gate。原Recall@6/MRR@10实现和0.80等门槛未改；16道不足题单列未验收，包本体及审阅原材料只留本地。
 
-离线报告另外输出unresolved_label_disputes：第037题单篇/全库解释仍待决定。输入结构合格不会清空语义争议，不推定候选标签正确或把证据不足题计为拒答成功。
+旧候选离线报告保留unresolved_label_disputes，不回写历史包。planner随后在新诊断排名前按全库范围将037裁定为有条件可答，另存248输入及72/15标签；独立缓存诊断已完成，未接入应用/正式门禁，非新留出或人审金标。当前真实验收计划直接通过既有answer_question(candidate_snapshot=...)复用首轮RRF候选，明确绕过首轮检索和编码；其后最多一次真实改写检索、两次模型证据判断，最终仍由服务器返回所选审核摘要，不是自由生成新答案。来源和发布revision重查保留。18题最多54次的新预算尚未授权，真实多模态另需3次与实际输入，不使用旧额度。
 
 ## E2：个人记忆与事实生命周期
 
@@ -72,7 +72,7 @@ Fitness Agent是FastAPI单体应用，原生网页与API同源。私人SQLite为
 
 温记忆限每账号20条、合计1,200字，理解前读取；不是模型自主维护的Hermes文件。来源对话摘录只接受连续用户原话、本人身份和明确reviewed确认；助手答案不能成为私人事实。原话更正/删除使引用条目停用，手工更正作为新确认内容并清除旧绑定，账号删除级联清理。
 
-器械由[equipment_memory.py](../services/equipment_memory.py)与[coach_reviews.py](../services/coach_reviews.py)校验来源、否定及范围；当前理解策略v19。范围不明由用户选择，不确定/未来/混合范围保留补问。有限表达修复不能吞掉未知要求或伪造来源，不能称为完整语义安全系统。
+器械由[equipment_memory.py](../services/equipment_memory.py)与[coach_reviews.py](../services/coach_reviews.py)校验来源、否定及范围；源码理解策略v20：有限整句识别一般营养指南能否推出个人逐餐克数的知识边界，主聊天、理解核对和知识问答一致，实际配餐/伤病/混合请求保护不变。最后本机已核实加载v19；本批8765只读检查连接拒绝，未重启或宣称加载v20。范围不明由用户选择，不确定/未来/混合范围保留补问。有限表达修复不能吞掉未知要求或伪造来源，不能称为完整语义安全系统。
 
 - 本次条件保存在当前会话，今天条件在coach_day_equipment，长期条件确认后写profiles.equipment。有效本次优先于今天，再用长期档案；临时条件在北京时间跨日后过期。
 - [profile_facts.py](../services/profile_facts.py)用事务、递增器械版本及无私人口述的来源事件管理长期更正。更正、撤销或到期使旧理解、建议、替换和绑定计划失效；旧原话不能覆盖新档案。

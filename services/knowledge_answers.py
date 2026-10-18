@@ -10,7 +10,7 @@ from model.deadlines import Deadline, use_deadline
 from services.knowledge_policy import KnowledgePolicy, POLICY_VERSION, normalized_query_key, rewrite_change
 from rag.rag_service import RetrievalSnapshot
 from schemas import KnowledgeSelection
-from services.knowledge_scope import general_training_frequency, has_personal_request
+from services.knowledge_scope import general_nutrition_limit, general_training_frequency, has_personal_request
 
 # Keep the original medical floor and recognize bounded recent injury reports.
 # A lone "伤" would also block general questions about injury-risk prevention.
@@ -31,7 +31,7 @@ MESSAGES = {
 def outside_scope(question, profile, topics=()):
     # Conservative first-version boundary, not a medical or ingredient classifier.
     if (SENSITIVE.search(question) or has_personal_request(question, PERSONAL)
-            or PERSONAL_TIME.search(question) and not general_training_frequency(question)):
+            or PERSONAL_TIME.search(question) and not (general_training_frequency(question) or general_nutrition_limit(question))):
         return True
     if SENSITIVE.search(profile.get("preferences", "")):
         return True

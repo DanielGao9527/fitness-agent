@@ -1,4 +1,4 @@
-"""Bounded general-frequency grammar shared by chat and knowledge scope checks."""
+"""Bounded general-question rules shared by chat and knowledge scope checks."""
 import re
 
 
@@ -11,6 +11,17 @@ PERSONAL_CONTEXT = re.compile(
     r"|伤|(?:周|星期)[一二三四五六日天1-7]|\d+(?:\.\d+)?\s*(?:岁|厘米|cm|千克|公斤|kg)", re.I)
 GENERAL_FREQUENCY_VERBS = {"安排", "推荐"}
 GENERAL_INQUIRY_PREFIX = re.compile(r"^\s*我想(?:了解|知道|问)(?:一下)?[，,：:\s]*")
+NUTRITION_GUIDELINE_LIMIT = re.compile(
+    r"(?:一般|通用)(?:的)?(?:蔬果|膳食|饮食|食物|营养)(?:的)?(?:建议|指南|原则)"
+    r"(?:是否能够|能不能|是否|能否|能够)(?:直接)?(?:给出|确定|推算|推断|说明|证明)"
+    r"(?:每个人|某个人|个人|我)?(?:每顿|每餐)(?:应该|需要|应当)?(?:吃)?(?:的)?"
+    r"(?:具体)?(?:多少克|克数|份量|分量)(?:吗)?"
+)
+
+
+def general_nutrition_limit(message):
+    """A whole-question inquiry about guideline limits, never an actual portion request."""
+    return bool(NUTRITION_GUIDELINE_LIMIT.fullmatch(message.strip().rstrip("？?。！! ")))
 
 
 def general_training_frequency(message):

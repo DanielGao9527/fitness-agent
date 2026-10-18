@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-18",
+  "status": "offline_fix_and_live_acceptance_plan_prepared_not_run",
+  "business_fix": "Bounded whole-question general nutrition guideline limits route consistently across main chat, understanding review, and direct knowledge. Personal portions, medical/allergy and combined requests remain guarded.",
+  "source_policy": "coach-understanding-v20-nutrition-guideline-limit",
+  "new_offline_tests_passed": 16,
+  "related_existing_tests_passed": 46,
+  "fixed_response_not_semantic_score": true,
+  "failures_preserved": [
+    "Initial 2/4 routing failures",
+    "API fixture passed hits instead of stable IDs",
+    "Fixture omitted simulated query encoding reservation",
+    "Ordinary-permission local test hang; only confirmed test processes stopped before isolated retry"
+  ],
+  "current_service_restart": false,
+  "latest_service_health": "127.0.0.1:8765 connection refused; v20 not claimed loaded",
+  "last_verified_loaded_policy": "v19",
+  "new_real_requests": 0,
+  "prior_document_restore_used_authorized": [
+    1,
+    1
+  ],
+  "parent_ai_diagnostic": {
+    "ran_by": "planner_ai",
+    "provider_requests": 0,
+    "fresh_holdout": false,
+    "independent_human_gold": false,
+    "production_eligible": false,
+    "test_count": 87,
+    "answerable": 72,
+    "insufficient": 15,
+    "decision_before_ranking": true,
+    "old_candidate_preserved": true,
+    "not_comparable_to_old_T2_as_improvement": true
+  },
+  "prepared_live_scope": {
+    "cases": 18,
+    "all_insufficient": 15,
+    "risk_positive_controls": 3,
+    "understanding_max": 0,
+    "judgments_max": 36,
+    "first_search_and_encoding_replayed": true,
+    "rewrite_query_encodings_max": 18,
+    "total_max": 54,
+    "authorization_status": "pending",
+    "path": "existing answer_question service; not fresh HTTP/UI full chain",
+    "first_error_stop": true,
+    "automatic_retries": 0,
+    "actual_outputs_graded": false
+  },
+  "separate_multimodal": {
+    "max_calls": 3,
+    "calls": [
+      "ASR",
+      "confirmed text parse",
+      "photo recognition"
+    ],
+    "actual_user_media_required": true,
+    "status": "prepared_not_run",
+    "device_HTTPS_microphone_acceptance_claimed": false
+  },
+  "actual_records_written": false,
+  "actual_roles_changed": false,
+  "knowledge_published": false,
+  "formal_v1_modified": false,
+  "raw_inputs_media_review_CV_committed": false,
+  "new_quality_or_improvement_claimed": false
+}
