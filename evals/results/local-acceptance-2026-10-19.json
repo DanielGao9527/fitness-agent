@@ -1,0 +1,158 @@
+{
+  "status": "local_engineering_checks_complete_existing_AI_diagnostic_reused_formal_v1_pending",
+  "date_local": "2026-10-19",
+  "existing_full_CI_reused": {
+    "commit": "833051857d644f6de95eef894b3088760c0f98db",
+    "url": "https://github.com/DanielGao9527/fitness-agent/actions/runs/39228832704",
+    "backend_frontend": "success"
+  },
+  "new_local_directed_checks": {
+    "ENTRY_LOCAL_RESULTS.xml": {
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "GOVERNANCE_LOCAL_RESULTS.xml": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "new_checks_total": 8,
+  "new_checks_skipped": 0,
+  "real_public_cache_entry_cases": 3,
+  "transport_fault_cases": 4,
+  "current_cache_governance_gate_case": 1,
+  "model_and_new_query_encoding_simulated": true,
+  "real_RRF_and_current_source_checks": true,
+  "DEV_only_no_heldout_rankings_or_scores": true,
+  "new_model_or_embedding_speech_photo_provider_requests": 0,
+  "production_database_accounts_roles_publications_or_service_restart": false,
+  "original260_timeout_actual_result_changed": false,
+  "actual_live_service": {
+    "homepage_and_health": 200,
+    "unauth_profile_and_knowledge": 401,
+    "policy": "v20",
+    "knowledge": "ready",
+    "restart": false
+  },
+  "formal_review_preparation": {
+    "questions_total": 87,
+    "original_positive_pairs": 74,
+    "existing_positive_unique_chunks": 33,
+    "public_catalog_chunks": 133,
+    "AI_suggestion_union": 29,
+    "reference_corrections": 24,
+    "relevance_set_changes": 6,
+    "answerability_change": 1,
+    "prior_actual_source_support_preserved": 2,
+    "prior_boundary_or_conditional_decisions_preserved": 9,
+    "incomplete_labels_not_sent_for_blanket_signoff": true,
+    "unactivated_grouping_owner_confirmed": true,
+    "active_candidate_dev": 161,
+    "test": 87,
+    "quarantined_original_dev": 12,
+    "three_crossing_evidence_blocks_recorded": true,
+    "formal_v1_review_status": "pending_review",
+    "human_complete_relevance_review_not_filled_by_AI": true,
+    "newly_completed_human_rows": "Owner recognized displayed evidence correspondence for094/095/096 only;not exhaustive full-corpus87gold",
+    "independent_does_not_require_new_external_blind_dataset": true,
+    "ordinary_AI_audit_reused": true,
+    "conditional037_current_AI_answerable": true,
+    "original037_False_proposal_retained": true
+  },
+  "necessary_new_encoding_calls": 0,
+  "formal87_query_vectors_fully_matched": true,
+  "document_vectors133_fully_matched": true,
+  "optional_short_excerpt": {
+    "not_required": true,
+    "calls_max_if_later_authorized": 1,
+    "input_characters": 82,
+    "current_authority": 0
+  },
+  "optional_real_authenticated_cloud_entry": {
+    "not_new_mandatory_gate": true,
+    "max_new_requests": 4,
+    "query_encoding_max": 2,
+    "judgment_max": 2,
+    "max_input_characters": 8069,
+    "per_judgment_output_tokens_max": 2048,
+    "currently_authorized": false,
+    "scope": "DEV073one ordinary interaction,default2-round cap,not260retake"
+  },
+  "original87_true_results_unchanged": {
+    "correct_supported": 66,
+    "answerable": 72,
+    "boundary_validated": 14,
+    "insufficient": 15,
+    "strict_overall_acceptance": false
+  },
+  "local_quality_dependencies": [],
+  "excluded_work": [
+    "RealASR/photo",
+    "Physical phone/public hosting/HTTPS",
+    "Corpus expansion or fine-tuning",
+    "Single260 paid retest or prompt optimization"
+  ],
+  "no_new_full_local_suite_run": true,
+  "no_global_pass_claim": true,
+  "DEV_only_no_heldout_rankings_or_scores_scope": "New7 entry tests only;older heldout-labelled AI diagnostic separately disclosed and reused without new rankings",
+  "local_review_policy": {
+    "ordinary_materials": "AI review delegated by project owner;reuse existing87-case audit with conditional037 decision",
+    "owner_handles": "Only genuine complex or conflicting unresolved cases",
+    "new_unresolved_complex_cases": [],
+    "owner_recognized_displayed_correspondence": [
+      "fitness-qa-094",
+      "fitness-qa-095",
+      "fitness-qa-096"
+    ],
+    "owner_exhaustive87_human_review_claimed": false,
+    "AI_original_labels_outputs_and_existing_rankings_seen": true,
+    "formal_v1_review_status": "pending_review",
+    "production_publication_enabled": false,
+    "all87_human_re_review_required_for_this_local_closeout": false
+  },
+  "existing_diagnostic_reused": {
+    "kind": "reuse_of_existing_AI_label_cache_diagnostic_not_new_improvement_or_release_gate",
+    "bindings_rechecked": true,
+    "answerable_scored": 72,
+    "insufficient_unscored": 15,
+    "summary": {
+      "jieba_lexical": {
+        "recall@6": 0.9814814814814815,
+        "mrr@10": 0.96875
+      },
+      "dense": {
+        "recall@6": 1.0,
+        "mrr@10": 0.9703703703703704
+      },
+      "jieba_dense_rrf": {
+        "recall@6": 0.9861111111111112,
+        "mrr@10": 0.9826388888888888
+      }
+    },
+    "new_rankings": 0,
+    "new_provider_calls": 0,
+    "fresh_holdout": false,
+    "independent_human_gold": false,
+    "candidate_vs_baseline_nonregression_established": false,
+    "formal_release_quality": false,
+    "production_eligible": false
+  },
+  "formal_publication_remaining_dependencies": [
+    "Formalv1 independently reviewed labels and candidate-vs-baseline server-bound quality evidence not complete;pending gate unchanged",
+    "Actual approval,production switch and rollback not performed;requires applicable future conditions and authorization"
+  ],
+  "frontend_error_display_evidence_reused": {
+    "test": "tests/knowledge-ask-unit.cjs:25",
+    "existing_CI_commit": "833051857d644f6de95eef894b3088760c0f98db",
+    "claims": [
+      "upstream error shown",
+      "question retained",
+      "duplicate/edit/cancel/logout late-response protections"
+    ],
+    "new_browser_or_device_claim": false
+  }
+}
