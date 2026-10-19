@@ -1,64 +1,98 @@
 {
   "date_local": "2026-10-19",
   "timezone": "Australia/Sydney",
-  "business_source_commit": "03215d6470b37053c60516f32e43e3a970ed1981",
-  "status": "halted_first_network_error_overall_acceptance_incomplete",
-  "scope": "Project-built single-round fixed-first-evidence knowledge acceptance;not independent blind evaluation,not live retrieval or complete project end-to-end",
-  "planned_cases": 87,
-  "answerable_denominator": 72,
-  "insufficient_denominator": 15,
-  "correct_supported_target": 63,
-  "authorized_request_cap": 85,
-  "requests_used": 4,
-  "input_unicode_characters": 12400,
-  "model_responses": 3,
-  "network_timeout_failures": 1,
-  "not_run_cases": 83,
-  "zero_call_scope_guards_not_reached": 2,
-  "insufficient_cases_tested": 0,
-  "correct_supported_observed_after_separate_planner_AI_review": 3,
-  "overall_coverage_or_safety_pass": null,
-  "overall_acceptance_completed": false,
-  "no_full_batch_accuracy_claim": true,
-  "unspent_capacity_not_automatically_reused": 81,
-  "retries": 0,
-  "understanding_embedding_media_live_search_calls": 0,
-  "isolated_usage": {
-    "A": 4,
-    "B": 0,
-    "non_usage_tables_unchanged": true,
-    "release_revision": 0,
-    "release_id": ""
+  "business_source_baseline": "03215d6470b37053c60516f32e43e3a970ed1981",
+  "status": "all87_cases_processed_answerable_target_met_one_boundary_infrastructure_unvalidated",
+  "scope": "Project-built single-round fixed-first-evidence evaluation,labels exposed,planner AI semantic review;not independent human/blind gold,not live retrieval/main-chat/UI/media/formal-publication certification",
+  "original_denominators": {
+    "answerable": 72,
+    "insufficient": 15
   },
-  "timeout": {
-    "code": "MODEL_TIMEOUT",
-    "seconds_approximately": 5.047,
-    "reason": "unknown",
-    "phase": "unknown",
-    "provider_status_unobserved": true,
-    "client_config_only": {
-      "default_timeout_seconds": 20,
-      "connect_timeout_max_seconds": 5,
-      "knowledge_deadline_seconds": 45
-    },
-    "no_root_cause_or_supplier_quota_attribution": true
+  "predeclared_answerable_correct_threshold": 63,
+  "correct_supported": 66,
+  "correct_supported_percent": 91.67,
+  "answerable_target_met": true,
+  "conservative_037_not_counted_correct": 65,
+  "conservative_percent": 90.28,
+  "strict_overall_acceptance": false,
+  "insufficient_boundary_validated": 14,
+  "insufficient_normal_semantic_refusals": 13,
+  "insufficient_bounded_general_evidence": 1,
+  "insufficient_connection_timeout_unvalidated": 1,
+  "unsupported_conclusions_displayed_observed": 0,
+  "all_cases_processed": 87,
+  "zero_call_guards": 2,
+  "combined": {
+    "requests": 85,
+    "input_unicode_characters": 272908,
+    "complete_responses": 83,
+    "timeout_failures": 2,
+    "retries": 0,
+    "other_cloud_calls": 0
   },
-  "token_usage_and_currency_cost": null,
-  "response_capture_limitation": "Three model raw text responses and requests preserved. Envelope captured compressed transport bytes as lossy UTF8 text;provider usage cannot be reliably recovered. Original evidence retained unchanged,no paid replay for accounting.",
-  "local_service": {
-    "status": "ok",
-    "knowledge": "ready",
-    "stage": "e2-training-record-invalidation-v23",
-    "coach_review_policy": "coach-understanding-v20-nutrition-guideline-limit",
-    "check": "read-only GET /api/health after batch stopped",
-    "provider_requests": 0,
-    "runtime_restarted": false,
-    "actual_records_written": false
+  "parent4": {
+    "requests": 4,
+    "input_characters": 12400,
+    "responses": 3,
+    "timeout_failures": 1,
+    "previous_first_error_stop_unchanged": true,
+    "retested": false
   },
-  "offline_execution_guards_passed": 18,
-  "fixed_response_preflight_cases": 87,
-  "next_step": "Only zero-call timeout observability/configuration review. No automatic paid probe,resume,prompt or label tuning.",
-  "no_business_source_or_prompt_changes": true,
-  "no_publication_role_or_real_record_changes": true,
-  "no_CV_or_raw_materials_in_git": true
+  "continuation81": {
+    "new_authorization_obtained_in_primary_chat": true,
+    "requests": 81,
+    "input_characters": 260508,
+    "complete_responses": 80,
+    "timeout_failures": 1,
+    "A_usage": 81,
+    "B_usage": 0,
+    "isolated_non_usage_tables_match_baseline": true,
+    "complete_HTTP_body_only_resets_timeout_streak": true,
+    "consecutive_connect_read_timeouts_to_stop": 3,
+    "new_start_streak": 0,
+    "model_prompt_and_timeouts_unchanged": true,
+    "provider_usage_for80_complete_responses": {
+      "prompt_tokens": 125240,
+      "completion_tokens": 3114,
+      "total_tokens": 128354
+    }
+  },
+  "latest_timeout": {
+    "case": "fitness-qa-260",
+    "subclass": "ConnectTimeout",
+    "seconds_approximately": 5.109,
+    "headers_received": false,
+    "body_complete": false,
+    "finer_cause": "unknown,do not attribute to supplier/model/quota"
+  },
+  "retained_misses": {
+    "zero_call_scope_guards": [
+      "fitness-qa-115",
+      "fitness-qa-116"
+    ],
+    "conservative_refusals": [
+      "fitness-qa-164",
+      "fitness-qa-187",
+      "fitness-qa-192"
+    ],
+    "parent_timeout": [
+      "fitness-qa-032"
+    ]
+  },
+  "source_review_caveats": [
+    "037 ambiguity declared before outputs:report66/72 and conservative65/72 without changing denominator/labels",
+    "163 selected an extra rope summary;main elbow fact supported with scope caveat,no correct-attachment prescription claimed",
+    "246 displays general FDA cross-contact evidence without guaranteeing a specific brand;not counted as normal refusal"
+  ],
+  "combined_token_usage_and_cost": null,
+  "accounting_limit": "Original3 response envelopes were lossy compressed captures and failed-request provider usage is unknown;do not extrapolate cost",
+  "formal_release_v1_changed": false,
+  "actual_user_database_roles_publications_or_runtime_changed_by_evaluation": false,
+  "private_raw_materials_or_CV_for_git": false,
+  "further_paid_probe_or_per_case_optimization": false,
+  "remaining_actual_dependencies": [
+    "One insufficient-case boundary remains unvalidated due to ConnectTimeout;no automatic paid retest",
+    "Real ASR1+text parse1+photo analysis1 need inputs and new authorization",
+    "Formal independent knowledge review/actual candidate publication and public hosting/physical device verification separate"
+  ]
 }
